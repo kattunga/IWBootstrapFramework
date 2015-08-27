@@ -1,0 +1,55 @@
+// JCL_DEBUG_EXPERT_GENERATEJDBG OFF
+// JCL_DEBUG_EXPERT_INSERTJDBG OFF
+// JCL_DEBUG_EXPERT_DELETEMAPFILE OFF
+package IWBootsTrapGridXE5;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'CGDevTool Custom'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  xmlrtl,
+  vcl,
+  vclimg,
+  dbrtl,
+  inet,
+  IndyProtocols,
+  IndyCore,
+  IndySystem,
+  Intraweb_14_DXE5;
+
+contains
+  IWBSUtils in 'IWBSUtils.pas',
+  IWBSCommon in 'IWBSCommon.pas',
+  IWBSRegion in 'IWBSRegion.pas',
+  IWBSInput in 'IWBSInput.pas',
+  IWBSLayoutMgr in 'IWBSLayoutMgr.pas',
+  IWBSTabControl in 'IWBSTabControl.pas';
+
+end.
+

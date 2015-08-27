@@ -55,3 +55,6 @@ __history/
 
 # Castalia statistics file
 *.stat
+
+# personal folders
+nogit
