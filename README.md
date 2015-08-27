@@ -18,3 +18,19 @@ Intraweb version 14.0.38 or above.
 http://www.atozed.com/intraweb/index.en.aspx
 
 Please test the demo y desktop and mobile devices to se how this work.
+
+## Installation
+
+Install in order
+
+* IWBootsTrapGridXE5.dpk
+* dclIWBootsTrapGridXE5.dpk
+
+* Use TIWBSLayoutMgr in your main form.
+* Set JavaScriptOptions.RenderjQuery := False; in server controller.
+
+If you have CGDevTools yo can also install
+
+* IWCGJQBootsTrapGridXE5.dproj
+* dclIWCGJQBootsTrapGridXE5.dproj
+
