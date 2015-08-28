@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
   IWBaseContainerLayout, IWContainer, IWHTMLContainer, IWHTML40Container, IWRegion, IW.Common.Strings,
-  IWRenderContext, IWHTMLTag, IWBaseInterfaces,
+  IWRenderContext, IWHTMLTag, IWBaseInterfaces, IWXMLTag, IWMarkupLanguageTag, IW.Common.RenderStream,
   IWBSCommon, IWBSLayoutMgr;
 
 type
@@ -16,16 +16,20 @@ type
     FCss: string;
     FGridOptions: TIWBSGridOptions;
     FFormType: TIWBSFormType;
+    FRegionDIV: TIWHTMLTag;
   protected
-    procedure SetGridOptions(const Value: TIWBSGridOptions);
+    function ContainerPrefix: string; override;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
+    procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure SetGridOptions(const Value: TIWBSGridOptions);
     property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure AsyncRenderContent;
   published
     property BSChildRenderOptions: TIWBSChildRenderOptions read FChildRenderOptions write FChildRenderOptions default [bschDisablePosition, bschDisableSize];
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
@@ -75,6 +79,21 @@ type
 
 implementation
 
+uses IWForm, IWUtils, IWContainerLayout;
+
+{$region 'THackCustomRegion'}
+type
+  THackTIWHTML40Container = class(TIWHTML40Container)
+  private
+    procedure CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+  end;
+
+procedure THackTIWHTML40Container.CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+begin
+  inherited RenderComponents(AContainerContext, APageContext);
+end;
+{$endregion}
+
 {$region 'TIWBSCustomRegion'}
 constructor TIWBSCustomRegion.Create(AOwner: TComponent);
 begin
@@ -86,11 +105,36 @@ begin
   FFormType := bsftNoForm;
 
   ClipRegion := False;
+end;
 
-  // esto sirve para hacel el calculo automatico de ancho de columnas
-  // lo leemos en la creacion del componente sino en runtime no funciona
-  if AOwner is TWinControl then
-    Width := TWinControl(AOwner).Width;
+procedure TIWBSCustomRegion.AsyncRenderContent;
+var
+  APageContext: TIWBasePageContext;
+  AContainerContext: TIWContainerContext;
+  LBuffer: TIWRenderStream;
+  LScript: string;
+begin
+  if not (ContainerContext.WebApplication.IsCallBack) or not (ContainerContext.WebApplication.ActiveForm is TIWForm) then
+    Exit;
+
+  APageContext := TIWForm(ContainerContext.WebApplication.ActiveForm).PageContext;
+  AContainerContext := TIWContainerContext.Create(ContainerContext.WebApplication, CacheControls);
+  LBuffer := TIWRenderStream.Create(True, True);
+  try
+    FRegionDiv.Contents.Clear;
+
+    LayoutMgr.SetContainer(Self);
+    InternalRenderComponents(AContainerContext, APageContext, LBuffer);
+
+    LScript := LBuffer.AsString;
+    LScript := RemoveCRLF(LScript);
+    LScript := StringReplace(Lscript,'"','\"',[rfReplaceAll]);
+    ContainerContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('$("#'+HTMLName+'").html("'+LScript+'");');
+  finally
+    LayoutMgr.SetContainer(nil);
+    FreeAndNil(LBuffer);
+    FreeAndNil(AContainerContext);
+  end;
 end;
 
 destructor TIWBSCustomRegion.Destroy;
@@ -104,6 +148,18 @@ begin
   FGridOptions.Assign(Value);
 end;
 
+function TIWBSCustomRegion.ContainerPrefix: string;
+begin
+  if Owner is TFrame then begin
+    Result := UpperCase(TFrame(Owner).Name);
+  end else
+  if isBaseContainer(Parent) then begin
+    Result := BaseContainerInterface(Parent).ContainerPrefix;
+  end else begin
+    Result := UpperCase(Name);
+  end;
+end;
+
 function TIWBSCustomRegion.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
   Result := TIWContainerContext.Create(AWebApplication, CacheControls);
@@ -111,14 +167,55 @@ begin
     Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
     TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
   end;
-  Self.LayoutMgr.SetContainer(Self);
-  Result.LayoutManager := Self.LayoutMgr;
+  LayoutMgr.SetContainer(Self);
+  Result.LayoutManager := LayoutMgr;
+end;
+
+procedure TIWBSCustomRegion.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
+var
+  i, n: integer;
+  LFrameRegion: TComponent;
+  LIWRegion: TIWRegion;
+begin
+  IWBSDisableChildRenderOptions(Self, FChildRenderOptions);
+
+  n := IWComponentsCount;
+  for i := 0 to n - 1 do
+    if Component[i] is TFrame then
+      begin
+        LFrameRegion := TFrame(Component[i]).FindComponent('IWFrameRegion');
+        if LFrameRegion is TIWRegion then begin
+          LIWRegion := TIWRegion(LFrameRegion);
+          if LIWRegion.LayoutMgr = nil then begin
+            LIWRegion.LayoutMgr := TIWBSLayoutMgr.Create(Self);
+            TIWBSLayoutMgr(LIWRegion.LayoutMgr).BSFormType := FFormType;
+          end;
+          LIWRegion.LayoutMgr.SetContainer(LIWRegion);
+          IWBSDisableChildRenderOptions(LIWRegion, FChildRenderOptions);
+        end;
+     end;
+
+  try
+    THackTIWHTML40Container(Self).CallInheritedRenderComponents(AContainerContext, APageContext);
+    LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
+    LayoutMgr.Process(ABuffer, AContainerContext, APageContext);
+  finally
+    LayoutMgr.SetContainer(nil);
+    FRegionDiv.Contents.AddBuffer(ABuffer);
+  end;
 end;
 
 procedure TIWBSCustomRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+var
+  LBuffer: TIWRenderStream;
 begin
-  IWBSDisableChildRenderOptions(Self, FChildRenderOptions);
-  inherited;
+  ContainerContext := AContainerContext;
+  LBuffer := TIWRenderStream.Create(True, True);
+  try
+    InternalRenderComponents(AContainerContext, APageContext, LBuffer);
+  finally
+    FreeAndNil(LBuffer);
+  end;
 end;
 
 function TIWBSCustomRegion.RenderCSSClass(AComponentContext: TIWCompContext): string;
@@ -128,10 +225,10 @@ end;
 
 function TIWBSCustomRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
-  Result := inherited;
-  Result.AddClassParam(FCss);
-  FGridOptions.RenderHTMLTag(Result);
+  FRegionDiv := TIWHTMLTag.CreateTag('div');
+  FRegionDiv.AddClassParam(FCss);
+  FGridOptions.RenderHTMLTag(FRegionDiv);
+  Result := FRegionDiv;
 end;
 {$endregion}
 
