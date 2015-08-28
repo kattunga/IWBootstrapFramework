@@ -4,11 +4,13 @@ interface
 
 uses
   System.Classes, System.SysUtils, Vcl.Controls,
-  IWLayoutMgrForm, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag,
+  IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag,
   IWBSCommon;
 
 type
-  TIWBSLayoutMgr = class(TIWLayoutMgrForm)
+  TIWBSLayoutMgr = class(TIWContainerLayout)
+  protected
+    procedure InitControl; override;
   private
     FFormType: TIWBSFormType;
   public
@@ -33,6 +35,13 @@ begin
   FFormType := bsftNoForm;
 end;
 
+procedure TIWBSLayoutMgr.InitControl;
+begin
+  inherited;
+  SetAllowFrames(true);
+  SetLayoutType(ltFlow);
+end;
+
 procedure TIWBSLayoutMgr.ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
 var
   LPageContext: TIWPageContext40;
@@ -41,7 +50,11 @@ begin
   LPageContext := TIWPageContext40(APage);
   LTerminated := Assigned(LPageContext.WebApplication) and LPageContext.WebApplication.Terminated;
 
-  ABuffer.WriteLine('<!DOCTYPE HTML>');
+  // check if internal jquery is disable and also check if IW version is 14.0.38 or above.
+  if gSC.JavaScriptOptions.RenderjQuery then
+    raise Exception.Create('Please, disable JavaScriptOptions.RenderjQuery option in server controler');
+
+  ABuffer.WriteLine(LPageContext.DocType);
   ABuffer.WriteLine(gHtmlStart);
   ABuffer.WriteLine('<title>' + LPageContext.Title + '</title>');
   if gSC.PageTransitions then
@@ -59,7 +72,7 @@ begin
   ABuffer.WriteLine('</html>');
 end;
 
-function ControlSortXY(AItem1: Pointer; AItem2: Pointer): Integer;
+function ControlRenderingSort(AItem1: Pointer; AItem2: Pointer): Integer;
 var
   LTop1, LLeft1, LTop2, LLeft2: integer;
 begin
@@ -83,9 +96,19 @@ begin
       LTop2 := -1;
       LLeft2 := -1;
     end;
-  Result := LTop1 - LTop2;
-  if Result = 0 then
-    Result := LLeft1 - LLeft2;
+
+  if aIWBSRenderingSortMethod = bsrmSortYX then
+    begin
+      Result := LTop1 - LTop2;
+      if Abs(Result) < aIWBSRenderingGridPrecision then
+        Result := LLeft1 - LLeft2;
+    end
+  else
+    begin
+      Result := LLeft1 - LLeft2;
+      if Abs(Result) < aIWBSRenderingGridPrecision then
+        Result := LTop1 - LTop2;
+    end;
 end;
 
 procedure TIWBSLayoutMgr.Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext);
@@ -119,7 +142,7 @@ begin
     try
       for i := 0 to AContainerContext.ComponentsCount - 1 do
         LControls.Add(AContainerContext.ComponentsList[i]);
-      MergeSortList(LControls, ControlSortXY);
+      MergeSortList(LControls, ControlRenderingSort);
 
       for i := 0 to LControls.Count - 1 do begin
         if isBaseComponent(LControls[i]) then begin
@@ -129,7 +152,6 @@ begin
           if not aContainerContext.CacheControls then begin
             xCompContext.HTMLTag.Free;
             xCompContext.HTMLTag := TIWHTMLTag(BaseComponentInterface(xCompContext.Component).RenderMarkupLanguageTag(xCompContext));
-            InsertClassID(AContainerContext, TIWBaseHTMLPageContext(aPage), BaseHTMLComponentInterface(xCompContext.Component), false);
           end;
           LHTML := xCompContext.HTMLTag;
 
@@ -168,13 +190,14 @@ begin
   // TIWTabPage
   LControlContext := TIWCompContext(AContainerContext.ComponentContext[AControl.HTMLName]);
   LHTML := LControlContext.HTMLTag;
-  if Assigned(LHTML) then begin
-    if AControl.InterfaceInstance.ClassName = 'TIWTabPage' then begin
-      LHTML.AddStringParam('ID', AControl.HTMLName);
-      LHTML.AddClassParam(IWBSTabControl.TIWTabPage(AControl.InterfaceInstance).CSSClass);
-      Exit;
-    end;
-  end;
+  if Assigned(LHTML) then
+    if AControl.InterfaceInstance.ClassName = 'TIWTabPage' then
+      begin
+        LHTML.AddStringParam('ID', AControl.HTMLName);
+        LHTML.AddClassParam(IWBSTabControl.TIWTabPage(AControl.InterfaceInstance).CSSClass);
+        Exit;
+      end;
+
   inherited;
 end;
 

@@ -44,7 +44,6 @@ type
   TIWBSGridOptions = class(TPersistent)
   private
     FOwner: TControl;
-    FGridAutoCalculate: boolean;
     FGridXSOffset: integer;
     FGridXSSpan: integer;
     FGridSMOffset: integer;
@@ -57,7 +56,6 @@ type
     constructor Create(AOwner: TControl);
     procedure RenderHTMLTag(Tag: TIWHTMLTag);
   published
-    property GridAutoCalculate: boolean read FGridAutoCalculate write FGridAutoCalculate default false;
     property GridXSOffset: integer read FGridXSOffset write FGridXSOffset default 0;
     property GridXSSpan: integer read FGridXSSpan write FGridXSSpan default 0;
     property GridSMOffset: integer read FGridSMOffset write FGridSMOffset default 0;
@@ -68,8 +66,17 @@ type
     property GridLGSpan: integer read FGridLGSpan write FGridLGSpan default 0;
   end;
 
+type
+  TIWBSRenderingSortMethod = (bsrmSortYX, bsrmSortXY);
+
+var
+  aIWBSRenderingSortMethod: TIWBSRenderingSortMethod = bsrmSortYX;
+  aIWBSRenderingGridPrecision: integer = 12;
+
   procedure IWBSDisableAllRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
   procedure IWBSDisableChildRenderOptions(AContainer: TIWContainer; AChildRenderOptions: TIWBSChildRenderOptions);
+
+  function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
 
 implementation
 
@@ -112,11 +119,22 @@ begin
   end;
 end;
 
+function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
+var
+  i: Integer;
+begin
+  Result:= APrefix;
+  i:= 0;
+  while Assigned(AOwner.FindComponent(Result)) do begin
+    inc(i);
+    Result:= APrefix + IntToStr(i);
+  end;
+end;
+
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create(AOwner: TControl);
 begin
   FOwner := AOwner;
-  FGridAutoCalculate := False;
   FGridXSOffset := 0;
   FGridXSSpan   := 0;
   FGridSMOffset := 0;
@@ -128,53 +146,24 @@ begin
 end;
 
 procedure TIWBSGridOptions.RenderHTMLTag(Tag: TIWHTMLTag);
-var
-  s, oXS, oSM, oMD, oLG, sXS, sSM, sMD, sLG: integer;
 begin
-  // autocalculate with using parent width
-  if FGridAutoCalculate and (FOwner.Parent <> nil) then
-    begin
-      s := Round(FOwner.width/FOwner.Parent.Width*12);
-      sXS := s;
-      oXS := 0;
-      sSM := 0;
-      oSM := 0;
-      sMD := 0;
-      oMD := 0;
-      sLG := 0;
-      oLG := 0;
-    end
-  else
-    begin
-      sXS := FGridXSSpan;
-      oXS := FGridXSOffset;
-      sSM := FGridSMSpan;
-      oSM := FGridSMOffset;
-      sMD := FGridMDSpan;
-      oMD := FGridMDOffset;
-      sLG := FGridLGSpan;
-      oLG := FGridLGOffset;
-    end;
+  if FGridXSOffset > 0 then
+    Tag.AddClassParam('col-xs-offset-'+IntToStr(FGridXSOffset));
+  if FGridSMOffset > 0 then
+    Tag.AddClassParam('col-sm-offset-'+IntToStr(FGridSMOffset));
+  if FGridMDOffset > 0 then
+    Tag.AddClassParam('col-md-offset-'+IntToStr(FGridMDOffset));
+  if FGridLGOffset > 0 then
+    Tag.AddClassParam('col-lg-offset-'+IntToStr(FGridLGOffset));
 
-  // offset
-  if oXS > 0 then
-    Tag.AddClassParam('col-xs-offset-'+IntToStr(oXS));
-  if oSM > 0 then
-    Tag.AddClassParam('col-sm-offset-'+IntToStr(oSM));
-  if oMD > 0 then
-    Tag.AddClassParam('col-md-offset-'+IntToStr(oMD));
-  if oLG > 0 then
-    Tag.AddClassParam('col-lg-offset-'+IntToStr(oLG));
-
-  // anchos por span
-  if (sXS > 0) then
-    Tag.AddClassParam('col-xs-'+IntToStr(sXS));
-  if (sSM > 0) then
-    Tag.AddClassParam('col-sm-'+IntToStr(sSM));
-  if (sMD > 0) then
-    Tag.AddClassParam('col-md-'+IntToStr(sMD));
-  if (sLG > 0) then
-    Tag.AddClassParam('col-lg-'+IntToStr(sLG));
+  if (FGridXSSpan > 0) then
+    Tag.AddClassParam('col-xs-'+IntToStr(FGridXSSpan));
+  if (FGridSMSpan > 0) then
+    Tag.AddClassParam('col-sm-'+IntToStr(FGridSMSpan));
+  if (FGridMDSpan > 0) then
+    Tag.AddClassParam('col-md-'+IntToStr(FGridMDSpan));
+  if (FGridLGSpan > 0) then
+    Tag.AddClassParam('col-lg-'+IntToStr(FGridLGSpan));
 end;
 {$endregion}
 

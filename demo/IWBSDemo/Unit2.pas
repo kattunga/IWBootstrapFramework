@@ -10,8 +10,8 @@ uses
   IWBSRegion, IWBSTabControl, IWCompButton, IWCompExtCtrls, IWDBStdCtrls,
   IWBSInput, IWCompTabControl, IWVCLComponent,
   IWBaseLayoutComponent, IWBaseContainerLayout, IWContainerLayout,
-  IWBSLayoutMgr, IWCompLabel, IWCompCheckbox,
-  IWCompText, IWCompMemo, IWLayoutMgrForm,
+  IWCompLabel, IWCompCheckbox,
+  IWCompText, IWCompMemo, IWLayoutMgrForm, IWBSLayoutMgr,
   IWCompRadioButton, IWCompOrderedListbox, IWHTMLControls, IWCompListbox,
   IWBSComponentsHacks;
 
@@ -124,12 +124,16 @@ type
     IWBSInput21: TIWBSInput;
     IWBSInput22: TIWBSInput;
     IWBSListbox3: TIWBSListbox;
+    IWTabControl21Page5: TIWTabPage;
+    IWBSRegion17: TIWBSRegion;
+    IWBSButton26: TIWBSButton;
     procedure IWAppFormCreate(Sender: TObject);
     procedure IWButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton30Click(Sender: TObject);
     procedure IWAppFormRender(Sender: TObject);
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -137,7 +141,7 @@ implementation
 
 {$R *.dfm}
 
-uses IWBSUtils, IWBSCommon;
+uses IWBSUtils, IWBSCommon, unit1;
 
 procedure TIWForm2.IWAppFormCreate(Sender: TObject);
 begin
@@ -159,6 +163,17 @@ procedure TIWForm2.IWBSButton22AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   IWBSInput8.Text := 'you pressed left button';
+end;
+
+procedure TIWForm2.IWBSButton26AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+var
+  cmp: TIWFrame1;
+begin
+  cmp := TIWFrame1.Create(Self);
+  cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
+  cmp.Parent := IWBSRegion17;
+  IWBSRegion17.AsyncRenderContent;
 end;
 
 procedure TIWForm2.IWButton1AsyncClick(Sender: TObject;
