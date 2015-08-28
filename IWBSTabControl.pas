@@ -57,6 +57,7 @@ implementation
 
 uses IWLists;
 
+{$region 'THackCustomRegion'}
 type
   THackCustomRegion = class(TIWCustomRegion)
   private
@@ -67,6 +68,7 @@ function THackCustomRegion.CallInheritedRenderHTML(AContext: TIWCompContext): TI
 begin
   Result := inherited RenderHtml(AContext);
 end;
+{$endregion}
 
 constructor TIWBSTabOptions.Create(AOwner: TComponent);
 begin
