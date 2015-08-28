@@ -19,6 +19,10 @@ http://www.atozed.com/intraweb/index.en.aspx
 
 Please test the demo y desktop and mobile devices to see how this work.
 
+## Documentation
+
+https://github.com/kattunga/IWBootstrapFramework/wiki
+
 ## Installation
 
 Install in order
