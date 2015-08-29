@@ -17,7 +17,7 @@ Intraweb version 14.0.38 or above.
 
 http://www.atozed.com/intraweb/index.en.aspx
 
-Please test the demo y desktop and mobile devices to see how this work.
+Please test the demo on desktop and mobile devices to see how it work.
 
 ## Documentation
 
