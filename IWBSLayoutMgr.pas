@@ -194,7 +194,7 @@ begin
     if AControl.InterfaceInstance.ClassName = 'TIWTabPage' then
       begin
         LHTML.AddStringParam('ID', AControl.HTMLName);
-        LHTML.AddClassParam(IWBSTabControl.TIWTabPage(AControl.InterfaceInstance).CSSClass);
+        LHTML.AddClassParam(IWBSCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass);
         Exit;
       end;
 

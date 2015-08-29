@@ -9,11 +9,6 @@ uses
   IWRenderContext, IWHTMLTag, IWBSCommon, IWBSLayoutMgr;
 
 type
-  TIWTabPage = class(IWCompTabControl.TIWTabPage)
-  public
-    function CSSClass: string;
-  end;
-
   TIWBSTabOptions = class(TPersistent)
   private
     FFade: boolean;
@@ -45,7 +40,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property BSChildRenderOptions: TIWBSChildRenderOptions read FChildRenderOptions write FChildRenderOptions default [bschDisablePosition, bschDisableSize];
+    property BSChildRenderOptions: TIWBSChildRenderOptions read FChildRenderOptions write FChildRenderOptions default [bschDisablePosition, bschDisableSize, bschDisableFont];
     property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
 
@@ -78,21 +73,10 @@ begin
   FStacked := False;
 end;
 
-function TIWTabPage.CSSClass: string;
-begin
-  Result := 'tab-pane';
-  if Parent is TIWBSTabControl then begin
-    if TIWBSTabControl(Parent).BSTabOptions.Fade then
-      Result := Result + ' fade';
-    if TabOrder = TIWBSTabControl(Parent).ActivePage then
-      Result := Result + ' active in';
-  end;
-end;
-
 constructor TIWBSTabControl.Create(AOwner: TComponent);
 begin
   inherited;
-  FChildRenderOptions := [bschDisablePosition, bschDisableSize];
+  FChildRenderOptions := [bschDisablePosition, bschDisableSize, bschDisableFont];
   FGridOptions := TIWBSGridOptions.Create(Self);
   FTabOptions := TIWBSTabOptions.Create(Self);
   Color := clNone;
@@ -127,22 +111,8 @@ begin
 end;
 
 procedure TIWBSTabControl.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
-var
-  i, n: integer;
-  TabPage: TIWTabPage;
 begin
-  n := IWComponentsCount;
-  for i := 0 to n - 1 do begin
-    if Component[i] is IWCompTabControl.TIWTabPage then begin
-      TabPage := TIWTabPage(Component[i]);
-      if TabPage.LayoutMgr = nil then begin
-        TabPage.LayoutMgr := TIWBSLayoutMgr.Create(Self);
-        TIWBSLayoutMgr(TabPage.LayoutMgr).BSFormType := FFormType;
-      end;
-      TabPage.LayoutMgr.SetContainer(TabPage);
-      IWBSDisableChildRenderOptions(TabPage, FChildRenderOptions);
-    end;
-  end;
+  IWBSPrepareChildComponentsForRender(Self, FFormType, FChildRenderOptions);
   inherited;
 end;
 
@@ -153,7 +123,7 @@ var
   TabPage: TIWTabPage;
   formTag: TIWHTMLTag;
 begin
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
+  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   result := THackCustomRegion(Self).CallInheritedRenderHTML(AContext);
 
   // default class

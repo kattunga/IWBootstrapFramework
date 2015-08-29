@@ -219,7 +219,7 @@ const
 constructor TIWBSInput.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
+  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FCaption := '';
   FInputType := bsitText;
@@ -303,7 +303,7 @@ end;
 constructor TIWBSMemo.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
+  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FCaption := '';
   FMaxLength := 0;
@@ -403,7 +403,7 @@ end;
 constructor TIWBSCheckBox.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
+  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FInline := False;
 end;
@@ -447,7 +447,7 @@ end;
 constructor TIWBSRadioButton.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
+  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
 end;
 
@@ -489,7 +489,7 @@ end;
 constructor TIWBSListbox.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
+  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FCaption := '';
 end;
@@ -506,7 +506,7 @@ end;
 constructor TIWBSComboBox.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
+  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FCaption := '';
 end;
@@ -526,7 +526,7 @@ const
 constructor TIWBSButton.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
+  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FButtonSize := bsszDefault;
   BSButtonStyle := bsbsDefault;
   FGlyphicon := '';

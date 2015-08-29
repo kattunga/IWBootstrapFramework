@@ -31,7 +31,7 @@ type
     destructor Destroy; override;
     procedure AsyncRenderContent;
   published
-    property BSChildRenderOptions: TIWBSChildRenderOptions read FChildRenderOptions write FChildRenderOptions default [bschDisablePosition, bschDisableSize];
+    property BSChildRenderOptions: TIWBSChildRenderOptions read FChildRenderOptions write FChildRenderOptions default [bschDisablePosition, bschDisableSize, bschDisableFont];
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property Css: string read FCss write FCss;
   end;
@@ -110,7 +110,7 @@ constructor TIWBSCustomRegion.Create(AOwner: TComponent);
 begin
   inherited;
 
-  FChildRenderOptions := [bschDisablePosition, bschDisableSize];
+  FChildRenderOptions := [bschDisablePosition, bschDisableSize, bschDisableFont];
   FCss := '';
   FGridOptions := TIWBSGridOptions.Create(Self);
   FFormType := bsftNoForm;
@@ -183,29 +183,8 @@ begin
 end;
 
 procedure TIWBSCustomRegion.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
-var
-  i, n: integer;
-  LFrameRegion: TComponent;
-  LIWRegion: TIWRegion;
 begin
-  IWBSDisableChildRenderOptions(Self, FChildRenderOptions);
-
-  n := IWComponentsCount;
-  for i := 0 to n - 1 do
-    if Component[i] is TFrame then
-      begin
-        LFrameRegion := TFrame(Component[i]).FindComponent('IWFrameRegion');
-        if LFrameRegion is TIWRegion then begin
-          LIWRegion := TIWRegion(LFrameRegion);
-          if LIWRegion.LayoutMgr = nil then begin
-            LIWRegion.LayoutMgr := TIWBSLayoutMgr.Create(Self);
-            TIWBSLayoutMgr(LIWRegion.LayoutMgr).BSFormType := FFormType;
-          end;
-          LIWRegion.LayoutMgr.SetContainer(LIWRegion);
-          IWBSDisableChildRenderOptions(LIWRegion, FChildRenderOptions);
-        end;
-     end;
-
+  IWBSPrepareChildComponentsForRender(Self, FFormType, FChildRenderOptions);
   try
     THackTIWHTML40Container(Self).CallInheritedRenderComponents(AContainerContext, APageContext);
     LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));

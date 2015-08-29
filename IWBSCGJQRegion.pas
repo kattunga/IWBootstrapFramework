@@ -78,14 +78,14 @@ end;
 
 procedure TIWBSCGJQRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 begin
-  IWBSDisableChildRenderOptions(Self, FChildRenderOptions);
+  IWBSPrepareChildComponentsForRender(Self, FFormType, FChildRenderOptions);
   inherited;
 end;
 
 function TIWBSCGJQRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   // do not render Styles
-  IWBSDisableAllRenderOptions(StyleRenderOptions);
+  IWBSDisableSelfRenderOptions(StyleRenderOptions);
 
   // do not render borders
   CGAppearanceSettings.BorderVisibilty := [];

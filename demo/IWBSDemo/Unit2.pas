@@ -13,7 +13,7 @@ uses
   IWCompLabel, IWCompCheckbox,
   IWCompText, IWCompMemo, IWLayoutMgrForm, IWBSLayoutMgr,
   IWCompRadioButton, IWCompOrderedListbox, IWHTMLControls, IWCompListbox,
-  IWBSComponentsHacks;
+  IWCompGrids, Vcl.Imaging.jpeg;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -128,6 +128,18 @@ type
     IWBSRegion17: TIWBSRegion;
     IWBSButton26: TIWBSButton;
     IWBSButton27: TIWBSButton;
+    IWTabControl21Page6: TIWTabPage;
+    IWBSRegion18: TIWBSRegion;
+    IWButton1: TIWButton;
+    IWCheckBox1: TIWCheckBox;
+    IWComboBox1: TIWComboBox;
+    IWEdit1: TIWEdit;
+    IWGrid1: TIWGrid;
+    IWImage1: TIWImage;
+    IWLabel2: TIWLabel;
+    IWListbox1: TIWListbox;
+    IWMemo1: TIWMemo;
+    IWRadioGroup1: TIWRadioGroup;
     procedure IWAppFormCreate(Sender: TObject);
     procedure IWButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton30Click(Sender: TObject);
@@ -136,6 +148,8 @@ type
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton27AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
+      AColumn: Integer);
   public
   end;
 
@@ -193,6 +207,12 @@ procedure TIWForm2.IWButton1AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   IWBSInput4.ReadOnly := true;
+end;
+
+procedure TIWForm2.IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
+  AColumn: Integer);
+begin
+  ACell.Text := 'Cell '+IntToStr(ARow)+' / '+IntToStr(AColumn);
 end;
 
 procedure TIWForm2.IWBSButton30Click(Sender: TObject);

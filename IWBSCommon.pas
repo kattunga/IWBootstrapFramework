@@ -3,7 +3,7 @@ unit IWBSCommon;
 interface
 
 uses System.Classes, System.SysUtils, Vcl.Controls, Vcl.Forms,
-     IWTypes, IWContainer, IWControl, IWHTMLTag;
+     IWTypes, IWContainer, IWControl, IWHTMLTag, IWCompTabControl;
 
 type
   TIWBSFormType = (bsftNoForm, bsftInline, bsftHorizontal, bsftVertical);
@@ -41,6 +41,11 @@ const
     ('', 'iwbs-region', 'iwbs-toolbar', 'iwbs-toolbar-separator');
 
 type
+  TIWTabPage = class(IWCompTabControl.TIWTabPage)
+  public
+    function CSSClass: string;
+  end;
+
   TIWBSGridOptions = class(TPersistent)
   private
     FOwner: TControl;
@@ -73,16 +78,20 @@ var
   aIWBSRenderingSortMethod: TIWBSRenderingSortMethod = bsrmSortYX;
   aIWBSRenderingGridPrecision: integer = 12;
 
-  procedure IWBSDisableAllRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
-  procedure IWBSDisableChildRenderOptions(AContainer: TIWContainer; AChildRenderOptions: TIWBSChildRenderOptions);
+// May be we will not need the procedure after all cleaup
+procedure IWBSDisableSelfRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
 
-  function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
+// this procedure set non IWBootrap components to be compatible with the framework
+procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer; AFormType: TIWBSFormType; AChildRenderOptions: TIWBSChildRenderOptions);
+
+function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
 
 implementation
 
-uses IWBaseInterfaces, IWHTML40Interfaces, IWLists, IWBaseHTMLControl, IWHTMLContainer;
+uses IWBaseInterfaces, IWHTML40Interfaces, IWLists, IWBaseHTMLControl, IWHTMLContainer,
+     IWRegion, IWBSTabControl, IWBSLayoutMgr;
 
-procedure IWBSDisableAllRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
+procedure IWBSDisableSelfRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
 begin
   StyleRenderOptions.RenderAbsolute := False;
   StyleRenderOptions.RenderBorder := False;
@@ -93,14 +102,49 @@ begin
   StyleRenderOptions.RenderStatus := False;
 end;
 
-procedure IWBSDisableChildRenderOptions(AContainer: TIWContainer; AChildRenderOptions: TIWBSChildRenderOptions);
+procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer; AFormType: TIWBSFormType; AChildRenderOptions: TIWBSChildRenderOptions);
 var
   i: integer;
+  LComponent: TComponent;
+  LFrameRegion: TComponent;
+  LRegion: TIWRegion;
+  LTabPage: TIWTabPage;
   LBaseControl: IIWBaseControl;
   LHTML40Control: IIWHTML40Control;
 begin
   for i := 0 to AContainer.IWComponentsCount - 1 do begin
-    LBaseControl := BaseControlInterface(AContainer.Component[i]);
+
+    LComponent := AContainer.Component[i];
+
+    // if user forgot to delete the IWRegion of the TFrame
+    if LComponent is TFrame then
+      begin
+        LFrameRegion := TFrame(LComponent).FindComponent('IWFrameRegion');
+        if LFrameRegion is TIWRegion then begin
+          LRegion := TIWRegion(LFrameRegion);
+          if LRegion.LayoutMgr = nil then begin
+            LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
+            TIWBSLayoutMgr(LRegion.LayoutMgr).BSFormType := AFormType;
+          end;
+          LRegion.LayoutMgr.SetContainer(LRegion);
+          IWBSPrepareChildComponentsForRender(LRegion, AFormType, AChildRenderOptions);
+        end;
+     end
+
+    // tab pages of TIWBSTabControl are still TIWTabPage
+    else if LComponent is IWCompTabControl.TIWTabPage then
+      begin
+        LTabPage := TIWTabPage(LComponent);
+        if LTabPage.LayoutMgr = nil then begin
+          LTabPage.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
+          TIWBSLayoutMgr(LTabPage.LayoutMgr).BSFormType := AFormType;
+        end;
+        LTabPage.LayoutMgr.SetContainer(LTabPage);
+        IWBSPrepareChildComponentsForRender(LTabPage, AFormType, AChildRenderOptions);
+      end;
+
+    // set child StyleRenderOptions
+    LBaseControl := BaseControlInterface(LComponent);
     if Assigned(LBaseControl) then begin
       LHTML40Control := HTML40ControlInterface(AContainer.Component[i]);
       if bschDisablePosition in AChildRenderOptions then begin
@@ -130,6 +174,19 @@ begin
     Result:= APrefix + IntToStr(i);
   end;
 end;
+
+{$region 'TIWTabPage'}
+function TIWTabPage.CSSClass: string;
+begin
+  Result := 'tab-pane';
+  if Parent is TIWBSTabControl then begin
+    if TIWBSTabControl(Parent).BSTabOptions.Fade then
+      Result := Result + ' fade';
+    if TabOrder = TIWBSTabControl(Parent).ActivePage then
+      Result := Result + ' active in';
+  end;
+end;
+{$endregion}
 
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create(AOwner: TControl);
