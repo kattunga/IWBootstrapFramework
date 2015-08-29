@@ -27,14 +27,14 @@ https://github.com/kattunga/IWBootstrapFramework/wiki
 
 Install in order
 
-* IWBootsTrapGridXE5.dpk
-* dclIWBootsTrapGridXE5.dpk
+* IWBootsTrapXE5.dpk
+* dclIWBootsTrapXE5.dpk
 
 * Use TIWBSLayoutMgr in your main form.
 * Set JavaScriptOptions.RenderjQuery := False; in server controller.
 
 If you have CGDevTools yo can also install
 
-* IWCGJQBootsTrapGridXE5.dproj
-* dclIWCGJQBootsTrapGridXE5.dproj
+* IWCGJQBootsTrapXE5.dproj
+* dclIWCGJQBootsTrapXE5.dproj
 
