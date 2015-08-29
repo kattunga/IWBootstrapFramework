@@ -16,7 +16,7 @@ type
     FCss: string;
     FGridOptions: TIWBSGridOptions;
     FFormType: TIWBSFormType;
-    FRegionDIV: TIWHTMLTag;
+    FRegionDiv: TIWHTMLTag;
   protected
     function ContainerPrefix: string; override;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
@@ -75,6 +75,17 @@ type
   TIWBSBtnToolBar = class(TIWBSCustomRegion)
   public
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+  end;
+
+  TIWBSModal = class(TIWBSCustomRegion)
+  private
+    FDialogSize: TIWBSSize;
+    FFade: boolean;
+  public
+    constructor Create(AOwner: TComponent); override;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    property BSFade: boolean read FFade write FFade default false;
+    property BSDialogSize: TIWBSSize read FDialogSize write FDialogSize default bsszDefault;
   end;
 
 implementation
@@ -287,6 +298,29 @@ begin
   Result := inherited;
   Result.AddClassParam('btn-toolbar');
   Result.AddStringParam('role','toolbar');
+end;
+{$endregion}
+
+{$region 'TIWBSModal'}
+constructor TIWBSModal.Create(AOwner: TComponent);
+begin
+  inherited;
+  FDialogSize := bsszDefault;
+  FFade := false;
+end;
+
+function TIWBSModal.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+begin
+  Result := inherited;
+  Result.AddClassParam('modal');
+  if FFade then
+    Result.AddClassParam('fade');
+  Result.AddStringParam('role','dialog');
+  FRegionDiv := Result.Contents.AddTag('div');
+  FRegionDiv.AddClassParam('modal-dialog');
+  if FDialogSize in [bsszLg,bsszSm] then
+    FRegionDiv.AddClassParam('modal-'+aIWBSSize[FDialogSize]);
+  Result := FRegionDiv;
 end;
 {$endregion}
 

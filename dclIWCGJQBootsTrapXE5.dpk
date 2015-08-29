@@ -1,4 +1,4 @@
-package dclIWCGJQBootsTrapGridXE5;
+package dclIWCGJQBootsTrapXE5;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -25,10 +25,11 @@ package dclIWCGJQBootsTrapGridXE5;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'IntraWeb Bootstrap Framework CGDevTools support'}
+{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
   DesignIDE,
   vclimg,
   vclie,
@@ -39,8 +40,8 @@ requires
   IndySystem,
   IWCGJQCore_140_190,
   Intraweb_14_DXE5,
-  IWCGJQComps_140_190,
-  IWBootsTrapGridXE5;
+  dclIWBootsTrapXE5,
+  IWCGJQComps_140_190;
 
 contains
   IWBSCGJQRegister in 'IWBSCGJQRegister.pas';

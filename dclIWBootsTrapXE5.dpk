@@ -1,7 +1,6 @@
-package dclIWBootsTrapGridXE5;
+package dclIWBootsTrapXE5;
 
 {$R *.res}
-{$R *.dres}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -26,17 +25,17 @@ package dclIWBootsTrapGridXE5;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'IntraWeb Bootstrap Framework'}
+{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
   DesignIDE,
   vclimg,
   dbrtl,
   inet,
   Intraweb_14_DXE5,
-  dclIntraweb_14_DXE5,
-  IWBootsTrapGridXE5;
+  dclIntraweb_14_DXE5;
 
 contains
   IWBSRegister in 'IWBSRegister.pas';

@@ -1,7 +1,7 @@
 // JCL_DEBUG_EXPERT_GENERATEJDBG OFF
 // JCL_DEBUG_EXPERT_INSERTJDBG OFF
 // JCL_DEBUG_EXPERT_DELETEMAPFILE OFF
-package IWCGJQBootsTrapGridXE5;
+package IWBootsTrapXE5;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -28,26 +28,24 @@ package IWCGJQBootsTrapGridXE5;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'CGDevTool Custom'}
+{$DESCRIPTION 'IntraWeb Bootstrap Framework'}
+{$RUNONLY}
 {$IMPLICITBUILD ON}
 
 requires
   rtl,
-  xmlrtl,
   vcl,
   vclimg,
-  dbrtl,
   inet,
-  IndyProtocols,
-  IndyCore,
-  IndySystem,
-  IWCGJQCore_140_190,
-  Intraweb_14_DXE5,
-  IWCGJQComps_140_190,
-  IWBootsTrapGridXE5;
+  Intraweb_14_DXE5;
 
 contains
-  IWBSCGJQRegion in 'IWBSCGJQRegion.pas';
+  IWBSUtils in 'IWBSUtils.pas',
+  IWBSCommon in 'IWBSCommon.pas',
+  IWBSRegion in 'IWBSRegion.pas',
+  IWBSInput in 'IWBSInput.pas',
+  IWBSLayoutMgr in 'IWBSLayoutMgr.pas',
+  IWBSTabControl in 'IWBSTabControl.pas';
 
 end.
 

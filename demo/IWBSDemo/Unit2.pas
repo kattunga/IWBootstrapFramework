@@ -127,6 +127,7 @@ type
     IWTabControl21Page5: TIWTabPage;
     IWBSRegion17: TIWBSRegion;
     IWBSButton26: TIWBSButton;
+    IWBSButton27: TIWBSButton;
     procedure IWAppFormCreate(Sender: TObject);
     procedure IWButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton30Click(Sender: TObject);
@@ -134,6 +135,7 @@ type
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton27AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -141,7 +143,7 @@ implementation
 
 {$R *.dfm}
 
-uses IWBSUtils, IWBSCommon, unit1;
+uses IWBSUtils, IWBSCommon, unit1, unit3;
 
 procedure TIWForm2.IWAppFormCreate(Sender: TObject);
 begin
@@ -171,6 +173,17 @@ var
   cmp: TIWFrame1;
 begin
   cmp := TIWFrame1.Create(Self);
+  cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
+  cmp.Parent := IWBSRegion17;
+  IWBSRegion17.AsyncRenderContent;
+end;
+
+procedure TIWForm2.IWBSButton27AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+var
+  cmp: TIWFrame3;
+begin
+  cmp := TIWFrame3.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := IWBSRegion17;
   IWBSRegion17.AsyncRenderContent;

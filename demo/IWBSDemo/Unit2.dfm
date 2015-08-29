@@ -245,7 +245,7 @@ object IWForm2: TIWForm2
           InactiveTabFont.Style = []
           ActiveTabColor = clWebDARKGRAY
           InactiveTabColor = clWebLIGHTGRAY
-          ActivePage = 0
+          ActivePage = 5
           Align = alClient
           BorderOptions.NumericWidth = 0
           BorderOptions.BorderWidth = cbwNumeric
@@ -1690,49 +1690,6 @@ object IWForm2: TIWForm2
               end
             end
           end
-          object IWTabControl21Page5: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 783
-            RenderInvisibleControls = True
-            TabOrder = 5
-            Title = 'Create components at runtime'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSButton26: TIWBSButton
-              Left = 24
-              Top = 19
-              Width = 424
-              Height = 25
-              RenderSize = False
-              StyleRenderOptions.RenderSize = False
-              StyleRenderOptions.RenderPosition = False
-              StyleRenderOptions.RenderFont = False
-              StyleRenderOptions.RenderStatus = False
-              StyleRenderOptions.RenderAbsolute = False
-              StyleRenderOptions.RenderPadding = False
-              StyleRenderOptions.RenderBorder = False
-              Caption = 'Dinamically create frame with inputs'
-              Color = clBtnFace
-              Font.Color = clNone
-              Font.Size = 10
-              Font.Style = []
-              FriendlyName = 'IWBSButton26'
-              TabOrder = 68
-              OnAsyncClick = IWBSButton26AsyncClick
-            end
-            object IWBSRegion17: TIWBSRegion
-              Left = 24
-              Top = 50
-              Width = 657
-              Height = 444
-              RenderInvisibleControls = True
-            end
-          end
           object IWTabControl21Page0: TIWTabPage
             Left = 0
             Top = 20
@@ -2112,6 +2069,71 @@ object IWForm2: TIWForm2
                   TabOrder = 46
                 end
               end
+            end
+          end
+          object IWTabControl21Page5: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 783
+            RenderInvisibleControls = True
+            TabOrder = 5
+            Title = 'Create components at runtime'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSButton26: TIWBSButton
+              Left = 24
+              Top = 19
+              Width = 265
+              Height = 25
+              RenderSize = False
+              StyleRenderOptions.RenderSize = False
+              StyleRenderOptions.RenderPosition = False
+              StyleRenderOptions.RenderFont = False
+              StyleRenderOptions.RenderStatus = False
+              StyleRenderOptions.RenderAbsolute = False
+              StyleRenderOptions.RenderPadding = False
+              StyleRenderOptions.RenderBorder = False
+              Caption = 'Dinamically create frame with inputs'
+              Color = clBtnFace
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSButton26'
+              TabOrder = 68
+              OnAsyncClick = IWBSButton26AsyncClick
+            end
+            object IWBSButton27: TIWBSButton
+              Left = 371
+              Top = 19
+              Width = 265
+              Height = 25
+              RenderSize = False
+              StyleRenderOptions.RenderSize = False
+              StyleRenderOptions.RenderPosition = False
+              StyleRenderOptions.RenderFont = False
+              StyleRenderOptions.RenderStatus = False
+              StyleRenderOptions.RenderAbsolute = False
+              StyleRenderOptions.RenderPadding = False
+              StyleRenderOptions.RenderBorder = False
+              Caption = 'Dinamically create modal dialog'
+              Color = clBtnFace
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSButton26'
+              TabOrder = 69
+              OnAsyncClick = IWBSButton27AsyncClick
+            end
+            object IWBSRegion17: TIWBSRegion
+              Left = 24
+              Top = 50
+              Width = 657
+              Height = 444
+              RenderInvisibleControls = True
             end
           end
         end
