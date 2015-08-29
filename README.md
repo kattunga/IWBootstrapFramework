@@ -1,5 +1,4 @@
 # IW Bootstrap Framework
-Intraweb Bootstrap Framework
 
 The intention of this library is to help you in the creation of desktop and mobile responsive applications with IntraWeb using Bootstrap framework.
 
@@ -25,7 +24,7 @@ https://github.com/kattunga/IWBootstrapFramework/wiki
 
 ## Installation
 
-Install in order
+### Install in order
 
 * IWBootsTrapXE5.dpk
 * dclIWBootsTrapXE5.dpk
@@ -33,7 +32,7 @@ Install in order
 * Use TIWBSLayoutMgr in your main form.
 * Set JavaScriptOptions.RenderjQuery := False; in server controller.
 
-If you have CGDevTools yo can also install
+### If you have CGDevTools yo can also install
 
 * IWCGJQBootsTrapXE5.dproj
 * dclIWCGJQBootsTrapXE5.dproj
