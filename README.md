@@ -22,18 +22,4 @@ Please test the demo on desktop and mobile devices to see how it work.
 
 https://github.com/kattunga/IWBootstrapFramework/wiki
 
-## Installation
-
-### Install in order
-
-* IWBootsTrapXE5.dpk
-* dclIWBootsTrapXE5.dpk
-
-* Use TIWBSLayoutMgr in your main form.
-* Set JavaScriptOptions.RenderjQuery := False; in server controller.
-
-### If you have CGDevTools yo can also install
-
-* IWCGJQBootsTrapXE5.dproj
-* dclIWCGJQBootsTrapXE5.dproj
 
