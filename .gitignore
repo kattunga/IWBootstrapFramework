@@ -57,4 +57,4 @@ __history/
 *.stat
 
 # personal folders
-nogit
+__nogit
