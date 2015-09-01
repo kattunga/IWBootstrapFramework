@@ -22,4 +22,6 @@ Please test the demo on desktop and mobile devices to see how it work.
 
 https://github.com/kattunga/IWBootstrapFramework/wiki
 
+## Discussion group
 
+https://groups.google.com/forum/?place=forum/intraweb-bootstrap-framework
