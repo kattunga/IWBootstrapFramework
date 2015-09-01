@@ -10,11 +10,10 @@ uses
 
 type
   TIWFrame1 = class(TFrame)
-    IWFrameRegion: TIWRegion;
     IWBSRegion1: TIWBSRegion;
     IWBSInput1: TIWBSInput;
-    IWBSButton1: TIWBSButton;
-    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
+    IWBSButton198: TIWBSButton;
+    procedure IWBSButton198AsyncClick(Sender: TObject; EventParams: TStringList);
   private
     { Private declarations }
   public
@@ -25,7 +24,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TIWFrame1.IWBSButton1AsyncClick(Sender: TObject;
+procedure TIWFrame1.IWBSButton198AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   IWBSInput1.Text := 'Seted by ajax'

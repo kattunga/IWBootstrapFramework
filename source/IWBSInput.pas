@@ -3,7 +3,7 @@ unit IWBSInput;
 interface
 
 uses
-  System.SysUtils, System.Classes, Vcl.Controls, IWVCLBaseControl,
+  System.SysUtils, System.Classes, Vcl.Controls, IWVCLBaseControl, IWScriptEvents,
   IWRenderContext, IWHTMLTag, IWXMLTag,
   IWBaseHTMLControl, IWControl, IWCompEdit, IWCompMemo, IWCompCheckBox, IWCompRadioButton, IWCompListbox, IWCompButton,
   IWBSRegion, IWBSCommon;
@@ -112,18 +112,15 @@ type
     property Caption: string read FCaption write FCaption;
   end;
 
-  TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink);
+  TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink, bsbsDialogClose);
 
   TIWBSButton = class(TIWButton)
   private
     FButtonSize: TIWBSSize;
     FButtonStyle: TIWBSButtonStyle;
     FGlyphicon: string;
-  protected
-    { Protected declarations }
   public
     constructor Create(AOwner: TComponent); override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
@@ -145,8 +142,9 @@ type
 
 implementation
 
-uses IWColor, Graphics;
+uses IWColor, Graphics, IWBSUtils;
 
+{$region 'help functions'}
 function CreateFormControl(ATag: TIWHTMLTag; const ACaption, HTMLName: string): TIWHTMLTag;
 var
   lablTag: TIWHTMLTag;
@@ -211,6 +209,7 @@ begin
     raise;
   end;
 end;
+{$endregion}
 
 {$region 'TIWBSInput'}
 const
@@ -219,7 +218,6 @@ const
 constructor TIWBSInput.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FCaption := '';
   FInputType := bsitText;
@@ -303,7 +301,6 @@ end;
 constructor TIWBSMemo.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FCaption := '';
   FMaxLength := 0;
@@ -403,7 +400,6 @@ end;
 constructor TIWBSCheckBox.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FInline := False;
 end;
@@ -447,7 +443,6 @@ end;
 constructor TIWBSRadioButton.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
 end;
 
@@ -489,7 +484,6 @@ end;
 constructor TIWBSListbox.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FCaption := '';
 end;
@@ -506,7 +500,6 @@ end;
 constructor TIWBSComboBox.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FAutoFocus := False;
   FCaption := '';
 end;
@@ -521,20 +514,14 @@ end;
 
 {$region 'TIWBSButton'}
 const
-  aIWBSButtonStyle: array[bsbsDefault..bsbsLink] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link');
+  aIWBSButtonStyle: array[bsbsDefault..bsbsDialogClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
 
 constructor TIWBSButton.Create(AOwner: TComponent);
 begin
   inherited;
-  IWBSDisableSelfRenderOptions(StyleRenderOptions);
   FButtonSize := bsszDefault;
   BSButtonStyle := bsbsDefault;
   FGlyphicon := '';
-end;
-
-function TIWBSButton.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  result := '';
 end;
 
 function TIWBSButton.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -569,7 +556,11 @@ begin
       gspan.AddBoolParam('aria-hidden',true);
       s := ' '+s;
     end;
-    Result.Contents.AddText(s);
+
+    if (FButtonStyle = bsbsDialogClose) and (s = '') and (FGlyphicon = '') then
+      Result.Contents.AddText('&times;')
+    else
+      Result.Contents.AddText(s);
   except
     FreeAndNil(result);
     raise;

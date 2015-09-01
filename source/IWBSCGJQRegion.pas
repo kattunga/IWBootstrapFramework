@@ -11,9 +11,9 @@ uses
 type
   TIWBSCGJQRegion = class(TIWCGJQCustomRegion)
   private
-    FChildRenderOptions: TIWBSChildRenderOptions;
-    FGridOptions: TIWBSGridOptions;
     FFormType: TIWBSFormType;
+    FGridOptions: TIWBSGridOptions;
+    FLayoutMrg: boolean;
     FRegionType: TIWBSRegionType;
   protected
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
@@ -24,16 +24,32 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property BSChildRenderOptions: TIWBSChildRenderOptions read FChildRenderOptions write FChildRenderOptions default [bschDisablePosition, bschDisableSize];
-    property BSRegionType: TIWBSRegionType read FRegionType write FRegionType default bsrtIWBSRegion;
     property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
+    property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
+    property BSRegionType: TIWBSRegionType read FRegionType write FRegionType default bsrtIWBSRegion;
   end;
 
 implementation
 
-uses IWBSLayoutMgr;
+uses IWBSLayoutMgr, IWBSUtils, IWCGJQControl;
 
+procedure RemoveIWCssAttr(var AIWStyle: string; AAttr: string);
+var
+  SL: TIWCGStyle;
+  Index: Integer;
+begin
+  SL:= TIWCGStyle.Create;
+  try
+    SL.IWStyle:= AIWStyle;
+    Index:= SL.IndexOfName(AAttr);
+    if Index >= 0 then
+      SL.Delete(Index);
+    AIWStyle:= SL.IWStyle;
+  finally
+    SL.Free;
+  end;
+end;
 
 constructor TIWBSCGJQRegion.Create(AOwner: TComponent);
 begin
@@ -44,14 +60,9 @@ begin
 
   // bootstrap settings
   FRegionType := bsrtIWBSRegion;
-  FChildRenderOptions := [bschDisablePosition, bschDisableSize];
   FGridOptions := TIWBSGridOptions.Create(Self);
   FFormType := bsftNoForm;
-
-  // esto sirve para hacel el calculo automatico de ancho de columnas
-  // lo leemos en la creacion del componente sino en runtime no funciona
-  if AOwner is TWinControl then
-    Width := TWinControl(AOwner).Width;
+  FLayoutMrg := True;
 end;
 
 destructor TIWBSCGJQRegion.Destroy;
@@ -67,25 +78,27 @@ end;
 
 function TIWBSCGJQRegion.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  Result := TIWContainerContext.Create(AWebApplication, CacheControls);
-  if (Self.LayoutMgr = nil) or not (Self.LayoutMgr.Able) then begin
-    Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
-    TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
-  end;
-  Self.LayoutMgr.SetContainer(Self);
-  Result.LayoutManager := Self.LayoutMgr;
+  if FLayoutMrg then
+    if (Self.LayoutMgr = nil) or not (Self.LayoutMgr.Able) then begin
+      Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
+      TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
+    end;
+  Result := inherited;
 end;
 
 procedure TIWBSCGJQRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 begin
-  IWBSPrepareChildComponentsForRender(Self, FFormType, FChildRenderOptions);
+  if FLayoutMrg then
+    IWBSPrepareChildComponentsForRender(Self, FFormType);
   inherited;
 end;
 
 function TIWBSCGJQRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+var
+  LStyle: string;
 begin
   // do not render Styles
-  IWBSDisableSelfRenderOptions(StyleRenderOptions);
+  IWBSDisableRenderOptions(StyleRenderOptions);
 
   // do not render borders
   CGAppearanceSettings.BorderVisibilty := [];
@@ -97,16 +110,20 @@ begin
 
   Result := inherited;
 
-  // damn cgdevtools still rendering borders
-  Result.Params.Values['style'] := '';
+  // cgdevtools has a bug where it render borders still when StyleRenderOptions.RenderBorder = False
+  LStyle := Result.Params.Values['style'];
+  RemoveIWCssAttr(LStyle, 'border-top');
+  RemoveIWCssAttr(LStyle, 'border-left');
+  RemoveIWCssAttr(LStyle, 'border-right');
+  RemoveIWCssAttr(LStyle, 'border-bottom');
+  Result.Params.Values['style'] := LStyle;
 
   // css
   Result.Params.Values['class'] := aIWBSRegionType[FRegionType];
-  if Css <> '' then
-    Result.AddClassParam(Css);
 
-  // grid settings
-  FGridOptions.RenderHTMLTag(Result);
+  Result.AddClassParam(FGridOptions.GetClassString);
+
+  Result.AddClassParam(Css);
 end;
 
 end.

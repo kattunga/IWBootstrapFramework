@@ -44,6 +44,7 @@ type
   TIWTabPage = class(IWCompTabControl.TIWTabPage)
   public
     function CSSClass: string;
+    property LayoutMgr;
   end;
 
   TIWBSGridOptions = class(TPersistent)
@@ -59,7 +60,7 @@ type
     FGridLGSpan: integer;
   public
     constructor Create(AOwner: TControl);
-    procedure RenderHTMLTag(Tag: TIWHTMLTag);
+    function GetClassString: string;
   published
     property GridXSOffset: integer read FGridXSOffset write FGridXSOffset default 0;
     property GridXSSpan: integer read FGridXSSpan write FGridXSSpan default 0;
@@ -78,102 +79,12 @@ var
   aIWBSRenderingSortMethod: TIWBSRenderingSortMethod = bsrmSortYX;
   aIWBSRenderingGridPrecision: integer = 12;
 
-// May be we will not need the procedure after all cleaup
-procedure IWBSDisableSelfRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
-
-// this procedure set non IWBootrap components to be compatible with the framework
-procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer; AFormType: TIWBSFormType; AChildRenderOptions: TIWBSChildRenderOptions);
-
-function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
+//******************************************************************************
 
 implementation
 
 uses IWBaseInterfaces, IWHTML40Interfaces, IWLists, IWBaseHTMLControl, IWHTMLContainer,
      IWRegion, IWBSTabControl, IWBSLayoutMgr;
-
-procedure IWBSDisableSelfRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
-begin
-  StyleRenderOptions.RenderAbsolute := False;
-  StyleRenderOptions.RenderBorder := False;
-  StyleRenderOptions.RenderFont := False;
-  StyleRenderOptions.RenderPadding := False;
-  StyleRenderOptions.RenderPosition := False;
-  StyleRenderOptions.RenderSize := False;
-  StyleRenderOptions.RenderStatus := False;
-end;
-
-procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer; AFormType: TIWBSFormType; AChildRenderOptions: TIWBSChildRenderOptions);
-var
-  i: integer;
-  LComponent: TComponent;
-  LFrameRegion: TComponent;
-  LRegion: TIWRegion;
-  LTabPage: TIWTabPage;
-  LBaseControl: IIWBaseControl;
-  LHTML40Control: IIWHTML40Control;
-begin
-  for i := 0 to AContainer.IWComponentsCount - 1 do begin
-
-    LComponent := AContainer.Component[i];
-
-    // if user forgot to delete the IWRegion of the TFrame
-    if LComponent is TFrame then
-      begin
-        LFrameRegion := TFrame(LComponent).FindComponent('IWFrameRegion');
-        if LFrameRegion is TIWRegion then begin
-          LRegion := TIWRegion(LFrameRegion);
-          if LRegion.LayoutMgr = nil then begin
-            LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
-            TIWBSLayoutMgr(LRegion.LayoutMgr).BSFormType := AFormType;
-          end;
-          LRegion.LayoutMgr.SetContainer(LRegion);
-          IWBSPrepareChildComponentsForRender(LRegion, AFormType, AChildRenderOptions);
-        end;
-     end
-
-    // tab pages of TIWBSTabControl are still TIWTabPage
-    else if LComponent is IWCompTabControl.TIWTabPage then
-      begin
-        LTabPage := TIWTabPage(LComponent);
-        if LTabPage.LayoutMgr = nil then begin
-          LTabPage.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
-          TIWBSLayoutMgr(LTabPage.LayoutMgr).BSFormType := AFormType;
-        end;
-        LTabPage.LayoutMgr.SetContainer(LTabPage);
-        IWBSPrepareChildComponentsForRender(LTabPage, AFormType, AChildRenderOptions);
-      end;
-
-    // set child StyleRenderOptions
-    LBaseControl := BaseControlInterface(LComponent);
-    if Assigned(LBaseControl) then begin
-      LHTML40Control := HTML40ControlInterface(AContainer.Component[i]);
-      if bschDisablePosition in AChildRenderOptions then begin
-        LHTML40Control.StyleRenderOptions.RenderPosition := False;
-        LHTML40Control.StyleRenderOptions.RenderAbsolute := False;
-      end;
-      if bschDisableSize in AChildRenderOptions then begin
-        LHTML40Control.StyleRenderOptions.RenderSize := False;
-        LHTML40Control.StyleRenderOptions.RenderPadding := False;
-      end;
-      if bschDisableFont in AChildRenderOptions then
-        LHTML40Control.StyleRenderOptions.RenderFont := False;
-      if bschDisableBorder in AChildRenderOptions then
-        LHTML40Control.StyleRenderOptions.RenderBorder := False;
-    end;
-  end;
-end;
-
-function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
-var
-  i: Integer;
-begin
-  Result:= APrefix;
-  i:= 0;
-  while Assigned(AOwner.FindComponent(Result)) do begin
-    inc(i);
-    Result:= APrefix + IntToStr(i);
-  end;
-end;
 
 {$region 'TIWTabPage'}
 function TIWTabPage.CSSClass: string;
@@ -202,25 +113,32 @@ begin
   FGridLGSpan   := 0;
 end;
 
-procedure TIWBSGridOptions.RenderHTMLTag(Tag: TIWHTMLTag);
+function TIWBSGridOptions.GetClassString: string;
+  procedure AddValue(var s: string; const Value: string);
+  begin
+    if s <> '' then
+      s := s + ' ';
+    s := s + Value;
+  end;
 begin
+  Result := '';
   if FGridXSOffset > 0 then
-    Tag.AddClassParam('col-xs-offset-'+IntToStr(FGridXSOffset));
+    AddValue(Result, 'col-xs-offset-'+IntToStr(FGridXSOffset));
   if FGridSMOffset > 0 then
-    Tag.AddClassParam('col-sm-offset-'+IntToStr(FGridSMOffset));
+    AddValue(Result, 'col-sm-offset-'+IntToStr(FGridSMOffset));
   if FGridMDOffset > 0 then
-    Tag.AddClassParam('col-md-offset-'+IntToStr(FGridMDOffset));
+    AddValue(Result, 'col-md-offset-'+IntToStr(FGridMDOffset));
   if FGridLGOffset > 0 then
-    Tag.AddClassParam('col-lg-offset-'+IntToStr(FGridLGOffset));
+    AddValue(Result, 'col-lg-offset-'+IntToStr(FGridLGOffset));
 
   if (FGridXSSpan > 0) then
-    Tag.AddClassParam('col-xs-'+IntToStr(FGridXSSpan));
+    AddValue(Result, 'col-xs-'+IntToStr(FGridXSSpan));
   if (FGridSMSpan > 0) then
-    Tag.AddClassParam('col-sm-'+IntToStr(FGridSMSpan));
+    AddValue(Result, 'col-sm-'+IntToStr(FGridSMSpan));
   if (FGridMDSpan > 0) then
-    Tag.AddClassParam('col-md-'+IntToStr(FGridMDSpan));
+    AddValue(Result, 'col-md-'+IntToStr(FGridMDSpan));
   if (FGridLGSpan > 0) then
-    Tag.AddClassParam('col-lg-'+IntToStr(FGridLGSpan));
+    AddValue(Result, 'col-lg-'+IntToStr(FGridLGSpan));
 end;
 {$endregion}
 

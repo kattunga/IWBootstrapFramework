@@ -11,6 +11,7 @@ object IWFrame3: TIWFrame3
     Height = 566
     RenderInvisibleControls = True
     TabOrder = 0
+    BSModalVisible = True
     object IWBSRegion1: TIWBSRegion
       Left = 1
       Top = 1
@@ -19,8 +20,6 @@ object IWFrame3: TIWFrame3
       RenderInvisibleControls = True
       Align = alClient
       BSRegionType = bsrtModalContent
-      ExplicitWidth = 692
-      ExplicitHeight = 577
       object IWBSRegion2: TIWBSRegion
         Left = 40
         Top = 152
@@ -58,7 +57,7 @@ object IWFrame3: TIWFrame3
           Font.Style = []
           FriendlyName = 'IWBSInput1'
           SubmitOnAsyncEvent = True
-          TabOrder = 1
+          TabOrder = 0
           Caption = 'Input'
         end
       end
@@ -81,11 +80,11 @@ object IWFrame3: TIWFrame3
           FriendlyName = 'IWLabel1'
           Caption = 'This is the header'
         end
-        object IWBSButton1: TIWBSButton
+        object IWBSButton199: TIWBSButton
           Left = 492
           Top = 16
-          Width = 75
-          Height = 25
+          Width = 81
+          Height = 29
           RenderSize = False
           StyleRenderOptions.RenderSize = False
           StyleRenderOptions.RenderPosition = False
@@ -94,13 +93,14 @@ object IWFrame3: TIWFrame3
           StyleRenderOptions.RenderAbsolute = False
           StyleRenderOptions.RenderPadding = False
           StyleRenderOptions.RenderBorder = False
-          Caption = 'Close'
           Color = clBtnFace
           Font.Color = clNone
           Font.Size = 10
           Font.Style = []
-          FriendlyName = 'IWBSButton1'
-          TabOrder = 0
+          FriendlyName = 'IWBSButton199'
+          TabOrder = 1
+          OnAsyncClick = IWBSButton199AsyncClick
+          BSButtonStyle = bsbsDialogClose
         end
       end
       object IWBSRegion4: TIWBSRegion

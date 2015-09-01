@@ -4,67 +4,55 @@ object IWFrame1: TIWFrame1
   Width = 558
   Height = 450
   TabOrder = 0
-  object IWFrameRegion: TIWRegion
-    Left = 0
-    Top = 0
-    Width = 558
-    Height = 450
+  object IWBSRegion1: TIWBSRegion
+    Left = 16
+    Top = 20
+    Width = 521
+    Height = 413
     RenderInvisibleControls = True
     TabOrder = 0
-    Align = alClient
-    BorderOptions.NumericWidth = 1
-    BorderOptions.BorderWidth = cbwNumeric
-    BorderOptions.Style = cbsSolid
-    BorderOptions.Color = clNone
-    object IWBSRegion1: TIWBSRegion
-      Left = 16
-      Top = 20
-      Width = 521
-      Height = 413
-      RenderInvisibleControls = True
-      object IWBSInput1: TIWBSInput
-        Left = 28
-        Top = 32
-        Width = 121
-        Height = 21
-        RenderSize = False
-        StyleRenderOptions.RenderSize = False
-        StyleRenderOptions.RenderPosition = False
-        StyleRenderOptions.RenderFont = False
-        StyleRenderOptions.RenderStatus = False
-        StyleRenderOptions.RenderAbsolute = False
-        StyleRenderOptions.RenderPadding = False
-        StyleRenderOptions.RenderBorder = False
-        Font.Color = clNone
-        Font.Size = 10
-        Font.Style = []
-        FriendlyName = 'IWBSInput'
-        SubmitOnAsyncEvent = True
-        TabOrder = 0
-        Caption = ''
-      end
-      object IWBSButton1: TIWBSButton
-        Left = 28
-        Top = 72
-        Width = 75
-        Height = 25
-        RenderSize = False
-        StyleRenderOptions.RenderSize = False
-        StyleRenderOptions.RenderPosition = False
-        StyleRenderOptions.RenderFont = False
-        StyleRenderOptions.RenderStatus = False
-        StyleRenderOptions.RenderAbsolute = False
-        StyleRenderOptions.RenderPadding = False
-        StyleRenderOptions.RenderBorder = False
-        Caption = 'IWBSButton1'
-        Color = clBtnFace
-        Font.Color = clNone
-        Font.Size = 10
-        Font.Style = []
-        FriendlyName = 'IWBSButton1'
-        TabOrder = 1
-        OnAsyncClick = IWBSButton1AsyncClick
-      end
+    object IWBSInput1: TIWBSInput
+      Left = 28
+      Top = 32
+      Width = 121
+      Height = 21
+      RenderSize = False
+      StyleRenderOptions.RenderSize = False
+      StyleRenderOptions.RenderPosition = False
+      StyleRenderOptions.RenderFont = False
+      StyleRenderOptions.RenderStatus = False
+      StyleRenderOptions.RenderAbsolute = False
+      StyleRenderOptions.RenderPadding = False
+      StyleRenderOptions.RenderBorder = False
+      Font.Color = clNone
+      Font.Size = 10
+      Font.Style = []
+      FriendlyName = 'IWBSInput'
+      SubmitOnAsyncEvent = True
+      TabOrder = 0
+      Caption = ''
+    end
+    object IWBSButton198: TIWBSButton
+      Left = 28
+      Top = 72
+      Width = 75
+      Height = 25
+      RenderSize = False
+      StyleRenderOptions.RenderSize = False
+      StyleRenderOptions.RenderPosition = False
+      StyleRenderOptions.RenderFont = False
+      StyleRenderOptions.RenderStatus = False
+      StyleRenderOptions.RenderAbsolute = False
+      StyleRenderOptions.RenderPadding = False
+      StyleRenderOptions.RenderBorder = False
+      Caption = 'IWBSButton198'
+      Color = clBtnFace
+      Font.Color = clNone
+      Font.Size = 10
+      Font.Style = []
+      FriendlyName = 'IWBSButton198'
+      TabOrder = 1
+      OnAsyncClick = IWBSButton198AsyncClick
     end
   end
 end

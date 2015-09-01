@@ -189,7 +189,8 @@ begin
   cmp := TIWFrame1.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := IWBSRegion17;
-  IWBSRegion17.AsyncRenderContent;
+//  IWBSRegion17.AsyncRenderComponent(true);
+  cmp.IWBSRegion1.AsyncRenderComponent(true);
 end;
 
 procedure TIWForm2.IWBSButton27AsyncClick(Sender: TObject;
@@ -200,7 +201,8 @@ begin
   cmp := TIWFrame3.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := IWBSRegion17;
-  IWBSRegion17.AsyncRenderContent;
+//  IWBSRegion17.AsyncRenderComponent(true);
+  cmp.IWBSModal1.AsyncRenderComponent(true);
 end;
 
 procedure TIWForm2.IWButton1AsyncClick(Sender: TObject;

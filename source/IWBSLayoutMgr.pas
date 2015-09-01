@@ -9,10 +9,11 @@ uses
 
 type
   TIWBSLayoutMgr = class(TIWContainerLayout)
-  protected
-    procedure InitControl; override;
   private
     FFormType: TIWBSFormType;
+  protected
+    procedure InitControl; override;
+//    function ScriptSection(APageContext: TIWPageContext40): string; override;
   public
     constructor Create(AOnwer: TComponent); override;
     procedure ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent); override;
@@ -86,7 +87,7 @@ begin
       LTop1 := -1;
       LLeft1 := -1;
     end;
-  if TComponent(AItem1) is TControl then
+  if TComponent(AItem2) is TControl then
     begin
       LTop2 := TControl(AItem2).Top;
       LLeft2 := TControl(AItem2).Left;
@@ -185,18 +186,28 @@ end;
 procedure TIWBSLayoutMgr.ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent);
 var
   LHTML: TIWHTMLTag;
-  LControlContext: TIWCompContext;
 begin
-  // TIWTabPage
-  LControlContext := TIWCompContext(AContainerContext.ComponentContext[AControl.HTMLName]);
-  LHTML := LControlContext.HTMLTag;
+  LHTML := TIWCompContext(AContainerContext.ComponentContext[AControl.HTMLName]).HTMLTag;
+
+  // non IWBS components hacks
   if Assigned(LHTML) then
     if AControl.InterfaceInstance.ClassName = 'TIWTabPage' then
       begin
-        LHTML.AddStringParam('ID', AControl.HTMLName);
-        LHTML.AddClassParam(IWBSCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass);
+        LHTML.Params.Values['class'] := IWBSCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass;
         Exit;
-      end;
+      end
+    else if AControl.InterfaceInstance.ClassName = 'TIWEdit' then
+      LHTML.Params.Values['class'] := 'form-control'
+    else if AControl.InterfaceInstance.ClassName = 'TIWMemo' then
+      LHTML.Params.Values['class'] := 'form-control'
+    else if AControl.InterfaceInstance.ClassName = 'TIWCheckBox' then
+      LHTML.Params.Values['class'] := 'checkbox-inline'
+    else if AControl.InterfaceInstance.ClassName = 'TIWComboBox' then
+      LHTML.Params.Values['class'] := 'form-control'
+    else if AControl.InterfaceInstance.ClassName = 'TIWListbox' then
+      LHTML.Params.Values['class'] := 'form-control'
+    else if AControl.InterfaceInstance.ClassName = 'TIWButton' then
+      LHTML.Params.Values['class'] := 'btn';
 
   inherited;
 end;

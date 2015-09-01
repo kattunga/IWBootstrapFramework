@@ -26,10 +26,10 @@ type
 
   TIWBSTabControl = class(TIWTabControl)
   private
-    FChildRenderOptions: TIWBSChildRenderOptions;
-    FGridOptions: TIWBSGridOptions;
-    FTabOptions: TIWBSTabOptions;
     FFormType: TIWBSFormType;
+    FGridOptions: TIWBSGridOptions;
+    FLayoutMrg: boolean;
+    FTabOptions: TIWBSTabOptions;
   protected
     procedure SetGridOptions(const Value: TIWBSGridOptions);
     procedure SetTabOptions(const Value: TIWBSTabOptions);
@@ -40,9 +40,10 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property BSChildRenderOptions: TIWBSChildRenderOptions read FChildRenderOptions write FChildRenderOptions default [bschDisablePosition, bschDisableSize, bschDisableFont];
-    property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
+    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
+    property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
+    property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
 
     property ClipRegion default false;
     property Color default clNone;
@@ -50,7 +51,7 @@ type
 
 implementation
 
-uses IWLists;
+uses IWLists, IWBSutils;
 
 {$region 'THackCustomRegion'}
 type
@@ -65,6 +66,7 @@ begin
 end;
 {$endregion}
 
+{$region 'TIWBSTabOptions'}
 constructor TIWBSTabOptions.Create(AOwner: TComponent);
 begin
   FFade := False;
@@ -72,12 +74,15 @@ begin
   FJustified := False;
   FStacked := False;
 end;
+{$endregion}
 
+{$region 'TIWBSTabControl'}
 constructor TIWBSTabControl.Create(AOwner: TComponent);
 begin
   inherited;
-  FChildRenderOptions := [bschDisablePosition, bschDisableSize, bschDisableFont];
+  FFormType := bsftNoForm;
   FGridOptions := TIWBSGridOptions.Create(Self);
+  FLayoutMrg := True;
   FTabOptions := TIWBSTabOptions.Create(Self);
   Color := clNone;
 end;
@@ -101,18 +106,18 @@ end;
 
 function TIWBSTabControl.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  Result := TIWContainerContext.Create(AWebApplication, CacheControls);
-  if (Self.LayoutMgr = nil) or not (Self.LayoutMgr.Able) then begin
-    Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
-    TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
-  end;
-  Self.LayoutMgr.SetContainer(Self);
-  Result.LayoutManager := Self.LayoutMgr;
+  if FLayoutMrg then
+    if (Self.LayoutMgr = nil) or not (Self.LayoutMgr.Able) then begin
+      Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
+      TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
+    end;
+  Result := inherited;
 end;
 
 procedure TIWBSTabControl.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 begin
-  IWBSPrepareChildComponentsForRender(Self, FFormType, FChildRenderOptions);
+  if FLayoutMrg then
+    IWBSPrepareChildComponentsForRender(Self, FFormType);
   inherited;
 end;
 
@@ -123,14 +128,14 @@ var
   TabPage: TIWTabPage;
   formTag: TIWHTMLTag;
 begin
-  IWBSDisableSelfRenderOptions(StyleRenderOptions);
+  IWBSDisableRenderOptions(StyleRenderOptions);
   result := THackCustomRegion(Self).CallInheritedRenderHTML(AContext);
 
   // default class
   Result.AddClassParam('iwbs-tabs');
 
   // render bsgrid settings
-  FGridOptions.RenderHTMLTag(Result);
+  Result.AddClassParam(FGridOptions.GetClassString);
 
   // tabs region
   tagTabs := result.Contents.AddTag('ul');
@@ -166,5 +171,6 @@ begin
   formTag.AddStringParam('onSubmit', 'return FormDefaultSubmit();');
   formTag.Contents.AddHiddenField(HTMLName + '_input', HTMLName + '_input', IntToStr(tabIndex));
 end;
+{$endregion}
 
 end.

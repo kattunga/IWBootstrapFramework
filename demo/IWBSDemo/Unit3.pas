@@ -18,12 +18,13 @@ type
     IWBSRegion3: TIWBSRegion;
     IWBSRegion4: TIWBSRegion;
     IWBSRegion5: TIWBSRegion;
-    IWBSButton1: TIWBSButton;
     IWLabel1: TIWLabel;
     IWLabel2: TIWLabel;
     IWLabel3: TIWLabel;
     IWLabel4: TIWLabel;
     IWBSInput1: TIWBSInput;
+    IWBSButton199: TIWBSButton;
+    procedure IWBSButton199AsyncClick(Sender: TObject; EventParams: TStringList);
   private
     { Private declarations }
   public
@@ -33,5 +34,11 @@ type
 implementation
 
 {$R *.dfm}
+
+procedure TIWFrame3.IWBSButton199AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  Free;
+end;
 
 end.
