@@ -1,4 +1,4 @@
-unit IWCGJQComponentsHacks;
+unit IWBSCGJQComponentsHacks;
 
 interface
 

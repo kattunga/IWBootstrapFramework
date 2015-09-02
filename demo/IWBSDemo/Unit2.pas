@@ -140,9 +140,7 @@ type
     IWListbox1: TIWListbox;
     IWMemo1: TIWMemo;
     IWRadioGroup1: TIWRadioGroup;
-    procedure IWAppFormCreate(Sender: TObject);
     procedure IWButton1AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWAppFormRender(Sender: TObject);
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -158,16 +156,6 @@ implementation
 {$R *.dfm}
 
 uses IWBSUtils, IWBSCommon, unit1, unit3;
-
-procedure TIWForm2.IWAppFormCreate(Sender: TObject);
-begin
-  IWBSEnable('','/iwbs', Self, True, True);
-end;
-
-procedure TIWForm2.IWAppFormRender(Sender: TObject);
-begin
-  ResetTabOrders(Self, stXY);
-end;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);

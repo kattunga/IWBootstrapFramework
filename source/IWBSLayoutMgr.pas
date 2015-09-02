@@ -3,37 +3,62 @@ unit IWBSLayoutMgr;
 interface
 
 uses
-  System.Classes, System.SysUtils, Vcl.Controls,
+  System.Classes, System.SysUtils, System.StrUtils, Vcl.Controls,
   IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag,
   IWBSCommon;
 
 type
+
+  TIWBSPageOption = (bslyNoConflictButton, bslyEnablePolyfill);
+
+  TIWBSPageOptions = set of TIWBSPageOption;
+
   TIWBSLayoutMgr = class(TIWContainerLayout)
   private
     FFormType: TIWBSFormType;
+    FPageOptions: TIWBSPageOptions;
+    FLibPath: string;
   protected
     procedure InitControl; override;
-//    function ScriptSection(APageContext: TIWPageContext40): string; override;
   public
     constructor Create(AOnwer: TComponent); override;
     procedure ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent); override;
     procedure ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
     procedure Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext); override;
   published
-    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftVertical;
+    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
+    property BSPageOptions: TIWBSPageOptions read FPageOptions write FPageOptions default [bslyEnablePolyfill];
   end;
+
+var
+  IWBSLibraryPath: string = '/iwbs';
+  IWBSRefreshCacheParam: string;
+  IWBSjqlibversion: string = '1.11.3';
+  IWBSbslibversion: string = '3.3.5';
 
 implementation
 
 uses
   IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists,
-  IWRegion, IWCompTabControl,
+  IWRegion, IWCompTabControl, IW.Common.Strings,
   IWBSRegion, IWBSTabControl;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
   inherited;
   FFormType := bsftNoForm;
+  FPageOptions := [bslyEnablePolyfill];
+
+  if AnsiEndsStr('/', gSC.URLBase) then
+    FLibPath := Copy(gSC.URLBase, 1, Length(gSC.URLBase)-1)
+  else
+    FLibPath := gSC.URLBase;
+  if IWBSLibraryPath <> '' then begin
+    TString.ForcePreFix(IWBSLibraryPath, '/');
+    FLibPath := FLibPath + IWBSLibraryPath;
+  end;
+  TString.ForcePreFix(FLibPath, '/');
+  TString.ForceSuffix(FLibPath, '/');
 end;
 
 procedure TIWBSLayoutMgr.InitControl;
@@ -58,9 +83,27 @@ begin
   ABuffer.WriteLine(LPageContext.DocType);
   ABuffer.WriteLine(gHtmlStart);
   ABuffer.WriteLine('<title>' + LPageContext.Title + '</title>');
-  if gSC.PageTransitions then
-    ABuffer.WriteLine('<meta http-equiv="Page-Enter" content="blendTrans(Duration=0.25)">');
+
+  ABuffer.WriteLine('<meta name="viewport" content="width=device-width, initial-scale=1">');
+
   ABuffer.WriteLine(PreHeadContent);
+
+  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'bootstrap-'+IWBSbslibversion+'/css/bootstrap.min.css"</link>');
+  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'iwbs.css?v='+IWBSRefreshCacheParam+'"</link>');
+  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'jquery-'+IWBSjqlibversion+'.min.js"></script>');
+  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'bootstrap-'+IWBSbslibversion+'/js/bootstrap.min.js"></script>');
+  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'iwbs.js?v='+IWBSRefreshCacheParam+'"></script>');
+
+  // add missing html5 functionality to most browsers
+  // http://afarkas.github.io/webshim/demos/index.html
+  // see also http://modernizr.com/
+  if bslyEnablePolyfill in FPageOptions then
+    ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'webshim-1.15.8/js-webshim/minified/polyfiller.js"></script>');
+
+  // disable bootstap button plugin for no conflict with jqButton of jQueryUI framework, required if use CGDevtools buttons
+  if bslyNoConflictButton in FPageOptions then
+    ABuffer.WriteLine('<script type="text/javascript">$.fn.button.noConflict();</script>');
+
   ABuffer.WriteLine(ScriptSection(LPageContext));
   ABuffer.WriteLine(HeadContent);
   if LPageContext.StyleTag.Contents.Count > 0 then

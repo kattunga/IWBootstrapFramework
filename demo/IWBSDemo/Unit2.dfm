@@ -4,10 +4,8 @@ object IWForm2: TIWForm2
   Width = 1084
   Height = 869
   RenderInvisibleControls = True
-  OnRender = IWAppFormRender
   AllowPageAccess = True
   ConnectionMode = cmAny
-  OnCreate = IWAppFormCreate
   Background.Fixed = False
   LayoutMgr = IWBSLayoutMgr1
   HandleTabs = False
@@ -146,7 +144,7 @@ object IWForm2: TIWForm2
           Top = 7
           Width = 121
           Height = 21
-          Hint = 'This is a hint'
+          ShowHint = False
           RenderSize = False
           StyleRenderOptions.RenderSize = False
           StyleRenderOptions.RenderPosition = False
@@ -3680,7 +3678,6 @@ object IWForm2: TIWForm2
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
-    BSFormType = bsftNoForm
     Left = 964
     Top = 20
   end
