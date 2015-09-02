@@ -140,6 +140,17 @@ type
     IWMemo1: TIWMemo;
     IWRadioGroup1: TIWRadioGroup;
     IWBSLayoutMgr1: TIWBSLayoutMgr;
+    IWBSRegion19: TIWBSRegion;
+    IWBSRegion20: TIWBSRegion;
+    IWBSRegion21: TIWBSRegion;
+    IWBSRegion22: TIWBSRegion;
+    IWBSRegion23: TIWBSRegion;
+    IWText6: TIWText;
+    IWText7: TIWText;
+    IWText8: TIWText;
+    IWText9: TIWText;
+    IWBSRegion24: TIWBSRegion;
+    IWText10: TIWText;
     procedure IWButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);

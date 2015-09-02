@@ -48,15 +48,19 @@ type
 
   TIWBSRegion = class(TIWBSCustomRegion)
   private
+    FContextualStyle: TIWBSContextualStyle;
     FRegionType: TIWBSRegionType;
+    FRelativeSize: TIWBSRelativeSize;
   protected
     function GetClassString: string; override;
     function GetRoleString: string; override;
   public
     constructor Create(AOwner: TComponent); override;
   published
+    property BSContextualStyle: TIWBSContextualStyle read FContextualStyle write FContextualStyle default bsbsDefault;
     property BSFormType;
     property BSRegionType: TIWBSRegionType read FRegionType write FRegionType default bsrtIWBSRegion;
+    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
   end;
 
   TIWBSBtnGroupOptions = class(TPersistent)
@@ -339,15 +343,26 @@ end;
 constructor TIWBSRegion.Create(AOwner: TComponent);
 begin
   inherited;
+  FContextualStyle := bsbsDefault;
   FRegionType := bsrtIWBSRegion;
+  FRelativeSize := bsrzDefault;
 end;
 
 function TIWBSRegion.GetClassString: string;
+var
+  s: string;
 begin
-  Result := inherited;
-  if Result <> '' then
-    Result := ' ' + Result;
-  Result := aIWBSRegionType[FRegionType] + Result;
+  Result := aIWBSRegionType[FRegionType];
+
+  if FRegionType = bsrtPanel then
+    Result := Result + ' panel-' + aIWBSContextualStyle[FContextualStyle]
+
+  else if (FRegionType = bsrtWell) and (FRelativeSize <> bsrzDefault) then
+    Result := Result + ' well-' + aIWBSRelativeSize[FRelativeSize];
+
+  s := inherited;
+  if s <> '' then
+    Result := ' ' + s;
 end;
 
 function TIWBSRegion.GetRoleString: string;

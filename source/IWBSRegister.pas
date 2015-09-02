@@ -33,8 +33,8 @@ var
 begin
   try
     sl := TStringList.Create;
+    rs := TResourceStream.Create(hinstance, 'GlyphiconListNames', RT_RCDATA); // from https://gist.github.com/cdevroe/fb674eb895bd4b2f56d9
     try
-      rs := TResourceStream.Create(hinstance, 'GlyphiconListNames', RT_RCDATA); // from https://gist.github.com/cdevroe/fb674eb895bd4b2f56d9
       sl.LoadFromStream(rs);
       for i := 0 to sl.Count-1 do
         Proc(sl[i]);

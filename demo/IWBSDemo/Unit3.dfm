@@ -101,7 +101,7 @@ object IWFrame3: TIWFrame3
           FriendlyName = 'IWBSButton199'
           TabOrder = 1
           OnAsyncClick = IWBSButton199AsyncClick
-          BSButtonStyle = bsbsDialogClose
+          BSButtonClose = True
         end
       end
       object IWBSRegion4: TIWBSRegion

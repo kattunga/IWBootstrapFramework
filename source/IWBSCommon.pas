@@ -17,6 +17,12 @@ const
   aIWBSSize: array[bsszDefault..bsszXs] of string = ('', 'lg', 'md', 'sm', 'xs');
 
 type
+  TIWBSRelativeSize = (bsrzDefault, bsrzLg, bsrzSm);
+
+const
+  aIWBSRelativeSize: array[bsrzDefault..bsrzSm] of string = ('', 'lg', 'sm');
+
+type
   TIWBSTextAlignment = (bstaDefault, bstaLeft, bstaCenter, bstaRight, bstaJustify, bstaNowrap);
   TIWBSTextCase = (bstcDefault, bstcLowercase, bstcUppercase, bstcCapitalize);
 
@@ -26,18 +32,20 @@ const
 
 type
   TIWBSRegionType = (bsrtNone, bsrtContainer, bsrtContainerFluid, bsrtRow, bsrtColumn,
-                     bsrtJumbotron, bsrtPageHeader,
+                     bsrtJumbotron, bsrtPageHeader, bsrtWell,
                      bsrtIWBSRegion, bsrtIWBSToolbar,
                      bsrtButtonToolbar,
-                     bsrtModalContent, bsrtModalHeader, bsrtModalTitle, bsrtModalBody, bsrtModalFooter);
+                     bsrtModalContent, bsrtModalHeader, bsrtModalTitle, bsrtModalBody, bsrtModalFooter,
+                     bsrtPanel, bsrtPanelBody, bsrtPanelHeading, bsrtPanelTitle, bsrtPanelFooter);
 
 const
-  aIWBSRegionType: array [bsrtNone..bsrtModalFooter] of string =
+  aIWBSRegionType: array [bsrtNone..bsrtPanelFooter] of string =
                     ('', 'container', 'container-fluid', 'row', 'column',
-                     'jumbotron', 'page-header',
+                     'jumbotron', 'page-header', 'well',
                      'iwbs-region', 'iwbs-toolbar',
                      'btn-toolbar',
-                     'modal-content', 'modal-header', 'modal-title', 'modal-body', 'modal-footer');
+                     'modal-content', 'modal-heading', 'modal-title', 'modal-body', 'modal-footer',
+                     'panel', 'panel-body', 'panel-heading', 'panel-title', 'panel-footer');
 
 type
   TIWBSCssHeight = (css_hg_none, css_hg_fill, css_hg_fill_container, css_hg_toolbar, css_hg_fill_toolbar);
@@ -48,6 +56,12 @@ const
     ('', 'iwbs-hg-fill', 'iwbs-hg-fill-container', 'iwbs-hg-toolbar', 'iwbs-hg-fill-toolbar');
   aIWBSCssClass:  array [css_none..css_toolbar_separator] of string =
     ('', 'iwbs-region', 'iwbs-toolbar', 'iwbs-toolbar-separator');
+
+type
+  TIWBSContextualStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink);
+
+const
+  aIWBSContextualStyle: array[bsbsDefault..bsbsLink] of string = ('default', 'primary', 'success', 'info', 'warning', 'danger', 'link');
 
 type
   TIWTabPage = class(IWCompTabControl.TIWTabPage)

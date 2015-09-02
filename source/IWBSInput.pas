@@ -112,32 +112,32 @@ type
     property Caption: string read FCaption write FCaption;
   end;
 
-  TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink, bsbsDialogClose);
-
   TIWBSButton = class(TIWButton)
   private
+    FButtonClose: boolean;
     FButtonSize: TIWBSSize;
-    FButtonStyle: TIWBSButtonStyle;
+    FContextualStyle: TIWBSContextualStyle;
     FGlyphicon: string;
   public
     constructor Create(AOwner: TComponent); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
-    property BSGlyphicon: string read FGlyphicon write FGlyphicon;
-    property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write FButtonStyle default bsbsDefault;
+    property BSButtonClose: boolean read FButtonClose write FButtonClose default false;
     property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
+    property BSContextualStyle: TIWBSContextualStyle read FContextualStyle write FContextualStyle default bsbsDefault;
+    property BSGlyphicon: string read FGlyphicon write FGlyphicon;
   end;
 
   TIWBSInputGroup = class(TIWBSCustomRegion)
   private
     FCaption: string;
-    FSize: TIWBSSize;
+    FRelativeSize: TIWBSRelativeSize;
   public
     constructor Create(AOwner: TComponent); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
     property Caption: string read FCaption write FCaption;
-    property Size: TIWBSSize read FSize write FSize default bsszDefault;
+    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
   end;
 
 implementation
@@ -513,14 +513,12 @@ end;
 {$endregion}
 
 {$region 'TIWBSButton'}
-const
-  aIWBSButtonStyle: array[bsbsDefault..bsbsDialogClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
-
 constructor TIWBSButton.Create(AOwner: TComponent);
 begin
   inherited;
+  FButtonClose := false;
   FButtonSize := bsszDefault;
-  BSButtonStyle := bsbsDefault;
+  FContextualStyle := bsbsDefault;
   FGlyphicon := '';
 end;
 
@@ -531,13 +529,15 @@ var
 begin
   Result := TIWHTMLTag.CreateTag('button');
   try
+    Result.AddStringParam('id', HTMLName);
     Result.AddClassParam('btn');
     if FButtonSize <> bsszDefault then
       Result.AddClassParam('btn-'+aIWBSSize[FButtonSize]);
-    Result.AddClassParam(aIWBSButtonStyle[FButtonStyle]);
+    Result.AddClassParam('btn-'+aIWBSContextualStyle[FContextualStyle]);
     if not Enabled then
       Result.AddClassParam('disabled');
-    Result.AddStringParam('id', HTMLName);
+    if FButtonClose then
+      Result.AddClassParam('close');
     Result.AddStringParam('type', 'button');
     if ShowHint and (Hint <> '') then begin
       Result.AddStringParam('data-toggle', 'tooltip');
@@ -550,6 +550,7 @@ begin
     end;
     if (WebFont.Enabled) and (toTColor(WebColor) <> clBtnFace) then
       Result.AddStringParam('style', RenderBGColor(WebColor) + WebFont.FontToStringStyle);
+
     if FGlyphicon <> '' then begin
       gspan := Result.Contents.AddTag('span');
       gspan.AddClassParam('glyphicon glyphicon-'+FGlyphicon);
@@ -557,7 +558,8 @@ begin
       s := ' '+s;
     end;
 
-    if (FButtonStyle = bsbsDialogClose) and (s = '') and (FGlyphicon = '') then
+    // caption after glyphicon
+    if FButtonClose and (s = '') and (FGlyphicon = '') then
       Result.Contents.AddText('&times;')
     else
       Result.Contents.AddText(s);
@@ -574,15 +576,15 @@ end;
 constructor TIWBSInputGroup.Create(AOwner: TComponent);
 begin
   inherited;
-  FSize := bsszDefault;
+  FRelativeSize := bsrzDefault;
 end;
 
 function TIWBSInputGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result.AddClassParam('input-group');
-  if FSize <> bsszDefault then
-    Result.AddClassParam('input-group-'+aIWBSSize[FSize]);
+  if FRelativeSize <> bsrzDefault then
+    Result.AddClassParam('input-group-'+aIWBSRelativeSize[FRelativeSize]);
   Result := CreateFormControl(Result, FCaption, HTMLName);
 end;
 {$endregion}
