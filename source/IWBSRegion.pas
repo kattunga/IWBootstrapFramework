@@ -43,6 +43,7 @@ type
     property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
     property ClipRegion default False;
     property Css: string read FCss write FCss;
+    property StyleRenderOptions;
   end;
 
   TIWBSRegion = class(TIWBSCustomRegion)
@@ -240,7 +241,10 @@ begin
     LTag := RenderMarkupLanguageTag(LComponentContext);
     LTag := DoPostRenderProcessing(LTag, LComponentContext, Self);
     if (not Visible) and LParentContainer.RenderInvisibleControls then
-      LTag.AddStringParam('style', 'visibility: hidden; ' + LTag.Params.Values['style']);
+      if StyleRenderOptions.UseDisplay then
+        LTag.AddStringParam('style', 'display: none;' + LTag.Params.Values['style'])
+      else
+        LTag.AddStringParam('style', 'visibility: hidden;' + LTag.Params.Values['style']);
     LComponentContext.MarkupLanguageTag := LTag;
     ParentContainer.ContainerContext.AddComponent(LComponentContext);
     ExecuteJS('AsyncCreateControl("div","'+LHTMLName+'","'+LContName+'");', True);
@@ -454,6 +458,8 @@ begin
   ABuffer.WriteLine('</div>');
   ABuffer.WriteLine('<script>');
   ABuffer.WriteLine('$("#'+HTMLName+'").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });');
+
+
   if FModalVisible then
     ABuffer.WriteLine(GetShowScript);
   ABuffer.WriteLine('</script>');

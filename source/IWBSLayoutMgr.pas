@@ -17,7 +17,6 @@ type
   private
     FFormType: TIWBSFormType;
     FPageOptions: TIWBSPageOptions;
-    FLibPath: string;
   protected
     procedure InitControl; override;
   public
@@ -48,17 +47,6 @@ begin
   inherited;
   FFormType := bsftNoForm;
   FPageOptions := [bslyEnablePolyfill];
-
-  if AnsiEndsStr('/', gSC.URLBase) then
-    FLibPath := Copy(gSC.URLBase, 1, Length(gSC.URLBase)-1)
-  else
-    FLibPath := gSC.URLBase;
-  if IWBSLibraryPath <> '' then begin
-    TString.ForcePreFix(IWBSLibraryPath, '/');
-    FLibPath := FLibPath + IWBSLibraryPath;
-  end;
-  TString.ForcePreFix(FLibPath, '/');
-  TString.ForceSuffix(FLibPath, '/');
 end;
 
 procedure TIWBSLayoutMgr.InitControl;
@@ -72,7 +60,21 @@ procedure TIWBSLayoutMgr.ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: T
 var
   LPageContext: TIWPageContext40;
   LTerminated: Boolean;
+  FLibPath: string;
 begin
+
+  // get library path
+  if AnsiEndsStr('/', gSC.URLBase) then
+    FLibPath := Copy(gSC.URLBase, 1, Length(gSC.URLBase)-1)
+  else
+    FLibPath := gSC.URLBase;
+  if IWBSLibraryPath <> '' then begin
+    TString.ForcePreFix(IWBSLibraryPath, '/');
+    FLibPath := FLibPath + IWBSLibraryPath;
+  end;
+  TString.ForcePreFix(FLibPath, '/');
+  TString.ForceSuffix(FLibPath, '/');
+
   LPageContext := TIWPageContext40(APage);
   LTerminated := Assigned(LPageContext.WebApplication) and LPageContext.WebApplication.Terminated;
 
@@ -229,11 +231,12 @@ end;
 procedure TIWBSLayoutMgr.ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent);
 var
   LHTML: TIWHTMLTag;
+  LStyle: string;
 begin
   LHTML := TIWCompContext(AContainerContext.ComponentContext[AControl.HTMLName]).HTMLTag;
 
   // non IWBS components hacks
-  if Assigned(LHTML) then
+  if Assigned(LHTML) then begin
     if AControl.InterfaceInstance.ClassName = 'TIWTabPage' then
       LHTML.Params.Values['class'] := IWBSCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass
     else if AControl.InterfaceInstance.ClassName = 'TIWEdit' then
@@ -248,6 +251,15 @@ begin
       LHTML.Params.Values['class'] := 'form-control'
     else if AControl.InterfaceInstance.ClassName = 'TIWButton' then
       LHTML.Params.Values['class'] := 'btn';
+
+    // bugfix, intraweb ignore StyleRenderOption.UseDisplay
+    if not TControl(AControl.InterfaceInstance).Visible and HTML40ControlInterface(AControl.InterfaceInstance).StyleRenderOptions.UseDisplay then begin
+      LStyle := LHTML.Params.Values['style'];
+      if not AnsiContainsText(LStyle,'display:') then
+        LStyle := 'display: none;'+LStyle;
+      LHTML.AddStringParam('STYLE', LStyle);
+    end;
+  end;
 
   inherited;
 end;

@@ -31,16 +31,19 @@ var
   sl: TStringList;
   i: integer;
 begin
-  // from https://gist.github.com/cdevroe/fb674eb895bd4b2f56d9
-  rs := TResourceStream.Create(hinstance, 'GlyphiconListNames', RT_RCDATA);
-  sl := TStringList.Create;
   try
-    sl.LoadFromStream(rs);
-    for i := 0 to sl.Count-1 do
-      Proc(sl[i]);
-  finally
-    sl.Free;
-    rs.Free;
+    sl := TStringList.Create;
+    try
+      rs := TResourceStream.Create(hinstance, 'GlyphiconListNames', RT_RCDATA); // from https://gist.github.com/cdevroe/fb674eb895bd4b2f56d9
+      sl.LoadFromStream(rs);
+      for i := 0 to sl.Count-1 do
+        Proc(sl[i]);
+    finally
+      sl.Free;
+      rs.Free;
+    end;
+  except
+
   end;
 end;
 
@@ -58,6 +61,8 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSBtnToolBar]);
   RegisterComponents('IW BootsTrap', [TIWBSInputGroup]);
   RegisterComponents('IW BootsTrap', [TIWBSModal]);
+  UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
+  UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignPosition');
 
   RegisterComponents('IW BootsTrap', [TIWBSInput]);
   UnlistPublishedProperty(TIWBSInput, 'Alignment');
