@@ -53,7 +53,6 @@ type
     IWBSButton17: TIWBSButton;
     IWBSButton18: TIWBSButton;
     IWBSButton19: TIWBSButton;
-    IWBSLayoutMgr1: TIWBSLayoutMgr;
     IWBSInput4: TIWBSInput;
     IWBSInput5: TIWBSInput;
     IWBSInput6: TIWBSInput;
@@ -140,6 +139,7 @@ type
     IWListbox1: TIWListbox;
     IWMemo1: TIWMemo;
     IWRadioGroup1: TIWRadioGroup;
+    IWBSLayoutMgr1: TIWBSLayoutMgr;
     procedure IWButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);

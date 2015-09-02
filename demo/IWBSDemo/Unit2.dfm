@@ -3678,7 +3678,7 @@ object IWForm2: TIWForm2
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
-    Left = 964
-    Top = 20
+    Left = 720
+    Top = 115
   end
 end
