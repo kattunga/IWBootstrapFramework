@@ -434,7 +434,7 @@ end;
 
 function TIWBSModal.GetShowScript: string;
 begin
-  Result := '$("#'+HTMLName+'").modal({backdrop: "static"});';
+  Result := '$("#'+HTMLName+'").modal({backdrop: "static", "keyboard": true});';
 end;
 
 function TIWBSModal.GetHideScript: string;
@@ -452,8 +452,11 @@ begin
   ABuffer.WriteLine('<div class="'+LCss+'">');
   inherited;
   ABuffer.WriteLine('</div>');
+  ABuffer.WriteLine('<script>');
+  ABuffer.WriteLine('$("#'+HTMLName+'").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });');
   if FModalVisible then
-    ABuffer.WriteLine('<script>'+GetShowScript+'</script>');
+    ABuffer.WriteLine(GetShowScript);
+  ABuffer.WriteLine('</script>');
 end;
 
 procedure TIWBSModal.SetModalVisible(Value: boolean);

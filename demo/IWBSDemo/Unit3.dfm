@@ -58,6 +58,7 @@ object IWFrame3: TIWFrame3
           FriendlyName = 'IWBSInput1'
           SubmitOnAsyncEvent = True
           TabOrder = 0
+          AutoFocus = True
           Caption = 'Input'
         end
       end
