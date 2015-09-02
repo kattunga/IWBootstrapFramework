@@ -131,6 +131,11 @@
         <DCCReference Include="Intraweb_14_DXE5.dcp"/>
         <DCCReference Include="dclIntraweb_14_DXE5.dcp"/>
         <DCCReference Include="IWBSRegister.pas"/>
+        <RcItem Include="glyphicon-names.txt">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>GlyphiconListNames</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
