@@ -29,7 +29,7 @@ type
     IWBSRegion7: TIWBSRegion;
     IWBSRegion8: TIWBSRegion;
     IWBSRegion10: TIWBSRegion;
-    IWBSBtnToolBar1: TIWBSBtnToolBar;
+    IWBSBtnToolBar1: TIWBSRegion;
     IWBSBtnGroup1: TIWBSBtnGroup;
     IWBSButton1: TIWBSButton;
     IWBSButton2: TIWBSButton;
@@ -161,12 +161,13 @@ procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   IWBSInput1.Text := 'this text was filled with ajax';
+  IWBSMemo2.Text := IWBSinput22.Text;
 end;
 
 procedure TIWForm2.IWBSButton22AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  IWBSInput8.Text := 'you pressed left button';
+  IWBSInput8.Text := 'you pressed a button';
 end;
 
 procedure TIWForm2.IWBSButton26AsyncClick(Sender: TObject;

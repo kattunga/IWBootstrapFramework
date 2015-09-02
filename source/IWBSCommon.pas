@@ -25,10 +25,19 @@ const
   aIWBSTextCase: array[bstcDefault..bstcCapitalize] of string = ('', 'text-lowercase', 'text-uppercase', 'text-capitalize');
 
 type
-  TIWBSRegionType = (bsrtNone, bsrtContainer, bsrtContainerFluid, bsrtRow, bsrtColumn, bsrtJumbotron, bsrtPageHeader, bsrtIWBSRegion, bsrtIWBSToolbar, bsrtModalContent, bsrtModalHeader, bsrtModalTitle, bsrtModalBody, bsrtModalFooter);
+  TIWBSRegionType = (bsrtNone, bsrtContainer, bsrtContainerFluid, bsrtRow, bsrtColumn,
+                     bsrtJumbotron, bsrtPageHeader,
+                     bsrtIWBSRegion, bsrtIWBSToolbar,
+                     bsrtButtonToolbar,
+                     bsrtModalContent, bsrtModalHeader, bsrtModalTitle, bsrtModalBody, bsrtModalFooter);
 
 const
-  aIWBSRegionType: array [bsrtNone..bsrtModalFooter] of string = ('', 'container', 'container-fluid', 'row', 'column', 'jumbotron', 'page-header', 'iwbs-region', 'iwbs-toolbar', 'modal-content', 'modal-header', 'modal-title', 'modal-body', 'modal-footer');
+  aIWBSRegionType: array [bsrtNone..bsrtModalFooter] of string =
+                    ('', 'container', 'container-fluid', 'row', 'column',
+                     'jumbotron', 'page-header',
+                     'iwbs-region', 'iwbs-toolbar',
+                     'btn-toolbar',
+                     'modal-content', 'modal-header', 'modal-title', 'modal-body', 'modal-footer');
 
 type
   TIWBSCssHeight = (css_hg_none, css_hg_fill, css_hg_fill_container, css_hg_toolbar, css_hg_fill_toolbar);

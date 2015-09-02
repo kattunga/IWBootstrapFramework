@@ -51,6 +51,7 @@ type
     FRegionType: TIWBSRegionType;
   protected
     function GetClassString: string; override;
+    function GetRoleString: string; override;
   public
     constructor Create(AOwner: TComponent); override;
   published
@@ -82,12 +83,6 @@ type
     destructor Destroy; override;
   published
     property BGOptions: TIWBSBtnGroupOptions read FBGOptions write FBGOptions;
-  end;
-
-  TIWBSBtnToolBar = class(TIWBSCustomRegion)
-  protected
-    function GetClassString: string; override;
-    function GetRoleString: string; override;
   end;
 
   TIWBSModal = class(TIWBSCustomRegion)
@@ -354,6 +349,14 @@ begin
     Result := ' ' + Result;
   Result := aIWBSRegionType[FRegionType] + Result;
 end;
+
+function TIWBSRegion.GetRoleString: string;
+begin
+  if FRegionType = bsrtButtonToolbar then
+    Result := 'toolbar'
+  else
+    Result := '';
+end;
 {$endregion}
 
 {$region 'TIWBSBtnGroup'}
@@ -392,18 +395,6 @@ end;
 function TIWBSBtnGroup.GetRoleString: string;
 begin
   Result := 'group';
-end;
-{$endregion}
-
-{$region 'TIWBSBtnToolBar'}
-function TIWBSBtnToolBar.GetClassString: string;
-begin
-  Result := 'btn-toolbar'
-end;
-
-function TIWBSBtnToolBar.GetRoleString: string;
-begin
-  Result := 'toolbar';
 end;
 {$endregion}
 

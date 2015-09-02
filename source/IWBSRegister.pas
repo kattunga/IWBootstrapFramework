@@ -58,7 +58,6 @@ begin
 
   RegisterComponents('IW BootsTrap', [TIWBSRegion]);
   RegisterComponents('IW BootsTrap', [TIWBSBtnGroup]);
-  RegisterComponents('IW BootsTrap', [TIWBSBtnToolBar]);
   RegisterComponents('IW BootsTrap', [TIWBSInputGroup]);
   RegisterComponents('IW BootsTrap', [TIWBSModal]);
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
