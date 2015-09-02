@@ -192,10 +192,7 @@ begin
   // non IWBS components hacks
   if Assigned(LHTML) then
     if AControl.InterfaceInstance.ClassName = 'TIWTabPage' then
-      begin
-        LHTML.Params.Values['class'] := IWBSCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass;
-        Exit;
-      end
+      LHTML.Params.Values['class'] := IWBSCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass
     else if AControl.InterfaceInstance.ClassName = 'TIWEdit' then
       LHTML.Params.Values['class'] := 'form-control'
     else if AControl.InterfaceInstance.ClassName = 'TIWMemo' then

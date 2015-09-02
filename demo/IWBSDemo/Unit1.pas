@@ -13,7 +13,8 @@ type
     IWBSRegion1: TIWBSRegion;
     IWBSInput1: TIWBSInput;
     IWBSButton198: TIWBSButton;
-    procedure IWBSButton198AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton198AsyncClick(Sender: TObject;
+      EventParams: TStringList);
   private
     { Private declarations }
   public

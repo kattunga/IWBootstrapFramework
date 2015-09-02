@@ -30,6 +30,7 @@ type
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;
     FTabOptions: TIWBSTabOptions;
+    FWebApplication: TIWApplication;
   protected
     procedure SetGridOptions(const Value: TIWBSGridOptions);
     procedure SetTabOptions(const Value: TIWBSTabOptions);
@@ -91,6 +92,10 @@ destructor TIWBSTabControl.Destroy;
 begin
   FTabOptions.Free;
   FGridOptions.Free;
+
+  if Assigned(FWebApplication) and Assigned(OnAsyncChange) then
+    FWebApplication.UnregisterCallBack(HTMLName);
+
   inherited;
 end;
 
@@ -123,13 +128,18 @@ end;
 
 function TIWBSTabControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
+  xHTMLName: string;
+  xHTMLInput: string;
   i, tabIndex: integer;
   tagTabs, tag: TIWHTMLTag;
   TabPage: TIWTabPage;
-  formTag: TIWHTMLTag;
 begin
   IWBSDisableRenderOptions(StyleRenderOptions);
   result := THackCustomRegion(Self).CallInheritedRenderHTML(AContext);
+
+  // read only one time
+  xHTMLName := HTMLName;
+  xHTMLInput := xHTMLName + '_input';
 
   // default class
   Result.AddClassParam('iwbs-tabs');
@@ -163,13 +173,22 @@ begin
     tag := tag.Contents.AddTag('a');
     tag.AddStringParam('data-toggle', IfThen(FTabOptions.Pills,'pill','tab'));
     tag.AddStringParam('href', '#'+TabPage.HTMLName);
+    tag.AddIntegerParam('tabIndex', i);
     tag.Contents.AddText(TabPage.Title);
   end;
 
-  // add hidden input element holding index of selected page
-  formTag := Result.Contents.AddTag('FORM');
-  formTag.AddStringParam('onSubmit', 'return FormDefaultSubmit();');
-  formTag.Contents.AddHiddenField(HTMLName + '_input', HTMLName + '_input', IntToStr(tabIndex));
+  // save seleted tab on change
+  Result.Contents.AddText('<script>');
+  Result.Contents.AddText('$("#'+xHTMLName+'").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=e.target.tabIndex; });');
+
+  FWebApplication := AContext.WebApplication;
+  if Assigned(OnAsyncChange) then begin
+    Result.Contents.AddText('$("#'+xHTMLName+'").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncChange", true, null, true); });');
+    AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
+  end;
+  Result.Contents.AddText('</script>');
+
+  Result.Contents.AddHiddenField(HTMLName + '_input', xHTMLInput, IntToStr(tabIndex));
 end;
 {$endregion}
 

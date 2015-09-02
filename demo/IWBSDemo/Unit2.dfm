@@ -245,7 +245,7 @@ object IWForm2: TIWForm2
           InactiveTabFont.Style = []
           ActiveTabColor = clWebDARKGRAY
           InactiveTabColor = clWebLIGHTGRAY
-          ActivePage = 5
+          ActivePage = 0
           Align = alClient
           BorderOptions.NumericWidth = 0
           BorderOptions.BorderWidth = cbwNumeric
@@ -1159,387 +1159,6 @@ object IWForm2: TIWForm2
                   Value = 'IWBSRadioButton5'
                   FriendlyName = 'IWBSRadioButton5'
                   SubmitOnAsyncEvent = True
-                end
-              end
-            end
-          end
-          object IWTabControl21Page0: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 783
-            RenderInvisibleControls = True
-            TabOrder = 0
-            Title = 'Form Controls'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion1: TIWBSRegion
-              Left = 0
-              Top = 0
-              Width = 1078
-              Height = 783
-              RenderInvisibleControls = True
-              Align = alClient
-              BSRegionType = bsrtRow
-              object IWBSRegion11: TIWBSRegion
-                Left = 9
-                Top = 12
-                Width = 334
-                Height = 481
-                RenderInvisibleControls = True
-                BSGridOptions.GridMDSpan = 4
-                BSRegionType = bsrtColumn
-                object IWText2: TIWText
-                  Left = 1
-                  Top = 1
-                  Width = 332
-                  Height = 220
-                  Align = alTop
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText2'
-                  Lines.Strings = (
-                    '<h3>Bootstrap supports the following form controls:</h3>'
-                    '<h4>'
-                    '<ul>'
-                    '<li>input</li>'
-                    '<li>textarea</li>'
-                    '<li>checkbox</li>'
-                    '<li>radio</li>'
-                    '<li>select</li>'
-                    '</ul>'
-                    '</h4>'
-                    '')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-              end
-              object IWBSRegion12: TIWBSRegion
-                Left = 361
-                Top = 12
-                Width = 714
-                Height = 753
-                RenderInvisibleControls = True
-                BSGridOptions.GridMDSpan = 6
-                BSRegionType = bsrtColumn
-                object IWBSInput4: TIWBSInput
-                  Left = 12
-                  Top = 18
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSInput1'
-                  MaxLength = 20
-                  SubmitOnAsyncEvent = True
-                  TabOrder = 30
-                  BSTextAlignment = bstaCenter
-                  Caption = ''
-                  PlaceHolder = 'Name'
-                end
-                object IWBSInput5: TIWBSInput
-                  Left = 12
-                  Top = 54
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSInput2'
-                  SubmitOnAsyncEvent = True
-                  TabOrder = 31
-                  Caption = ''
-                  InputType = bsitNumber
-                  PlaceHolder = 'Amount'
-                end
-                object IWBSInput6: TIWBSInput
-                  Left = 12
-                  Top = 93
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSInput3'
-                  Required = True
-                  SubmitOnAsyncEvent = True
-                  TabOrder = 32
-                  Caption = ''
-                  InputType = bsitPassword
-                  PlaceHolder = 'Password'
-                end
-                object IWBSMemo1: TIWBSMemo
-                  Left = 12
-                  Top = 127
-                  Width = 433
-                  Height = 121
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  BGColor = clNone
-                  Editable = True
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  InvisibleBorder = False
-                  HorizScrollBar = False
-                  VertScrollBar = False
-                  Required = False
-                  TabOrder = 33
-                  SubmitOnAsyncEvent = True
-                  BSTextAlignment = bstaRight
-                  BSTextCase = bstcUppercase
-                  Caption = ''
-                  PlaceHolder = 'This is a memo'
-                end
-                object IWBSRadioButton1: TIWBSRadioButton
-                  Left = 12
-                  Top = 360
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Caption = 'IWBSRadioButton1'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  Checked = True
-                  Group = 'no group'
-                  Value = 'IWBSRadioButton1'
-                  FriendlyName = 'IWBSRadioButton1'
-                  SubmitOnAsyncEvent = True
-                end
-                object IWBSRadioButton2: TIWBSRadioButton
-                  Left = 12
-                  Top = 380
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Caption = 'IWBSRadioButton1'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  Group = 'no group'
-                  Value = 'IWBSRadioButton1'
-                  FriendlyName = 'IWBSRadioButton1'
-                  SubmitOnAsyncEvent = True
-                end
-                object IWBSRadioButton3: TIWBSRadioButton
-                  Left = 12
-                  Top = 401
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Caption = 'IWBSRadioButton1'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  Group = 'no group'
-                  Value = 'IWBSRadioButton1'
-                  FriendlyName = 'IWBSRadioButton1'
-                  SubmitOnAsyncEvent = True
-                end
-                object IWBSRadioButton4: TIWBSRadioButton
-                  Left = 12
-                  Top = 420
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Caption = 'IWBSRadioButton1'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  Group = 'no group'
-                  Value = 'IWBSRadioButton1'
-                  FriendlyName = 'IWBSRadioButton1'
-                  SubmitOnAsyncEvent = True
-                end
-                object IWBSCheckBox1: TIWBSCheckBox
-                  Left = 12
-                  Top = 272
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Caption = 'IWBSCheckBox1'
-                  Editable = True
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 34
-                  Checked = False
-                  FriendlyName = 'IWBSCheckBox1'
-                end
-                object IWBSCheckBox2: TIWBSCheckBox
-                  Left = 12
-                  Top = 299
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Caption = 'IWBSCheckBox1'
-                  Editable = True
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 35
-                  Checked = False
-                  FriendlyName = 'IWBSCheckBox1'
-                end
-                object IWBSListbox1: TIWBSListbox
-                  Left = 12
-                  Top = 455
-                  Width = 121
-                  Height = 121
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  TabOrder = 36
-                  MaxItems = 0
-                  FriendlyName = 'IWBSListbox1'
-                  Items.Strings = (
-                    'item 1'
-                    'item 2'
-                    'item 3'
-                    'item 4')
-                  Caption = ''
-                  NoSelectionText = '-- No Selection --'
-                end
-                object IWBSComboBox1: TIWBSComboBox
-                  Left = 12
-                  Top = 588
-                  Width = 121
-                  Height = 21
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  TabOrder = 37
-                  ItemIndex = -1
-                  Items.Strings = (
-                    'item 1'
-                    'item 2'
-                    'item 3'
-                    'item 4')
-                  FriendlyName = 'IWBSComboBox1'
-                  Caption = ''
-                  NoSelectionText = '-- No Selection --'
-                end
-                object IWBSButton21: TIWBSButton
-                  Left = 600
-                  Top = 3
-                  Width = 75
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  StyleRenderOptions.RenderPosition = False
-                  StyleRenderOptions.RenderFont = False
-                  StyleRenderOptions.RenderStatus = False
-                  StyleRenderOptions.RenderAbsolute = False
-                  StyleRenderOptions.RenderPadding = False
-                  StyleRenderOptions.RenderBorder = False
-                  Caption = 'IWBSButton21'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton21'
-                  TabOrder = 46
                 end
               end
             end
@@ -3673,6 +3292,387 @@ object IWForm2: TIWForm2
               Width = 657
               Height = 444
               RenderInvisibleControls = True
+            end
+          end
+          object IWTabControl21Page0: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 783
+            RenderInvisibleControls = True
+            TabOrder = 0
+            Title = 'Form Controls'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion1: TIWBSRegion
+              Left = 0
+              Top = 0
+              Width = 1078
+              Height = 783
+              RenderInvisibleControls = True
+              Align = alClient
+              BSRegionType = bsrtRow
+              object IWBSRegion11: TIWBSRegion
+                Left = 9
+                Top = 12
+                Width = 334
+                Height = 481
+                RenderInvisibleControls = True
+                BSGridOptions.GridMDSpan = 4
+                BSRegionType = bsrtColumn
+                object IWText2: TIWText
+                  Left = 1
+                  Top = 1
+                  Width = 332
+                  Height = 220
+                  Align = alTop
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText2'
+                  Lines.Strings = (
+                    '<h3>Bootstrap supports the following form controls:</h3>'
+                    '<h4>'
+                    '<ul>'
+                    '<li>input</li>'
+                    '<li>textarea</li>'
+                    '<li>checkbox</li>'
+                    '<li>radio</li>'
+                    '<li>select</li>'
+                    '</ul>'
+                    '</h4>'
+                    '')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+              end
+              object IWBSRegion12: TIWBSRegion
+                Left = 361
+                Top = 12
+                Width = 714
+                Height = 753
+                RenderInvisibleControls = True
+                BSGridOptions.GridMDSpan = 6
+                BSRegionType = bsrtColumn
+                object IWBSInput4: TIWBSInput
+                  Left = 12
+                  Top = 18
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSInput1'
+                  MaxLength = 20
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 30
+                  BSTextAlignment = bstaCenter
+                  Caption = ''
+                  PlaceHolder = 'Name'
+                end
+                object IWBSInput5: TIWBSInput
+                  Left = 12
+                  Top = 54
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSInput2'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 31
+                  Caption = ''
+                  InputType = bsitNumber
+                  PlaceHolder = 'Amount'
+                end
+                object IWBSInput6: TIWBSInput
+                  Left = 12
+                  Top = 93
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSInput3'
+                  Required = True
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 32
+                  Caption = ''
+                  InputType = bsitPassword
+                  PlaceHolder = 'Password'
+                end
+                object IWBSMemo1: TIWBSMemo
+                  Left = 12
+                  Top = 127
+                  Width = 433
+                  Height = 121
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  BGColor = clNone
+                  Editable = True
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  InvisibleBorder = False
+                  HorizScrollBar = False
+                  VertScrollBar = False
+                  Required = False
+                  TabOrder = 33
+                  SubmitOnAsyncEvent = True
+                  BSTextAlignment = bstaRight
+                  BSTextCase = bstcUppercase
+                  Caption = ''
+                  PlaceHolder = 'This is a memo'
+                end
+                object IWBSRadioButton1: TIWBSRadioButton
+                  Left = 12
+                  Top = 360
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Caption = 'IWBSRadioButton1'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  Checked = True
+                  Group = 'no group'
+                  Value = 'IWBSRadioButton1'
+                  FriendlyName = 'IWBSRadioButton1'
+                  SubmitOnAsyncEvent = True
+                end
+                object IWBSRadioButton2: TIWBSRadioButton
+                  Left = 12
+                  Top = 380
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Caption = 'IWBSRadioButton1'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  Group = 'no group'
+                  Value = 'IWBSRadioButton1'
+                  FriendlyName = 'IWBSRadioButton1'
+                  SubmitOnAsyncEvent = True
+                end
+                object IWBSRadioButton3: TIWBSRadioButton
+                  Left = 12
+                  Top = 401
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Caption = 'IWBSRadioButton1'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  Group = 'no group'
+                  Value = 'IWBSRadioButton1'
+                  FriendlyName = 'IWBSRadioButton1'
+                  SubmitOnAsyncEvent = True
+                end
+                object IWBSRadioButton4: TIWBSRadioButton
+                  Left = 12
+                  Top = 420
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Caption = 'IWBSRadioButton1'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  Group = 'no group'
+                  Value = 'IWBSRadioButton1'
+                  FriendlyName = 'IWBSRadioButton1'
+                  SubmitOnAsyncEvent = True
+                end
+                object IWBSCheckBox1: TIWBSCheckBox
+                  Left = 12
+                  Top = 272
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Caption = 'IWBSCheckBox1'
+                  Editable = True
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  SubmitOnAsyncEvent = True
+                  Style = stNormal
+                  TabOrder = 34
+                  Checked = False
+                  FriendlyName = 'IWBSCheckBox1'
+                end
+                object IWBSCheckBox2: TIWBSCheckBox
+                  Left = 12
+                  Top = 299
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Caption = 'IWBSCheckBox1'
+                  Editable = True
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  SubmitOnAsyncEvent = True
+                  Style = stNormal
+                  TabOrder = 35
+                  Checked = False
+                  FriendlyName = 'IWBSCheckBox1'
+                end
+                object IWBSListbox1: TIWBSListbox
+                  Left = 12
+                  Top = 455
+                  Width = 121
+                  Height = 121
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  TabOrder = 36
+                  MaxItems = 0
+                  FriendlyName = 'IWBSListbox1'
+                  Items.Strings = (
+                    'item 1'
+                    'item 2'
+                    'item 3'
+                    'item 4')
+                  Caption = ''
+                  NoSelectionText = '-- No Selection --'
+                end
+                object IWBSComboBox1: TIWBSComboBox
+                  Left = 12
+                  Top = 588
+                  Width = 121
+                  Height = 21
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  TabOrder = 37
+                  ItemIndex = -1
+                  Items.Strings = (
+                    'item 1'
+                    'item 2'
+                    'item 3'
+                    'item 4')
+                  FriendlyName = 'IWBSComboBox1'
+                  Caption = ''
+                  NoSelectionText = '-- No Selection --'
+                end
+                object IWBSButton21: TIWBSButton
+                  Left = 600
+                  Top = 3
+                  Width = 75
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  StyleRenderOptions.RenderPosition = False
+                  StyleRenderOptions.RenderFont = False
+                  StyleRenderOptions.RenderStatus = False
+                  StyleRenderOptions.RenderAbsolute = False
+                  StyleRenderOptions.RenderPadding = False
+                  StyleRenderOptions.RenderBorder = False
+                  Caption = 'IWBSButton21'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton21'
+                  TabOrder = 46
+                end
+              end
             end
           end
         end

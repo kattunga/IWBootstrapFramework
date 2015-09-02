@@ -142,7 +142,6 @@ type
     IWRadioGroup1: TIWRadioGroup;
     procedure IWAppFormCreate(Sender: TObject);
     procedure IWButton1AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton30Click(Sender: TObject);
     procedure IWAppFormRender(Sender: TObject);
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -150,6 +149,7 @@ type
     procedure IWBSButton27AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
       AColumn: Integer);
+    procedure IWBSButton30Click(Sender: TObject);
   public
   end;
 
