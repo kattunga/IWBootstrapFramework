@@ -146,7 +146,7 @@ destructor TIWBSCustomRegion.Destroy;
 begin
   FGridOptions.Free;
   if FAsyncDestroy then
-    ExecuteJS('document.getElementById("'+HTMLName+'").remove();');
+    ExecuteJS('AsyncDestroyControl("'+HTMLName+'");');
   inherited;
 end;
 

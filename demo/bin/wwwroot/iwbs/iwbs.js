@@ -20,3 +20,11 @@ function AsyncCreateControl(tag, id, parentId) {
 		}
 	}
 }
+
+function AsyncDestroyControl(id) {
+	var iwelem = window[id+"IWCL"];
+	if (iwelem !== null) {
+		iwelem.IWRelease();
+		iwelem.remove();
+	}
+}
