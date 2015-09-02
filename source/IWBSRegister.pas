@@ -57,7 +57,6 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSLayoutMgr]);
 
   RegisterComponents('IW BootsTrap', [TIWBSRegion]);
-  RegisterComponents('IW BootsTrap', [TIWBSBtnGroup]);
   RegisterComponents('IW BootsTrap', [TIWBSInputGroup]);
   RegisterComponents('IW BootsTrap', [TIWBSModal]);
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
@@ -92,8 +91,6 @@ end;
 
 initialization
   IWRegisterPaintHandler('TIWBSRegion',TIWPaintHandlerRegion);
-  IWRegisterPaintHandler('TIWBSBtnGroup',TIWPaintHandlerRegion);
-  IWRegisterPaintHandler('TIWBSBtnToolBar',TIWPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSInputGroup',TIWPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSModal',TIWPaintHandlerRegion);
 
@@ -110,8 +107,6 @@ initialization
 
 finalization
   IWUnRegisterPaintHandler('TIWBSRegion');
-  IWUnRegisterPaintHandler('TIWBSBtnGroup');
-  IWUnRegisterPaintHandler('TIWBSBtnToolBar');
   IWUnRegisterPaintHandler('TIWBSInputGroup');
   IWUnRegisterPaintHandler('TIWBSModal');
 

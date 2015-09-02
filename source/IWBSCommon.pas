@@ -34,7 +34,7 @@ type
   TIWBSRegionType = (bsrtNone, bsrtContainer, bsrtContainerFluid, bsrtRow, bsrtColumn,
                      bsrtJumbotron, bsrtPageHeader, bsrtWell,
                      bsrtIWBSRegion, bsrtIWBSToolbar,
-                     bsrtButtonToolbar,
+                     bsrtButtonToolbar, bsrtButtonGroup,
                      bsrtModalContent, bsrtModalHeader, bsrtModalTitle, bsrtModalBody, bsrtModalFooter,
                      bsrtPanel, bsrtPanelBody, bsrtPanelHeading, bsrtPanelTitle, bsrtPanelFooter);
 
@@ -43,7 +43,7 @@ const
                     ('', 'container', 'container-fluid', 'row', 'column',
                      'jumbotron', 'page-header', 'well',
                      'iwbs-region', 'iwbs-toolbar',
-                     'btn-toolbar',
+                     'btn-toolbar', 'btn-group',
                      'modal-content', 'modal-heading', 'modal-title', 'modal-body', 'modal-footer',
                      'panel', 'panel-body', 'panel-heading', 'panel-title', 'panel-footer');
 

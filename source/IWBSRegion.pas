@@ -9,7 +9,6 @@ uses
   IWBSCommon, IWBSLayoutMgr;
 
 type
-
   TIWBSCustomRegion = class(TIWCustomRegion)
   private
     FAsyncDestroy: boolean;
@@ -46,23 +45,6 @@ type
     property StyleRenderOptions;
   end;
 
-  TIWBSRegion = class(TIWBSCustomRegion)
-  private
-    FContextualStyle: TIWBSContextualStyle;
-    FRegionType: TIWBSRegionType;
-    FRelativeSize: TIWBSRelativeSize;
-  protected
-    function GetClassString: string; override;
-    function GetRoleString: string; override;
-  public
-    constructor Create(AOwner: TComponent); override;
-  published
-    property BSContextualStyle: TIWBSContextualStyle read FContextualStyle write FContextualStyle default bsbsDefault;
-    property BSFormType;
-    property BSRegionType: TIWBSRegionType read FRegionType write FRegionType default bsrtIWBSRegion;
-    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
-  end;
-
   TIWBSBtnGroupOptions = class(TPersistent)
   private
     FVertical: boolean;
@@ -76,9 +58,12 @@ type
     property Size: TIWBSSize read FSize write FSize default bsszDefault;
   end;
 
-  TIWBSBtnGroup = class(TIWBSCustomRegion)
+  TIWBSRegion = class(TIWBSCustomRegion)
   private
-    FBGOptions: TIWBSBtnGroupOptions;
+    FButtonGroupOptions: TIWBSBtnGroupOptions;
+    FContextualStyle: TIWBSContextualStyle;
+    FRegionType: TIWBSRegionType;
+    FRelativeSize: TIWBSRelativeSize;
   protected
     function GetClassString: string; override;
     function GetRoleString: string; override;
@@ -86,7 +71,11 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property BGOptions: TIWBSBtnGroupOptions read FBGOptions write FBGOptions;
+    property BSButtonGroupOptions: TIWBSBtnGroupOptions read FButtonGroupOptions write FButtonGroupOptions;
+    property BSContextualStyle: TIWBSContextualStyle read FContextualStyle write FContextualStyle default bsbsDefault;
+    property BSFormType;
+    property BSRegionType: TIWBSRegionType read FRegionType write FRegionType default bsrtIWBSRegion;
+    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
   end;
 
   TIWBSModal = class(TIWBSCustomRegion)
@@ -343,9 +332,16 @@ end;
 constructor TIWBSRegion.Create(AOwner: TComponent);
 begin
   inherited;
+  FButtonGroupOptions := TIWBSBtnGroupOptions.Create(Self);
   FContextualStyle := bsbsDefault;
   FRegionType := bsrtIWBSRegion;
   FRelativeSize := bsrzDefault;
+end;
+
+destructor TIWBSRegion.Destroy;
+begin
+  FButtonGroupOptions.Free;
+  inherited;
 end;
 
 function TIWBSRegion.GetClassString: string;
@@ -358,7 +354,17 @@ begin
     Result := Result + ' panel-' + aIWBSContextualStyle[FContextualStyle]
 
   else if (FRegionType = bsrtWell) and (FRelativeSize <> bsrzDefault) then
-    Result := Result + ' well-' + aIWBSRelativeSize[FRelativeSize];
+    Result := Result + ' well-' + aIWBSRelativeSize[FRelativeSize]
+
+  else if FRegionType = bsrtButtonGroup then
+    begin
+      if FButtonGroupOptions.Vertical then
+        Result := Result + '-vertical';
+      if FButtonGroupOptions.FSize <> bsszDefault then
+        Result := Result + ' btn-group-'+aIWBSSize[FButtonGroupOptions.FSize];
+      if FButtonGroupOptions.FJustified then
+        Result := Result + ' btn-group-justified';
+    end;
 
   s := inherited;
   if s <> '' then
@@ -369,47 +375,19 @@ function TIWBSRegion.GetRoleString: string;
 begin
   if FRegionType = bsrtButtonToolbar then
     Result := 'toolbar'
+  else if FRegionType = bsrtButtonGroup then
+    Result := 'group'
   else
     Result := '';
 end;
 {$endregion}
 
-{$region 'TIWBSBtnGroup'}
+{$region 'TIWBSBtnGroupOptions'}
 constructor TIWBSBtnGroupOptions.Create(AOwner: TComponent);
 begin
   FVertical := false;
   FJustified := false;
   FSize := bsszDefault;
-end;
-
-constructor TIWBSBtnGroup.Create(AOwner: TComponent);
-begin
-  inherited;
-  FBGOptions := TIWBSBtnGroupOptions.Create(Self);
-end;
-
-destructor TIWBSBtnGroup.Destroy;
-begin
-  FBGOptions.Free;
-  inherited;
-end;
-
-function TIWBSBtnGroup.GetClassString: string;
-begin
-  if FBGOptions.FVertical then
-    Result := 'btn-group-vertical'
-  else
-    Result := 'btn-group';
-  if FBGOptions.FSize <> bsszDefault then
-    Result := Result + ' btn-group-'+aIWBSSize[FBGOptions.FSize];
-  if FBGOptions.FJustified then
-    Result := Result + ' btn-group-justified';
-  Result := Result + Trim(' '+inherited);
-end;
-
-function TIWBSBtnGroup.GetRoleString: string;
-begin
-  Result := 'group';
 end;
 {$endregion}
 
