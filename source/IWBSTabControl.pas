@@ -177,16 +177,21 @@ begin
     tag.Contents.AddText(TabPage.Title);
   end;
 
-  // save seleted tab on change
+  // add script tag
   Result.Contents.AddText('<script>');
-  Result.Contents.AddText('$("#'+xHTMLName+'").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=e.target.tabIndex; });');
+  try
+    // save seleted tab on change
+    Result.Contents.AddText('$("#'+xHTMLName+'").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=e.target.tabIndex; });');
 
-  FWebApplication := AContext.WebApplication;
-  if Assigned(OnAsyncChange) then begin
-    Result.Contents.AddText('$("#'+xHTMLName+'").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncChange", true, null, true); });');
-    AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
+    // event async change
+    FWebApplication := AContext.WebApplication;
+    if Assigned(OnAsyncChange) then begin
+      Result.Contents.AddText('$("#'+xHTMLName+'").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncChange", true, null, true); });');
+      AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
+    end;
+  finally
+    Result.Contents.AddText('</script>');
   end;
-  Result.Contents.AddText('</script>');
 
   Result.Contents.AddHiddenField(HTMLName + '_input', xHTMLInput, IntToStr(tabIndex));
 end;
