@@ -134,6 +134,7 @@ type
     FRelativeSize: TIWBSRelativeSize;
   public
     constructor Create(AOwner: TComponent); override;
+    function GetClassString: string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
     property Caption: string read FCaption write FCaption;
@@ -615,12 +616,22 @@ begin
   FRelativeSize := bsrzDefault;
 end;
 
+function TIWBSInputGroup.GetClassString: string;
+var
+  s: string;
+begin
+  Result := 'input-group';
+  if FRelativeSize <> bsrzDefault then
+    Result := Result + ' input-group-'+aIWBSRelativeSize[FRelativeSize];
+  s := inherited;
+  if s <> '' then
+    Result := Result + ' ' + s;
+end;
+
 function TIWBSInputGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
-  Result.AddClassParam('input-group');
-  if FRelativeSize <> bsrzDefault then
-    Result.AddClassParam('input-group-'+aIWBSRelativeSize[FRelativeSize]);
+  Result.AddClassParam(GetClassString);
   Result := CreateInputFormGroup(ParentContainer, Result, FCaption, HTMLName);
 end;
 {$endregion}

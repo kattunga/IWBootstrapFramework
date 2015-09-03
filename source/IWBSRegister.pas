@@ -2,7 +2,7 @@ unit IWBSRegister;
 
 interface
 
-uses System.Classes, DesignEditors;
+uses System.Classes, DesignEditors, IWDsnPaintHandlers;
 
 type
   TGlyphiconEditor = class(TEnumProperty)
@@ -12,12 +12,17 @@ type
     procedure SetValue(const Value: string); override;
   end;
 
+  TIWBSPaintHandlerBSRegion = class (TIWPaintHandlerRegion)
+  public
+    procedure Paint; override;
+  end;
+
 procedure Register;
 
 implementation
 
-uses DesignIntf, Winapi.Windows,
-     IWDsnPaintHandlers, IWBaseControl,
+uses DesignIntf, Winapi.Windows, Vcl.Graphics,
+     IWBaseControl,
      IWBSLayoutMgr, IWBSRegion, IWBSControls, IWBSInput, IWBSTabControl;
 
 function TGlyphiconEditor.GetValue: string;
@@ -50,6 +55,23 @@ end;
 procedure TGlyphiconEditor.SetValue(const Value: string);
 begin
   SetStrValue(Value);
+end;
+
+procedure TIWBSPaintHandlerBSRegion.Paint;
+var
+  LRect : TRect;
+  s: string;
+  w: integer;
+begin
+  inherited;
+  if Control is TIWBSCustomRegion then begin
+    ControlCanvas.Font.Name := 'Courier New';
+    ControlCanvas.Font.Color := clGray;
+    s := TIWBSCustomRegion(Control).GetClassString;
+    w := ControlCanvas.TextWidth(s);
+    LRect := Rect(Control.ClientWidth-w-10, 2, Control.Width, 20);
+    ControlCanvas.TextRect(LRect,s,[]);
+  end;
 end;
 
 procedure Register;
@@ -95,9 +117,9 @@ begin
 end;
 
 initialization
-  IWRegisterPaintHandler('TIWBSRegion',TIWPaintHandlerRegion);
-  IWRegisterPaintHandler('TIWBSInputGroup',TIWPaintHandlerRegion);
-  IWRegisterPaintHandler('TIWBSModal',TIWPaintHandlerRegion);
+  IWRegisterPaintHandler('TIWBSRegion',TIWBSPaintHandlerBSRegion);
+  IWRegisterPaintHandler('TIWBSInputGroup',TIWBSPaintHandlerBSRegion);
+  IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerBSRegion);
 
   IWRegisterPaintHandler('TIWBSInput',TIWPaintHandlerEdit);
   IWRegisterPaintHandler('TIWBSMemo',TIWPaintHandlerMemo);

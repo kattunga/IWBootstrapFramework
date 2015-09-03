@@ -23,8 +23,6 @@ type
   protected
     function ContainerPrefix: string; override;
     procedure AsyncSetAttributes; virtual;
-    function GetClassString: string; virtual;
-    function GetRoleString: string; virtual;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); virtual;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
@@ -35,6 +33,9 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure AsyncRenderComponent(ARenderContent: boolean = False);
+    property Canvas;
+    function GetClassString: string; virtual;
+    function GetRoleString: string; virtual;
   published
     property Align;
     property AsyncDestroy: boolean read FAsyncDestroy write FAsyncDestroy default false;
