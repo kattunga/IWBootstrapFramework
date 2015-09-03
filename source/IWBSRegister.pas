@@ -18,7 +18,7 @@ implementation
 
 uses DesignIntf, Winapi.Windows,
      IWDsnPaintHandlers, IWBaseControl,
-     IWBSLayoutMgr, IWBSRegion, IWBSInput, IWBSTabControl;
+     IWBSLayoutMgr, IWBSRegion, IWBSControls, IWBSInput, IWBSTabControl;
 
 function TGlyphiconEditor.GetValue: string;
 begin
@@ -82,6 +82,11 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSButton]);
   RegisterPropertyEditor(TypeInfo(string), TIWBSButton,'BSGlyphicon', TGlyphiconEditor);
 
+  RegisterComponents('IW BootsTrap', [TIWBSLabel]);
+
+  RegisterComponents('IW BootsTrap', [TIWBSGlyphicon]);
+  RegisterPropertyEditor(TypeInfo(string), TIWBSGlyphicon,'BSGlyphicon', TGlyphiconEditor);
+
   RegisterComponents('IW BootsTrap', [TIWBSTabControl]);
   UnlistPublishedProperty(TIWBSTabControl, 'ActiveTabFont');
   UnlistPublishedProperty(TIWBSTabControl, 'InactiveTabFont');
@@ -103,6 +108,8 @@ initialization
 
   IWRegisterPaintHandler('TIWBSButton',TIWPaintHandlerButton);
 
+  IWRegisterPaintHandler('TIWBSLabel',TIWPaintHandlerLabel);
+
   IWRegisterPaintHandler('TIWBSTabControl',TIWPaintHandlerTabControl);
 
 finalization
@@ -118,6 +125,8 @@ finalization
   IWUnRegisterPaintHandler('TIWBSComboBox');
 
   IWUnRegisterPaintHandler('TIWBSButton');
+
+  IWUnRegisterPaintHandler('TIWBSLabel');
 
   IWUnRegisterPaintHandler('TIWBSTabControl');
 

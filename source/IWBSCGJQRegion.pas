@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
   IWContainer, IWHTMLContainer, IWHTML40Container, IWRegion, IW.Common.Strings,
   IWRenderContext, IWHTMLTag,
-  IWCGJQRegion, IWBSCommon;
+  IWCGJQRegion, IWBSCommon, IWBSRegionCommon;
 
 type
   TIWBSCGJQRegion = class(TIWCGJQCustomRegion)
@@ -60,7 +60,7 @@ begin
 
   // bootstrap settings
   FRegionType := bsrtIWBSRegion;
-  FGridOptions := TIWBSGridOptions.Create(Self);
+  FGridOptions := TIWBSGridOptions.Create;
   FFormType := bsftNoForm;
   FLayoutMrg := True;
 end;

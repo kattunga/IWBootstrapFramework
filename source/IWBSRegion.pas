@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
   IWBaseContainerLayout, IWContainer, IWHTMLContainer, IWHTML40Container, IWRegion, IW.Common.Strings,
   IWRenderContext, IWHTMLTag, IWBaseInterfaces, IWXMLTag, IWMarkupLanguageTag, IW.Common.RenderStream,
-  IWBSCommon, IWBSLayoutMgr;
+  IWBSCommon, IWBSRegionCommon, IWBSLayoutMgr;
 
 type
   TIWBSCustomRegion = class(TIWCustomRegion)
@@ -126,8 +126,8 @@ begin
   FAsyncDestroy := False;
   FCss := '';
   FFormType := bsftNoForm;
-  FGridOptions := TIWBSGridOptions.Create(Self);
-  FFormOptions := TIWBSFormOptions.Create(Self);
+  FGridOptions := TIWBSGridOptions.Create;
+  FFormOptions := TIWBSFormOptions.Create;
   FLayoutMrg := True;
 
   ClipRegion := False;

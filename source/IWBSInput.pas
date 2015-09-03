@@ -142,7 +142,7 @@ type
 
 implementation
 
-uses IWBaseInterfaces, IWColor, Graphics, IWBSUtils;
+uses IWBaseInterfaces, IWColor, Graphics, IWBSRegionCommon, IWBSUtils;
 
 {$region 'help functions'}
 function CreateButtonFormGroup(AParentContainer: IIWBaseContainer; ATag: TIWHTMLTag; const AHTMLName: string): TIWHTMLTag;
@@ -228,19 +228,6 @@ begin
     end
   else
     Result := Tag;
-end;
-
-function CreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
-begin
-  Result := TIWHTMLTag.CreateTag('span');
-  try
-    Result.AddClassParam('input-group-'+css);
-    Result.Contents.AddTagAsObject(ATag);
-  except
-    FreeAndNil(Result);
-    FreeAndNil(ATag);
-    raise;
-  end;
 end;
 {$endregion}
 

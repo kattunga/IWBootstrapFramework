@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.StrUtils, Vcl.Controls, Vcl.Forms, Vcl.Graphics,
   IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
   IWContainer, IWHTMLContainer, IWHTML40Container, IWRegion, IWCompTabControl, IWBaseContainerLayout,
-  IWRenderContext, IWHTMLTag, IWBSCommon, IWBSLayoutMgr;
+  IWRenderContext, IWHTMLTag, IWBSCommon, IWBSRegionCommon;
 
 type
   TIWBSTabOptions = class(TPersistent)
@@ -52,7 +52,7 @@ type
 
 implementation
 
-uses IWLists, IWBSutils;
+uses IWLists, IWBSutils, IWBSLayoutMgr;
 
 {$region 'THackCustomRegion'}
 type
@@ -82,7 +82,7 @@ constructor TIWBSTabControl.Create(AOwner: TComponent);
 begin
   inherited;
   FFormType := bsftNoForm;
-  FGridOptions := TIWBSGridOptions.Create(Self);
+  FGridOptions := TIWBSGridOptions.Create;
   FLayoutMrg := True;
   FTabOptions := TIWBSTabOptions.Create(Self);
   Color := clNone;

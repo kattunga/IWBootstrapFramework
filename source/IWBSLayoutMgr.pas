@@ -5,7 +5,7 @@ interface
 uses
   System.Classes, System.SysUtils, System.StrUtils, Vcl.Controls,
   IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag,
-  IWBSCommon;
+  IWBSCommon, IWBSRegionCommon;
 
 type
 
@@ -39,8 +39,8 @@ implementation
 
 uses
   IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists,
-  IWRegion, IWCompTabControl, IW.Common.Strings,
-  IWBSRegion, IWBSTabControl;
+  IWRegion, IW.Common.Strings,
+  IWBSRegion;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
@@ -170,7 +170,7 @@ begin
   try
 
     // TIWBSTabControl
-    if Container.InterfaceInstance is TIWBSTabControl then
+    if Container.InterfaceInstance.ClassNameIs('TIWBSTabControl') then
       LTmp.WriteLine('<div class="tab-content">');
 
     // input form
@@ -214,7 +214,7 @@ begin
       LTmp.Write('</form>');
 
     // close tabs
-    if Container.InterfaceInstance is TIWBSTabControl then
+    if Container.InterfaceInstance.ClassNameIs('TIWBSTabControl') then
       LTmp.WriteLine('</div>');
 
     // write to buffer
@@ -238,7 +238,7 @@ begin
   // non IWBS components hacks
   if Assigned(LHTML) then begin
     if AControl.InterfaceInstance.ClassName = 'TIWTabPage' then
-      LHTML.Params.Values['class'] := IWBSCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass
+      LHTML.Params.Values['class'] := IWBSRegionCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass
     else if AControl.InterfaceInstance.ClassName = 'TIWEdit' then
       LHTML.Params.Values['class'] := 'form-control'
     else if AControl.InterfaceInstance.ClassName = 'TIWMemo' then
@@ -263,5 +263,8 @@ begin
 
   inherited;
 end;
+
+initialization
+  IWBSRefreshCacheParam := FormatDateTime('yyyymmddhhnnsszzz', now);
 
 end.

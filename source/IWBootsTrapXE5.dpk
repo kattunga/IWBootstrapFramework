@@ -45,7 +45,9 @@ contains
   IWBSRegion in 'IWBSRegion.pas',
   IWBSInput in 'IWBSInput.pas',
   IWBSLayoutMgr in 'IWBSLayoutMgr.pas',
-  IWBSTabControl in 'IWBSTabControl.pas';
+  IWBSTabControl in 'IWBSTabControl.pas',
+  IWBSRegionCommon in 'IWBSRegionCommon.pas',
+  IWBSControls in 'IWBSControls.pas';
 
 end.
 

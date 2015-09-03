@@ -131,6 +131,8 @@
         <DCCReference Include="IWBSInput.pas"/>
         <DCCReference Include="IWBSLayoutMgr.pas"/>
         <DCCReference Include="IWBSTabControl.pas"/>
+        <DCCReference Include="IWBSRegionCommon.pas"/>
+        <DCCReference Include="IWBSControls.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

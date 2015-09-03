@@ -13,7 +13,7 @@ uses
   IWCompLabel, IWCompCheckbox,
   IWCompText, IWCompMemo, IWLayoutMgrForm, IWBSLayoutMgr,
   IWCompRadioButton, IWCompOrderedListbox, IWHTMLControls, IWCompListbox,
-  IWCompGrids, Vcl.Imaging.jpeg;
+  IWCompGrids, Vcl.Imaging.jpeg, IWBSControls;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -140,6 +140,17 @@ type
     IWBSRadioButton8: TIWBSRadioButton;
     IWBSRadioButton9: TIWBSRadioButton;
     LstFormType: TIWBSListbox;
+    IWBSRegion1: TIWBSRegion;
+    IWLabel3: TIWLabel;
+    IWEdit2: TIWEdit;
+    IWBSInputGroup6: TIWBSInputGroup;
+    IWBSInput4: TIWBSInput;
+    IWBSGlyphicon1: TIWBSGlyphicon;
+    IWBSGlyphicon2: TIWBSGlyphicon;
+    IWBSInputGroup7: TIWBSInputGroup;
+    IWBSInput5: TIWBSInput;
+    IWBSLabel1: TIWBSLabel;
+    IWBSLabel2: TIWBSLabel;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -154,7 +165,7 @@ implementation
 
 {$R *.dfm}
 
-uses IWBSUtils, IWBSCommon, unit1, unit3;
+uses IWBSUtils, IWBSRegionCommon, unit1, unit3;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);
