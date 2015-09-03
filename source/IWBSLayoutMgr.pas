@@ -90,8 +90,8 @@ begin
 
   ABuffer.WriteLine(PreHeadContent);
 
-  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'bootstrap-'+IWBSbslibversion+'/css/bootstrap.min.css"</link>');
-  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'iwbs.css?v='+IWBSRefreshCacheParam+'"</link>');
+  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'bootstrap-'+IWBSbslibversion+'/css/bootstrap.min.css">');
+  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'iwbs.css?v='+IWBSRefreshCacheParam+'">');
   ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'jquery-'+IWBSjqlibversion+'.min.js"></script>');
   ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'bootstrap-'+IWBSbslibversion+'/js/bootstrap.min.js"></script>');
   ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'iwbs.js?v='+IWBSRefreshCacheParam+'"></script>');

@@ -14,6 +14,7 @@ type
     FAsyncDestroy: boolean;
     FCss: string;
     FFormType: TIWBSFormType;
+    FFormOptions: TIWBSFormOptions;
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;
     FRegionDiv: TIWHTMLTag;
@@ -34,10 +35,11 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure AsyncRenderComponent(ARenderContent: boolean = False);
-    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
   published
     property Align;
     property AsyncDestroy: boolean read FAsyncDestroy write FAsyncDestroy default false;
+    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
+    property BSFormOptions: TIWBSFormOptions read FFormOptions write FFormOptions;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
     property ClipRegion default False;
@@ -73,7 +75,6 @@ type
   published
     property BSButtonGroupOptions: TIWBSBtnGroupOptions read FButtonGroupOptions write FButtonGroupOptions;
     property BSContextualStyle: TIWBSContextualStyle read FContextualStyle write FContextualStyle default bsbsDefault;
-    property BSFormType;
     property BSRegionType: TIWBSRegionType read FRegionType write FRegionType default bsrtIWBSRegion;
     property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
   end;
@@ -126,6 +127,7 @@ begin
   FCss := '';
   FFormType := bsftNoForm;
   FGridOptions := TIWBSGridOptions.Create(Self);
+  FFormOptions := TIWBSFormOptions.Create(Self);
   FLayoutMrg := True;
 
   ClipRegion := False;
@@ -133,6 +135,7 @@ end;
 
 destructor TIWBSCustomRegion.Destroy;
 begin
+  FFormOptions.Free;
   FGridOptions.Free;
   if FAsyncDestroy then
     ExecuteJS('AsyncDestroyControl("'+HTMLName+'");');
@@ -279,11 +282,11 @@ end;
 
 function TIWBSCustomRegion.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  if FLayoutMrg then
-    if (Self.LayoutMgr = nil) or not (Self.LayoutMgr.Able) then begin
+  if FLayoutMrg then begin
+    if not (Self.LayoutMgr is TIWBSLayoutMgr) then
       Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
-      TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
-    end;
+    TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
+  end;
   Result := inherited;
 end;
 
@@ -368,7 +371,7 @@ begin
 
   s := inherited;
   if s <> '' then
-    Result := ' ' + s;
+    Result := Result + ' ' + s;
 end;
 
 function TIWBSRegion.GetRoleString: string;

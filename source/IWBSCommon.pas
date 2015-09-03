@@ -7,8 +7,6 @@ uses System.Classes, System.SysUtils, Vcl.Controls, Vcl.Forms,
 
 type
   TIWBSFormType = (bsftNoForm, bsftInline, bsftHorizontal, bsftVertical);
-  TIWBSChildRenderOption = (bschDisablePosition, bschDisableSize, bschDisableFont, bschDisableBorder);
-  TIWBSChildRenderOptions = set of TIWBSChildRenderOption;
 
 type
   TIWBSSize = (bsszDefault, bsszLg, bsszMd, bsszSm, bsszXs);
@@ -95,6 +93,23 @@ type
     property GridLGSpan: integer read FGridLGSpan write FGridLGSpan default 0;
   end;
 
+  TIWBSFormOptions = class(TPersistent)
+  private
+    FCaptionsSize: TIWBSGridOptions;
+    FInputsSize: TIWBSGridOptions;
+  protected
+    procedure SetCaptionsSize(const Value: TIWBSGridOptions);
+    procedure SetInputsSize(const Value: TIWBSGridOptions);
+  public
+    constructor Create(AOwner: TControl);
+    destructor Destroy; override;
+    function GetOffsetClassString: string;
+  published
+    property CaptionsSize: TIWBSGridOptions read FCaptionsSize write SetCaptionsSize;
+    property InputsSize: TIWBSGridOptions read FInputsSize write SetInputsSize;
+  end;
+
+
 type
   TIWBSRenderingSortMethod = (bsrmSortYX, bsrmSortXY);
 
@@ -108,6 +123,35 @@ implementation
 
 uses IWBaseInterfaces, IWHTML40Interfaces, IWLists, IWBaseHTMLControl, IWHTMLContainer,
      IWRegion, IWBSTabControl, IWBSLayoutMgr;
+
+procedure AddCssValue(var s: string; const Value: string);
+begin
+  if s <> '' then
+    s := s + ' ';
+  s := s + Value;
+end;
+
+function GetGridClassString(AGridXSOffset, AGridSMOffset, AGridMDOffset, AGridLGOffset, AGridXSSpan, AGridSMSpan, AGridMDSpan, AGridLGSpan: integer): string;
+begin
+  Result := '';
+  if AGridXSOffset > 0 then
+    AddCssValue(Result, 'col-xs-offset-'+IntToStr(AGridXSOffset));
+  if AGridSMOffset > 0 then
+    AddCssValue(Result, 'col-sm-offset-'+IntToStr(AGridSMOffset));
+  if AGridMDOffset > 0 then
+    AddCssValue(Result, 'col-md-offset-'+IntToStr(AGridMDOffset));
+  if AGridLGOffset > 0 then
+    AddCssValue(Result, 'col-lg-offset-'+IntToStr(AGridLGOffset));
+
+  if (AGridXSSpan > 0) then
+    AddCssValue(Result, 'col-xs-'+IntToStr(AGridXSSpan));
+  if (AGridSMSpan > 0) then
+    AddCssValue(Result, 'col-sm-'+IntToStr(AGridSMSpan));
+  if (AGridMDSpan > 0) then
+    AddCssValue(Result, 'col-md-'+IntToStr(AGridMDSpan));
+  if (AGridLGSpan > 0) then
+    AddCssValue(Result, 'col-lg-'+IntToStr(AGridLGSpan));
+end;
 
 {$region 'TIWTabPage'}
 function TIWTabPage.CSSClass: string;
@@ -137,31 +181,46 @@ begin
 end;
 
 function TIWBSGridOptions.GetClassString: string;
-  procedure AddValue(var s: string; const Value: string);
-  begin
-    if s <> '' then
-      s := s + ' ';
-    s := s + Value;
-  end;
 begin
-  Result := '';
-  if FGridXSOffset > 0 then
-    AddValue(Result, 'col-xs-offset-'+IntToStr(FGridXSOffset));
-  if FGridSMOffset > 0 then
-    AddValue(Result, 'col-sm-offset-'+IntToStr(FGridSMOffset));
-  if FGridMDOffset > 0 then
-    AddValue(Result, 'col-md-offset-'+IntToStr(FGridMDOffset));
-  if FGridLGOffset > 0 then
-    AddValue(Result, 'col-lg-offset-'+IntToStr(FGridLGOffset));
+  Result := GetGridClassString(FGridXSOffset, FGridSMOffset, FGridMDOffset, FGridLGOffset, FGridXSSpan, FGridSMSpan, FGridMDSpan, FGridLGSpan);
+end;
+{$endregion}
 
-  if (FGridXSSpan > 0) then
-    AddValue(Result, 'col-xs-'+IntToStr(FGridXSSpan));
-  if (FGridSMSpan > 0) then
-    AddValue(Result, 'col-sm-'+IntToStr(FGridSMSpan));
-  if (FGridMDSpan > 0) then
-    AddValue(Result, 'col-md-'+IntToStr(FGridMDSpan));
-  if (FGridLGSpan > 0) then
-    AddValue(Result, 'col-lg-'+IntToStr(FGridLGSpan));
+{$region 'TIWBSFormOptions'}
+constructor TIWBSFormOptions.Create(AOwner: TControl);
+begin
+  FCaptionsSize := TIWBSGridOptions.Create(AOwner);
+  FInputsSize := TIWBSGridOptions.Create(AOwner);
+end;
+
+destructor TIWBSFormOptions.Destroy;
+begin
+  FCaptionsSize.Free;
+  FInputsSize.Free;
+  inherited;
+end;
+
+procedure TIWBSFormOptions.SetCaptionsSize(const Value: TIWBSGridOptions);
+begin
+  FCaptionsSize.Assign(Value);
+end;
+
+procedure TIWBSFormOptions.SetInputsSize(const Value: TIWBSGridOptions);
+begin
+  FInputsSize.Assign(Value);
+end;
+
+function TIWBSFormOptions.GetOffsetClassString: string;
+begin
+  Result := GetGridClassString(
+    FCaptionsSize.FGridXSOffset+FCaptionsSize.FGridXSSpan+FInputsSize.FGridXSOffset,
+    FCaptionsSize.FGridSMOffset+FCaptionsSize.FGridSMSpan+FInputsSize.FGridSMOffset,
+    FCaptionsSize.FGridMDOffset+FCaptionsSize.FGridMDSpan+FInputsSize.FGridMDOffset,
+    FCaptionsSize.FGridLGOffset+FCaptionsSize.FGridLGSpan+FInputsSize.FGridLGOffset,
+    FInputsSize.FGridXSSpan,
+    FInputsSize.FGridSMSpan,
+    FInputsSize.FGridMDSpan,
+    FInputsSize.FGridLGSpan);
 end;
 {$endregion}
 

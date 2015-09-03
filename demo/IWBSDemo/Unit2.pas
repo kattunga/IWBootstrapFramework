@@ -18,7 +18,6 @@ uses
 type
   TIWForm2 = class(TIWAppForm)
     IWTabControl21: TIWBSTabControl;
-    IWTabControl21Page0: TIWTabPage;
     IWTabControl21Page1: TIWTabPage;
     IWBSRegion3: TIWBSRegion;
     IWBSButton30: TIWBSButton;
@@ -53,14 +52,6 @@ type
     IWBSButton17: TIWBSButton;
     IWBSButton18: TIWBSButton;
     IWBSButton19: TIWBSButton;
-    IWBSInput4: TIWBSInput;
-    IWBSInput5: TIWBSInput;
-    IWBSInput6: TIWBSInput;
-    IWBSMemo1: TIWBSMemo;
-    IWText2: TIWText;
-    IWBSRegion1: TIWBSRegion;
-    IWBSRegion11: TIWBSRegion;
-    IWBSRegion12: TIWBSRegion;
     IWTabControl21Page2: TIWTabPage;
     IWBSRegion9: TIWBSRegion;
     IWText1: TIWText;
@@ -69,14 +60,6 @@ type
     chkTabsPills: TIWBSCheckBox;
     chkTabsStacked: TIWBSCheckBox;
     chkContFluid: TIWBSCheckBox;
-    IWBSRadioButton1: TIWBSRadioButton;
-    IWBSRadioButton2: TIWBSRadioButton;
-    IWBSRadioButton3: TIWBSRadioButton;
-    IWBSRadioButton4: TIWBSRadioButton;
-    IWBSCheckBox1: TIWBSCheckBox;
-    IWBSCheckBox2: TIWBSCheckBox;
-    IWBSListbox1: TIWBSListbox;
-    IWBSComboBox1: TIWBSComboBox;
     IWTabControl21Page3: TIWTabPage;
     IWBSRegion2: TIWBSRegion;
     IWText3: TIWText;
@@ -91,7 +74,6 @@ type
     IWText4: TIWText;
     IWBSButton20: TIWBSButton;
     IWBSInput7: TIWBSInput;
-    IWBSButton21: TIWBSButton;
     IWTabControl21Page4: TIWTabPage;
     IWBSRegion15: TIWBSRegion;
     IWBSInputGroup1: TIWBSInputGroup;
@@ -151,7 +133,13 @@ type
     IWText9: TIWText;
     IWBSRegion24: TIWBSRegion;
     IWText10: TIWText;
-    procedure IWButton1AsyncClick(Sender: TObject; EventParams: TStringList);
+    IWBSCheckBox4: TIWBSCheckBox;
+    IWBSRegion25: TIWBSRegion;
+    IWBSRadioButton6: TIWBSRadioButton;
+    IWBSRadioButton7: TIWBSRadioButton;
+    IWBSRadioButton8: TIWBSRadioButton;
+    IWBSRadioButton9: TIWBSRadioButton;
+    LstFormType: TIWBSListbox;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -205,12 +193,6 @@ begin
   cmp.IWBSModal1.AsyncRenderComponent(true);
 end;
 
-procedure TIWForm2.IWButton1AsyncClick(Sender: TObject;
-  EventParams: TStringList);
-begin
-  IWBSInput4.ReadOnly := true;
-end;
-
 procedure TIWForm2.IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
   AColumn: Integer);
 begin
@@ -230,6 +212,15 @@ begin
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainerFluid
   else
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
+
+  if LstFormType.SelectedText = 'form-vertical' then
+    IWBSRegion13.BSFormType := bsftVertical
+  else if LstFormType.SelectedText = 'form-horizontal' then
+    IWBSRegion13.BSFormType := bsftHorizontal
+  else if LstFormType.SelectedText = 'form-inline' then
+    IWBSRegion13.BSFormType := bsftInline
+  else
+    IWBSRegion13.BSFormType := bsftNoForm
 end;
 
 initialization

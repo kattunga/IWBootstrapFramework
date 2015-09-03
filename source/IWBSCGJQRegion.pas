@@ -78,11 +78,11 @@ end;
 
 function TIWBSCGJQRegion.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  if FLayoutMrg then
-    if (Self.LayoutMgr = nil) or not (Self.LayoutMgr.Able) then begin
+  if FLayoutMrg then begin
+    if not (Self.LayoutMgr is TIWBSLayoutMgr) then
       Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
-      TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
-    end;
+    TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
+  end;
   Result := inherited;
 end;
 

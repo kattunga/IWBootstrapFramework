@@ -142,24 +142,54 @@ type
 
 implementation
 
-uses IWColor, Graphics, IWBSUtils;
+uses IWBaseInterfaces, IWColor, Graphics, IWBSUtils;
 
 {$region 'help functions'}
-function CreateFormControl(ATag: TIWHTMLTag; const ACaption, HTMLName: string): TIWHTMLTag;
+function CreateButtonFormGroup(AParentContainer: IIWBaseContainer; ATag: TIWHTMLTag; const AHTMLName: string): TIWHTMLTag;
 var
-  lablTag: TIWHTMLTag;
+  LTag: TIWHTMLTag;
+begin
+  if (AParentContainer.InterfaceInstance is TIWBSCustomRegion) and (TIWBSCustomRegion(AParentContainer.InterfaceInstance).BSFormType <> bsftNoForm) then
+    begin
+      Result := TIWHTMLTag.CreateTag('div');
+      Result.AddClassParam('form-group');
+      Result.AddStringParam('id',AHTMLName+'_FG');
+      if TIWBSCustomRegion(AParentContainer.InterfaceInstance).BSFormType = bsftHorizontal then
+        begin
+          LTag := Result.Contents.AddTag('div');
+          LTag.AddClassParam(TIWBSCustomRegion(AParentContainer.InterfaceInstance).BSFormOptions.GetOffsetClassString);
+          LTag.Contents.AddTagAsObject(aTag);
+        end
+      else
+        Result.Contents.AddTagAsObject(aTag);
+    end
+  else
+    Result := ATag;
+end;
+
+function CreateInputFormGroup(AParentContainer: IIWBaseContainer; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
+var
+  lablTag, editTag: TIWHTMLTag;
 begin
   if ACaption <> '' then
     begin
       Result := TIWHTMLTag.CreateTag('div');
       try
         Result.AddClassParam('form-group');
-        Result.AddStringParam('id',HTMLName+'_FG');
+        Result.AddStringParam('id',AHTMLName+'_FG');
         lablTag := Result.Contents.AddTag('label');
         lablTag.AddClassParam('control-label');
-        lablTag.AddStringParam('for', HTMLName);
+        lablTag.AddStringParam('for', AHTMLName);
         lablTag.Contents.AddText(TIWBaseHTMLControl.TextToHTML(ACaption));
-        Result.Contents.AddTagAsObject(ATag);
+        if (AParentContainer.InterfaceInstance is TIWBSCustomRegion) and (TIWBSCustomRegion(AParentContainer.InterfaceInstance).BSFormType = bsftHorizontal) then
+          begin
+            lablTag.AddClassParam(TIWBSCustomRegion(AParentContainer.InterfaceInstance).BSFormOptions.CaptionsSize.GetClassString);
+            editTag := Result.Contents.AddTag('div');
+            editTag.AddClassParam(TIWBSCustomRegion(AParentContainer.InterfaceInstance).BSFormOptions.InputsSize.GetClassString);
+            editTag.Contents.AddTagAsObject(aTag);
+          end
+        else
+          Result.Contents.AddTagAsObject(ATag);
       except
         FreeAndNil(Result);
         FreeAndNil(ATag);
@@ -167,10 +197,10 @@ begin
       end;
     end
   else
-    Result := ATag;
+    Result := CreateButtonFormGroup(AParentContainer, ATag, AHTMLName);
 end;
 
-function CreateCheckBoxLabel(Tag: TIWHTMLTag; const css, Caption, Hint, HTMLName: string; ShowHint: boolean): TIWHTMLTag;
+function CreateCheckBoxLabel(AParentContainer: IIWBaseContainer; Tag: TIWHTMLTag; const css, Caption, Hint, HTMLName: string; ShowHint: boolean): TIWHTMLTag;
 var
   lablTag: TIWHTMLTag;
 begin
@@ -179,6 +209,9 @@ begin
       Result := TIWHTMLTag.CreateTag('div');
       try
         Result.AddClassParam(css);
+        if (AParentContainer.InterfaceInstance is TIWBSCustomRegion) and (TIWBSCustomRegion(AParentContainer.InterfaceInstance).BSFormType = bsftHorizontal) then
+          Result.AddClassParam(TIWBSCustomRegion(AParentContainer.InterfaceInstance).BSFormOptions.GetOffsetClassString);
+
         lablTag := Result.Contents.AddTag('label');
         lablTag.AddStringParam('id', HTMLName+'_CHKBCAPTION');
         if ShowHint and (Hint <> '') then begin
@@ -288,7 +321,7 @@ begin
     FreeAndNil(Result);
     raise;
   end;
-  Result := CreateFormControl(Result, FCaption, xHTMLName);
+  Result := CreateInputFormGroup(ParentContainer, Result, FCaption, xHTMLName);
 end;
 
 function TIWBSInput.RenderStyle(AContext: TIWCompContext): string;
@@ -311,14 +344,27 @@ begin
 end;
 
 function TIWBSMemo.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+var
+  s: string;
 begin
   Result := TIWXMLTag.CreateTag('control');
   try
     Result.AddStringParam('id', HTMLName);
+    Result.AddStringParam('type', 'iwbsmemo');
+    RenderAsyncProperty('autofocus', Result, FAutoFocus);
     RenderAsyncProperty('readonly', Result, ReadOnly);
-    RenderAsyncProperty('enabled', Result, Enabled);
-    RenderAsyncPropertyAsString('text', Result, Text, false);
+    RenderAsyncProperty('disabled', Result, not Enabled);
     RenderAsyncPropertyAsString('maxlength', Result, IntToStr(FMaxLength), true);
+    RenderAsyncProperty('required', Result, Required);
+    RenderAsyncPropertyAsString('placeholder', Result, TextToHTML(FPlaceHolder), true);
+    RenderAsyncPropertyAsString('rows', Result, IntToStr(FRows), true);
+    RenderAsyncPropertyAsString('style', Result, StyleValue(AContext), True);
+    with Result.Contents.AddTag('text') do begin
+      S := TextToHTML(Text, false, false);
+      if not FEndsWithCRLF and (Length(S) >= Length(sLineBreak)) then
+        SetLength(S, Length(S) - Length(sLineBreak));
+      Contents.AddText(S);
+    end;
   except
     FreeAndNil(Result);
     raise;
@@ -387,7 +433,7 @@ begin
     FreeAndNil(Result);
     raise;
   end;
-  Result := CreateFormControl(Result, FCaption, HTMLName);
+  Result := CreateInputFormGroup(ParentContainer, Result, FCaption, HTMLName);
 end;
 
 function TIWBSMemo.RenderStyle(AContext: TIWCompContext): string;
@@ -433,9 +479,9 @@ begin
     Result := CreateInputGroupAddOn(Result, 'addon')
   else
     if FInline then
-      Result := CreateCheckBoxLabel(Result, 'checkbox-inline', Caption, Hint, xHTMLName, ShowHint)
+      Result := CreateCheckBoxLabel(ParentContainer, Result, 'checkbox-inline', Caption, Hint, xHTMLName, ShowHint)
     else
-      Result := CreateCheckBoxLabel(Result, 'checkbox', Caption, Hint, xHTMLName, ShowHint);
+      Result := CreateCheckBoxLabel(ParentContainer, Result, 'checkbox', Caption, Hint, xHTMLName, ShowHint);
 end;
 {$endregion}
 
@@ -466,8 +512,6 @@ begin
       Result.Add('disabled');
     if Checked then
       Result.Add('checked');
-
-    Result.Contents.AddText(TextToHTML(Caption));
   except
     FreeAndNil(Result);
     raise;
@@ -476,7 +520,7 @@ begin
   if Parent is TIWBSInputGroup then
     Result := CreateInputGroupAddOn(Result, 'addon')
   else
-    Result := CreateCheckBoxLabel(Result, 'radio', Caption, Hint, xHTMLName, ShowHint);
+    Result := CreateCheckBoxLabel(ParentContainer, Result, 'radio', Caption, Hint, xHTMLName, ShowHint);
 end;
 {$endregion}
 
@@ -492,7 +536,7 @@ function TIWBSListbox.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result.AddClassParam('form-control');
-  Result := CreateFormControl(Result, FCaption, HTMLName);
+  Result := CreateInputFormGroup(ParentContainer, Result, FCaption, HTMLName);
 end;
 {$endregion}
 
@@ -508,7 +552,7 @@ function TIWBSComboBox.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result.AddClassParam('form-control');
-  Result := CreateFormControl(Result, FCaption, HTMLName);
+  Result := CreateInputFormGroup(ParentContainer, Result, FCaption, HTMLName);
 end;
 {$endregion}
 
@@ -527,6 +571,7 @@ var
   s: string;
   gspan: TIWHTMLTag;
 begin
+
   Result := TIWHTMLTag.CreateTag('button');
   try
     Result.AddStringParam('id', HTMLName);
@@ -564,11 +609,15 @@ begin
     else
       Result.Contents.AddText(s);
   except
-    FreeAndNil(result);
+    FreeAndNil(Result);
     raise;
   end;
-  if Parent is TIWBSInputGroup then
-    Result := CreateInputGroupAddOn(Result, 'btn');
+
+  if ParentContainer.InterfaceInstance is TIWBSInputGroup then
+    Result := CreateInputGroupAddOn(Result, 'btn')
+  else
+    Result := CreateButtonFormGroup(ParentContainer, Result, HTMLName);
+
 end;
 {$endregion}
 
@@ -585,7 +634,7 @@ begin
   Result.AddClassParam('input-group');
   if FRelativeSize <> bsrzDefault then
     Result.AddClassParam('input-group-'+aIWBSRelativeSize[FRelativeSize]);
-  Result := CreateFormControl(Result, FCaption, HTMLName);
+  Result := CreateInputFormGroup(ParentContainer, Result, FCaption, HTMLName);
 end;
 {$endregion}
 
