@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
-  IWBaseContainerLayout, IWContainer, IWHTMLContainer, IWHTML40Container, IWRegion, IW.Common.Strings,
+  IWBaseContainerLayout, IWContainer, IWControl, IWHTMLContainer, IWHTML40Container, IWRegion, IW.Common.Strings,
   IWRenderContext, IWHTMLTag, IWBaseInterfaces, IWXMLTag, IWMarkupLanguageTag, IW.Common.RenderStream,
   IWBSCommon, IWBSRegionCommon, IWBSLayoutMgr;
 
@@ -25,6 +25,7 @@ type
     procedure AsyncSetAttributes; virtual;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); virtual;
+    procedure InitControl; override;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
@@ -61,45 +62,57 @@ type
     property Size: TIWBSSize read FSize write FSize default bsszDefault;
   end;
 
+  TIWBSPanelStyle = (bspsDefault, bspsPrimary, bspsSuccess, bspsInfo, bspsWarning, bspsDanger);
+
   TIWBSRegion = class(TIWBSCustomRegion)
   private
     FButtonGroupOptions: TIWBSBtnGroupOptions;
-    FContextualStyle: TIWBSContextualStyle;
+    FPanelStyle: TIWBSPanelStyle;
     FRegionType: TIWBSRegionType;
     FRelativeSize: TIWBSRelativeSize;
-  protected
-    function GetClassString: string; override;
-    function GetRoleString: string; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    function GetClassString: string; override;
+    function GetRoleString: string; override;
+    procedure SetButtonGroupOptions(Value: TIWBSBtnGroupOptions);
+    procedure SetRegionType(Value: TIWBSRegionType);
+    procedure SetPanelStyle(Value: TIWBSPanelStyle);
+    procedure SetRelativeSize(Value: TIWBSRelativeSize);
   published
-    property BSButtonGroupOptions: TIWBSBtnGroupOptions read FButtonGroupOptions write FButtonGroupOptions;
-    property BSContextualStyle: TIWBSContextualStyle read FContextualStyle write FContextualStyle default bsbsDefault;
-    property BSRegionType: TIWBSRegionType read FRegionType write FRegionType default bsrtIWBSRegion;
-    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
+    property BSButtonGroupOptions: TIWBSBtnGroupOptions read FButtonGroupOptions write SetButtonGroupOptions;
+    property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
+    property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtIWBSRegion;
+    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write SetRelativeSize default bsrzDefault;
   end;
 
   TIWBSModal = class(TIWBSCustomRegion)
   private
+    FDestroyOnHide: boolean;
     FDialogSize: TIWBSSize;
     FFade: boolean;
     FModalVisible: boolean;
+    FOnAsyncShow: TIWAsyncEvent;
+    FOnAsyncHide: TIWAsyncEvent;
     function GetShowScript: string;
     function GetHideScript: string;
   protected
-    function GetClassString: string; override;
-    function GetRoleString: string; override;
     procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); override;
     procedure SetModalVisible(Value: boolean);
+    procedure DoOnAsyncShow(AParams: TStringList); virtual;
+    procedure DoOnAsyncHide(AParams: TStringList); virtual;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    function GetClassString: string; override;
+    function GetRoleString: string; override;
   published
-    property AsyncDestroy default true;
     property BSFade: boolean read FFade write FFade default false;
     property BSDialogSize: TIWBSSize read FDialogSize write FDialogSize default bsszDefault;
     property BSModalVisible: boolean read FModalVisible write SetModalVisible default false;
+    property DestroyOnHide: boolean read FDestroyOnHide write FDestroyOnHide default false;
+    property OnAsyncShow: TIWAsyncEvent read FOnAsyncShow write FOnAsyncShow;
+    property OnAsyncHide: TIWAsyncEvent read FOnAsyncHide write FOnAsyncHide;
   end;
 
 implementation
@@ -264,9 +277,17 @@ begin
   end;
 end;
 
+procedure TIWBSCustomRegion.InitControl;
+begin
+  inherited;
+  if name = '' then
+    name := IWBSGetUniqueComponentName(Owner, Copy(ClassName,2,MaxInt));
+end;
+
 procedure TIWBSCustomRegion.SetGridOptions(const Value: TIWBSGridOptions);
 begin
   FGridOptions.Assign(Value);
+  Invalidate;
 end;
 
 function TIWBSCustomRegion.ContainerPrefix: string;
@@ -337,7 +358,7 @@ constructor TIWBSRegion.Create(AOwner: TComponent);
 begin
   inherited;
   FButtonGroupOptions := TIWBSBtnGroupOptions.Create(Self);
-  FContextualStyle := bsbsDefault;
+  FPanelStyle := bspsDefault;
   FRegionType := bsrtIWBSRegion;
   FRelativeSize := bsrzDefault;
 end;
@@ -349,13 +370,15 @@ begin
 end;
 
 function TIWBSRegion.GetClassString: string;
+const
+  aIWBSPanelStyle: array[bspsDefault..bspsDanger] of string = ('panel-default', 'panel-primary', 'panel-success', 'panel-info', 'panel-warning', 'panel-danger');
 var
   s: string;
 begin
   Result := aIWBSRegionType[FRegionType];
 
   if FRegionType = bsrtPanel then
-    Result := Result + ' panel-' + aIWBSContextualStyle[FContextualStyle]
+    Result := Result + ' ' + aIWBSPanelStyle[FPanelStyle]
 
   else if (FRegionType = bsrtWell) and (FRelativeSize <> bsrzDefault) then
     Result := Result + ' well-' + aIWBSRelativeSize[FRelativeSize]
@@ -384,6 +407,30 @@ begin
   else
     Result := '';
 end;
+
+procedure TIWBSRegion.SetButtonGroupOptions(Value: TIWBSBtnGroupOptions);
+begin
+  FButtonGroupOptions.Assign(Value);
+  Invalidate;
+end;
+
+procedure TIWBSRegion.SetRegionType(Value: TIWBSRegionType);
+begin
+  FRegionType := Value;
+  Invalidate;
+end;
+
+procedure TIWBSRegion.SetPanelStyle(Value: TIWBSPanelStyle);
+begin
+  FPanelStyle := Value;
+  Invalidate;
+end;
+
+procedure TIWBSRegion.SetRelativeSize(Value: TIWBSRelativeSize);
+begin
+  FRelativeSize := Value;
+  Invalidate;
+end;
 {$endregion}
 
 {$region 'TIWBSBtnGroupOptions'}
@@ -400,6 +447,7 @@ constructor TIWBSModal.Create(AOwner: TComponent);
 begin
   inherited;
   FAsyncDestroy := True;
+  FDestroyOnHide := False;
   FDialogSize := bsszDefault;
   FFade := false;
   FModalVisible := false;
@@ -408,6 +456,10 @@ end;
 destructor TIWBSModal.Destroy;
 begin
   SetModalVisible(False);
+
+  if (ParentContainer <> nil) and Assigned(ParentContainer.ContainerContext) and Assigned(ParentContainer.ContainerContext.WebApplication) then
+    ParentContainer.ContainerContext.WebApplication.UnregisterCallBack(HTMLName);
+
   inherited;
 end;
 
@@ -437,6 +489,7 @@ end;
 procedure TIWBSModal.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
 var
   LCss: string;
+  xHTMLName: string;
 begin
   LCss := 'modal-dialog';
   if FDialogSize in [bsszLg,bsszSm] then
@@ -444,10 +497,19 @@ begin
   ABuffer.WriteLine('<div class="'+LCss+'">');
   inherited;
   ABuffer.WriteLine('</div>');
+
+  // scripts area
+  xHTMLName := HTMLName;
   ABuffer.WriteLine('<script>');
   ABuffer.WriteLine('$("#'+HTMLName+'").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });');
-
-
+  if Assigned(FOnAsyncShow) then begin
+    ABuffer.WriteLine('$("#'+xHTMLName+'").on("shown.bs.modal", function(e){ console.log(e); executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncShow", true, null, true); });');
+    AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);
+  end;
+  if Assigned(FOnAsyncHide) or FDestroyOnHide then begin
+    ABuffer.WriteLine('$("#'+xHTMLName+'").on("hidden.bs.modal", function(e){ console.log(e); executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });');
+    AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
+  end;
   if FModalVisible then
     ABuffer.WriteLine(GetShowScript);
   ABuffer.WriteLine('</script>');
@@ -461,6 +523,21 @@ begin
     else
       ExecuteJS(GetHideScript);
     FModalVisible := Value;
+  end;
+end;
+
+procedure TIWBSModal.DoOnAsyncShow(AParams: TStringList);
+begin
+  FOnAsyncShow(Self, AParams);
+end;
+
+procedure TIWBSModal.DoOnAsyncHide(AParams: TStringList);
+begin
+  if Assigned(FOnAsyncHide) then
+    FOnAsyncHide(Self, AParams);
+  if FDestroyOnHide then begin
+    AsyncDestroy := True;
+    Free;
   end;
 end;
 {$endregion}

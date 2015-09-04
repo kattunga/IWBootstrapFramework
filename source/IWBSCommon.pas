@@ -35,12 +35,6 @@ const
     ('', 'iwbs-region', 'iwbs-toolbar', 'iwbs-toolbar-separator');
 
 type
-  TIWBSContextualStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink);
-
-const
-  aIWBSContextualStyle: array[bsbsDefault..bsbsLink] of string = ('default', 'primary', 'success', 'info', 'warning', 'danger', 'link');
-
-type
   TIWBSGridOptions = class(TPersistent)
   private
     FGridXSOffset: integer;
@@ -68,6 +62,8 @@ type
   end;
 
 type
+  TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
+
   TIWBSRenderingSortMethod = (bsrmSortYX, bsrmSortXY);
 
 var

@@ -30,6 +30,9 @@ function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): 
 var
   i: Integer;
 begin
+  if AOwner = nil then
+    Exit;
+
   Result:= APrefix;
   i:= 0;
   while Assigned(AOwner.FindComponent(Result)) do begin

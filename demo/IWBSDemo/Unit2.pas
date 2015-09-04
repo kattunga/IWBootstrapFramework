@@ -18,7 +18,7 @@ uses
 type
   TIWForm2 = class(TIWAppForm)
     IWTabControl21: TIWBSTabControl;
-    IWTabControl21Page1: TIWTabPage;
+    IWTabControl21Page3: TIWTabPage;
     IWBSRegion3: TIWBSRegion;
     IWBSButton30: TIWBSButton;
     IWBSRegion4: TIWBSRegion;
@@ -52,7 +52,7 @@ type
     IWBSButton17: TIWBSButton;
     IWBSButton18: TIWBSButton;
     IWBSButton19: TIWBSButton;
-    IWTabControl21Page2: TIWTabPage;
+    IWTabControl21Page4: TIWTabPage;
     IWBSRegion9: TIWBSRegion;
     IWText1: TIWText;
     chkTabsFade: TIWBSCheckBox;
@@ -60,7 +60,7 @@ type
     chkTabsPills: TIWBSCheckBox;
     chkTabsStacked: TIWBSCheckBox;
     chkContFluid: TIWBSCheckBox;
-    IWTabControl21Page3: TIWTabPage;
+    IWTabControl21Page0: TIWTabPage;
     IWBSRegion2: TIWBSRegion;
     IWText3: TIWText;
     IWBSRegion13: TIWBSRegion;
@@ -74,7 +74,7 @@ type
     IWText4: TIWText;
     IWBSButton20: TIWBSButton;
     IWBSInput7: TIWBSInput;
-    IWTabControl21Page4: TIWTabPage;
+    IWTabControl21Page1: TIWTabPage;
     IWBSRegion15: TIWBSRegion;
     IWBSInputGroup1: TIWBSInputGroup;
     IWBSButton22: TIWBSButton;
@@ -107,8 +107,6 @@ type
     IWBSListbox3: TIWBSListbox;
     IWTabControl21Page5: TIWTabPage;
     IWBSRegion17: TIWBSRegion;
-    IWBSButton26: TIWBSButton;
-    IWBSButton27: TIWBSButton;
     IWTabControl21Page6: TIWTabPage;
     IWBSRegion18: TIWBSRegion;
     IWButton1: TIWButton;
@@ -151,6 +149,15 @@ type
     IWBSInput5: TIWBSInput;
     IWBSLabel1: TIWBSLabel;
     IWBSLabel2: TIWBSLabel;
+    IWBSRegion11: TIWBSRegion;
+    IWBSButton26: TIWBSButton;
+    IWBSButton21: TIWBSButton;
+    IWBSInput6: TIWBSInput;
+    IWBSRegion12: TIWBSRegion;
+    IWBSButton27: TIWBSButton;
+    IWBSRegion26: TIWBSRegion;
+    IWBSButton28: TIWBSButton;
+    IWBSButton29: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -158,6 +165,8 @@ type
     procedure IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
       AColumn: Integer);
     procedure IWBSButton30Click(Sender: TObject);
+    procedure IWBSButton21AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton28AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -174,6 +183,21 @@ begin
   IWBSMemo2.Text := IWBSinput22.Text;
 end;
 
+procedure TIWForm2.IWBSButton21AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+var
+  cmp: TIWBSButton;
+begin
+  cmp := TIWBSButton.Create(Self);
+  cmp.Parent := IWBSRegion11;
+  cmp.Top := 20;
+  cmp.AsyncClickProc := procedure(EventParams: TStringList)
+                        begin
+                          IWBSInput6.Text := 'this is set by anonymous procedure';
+                        end;
+  IWBSRegion11.AsyncRenderComponent(true);
+end;
+
 procedure TIWForm2.IWBSButton22AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
@@ -188,7 +212,6 @@ begin
   cmp := TIWFrame1.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := IWBSRegion17;
-//  IWBSRegion17.AsyncRenderComponent(true);
   cmp.IWBSRegion1.AsyncRenderComponent(true);
 end;
 
@@ -199,9 +222,49 @@ var
 begin
   cmp := TIWFrame3.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
-  cmp.Parent := IWBSRegion17;
-//  IWBSRegion17.AsyncRenderComponent(true);
+  cmp.Parent := Self;
   cmp.IWBSModal1.AsyncRenderComponent(true);
+end;
+
+procedure TIWForm2.IWBSButton28AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+var
+  cmp: TIWBSModal;
+  cnt, bdy, hdr: TIWBSRegion;
+begin
+  cmp := TIWBSModal.Create(Self);
+  cmp.Parent := Self;
+  cmp.DestroyOnHide := True;
+  cmp.BSModalVisible := True;
+  cnt := TIWBSRegion.Create(Self);
+  cnt.BSRegionType := bsrtModalContent;
+  cnt.Parent := cmp;
+
+  hdr := TIWBSRegion.Create(Self);
+  hdr.BSRegionType := bsrtModalHeader;
+  hdr.Parent := cnt;
+  hdr.Top := 0;
+  with TIWBSLabel.Create(Self) do begin
+    Parent := hdr;
+    Caption := 'this is the header';
+  end;
+  with TIWBSButton.Create(Self) do begin
+    Parent := hdr;
+    Caption := '';
+    BSButtonStyle := bsbsClose;
+    BSDataDismiss := bsbdModal;
+  end;
+
+  bdy := TIWBSRegion.Create(Self);
+  bdy.BSRegionType := bsrtModalBody;
+  bdy.Parent := cnt;
+  bdy.Top := 30;
+  with TIWBSLabel.Create(Self) do begin
+    Parent := bdy;
+    Caption := 'this is the body';
+  end;
+
+  cmp.AsyncRenderComponent(true);
 end;
 
 procedure TIWForm2.IWGrid1RenderCell(ACell: TIWGridCell; const ARow,

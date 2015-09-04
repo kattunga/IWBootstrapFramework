@@ -23,7 +23,7 @@ const
                      'jumbotron', 'page-header', 'well',
                      'iwbs-region', 'iwbs-toolbar',
                      'btn-toolbar', 'btn-group',
-                     'modal-content', 'modal-heading', 'modal-title', 'modal-body', 'modal-footer',
+                     'modal-content', 'modal-header', 'modal-title', 'modal-body', 'modal-footer',
                      'panel', 'panel-body', 'panel-heading', 'panel-title', 'panel-footer');
 
 type

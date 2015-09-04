@@ -112,19 +112,26 @@ type
     property Caption: string read FCaption write FCaption;
   end;
 
+  TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink, bsbsClose);
+  TIWBSButtonDataDismiss = (bsbdNone, bsbdModal, bsbdAlert);
+
   TIWBSButton = class(TIWButton)
   private
-    FButtonClose: boolean;
+    FDataDismiss: TIWBSButtonDataDismiss;
     FButtonSize: TIWBSSize;
-    FContextualStyle: TIWBSContextualStyle;
+    FButtonStyle: TIWBSButtonStyle;
     FGlyphicon: string;
+    FAsyncClickProc: TIWBSAsyncClickProc;
+    procedure DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
+    procedure SetAsyncClickProc(Value: TIWBSAsyncClickProc);
   public
     constructor Create(AOwner: TComponent); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    property AsyncClickProc: TIWBSAsyncClickProc read FAsyncClickProc write SetAsyncClickProc;
   published
-    property BSButtonClose: boolean read FButtonClose write FButtonClose default false;
     property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
-    property BSContextualStyle: TIWBSContextualStyle read FContextualStyle write FContextualStyle default bsbsDefault;
+    property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write FButtonStyle default bsbsDefault;
+    property BSDataDismiss: TIWBSButtonDataDismiss read FDataDismiss write FDataDismiss default bsbdNone;
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
   end;
 
@@ -548,29 +555,31 @@ end;
 constructor TIWBSButton.Create(AOwner: TComponent);
 begin
   inherited;
-  FButtonClose := false;
   FButtonSize := bsszDefault;
-  FContextualStyle := bsbsDefault;
+  FButtonStyle := bsbsDefault;
+  FDataDismiss := bsbdNone;
   FGlyphicon := '';
 end;
 
 function TIWBSButton.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+const
+  aIWBSButtonStyle: array[bsbsDefault..bsbsClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
+  aIWBSButtonDataDismiss: array[bsbdNone..bsbdAlert] of string = ('', 'modal', 'alert');
 var
   s: string;
   gspan: TIWHTMLTag;
 begin
-
   Result := TIWHTMLTag.CreateTag('button');
   try
     Result.AddStringParam('id', HTMLName);
     Result.AddClassParam('btn');
     if FButtonSize <> bsszDefault then
       Result.AddClassParam('btn-'+aIWBSSize[FButtonSize]);
-    Result.AddClassParam('btn-'+aIWBSContextualStyle[FContextualStyle]);
+    Result.AddClassParam(aIWBSButtonStyle[FButtonStyle]);
     if not Enabled then
       Result.AddClassParam('disabled');
-    if FButtonClose then
-      Result.AddClassParam('close');
+    if FDataDismiss <> bsbdNone then
+      Result.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
     Result.AddStringParam('type', 'button');
     if ShowHint and (Hint <> '') then begin
       Result.AddStringParam('data-toggle', 'tooltip');
@@ -581,6 +590,9 @@ begin
       Result.AddStringParam('accesskey', HotKey);
       s := StringReplace(s, FHotKey, '<u>' + FHotKey + '</u>', [rfIgnoreCase]);
     end;
+    if FButtonStyle = bsbsClose then
+      Result.AddStringParam('aria-label', 'Close');
+
     if (WebFont.Enabled) and (toTColor(WebColor) <> clBtnFace) then
       Result.AddStringParam('style', RenderBGColor(WebColor) + WebFont.FontToStringStyle);
 
@@ -592,7 +604,7 @@ begin
     end;
 
     // caption after glyphicon
-    if FButtonClose and (s = '') and (FGlyphicon = '') then
+    if (FButtonStyle = bsbsClose) and (s = '') and (FGlyphicon = '') then
       Result.Contents.AddText('&times;')
     else
       Result.Contents.AddText(s);
@@ -606,6 +618,17 @@ begin
   else
     Result := CreateButtonFormGroup(ParentContainer, Result, HTMLName);
 
+end;
+
+procedure TIWBSButton.DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
+begin
+  FAsyncClickProc(EventParams);
+end;
+
+procedure TIWBSButton.SetAsyncClickProc(Value: TIWBSAsyncClickProc);
+begin
+  FAsyncClickProc := Value;
+  OnAsyncClick := DoAsyncClickProc
 end;
 {$endregion}
 

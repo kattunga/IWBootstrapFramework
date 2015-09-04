@@ -85,7 +85,6 @@ begin
   FGridOptions := TIWBSGridOptions.Create;
   FLayoutMrg := True;
   FTabOptions := TIWBSTabOptions.Create(Self);
-  Color := clNone;
 end;
 
 destructor TIWBSTabControl.Destroy;
@@ -93,7 +92,7 @@ begin
   FTabOptions.Free;
   FGridOptions.Free;
 
-  if Assigned(FWebApplication) and Assigned(OnAsyncChange) then
+  if Assigned(FWebApplication) then
     FWebApplication.UnregisterCallBack(HTMLName);
 
   inherited;

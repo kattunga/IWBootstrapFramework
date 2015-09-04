@@ -11,6 +11,7 @@ object IWFrame3: TIWFrame3
     Height = 566
     RenderInvisibleControls = True
     TabOrder = 0
+    AsyncDestroy = True
     BSModalVisible = True
     object IWBSRegion1: TIWBSRegion
       Left = 1
@@ -101,7 +102,7 @@ object IWFrame3: TIWFrame3
           FriendlyName = 'IWBSButton199'
           TabOrder = 1
           OnAsyncClick = IWBSButton199AsyncClick
-          BSButtonClose = True
+          BSButtonStyle = bsbsClose
         end
       end
       object IWBSRegion4: TIWBSRegion
