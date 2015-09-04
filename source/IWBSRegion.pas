@@ -136,14 +136,12 @@ end;
 constructor TIWBSCustomRegion.Create(AOwner: TComponent);
 begin
   inherited;
-
   FAsyncDestroy := False;
   FCss := '';
   FFormType := bsftNoForm;
   FGridOptions := TIWBSGridOptions.Create;
   FFormOptions := TIWBSFormOptions.Create;
   FLayoutMrg := True;
-
   ClipRegion := False;
 end;
 
@@ -153,6 +151,8 @@ begin
   FGridOptions.Free;
   if FAsyncDestroy then
     ExecuteJS('AsyncDestroyControl("'+HTMLName+'");');
+
+  IWBSUnregisterCallbacks(HTMLName, GetWebApplication);
   inherited;
 end;
 
@@ -456,10 +456,6 @@ end;
 destructor TIWBSModal.Destroy;
 begin
   SetModalVisible(False);
-
-  if (ParentContainer <> nil) and Assigned(ParentContainer.ContainerContext) and Assigned(ParentContainer.ContainerContext.WebApplication) then
-    ParentContainer.ContainerContext.WebApplication.UnregisterCallBack(HTMLName);
-
   inherited;
 end;
 

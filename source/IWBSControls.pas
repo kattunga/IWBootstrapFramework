@@ -35,7 +35,7 @@ function TIWBSLabel.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   if Parent is TIWBSInputGroup then
-    Result := CreateInputGroupAddOn(REsult, 'addon');
+    Result := IWBSCreateInputGroupAddOn(REsult, 'addon');
 end;
 {$endregion}
 
@@ -78,7 +78,7 @@ begin
     raise;
   end;
   if Parent is TIWBSInputGroup then
-    Result := CreateInputGroupAddOn(REsult, 'addon');
+    Result := IWBSCreateInputGroupAddOn(REsult, 'addon');
 end;
 
 function TIWBSGlyphicon.RenderStyle(AComponentContext: TIWCompContext): string;

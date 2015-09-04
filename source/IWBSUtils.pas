@@ -2,16 +2,16 @@ unit IWBSUtils;
 
 interface
 
-uses System.Classes, System.SysUtils, Windows,
-     IWAppForm, IWtypes, IWBSCommon, IWHTMLTag;
+uses System.Classes, System.SysUtils, System.StrUtils, Windows,
+     IWAppForm, IWtypes, IWBSCommon, IWHTMLTag, IWApplication;
 
-// Disable all RenderOptions at one time
 procedure IWBSDisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
 
-// this help to create unique component names at runtime for example form Frames
 function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
 
-function CreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
+function  IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
+
+procedure IWBSUnregisterCallbacks(const AControlName: string; WebApplication: IWApplication.TIWApplication);
 
 implementation
 
@@ -41,7 +41,7 @@ begin
   end;
 end;
 
-function CreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
+function IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
 begin
   Result := TIWHTMLTag.CreateTag('span');
   try
@@ -52,6 +52,27 @@ begin
     FreeAndNil(ATag);
     raise;
   end;
+end;
+
+type
+  TIWApplication = class(IWApplication.TIWApplication);
+  TIWCallBacks = class(IWApplication.TIWCallBacks);
+
+procedure IWBSUnregisterCallbacks(const AControlName: string; WebApplication: IWApplication.TIWApplication);
+var
+  CallBacks: TIWCallBacks;
+  idx: Integer;
+  xQualifiedName: string;
+begin
+  if (WebApplication = nil) or not WebApplication.IsCallBack then
+    Exit;
+
+  CallBacks := TIWCallBacks(TIWApplication(WebApplication).FCallBacks);
+  xQualifiedName := CallBacks.QualifiedName(WebApplication.ActiveForm, AControlName)+'.';
+
+  for idx := CallBacks.Count-1 downto 0 do
+    if AnsiStartsStr(xQualifiedName, CallBacks[idx]) then
+      CallBacks.Delete(idx);
 end;
 
 end.

@@ -471,7 +471,7 @@ begin
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := CreateInputGroupAddOn(Result, 'addon')
+    Result := IWBSCreateInputGroupAddOn(Result, 'addon')
   else
     if FInline then
       Result := CreateCheckBoxLabel(ParentContainer, Result, 'checkbox-inline', Caption, Hint, xHTMLName, ShowHint)
@@ -513,7 +513,7 @@ begin
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := CreateInputGroupAddOn(Result, 'addon')
+    Result := IWBSCreateInputGroupAddOn(Result, 'addon')
   else
     Result := CreateCheckBoxLabel(ParentContainer, Result, 'radio', Caption, Hint, xHTMLName, ShowHint);
 end;
@@ -614,7 +614,7 @@ begin
   end;
 
   if ParentContainer.InterfaceInstance is TIWBSInputGroup then
-    Result := CreateInputGroupAddOn(Result, 'btn')
+    Result := IWBSCreateInputGroupAddOn(Result, 'btn')
   else
     Result := CreateButtonFormGroup(ParentContainer, Result, HTMLName);
 
