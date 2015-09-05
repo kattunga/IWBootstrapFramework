@@ -30,8 +30,8 @@ type
     property AutoFocus: boolean read FAutoFocus write FAutoFocus default false;
     property BSTextAlignment: TIWBSTextAlignment read FTextAlignment write FTextAlignment default bstaDefault;
     property BSTextCase: TIWBSTextCase read FTextCase write FTextCase default bstcDefault;
+    property BSInputType: TIWBSInputType read FInputType write FInputType default bsitText;
     property Caption: string read FCaption write FCaption;
-    property InputType: TIWBSInputType read FInputType write FInputType default bsitText;
     property PlaceHolder: string read FPlaceHolder write FPlaceHolder;
   end;
 
@@ -253,6 +253,15 @@ begin
   FTextCase := bstcDefault;
 end;
 
+function TIWBSInput.StyleValue(AContext: TIWCompContext): string;
+begin
+  Result := '';
+  if toTColor(WebFont.Color) <> clNone then
+    Result := Result + 'color:' + ColorToRGBString(WebFont.Color) + ';';
+  if toTColor(BGColor) <> clNone then
+    result := result + 'background-color: ' + ColorToRGBString(BGColor) + ';';
+end;
+
 function TIWBSInput.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 begin
   Result := TIWXMLTag.CreateTag('control');
@@ -267,15 +276,6 @@ begin
     FreeAndNil(Result);
     raise;
   end;
-end;
-
-function TIWBSInput.StyleValue(AContext: TIWCompContext): string;
-begin
-  Result := HTMLControlImplementation.RenderStyle(AContext);
-  if toTColor(WebFont.Color) <> clNone then
-    Result := Result + 'color:' + ColorToRGBString(WebFont.Color) + ';';
-  if StyleRenderOptions.RenderBorder and (FControlBorderWidth > 0) then
-    Result := Result + 'border: ' + IntToStr(FControlBorderWidth) + 'px inset;';
 end;
 
 function TIWBSInput.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -338,6 +338,23 @@ begin
   FTextCase := bstcDefault;
 end;
 
+function TIWBSMemo.StyleValue(AContext: TIWCompContext): string;
+begin
+  Result := '';
+  if toTColor(WebFont.Color) <> clNone then
+    Result := Result + 'color:' + ColorToRGBString(WebFont.Color) + ';';
+  if toTColor(BGColor) <> clNone then
+    result := result + 'background-color: ' + ColorToRGBString(BGColor) + ';';
+  if not FVertScrollBar then
+    Result := Result + 'overflow: hidden;';
+  case ResizeDirection of
+    rdNone: Result := Result + 'resize:none;';
+    rdBoth: Result := Result + 'resize:both;';
+    rdVertical: Result := Result + 'resize:vertical;';
+    rdHorizontal: Result := Result + 'resize:horizontal;';
+  end;
+end;
+
 function TIWBSMemo.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   s: string;
@@ -363,25 +380,6 @@ begin
   except
     FreeAndNil(Result);
     raise;
-  end;
-end;
-
-function TIWBSMemo.StyleValue(AContext: TIWCompContext): string;
-begin
-  Result := HTMLControlImplementation.RenderStyle(AContext);
-  if toTColor(BGColor) <> clNone then
-    result := result + 'background-color: ' + ColorToRGBString(BGColor) + ';';
-  if not FVertScrollBar then
-    Result := Result + 'overflow: hidden;';
-  if FInvisibleBorder then
-    Result := Result + 'border-style: none;'
-  else if StyleRenderOptions.RenderBorder and (FControlBorderWidth <> 0) then
-    Result := Result + 'border: ' + IntToStr(FControlBorderWidth) + 'px inset;';
-  case ResizeDirection of
-    rdNone: Result := Result + 'resize:none;';
-    rdBoth: Result := Result + 'resize:both;';
-    rdVertical: Result := Result + 'resize:vertical;';
-    rdHorizontal: Result := Result + 'resize:horizontal;';
   end;
 end;
 
