@@ -162,6 +162,8 @@ type
     IWBSRegion13: TIWBSRegion;
     IWBSButton31: TIWBSButton;
     IWBSInput23: TIWBSInput;
+    IWBSRegion27: TIWBSRegion;
+    IWBSButton32: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -172,6 +174,7 @@ type
     procedure IWBSButton21AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton28AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton31AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton32AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -276,6 +279,12 @@ begin
       end);
     Show;
   end;
+end;
+
+procedure TIWForm2.IWBSButton32AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  TIWBSAlert.Create(IWBSRegion6, 'This is an Alert').Show;
 end;
 
 initialization

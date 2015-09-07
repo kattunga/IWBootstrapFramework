@@ -1,3 +1,26 @@
+/**** alerts ***********/
+.flyover {
+   position: fixed;
+   width: 50%;
+   z-index: 1000000; 
+}
+
+.flyover-right-top {
+   right: 10px;
+   top: 10px;
+}
+ 
+.flyover-right-center {
+   right: 10px;
+   top: 50%;
+}
+
+.flyover-right-bottom {
+   right: 10px;
+   bottom: 10px;
+}
+/***********************/
+
 /**** height classes ***/
 .iwbs-hg-fill {
 	height: 100%;

@@ -17,7 +17,6 @@ type
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;
     FRegionDiv: TIWHTMLTag;
-    procedure ExecuteJS(const AScript: string; AsCDATA: boolean = False);
     function GetWebApplication: TIWApplication;
   protected
     function ContainerPrefix: string; override;
@@ -28,7 +27,7 @@ type
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    procedure SetGridOptions(const Value: TIWBSGridOptions);
+    procedure SetGridOptions(const AValue: TIWBSGridOptions);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -36,6 +35,7 @@ type
     property Canvas;
     function GetClassString: string; virtual;
     function GetRoleString: string; virtual;
+    procedure ExecuteJS(const AScript: string; AsCDATA: boolean = False);
   published
     property Align;
     property AsyncDestroy: boolean read FAsyncDestroy write FAsyncDestroy default false;
@@ -83,15 +83,16 @@ type
     FPanelStyle: TIWBSPanelStyle;
     FRegionType: TIWBSRegionType;
     FRelativeSize: TIWBSRelativeSize;
+  protected
+    procedure SetButtonGroupOptions(AValue: TIWBSButonGroupOptions);
+    procedure SetRegionType(AValue: TIWBSRegionType);
+    procedure SetPanelStyle(AValue: TIWBSPanelStyle);
+    procedure SetRelativeSize(AValue: TIWBSRelativeSize);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     function GetClassString: string; override;
     function GetRoleString: string; override;
-    procedure SetButtonGroupOptions(Value: TIWBSButonGroupOptions);
-    procedure SetRegionType(Value: TIWBSRegionType);
-    procedure SetPanelStyle(Value: TIWBSPanelStyle);
-    procedure SetRelativeSize(Value: TIWBSRelativeSize);
   published
     property BSButtonGroupOptions: TIWBSButonGroupOptions read FButtonGroupOptions write SetButtonGroupOptions;
     property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
@@ -107,11 +108,11 @@ type
     FModalVisible: boolean;
     FOnAsyncShow: TIWAsyncEvent;
     FOnAsyncHide: TIWAsyncEvent;
+  protected
     function GetShowScript: string;
     function GetHideScript: string;
-  protected
     procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); override;
-    procedure SetModalVisible(Value: boolean);
+    procedure SetModalVisible(AValue: boolean);
     procedure DoOnAsyncShow(AParams: TStringList); virtual;
     procedure DoOnAsyncHide(AParams: TStringList); virtual;
   public
@@ -309,9 +310,9 @@ begin
     name := IWBSGetUniqueComponentName(Owner, Copy(ClassName,2,MaxInt));
 end;
 
-procedure TIWBSCustomRegion.SetGridOptions(const Value: TIWBSGridOptions);
+procedure TIWBSCustomRegion.SetGridOptions(const AValue: TIWBSGridOptions);
 begin
-  FGridOptions.Assign(Value);
+  FGridOptions.Assign(AValue);
   Invalidate;
 end;
 
@@ -473,27 +474,27 @@ begin
     Result := '';
 end;
 
-procedure TIWBSRegion.SetButtonGroupOptions(Value: TIWBSButonGroupOptions);
+procedure TIWBSRegion.SetButtonGroupOptions(AValue: TIWBSButonGroupOptions);
 begin
-  FButtonGroupOptions.Assign(Value);
+  FButtonGroupOptions.Assign(AValue);
   Invalidate;
 end;
 
-procedure TIWBSRegion.SetRegionType(Value: TIWBSRegionType);
+procedure TIWBSRegion.SetRegionType(AValue: TIWBSRegionType);
 begin
-  FRegionType := Value;
+  FRegionType := AValue;
   Invalidate;
 end;
 
-procedure TIWBSRegion.SetPanelStyle(Value: TIWBSPanelStyle);
+procedure TIWBSRegion.SetPanelStyle(AValue: TIWBSPanelStyle);
 begin
-  FPanelStyle := Value;
+  FPanelStyle := AValue;
   Invalidate;
 end;
 
-procedure TIWBSRegion.SetRelativeSize(Value: TIWBSRelativeSize);
+procedure TIWBSRegion.SetRelativeSize(AValue: TIWBSRelativeSize);
 begin
-  FRelativeSize := Value;
+  FRelativeSize := AValue;
   Invalidate;
 end;
 {$endregion}
@@ -564,11 +565,11 @@ begin
   ABuffer.WriteLine('<script>');
   ABuffer.WriteLine('$("#'+HTMLName+'").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });');
   if Assigned(FOnAsyncShow) then begin
-    ABuffer.WriteLine('$("#'+xHTMLName+'").on("shown.bs.modal", function(e){ console.log(e); executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncShow", true, null, true); });');
+    ABuffer.WriteLine('$("#'+xHTMLName+'").on("shown.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncShow", true, null, true); });');
     AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);
   end;
   if Assigned(FOnAsyncHide) or FDestroyOnHide then begin
-    ABuffer.WriteLine('$("#'+xHTMLName+'").on("hidden.bs.modal", function(e){ console.log(e); executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });');
+    ABuffer.WriteLine('$("#'+xHTMLName+'").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });');
     AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
   end;
   if FModalVisible then
@@ -576,14 +577,14 @@ begin
   ABuffer.WriteLine('</script>');
 end;
 
-procedure TIWBSModal.SetModalVisible(Value: boolean);
+procedure TIWBSModal.SetModalVisible(AValue: boolean);
 begin
-  if Value <> FModalVisible then begin
-    if Value then
+  if AValue <> FModalVisible then begin
+    if AValue then
       ExecuteJS(GetShowScript)
     else
       ExecuteJS(GetHideScript);
-    FModalVisible := Value;
+    FModalVisible := AValue;
   end;
 end;
 
