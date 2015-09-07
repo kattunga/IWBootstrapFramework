@@ -175,7 +175,7 @@ implementation
 
 {$R *.dfm}
 
-uses IWBSUtils, IWBSRegionCommon, unit1, unit3;
+uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);
@@ -229,41 +229,8 @@ end;
 
 procedure TIWForm2.IWBSButton28AsyncClick(Sender: TObject;
   EventParams: TStringList);
-var
-  cmp: TIWBSModal;
-  cnt, bdy, hdr: TIWBSRegion;
 begin
-  cmp := TIWBSModal.Create(Self);
-  cmp.Parent := Self;
-  cmp.DestroyOnHide := True;
-  cmp.BSModalVisible := True;
-  cnt := TIWBSRegion.Create(Self);
-  cnt.BSRegionType := bsrtModalContent;
-  cnt.Parent := cmp;
-
-  hdr := TIWBSRegion.Create(Self);
-  hdr.BSRegionType := bsrtModalHeader;
-  hdr.Parent := cnt;
-  with TIWBSLabel.Create(Self) do begin
-    Parent := hdr;
-    Caption := 'this is the header';
-  end;
-  with TIWBSButton.Create(Self) do begin
-    Parent := hdr;
-    Caption := '';
-    BSButtonStyle := bsbsClose;
-    BSDataDismiss := bsbdModal;
-  end;
-
-  bdy := TIWBSRegion.Create(Self);
-  bdy.BSRegionType := bsrtModalBody;
-  bdy.Parent := cnt;
-  with TIWBSLabel.Create(Self) do begin
-    Parent := bdy;
-    Caption := 'this is the body';
-  end;
-
-  cmp.AsyncRenderComponent(true);
+  TIWBSDialog.CreateEx('This is the header', 'This is the Body').Show;
 end;
 
 procedure TIWForm2.IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
