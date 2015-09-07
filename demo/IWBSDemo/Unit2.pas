@@ -243,7 +243,6 @@ begin
   hdr := TIWBSRegion.Create(Self);
   hdr.BSRegionType := bsrtModalHeader;
   hdr.Parent := cnt;
-  hdr.Top := 0;
   with TIWBSLabel.Create(Self) do begin
     Parent := hdr;
     Caption := 'this is the header';
@@ -258,7 +257,6 @@ begin
   bdy := TIWBSRegion.Create(Self);
   bdy.BSRegionType := bsrtModalBody;
   bdy.Parent := cnt;
-  bdy.Top := 30;
   with TIWBSLabel.Create(Self) do begin
     Parent := bdy;
     Caption := 'this is the body';

@@ -120,27 +120,31 @@ end;
 
 function ControlRenderingSort(AItem1: Pointer; AItem2: Pointer): Integer;
 var
-  LTop1, LLeft1, LTop2, LLeft2: integer;
+  LTop1, LLeft1, LTop2, LLeft2, LIdx1, LIdx2: integer;
 begin
   if TComponent(AItem1) is TControl then
     begin
       LTop1 := TControl(AItem1).Top;
       LLeft1 := TControl(AItem1).Left;
+      LIdx1 := TControl(AItem1).ComponentIndex;
     end
   else
     begin
       LTop1 := -1;
       LLeft1 := -1;
+      LIdx1 := -1;
     end;
   if TComponent(AItem2) is TControl then
     begin
       LTop2 := TControl(AItem2).Top;
       LLeft2 := TControl(AItem2).Left;
+      LIdx2 := TControl(AItem2).ComponentIndex;
     end
   else
     begin
       LTop2 := -1;
       LLeft2 := -1;
+      LIdx2 := -1;
     end;
 
   if aIWBSRenderingSortMethod = bsrmSortYX then
@@ -155,6 +159,9 @@ begin
       if Abs(Result) < aIWBSRenderingGridPrecision then
         Result := LTop1 - LTop2;
     end;
+
+  if Result = 0 then
+    Result := LIdx1 - LIdx2;
 end;
 
 procedure TIWBSLayoutMgr.Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext);
