@@ -159,6 +159,9 @@ type
     IWBSButton28: TIWBSButton;
     IWBSButton29: TIWBSButton;
     IWBSInputForm1: TIWBSInputForm;
+    IWBSRegion13: TIWBSRegion;
+    IWBSButton31: TIWBSButton;
+    IWBSInput23: TIWBSInput;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -168,6 +171,7 @@ type
     procedure IWBSButton30Click(Sender: TObject);
     procedure IWBSButton21AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton28AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton31AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -230,7 +234,7 @@ end;
 procedure TIWForm2.IWBSButton28AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  TIWBSDialog.CreateEx('This is the header', 'This is the Body').Show;
+  TIWBSDialog.CreateEx(Self, 'This is the header', 'This is the Body').Show;
 end;
 
 procedure TIWForm2.IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
@@ -259,6 +263,19 @@ begin
     IWBSInputForm2.BSFormType := bsftHorizontal
   else if LstFormType.SelectedText = 'form-inline' then
     IWBSInputForm2.BSFormType := bsftInline;
+end;
+
+procedure TIWForm2.IWBSButton31AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  with TIWBSDialog.CreateEx(Self, 'This is the header', 'Press ok to set text to input IWBSInput23') do begin
+    AddButton(GetFooter, 'ok',
+      procedure(EventParams: TStringList)
+      begin
+        IWBSInput23.Text := 'You pressed OK!';
+      end);
+    Show;
+  end;
 end;
 
 initialization

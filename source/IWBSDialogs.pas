@@ -22,9 +22,11 @@ type
   public
     constructor Create(AOwner: TComponent); override;
 
-    class function CreateEx(const AHeader, ABody: string): TIWBSDialog;
+    class function CreateEx(AOwner: TComponent; const AHeader, ABody: string): TIWBSDialog;
 
-    procedure Show;
+    function Show: TIWBSDialog;
+    function AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
+
     function GetTitle: TIWBSRegion;
     function GetHeader: TIWBSRegion;
     function GetBody: TIWBSRegion;
@@ -57,9 +59,9 @@ begin
   FContent.Parent := Self;
 end;
 
-class function TIWBSDialog.CreateEx(const AHeader, ABody: string): TIWBSDialog;
+class function TIWBSDialog.CreateEx(AOwner: TComponent; const AHeader, ABody: string): TIWBSDialog;
 begin
-  Result := Create(WebApplication);
+  Result := Create(AOwner);
   Result.Parent := TWinControl(WebApplication.ActiveForm);
   Result.HeaderText := AHeader;
   Result.BodyText := ABody;
@@ -78,6 +80,7 @@ begin
     FTitle := TIWBSRegion.Create(Owner);
     FTitle.Parent := FContent;
     FTitle.BSRegionType := bsrtModalTitle;
+    FTitle.Top := 0;
   end;
   Result := FTitle;
 end;
@@ -88,6 +91,7 @@ begin
     FHeader := TIWBSRegion.Create(Owner);
     FHeader.Parent := FContent;
     FHeader.BSRegionType := bsrtModalHeader;
+    FHeader.Top := 100;
   end;
   Result := FHeader;
 end;
@@ -98,6 +102,7 @@ begin
     FBody := TIWBSRegion.Create(Owner);
     FBody.Parent := FContent;
     FBody.BSRegionType := bsrtModalBody;
+    FBody.Top := 200;
   end;
   Result := FBody;
 end;
@@ -108,11 +113,12 @@ begin
     FFooter := TIWBSRegion.Create(Owner);
     FFooter.Parent := FContent;
     FFooter.BSRegionType := bsrtModalFooter;
+    FFooter.Top := 300;
   end;
   Result := FFooter;
 end;
 
-procedure TIWBSDialog.Show;
+function TIWBSDialog.Show: TIWBSDialog;
 begin
   // title
   if FTitleText <> '' then
@@ -154,6 +160,17 @@ begin
   end;
 
   AsyncRenderComponent(true);
+
+  Result := Self;
+end;
+
+function TIWBSDialog.AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
+begin
+  Result := TIWBSButton.Create(Owner);
+  Result.Parent := AParent;
+  Result.Caption := ACaption;
+  Result.BSDataDismiss := bsbdModal;
+  Result.AsyncClickProc := AAsyncClickProc;
 end;
 
 end.

@@ -2599,8 +2599,8 @@ object IWForm2: TIWForm2
             BorderOptions.Color = clNone
             Color = clWebWHITE
             object IWBSRegion17: TIWBSRegion
-              Left = 24
-              Top = 167
+              Left = 27
+              Top = 260
               Width = 541
               Height = 103
               RenderInvisibleControls = True
@@ -2622,8 +2622,8 @@ object IWForm2: TIWForm2
               end
             end
             object IWBSRegion11: TIWBSRegion
-              Left = 24
-              Top = 281
+              Left = 27
+              Top = 374
               Width = 541
               Height = 103
               RenderInvisibleControls = True
@@ -2693,7 +2693,7 @@ object IWForm2: TIWForm2
                 Height = 25
                 RenderSize = False
                 StyleRenderOptions.RenderSize = False
-                Caption = 'Dinamically create modal from code'
+                Caption = 'Dinamically create dialog from code'
                 Color = clBtnFace
                 Font.Color = clNone
                 Font.Size = 10
@@ -2701,6 +2701,43 @@ object IWForm2: TIWForm2
                 FriendlyName = 'IWBSButton26'
                 TabOrder = 74
                 OnAsyncClick = IWBSButton28AsyncClick
+              end
+            end
+            object IWBSRegion13: TIWBSRegion
+              Left = 27
+              Top = 163
+              Width = 538
+              Height = 91
+              RenderInvisibleControls = True
+              object IWBSButton31: TIWBSButton
+                Left = -24
+                Top = 16
+                Width = 393
+                Height = 25
+                RenderSize = False
+                StyleRenderOptions.RenderSize = False
+                Caption = 'Dinamically create advanced from code'
+                Color = clBtnFace
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSButton26'
+                TabOrder = 76
+                OnAsyncClick = IWBSButton31AsyncClick
+              end
+              object IWBSInput23: TIWBSInput
+                Left = 3
+                Top = 47
+                Width = 121
+                Height = 21
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSInput6'
+                SubmitOnAsyncEvent = True
+                TabOrder = 77
+                Caption = ''
+                PlaceHolder = 'IWBSInput23'
               end
             end
           end
