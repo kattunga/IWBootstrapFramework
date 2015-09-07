@@ -11,10 +11,9 @@ uses
 type
   TIWBSCustomRegion = class(TIWCustomRegion)
   private
+    FTagType: string;
     FAsyncDestroy: boolean;
     FCss: string;
-    FFormType: TIWBSFormType;
-    FFormOptions: TIWBSFormOptions;
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;
     FRegionDiv: TIWHTMLTag;
@@ -40,8 +39,6 @@ type
   published
     property Align;
     property AsyncDestroy: boolean read FAsyncDestroy write FAsyncDestroy default false;
-    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
-    property BSFormOptions: TIWBSFormOptions read FFormOptions write FFormOptions;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
     property ClipRegion default False;
@@ -49,7 +46,23 @@ type
     property StyleRenderOptions;
   end;
 
-  TIWBSBtnGroupOptions = class(TPersistent)
+  TIWBSInputForm = class(TIWBSCustomRegion)
+  private
+    FFormType: TIWBSFormType;
+    FFormOptions: TIWBSFormOptions;
+  protected
+    function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    function GetClassString: string; override;
+    function GetRoleString: string; override;
+  published
+    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftVertical;
+    property BSFormOptions: TIWBSFormOptions read FFormOptions write FFormOptions;
+  end;
+
+  TIWBSButonGroupOptions = class(TPersistent)
   private
     FVertical: boolean;
     FJustified: boolean;
@@ -66,7 +79,7 @@ type
 
   TIWBSRegion = class(TIWBSCustomRegion)
   private
-    FButtonGroupOptions: TIWBSBtnGroupOptions;
+    FButtonGroupOptions: TIWBSButonGroupOptions;
     FPanelStyle: TIWBSPanelStyle;
     FRegionType: TIWBSRegionType;
     FRelativeSize: TIWBSRelativeSize;
@@ -75,12 +88,12 @@ type
     destructor Destroy; override;
     function GetClassString: string; override;
     function GetRoleString: string; override;
-    procedure SetButtonGroupOptions(Value: TIWBSBtnGroupOptions);
+    procedure SetButtonGroupOptions(Value: TIWBSButonGroupOptions);
     procedure SetRegionType(Value: TIWBSRegionType);
     procedure SetPanelStyle(Value: TIWBSPanelStyle);
     procedure SetRelativeSize(Value: TIWBSRelativeSize);
   published
-    property BSButtonGroupOptions: TIWBSBtnGroupOptions read FButtonGroupOptions write SetButtonGroupOptions;
+    property BSButtonGroupOptions: TIWBSButonGroupOptions read FButtonGroupOptions write SetButtonGroupOptions;
     property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
     property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtIWBSRegion;
     property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write SetRelativeSize default bsrzDefault;
@@ -115,9 +128,23 @@ type
     property OnAsyncHide: TIWAsyncEvent read FOnAsyncHide write FOnAsyncHide;
   end;
 
+function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
+
 implementation
 
 uses IWForm, IWUtils, IWContainerLayout, IWBSUtils;
+
+{$region 'help functions'}
+function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
+begin
+  if AParent is TIWBSInputForm then
+    Result := TIWBSInputForm(AParent)
+  else if AParent.Parent <> nil then
+    Result := IWBSFindParentInputForm(AParent.Parent)
+  else
+    Result := nil;
+end;
+{$endregion}
 
 {$region 'THackCustomRegion'}
 type
@@ -138,16 +165,14 @@ begin
   inherited;
   FAsyncDestroy := False;
   FCss := '';
-  FFormType := bsftNoForm;
   FGridOptions := TIWBSGridOptions.Create;
-  FFormOptions := TIWBSFormOptions.Create;
   FLayoutMrg := True;
+  FTagType := 'div';
   ClipRegion := False;
 end;
 
 destructor TIWBSCustomRegion.Destroy;
 begin
-  FFormOptions.Free;
   FGridOptions.Free;
   if FAsyncDestroy then
     ExecuteJS('AsyncDestroyControl("'+HTMLName+'");');
@@ -252,7 +277,7 @@ begin
         LTag.AddStringParam('style', 'visibility: hidden;' + LTag.Params.Values['style']);
     LComponentContext.MarkupLanguageTag := LTag;
     ParentContainer.ContainerContext.AddComponent(LComponentContext);
-    ExecuteJS('AsyncCreateControl("div","'+LHTMLName+'","'+LContName+'");', True);
+    ExecuteJS('AsyncCreateControl("'+FTagType+'","'+LHTMLName+'","'+LContName+'");', True);
   end;
 
   // render tag properties
@@ -292,23 +317,19 @@ end;
 
 function TIWBSCustomRegion.ContainerPrefix: string;
 begin
-  if Owner is TFrame then begin
-    Result := UpperCase(TFrame(Owner).Name);
-  end else
-  if isBaseContainer(Parent) then begin
-    Result := BaseContainerInterface(Parent).ContainerPrefix;
-  end else begin
+  if Owner is TFrame then
+    Result := UpperCase(TFrame(Owner).Name)
+  else if isBaseContainer(Parent) then
+    Result := BaseContainerInterface(Parent).ContainerPrefix
+  else
     Result := UpperCase(Name);
-  end;
 end;
 
 function TIWBSCustomRegion.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  if FLayoutMrg then begin
+  if FLayoutMrg then
     if not (Self.LayoutMgr is TIWBSLayoutMgr) then
       Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
-    TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
-  end;
   Result := inherited;
 end;
 
@@ -320,7 +341,7 @@ end;
 procedure TIWBSCustomRegion.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
 begin
   if FLayoutMrg then
-    IWBSPrepareChildComponentsForRender(Self, FFormType);
+    IWBSPrepareChildComponentsForRender(Self);
   try
     THackTIWHTML40Container(Self).CallInheritedRenderComponents(AContainerContext, APageContext);
     LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
@@ -346,10 +367,54 @@ end;
 
 function TIWBSCustomRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
-  FRegionDiv := TIWHTMLTag.CreateTag('div');
+  FRegionDiv := TIWHTMLTag.CreateTag(FTagType);
   FRegionDiv.AddClassParam(GetClassString);
   FRegionDiv.AddStringParam('role',GetRoleString);
   Result := FRegionDiv;
+end;
+{$endregion}
+
+{$region 'TIWBSInputForm'}
+constructor TIWBSInputForm.Create(AOwner: TComponent);
+begin
+  inherited;
+  FFormOptions := TIWBSFormOptions.Create;
+  FFormType := bsftVertical;
+  FTagType := 'form'
+end;
+
+destructor TIWBSInputForm.Destroy;
+begin
+  FFormOptions.Free;
+  inherited;
+end;
+
+function TIWBSInputForm.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
+var
+  LParentForm: TIWBSInputForm;
+begin
+  LParentForm := IWBSFindParentInputForm(Parent);
+  if LParentForm <> nil then
+    raise Exception.Create('forms can not be nested, you try to put '+Name+' inside '+LParentForm.Name);
+  Result := inherited;
+end;
+
+function TIWBSInputForm.GetClassString: string;
+var
+  s: string;
+begin
+  if FFormType = bsftInline then
+    Result := 'form-inline'
+  else if FFormType = bsftHorizontal then
+    Result := 'form-horizontal';
+  s := inherited;
+  if s <> '' then
+    Result := Result + ' ' + s;
+end;
+
+function TIWBSInputForm.GetRoleString: string;
+begin
+  Result := 'form';
 end;
 {$endregion}
 
@@ -357,7 +422,7 @@ end;
 constructor TIWBSRegion.Create(AOwner: TComponent);
 begin
   inherited;
-  FButtonGroupOptions := TIWBSBtnGroupOptions.Create(Self);
+  FButtonGroupOptions := TIWBSButonGroupOptions.Create(Self);
   FPanelStyle := bspsDefault;
   FRegionType := bsrtIWBSRegion;
   FRelativeSize := bsrzDefault;
@@ -408,7 +473,7 @@ begin
     Result := '';
 end;
 
-procedure TIWBSRegion.SetButtonGroupOptions(Value: TIWBSBtnGroupOptions);
+procedure TIWBSRegion.SetButtonGroupOptions(Value: TIWBSButonGroupOptions);
 begin
   FButtonGroupOptions.Assign(Value);
   Invalidate;
@@ -434,7 +499,7 @@ end;
 {$endregion}
 
 {$region 'TIWBSBtnGroupOptions'}
-constructor TIWBSBtnGroupOptions.Create(AOwner: TComponent);
+constructor TIWBSButonGroupOptions.Create(AOwner: TComponent);
 begin
   FVertical := false;
   FJustified := false;

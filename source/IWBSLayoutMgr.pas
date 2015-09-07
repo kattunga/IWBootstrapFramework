@@ -9,13 +9,14 @@ uses
 
 type
 
+  TIWBSRenderingSortMethod = (bsrmSortYX, bsrmSortXY);
+
   TIWBSPageOption = (bslyNoConflictButton, bslyEnablePolyfill);
 
   TIWBSPageOptions = set of TIWBSPageOption;
 
   TIWBSLayoutMgr = class(TIWContainerLayout)
   private
-    FFormType: TIWBSFormType;
     FPageOptions: TIWBSPageOptions;
   protected
     procedure InitControl; override;
@@ -25,15 +26,17 @@ type
     procedure ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
     procedure Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext); override;
   published
-    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
     property BSPageOptions: TIWBSPageOptions read FPageOptions write FPageOptions default [bslyEnablePolyfill];
   end;
 
 var
-  IWBSLibraryPath: string = '/iwbs';
-  IWBSRefreshCacheParam: string;
-  IWBSjqlibversion: string = '1.11.3';
-  IWBSbslibversion: string = '3.3.5';
+  gIWBSLibraryPath: string = '/iwbs';
+  gIWBSRefreshCacheParam: string;
+  gIWBSjqlibversion: string = '1.11.3';
+  gIWBSbslibversion: string = '3.3.5';
+
+  gIWBSRenderingSortMethod: TIWBSRenderingSortMethod = bsrmSortYX;
+  gIWBSRenderingGridPrecision: integer = 12;
 
 implementation
 
@@ -45,7 +48,6 @@ uses
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
   inherited;
-  FFormType := bsftNoForm;
   FPageOptions := [bslyEnablePolyfill];
 end;
 
@@ -68,9 +70,9 @@ begin
     FLibPath := Copy(gSC.URLBase, 1, Length(gSC.URLBase)-1)
   else
     FLibPath := gSC.URLBase;
-  if IWBSLibraryPath <> '' then begin
-    TString.ForcePreFix(IWBSLibraryPath, '/');
-    FLibPath := FLibPath + IWBSLibraryPath;
+  if gIWBSLibraryPath <> '' then begin
+    TString.ForcePreFix(gIWBSLibraryPath, '/');
+    FLibPath := FLibPath + gIWBSLibraryPath;
   end;
   TString.ForcePreFix(FLibPath, '/');
   TString.ForceSuffix(FLibPath, '/');
@@ -90,11 +92,11 @@ begin
 
   ABuffer.WriteLine(PreHeadContent);
 
-  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'bootstrap-'+IWBSbslibversion+'/css/bootstrap.min.css">');
-  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'iwbs.css?v='+IWBSRefreshCacheParam+'">');
-  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'jquery-'+IWBSjqlibversion+'.min.js"></script>');
-  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'bootstrap-'+IWBSbslibversion+'/js/bootstrap.min.js"></script>');
-  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'iwbs.js?v='+IWBSRefreshCacheParam+'"></script>');
+  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'bootstrap-'+gIWBSbslibversion+'/css/bootstrap.min.css">');
+  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'iwbs.css?v='+gIWBSRefreshCacheParam+'">');
+  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'jquery-'+gIWBSjqlibversion+'.min.js"></script>');
+  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'bootstrap-'+gIWBSbslibversion+'/js/bootstrap.min.js"></script>');
+  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'iwbs.js?v='+gIWBSRefreshCacheParam+'"></script>');
 
   // add missing html5 functionality to most browsers
   // http://afarkas.github.io/webshim/demos/index.html
@@ -147,16 +149,16 @@ begin
       LIdx2 := -1;
     end;
 
-  if aIWBSRenderingSortMethod = bsrmSortYX then
+  if gIWBSRenderingSortMethod = bsrmSortYX then
     begin
       Result := LTop1 - LTop2;
-      if Abs(Result) < aIWBSRenderingGridPrecision then
+      if Abs(Result) < gIWBSRenderingGridPrecision then
         Result := LLeft1 - LLeft2;
     end
   else
     begin
       Result := LLeft1 - LLeft2;
-      if Abs(Result) < aIWBSRenderingGridPrecision then
+      if Abs(Result) < gIWBSRenderingGridPrecision then
         Result := LTop1 - LTop2;
     end;
 
@@ -179,16 +181,6 @@ begin
     // TIWBSTabControl
     if Container.InterfaceInstance.ClassNameIs('TIWBSTabControl') then
       LTmp.WriteLine('<div class="tab-content">');
-
-    // input form
-    if FFormType <> bsftNoForm then begin
-      LTmp.Write('<form ');
-      if FFormType = bsftInline then
-        Ltmp.Write('class="form-inline" ')
-      else if FFormType = bsftHorizontal then
-        Ltmp.Write('class="form-horizontal" ');
-      LTmp.Write(' role="form" onSubmit="return FormDefaultSubmit();">');
-    end;
 
     // render controls
     LControls := TList.Create;
@@ -215,10 +207,6 @@ begin
     finally
       LControls.Free;
     end;
-
-    // close input form
-    if FFormType <> bsftNoForm then
-      LTmp.Write('</form>');
 
     // close tabs
     if Container.InterfaceInstance.ClassNameIs('TIWBSTabControl') then
@@ -272,6 +260,6 @@ begin
 end;
 
 initialization
-  IWBSRefreshCacheParam := FormatDateTime('yyyymmddhhnnsszzz', now);
+  gIWBSRefreshCacheParam := FormatDateTime('yyyymmddhhnnsszzz', now);
 
 end.

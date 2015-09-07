@@ -26,7 +26,6 @@ type
 
   TIWBSTabControl = class(TIWTabControl)
   private
-    FFormType: TIWBSFormType;
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;
     FTabOptions: TIWBSTabOptions;
@@ -41,7 +40,6 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
     property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
@@ -81,7 +79,6 @@ end;
 constructor TIWBSTabControl.Create(AOwner: TComponent);
 begin
   inherited;
-  FFormType := bsftNoForm;
   FGridOptions := TIWBSGridOptions.Create;
   FLayoutMrg := True;
   FTabOptions := TIWBSTabOptions.Create(Self);
@@ -110,18 +107,16 @@ end;
 
 function TIWBSTabControl.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  if FLayoutMrg then begin
+  if FLayoutMrg then
     if not (Self.LayoutMgr is TIWBSLayoutMgr) then
       Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
-    TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
-  end;
   Result := inherited;
 end;
 
 procedure TIWBSTabControl.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 begin
   if FLayoutMrg then
-    IWBSPrepareChildComponentsForRender(Self, FFormType);
+    IWBSPrepareChildComponentsForRender(Self);
   inherited;
 end;
 

@@ -11,7 +11,6 @@ uses
 type
   TIWBSCGJQRegion = class(TIWCGJQCustomRegion)
   private
-    FFormType: TIWBSFormType;
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;
     FRegionType: TIWBSRegionType;
@@ -24,7 +23,6 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftNoForm;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
     property BSRegionType: TIWBSRegionType read FRegionType write FRegionType default bsrtIWBSRegion;
@@ -61,7 +59,6 @@ begin
   // bootstrap settings
   FRegionType := bsrtIWBSRegion;
   FGridOptions := TIWBSGridOptions.Create;
-  FFormType := bsftNoForm;
   FLayoutMrg := True;
 end;
 
@@ -78,18 +75,16 @@ end;
 
 function TIWBSCGJQRegion.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  if FLayoutMrg then begin
+  if FLayoutMrg then
     if not (Self.LayoutMgr is TIWBSLayoutMgr) then
       Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
-    TIWBSLayoutMgr(Self.LayoutMgr).BSFormType := FFormType;
-  end;
   Result := inherited;
 end;
 
 procedure TIWBSCGJQRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 begin
   if FLayoutMrg then
-    IWBSPrepareChildComponentsForRender(Self, FFormType);
+    IWBSPrepareChildComponentsForRender(Self);
   inherited;
 end;
 

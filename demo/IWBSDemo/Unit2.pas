@@ -63,7 +63,7 @@ type
     IWTabControl21Page0: TIWTabPage;
     IWBSRegion2: TIWBSRegion;
     IWText3: TIWText;
-    IWBSRegion13: TIWBSRegion;
+    IWBSInputForm2: TIWBSInputForm;
     IWBSInput1: TIWBSInput;
     IWBSInput2: TIWBSInput;
     IWBSInput3: TIWBSInput;
@@ -158,6 +158,7 @@ type
     IWBSRegion26: TIWBSRegion;
     IWBSButton28: TIWBSButton;
     IWBSButton29: TIWBSButton;
+    IWBSInputForm1: TIWBSInputForm;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -286,13 +287,11 @@ begin
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
 
   if LstFormType.SelectedText = 'form-vertical' then
-    IWBSRegion13.BSFormType := bsftVertical
+    IWBSInputForm2.BSFormType := bsftVertical
   else if LstFormType.SelectedText = 'form-horizontal' then
-    IWBSRegion13.BSFormType := bsftHorizontal
+    IWBSInputForm2.BSFormType := bsftHorizontal
   else if LstFormType.SelectedText = 'form-inline' then
-    IWBSRegion13.BSFormType := bsftInline
-  else
-    IWBSRegion13.BSFormType := bsftNoForm
+    IWBSInputForm2.BSFormType := bsftInline;
 end;
 
 initialization

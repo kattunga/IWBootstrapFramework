@@ -25,16 +25,6 @@ const
   aIWBSTextCase: array[bstcDefault..bstcCapitalize] of string = ('', 'text-lowercase', 'text-uppercase', 'text-capitalize');
 
 type
-  TIWBSCssHeight = (css_hg_none, css_hg_fill, css_hg_fill_container, css_hg_toolbar, css_hg_fill_toolbar);
-  TIWBSCssClass  = (css_none, css_region, css_toolbar, css_toolbar_separator);
-
-const
-  aIWBSCssHeight: array [css_hg_none..css_hg_fill_toolbar] of string =
-    ('', 'iwbs-hg-fill', 'iwbs-hg-fill-container', 'iwbs-hg-toolbar', 'iwbs-hg-fill-toolbar');
-  aIWBSCssClass:  array [css_none..css_toolbar_separator] of string =
-    ('', 'iwbs-region', 'iwbs-toolbar', 'iwbs-toolbar-separator');
-
-type
   TIWBSGridOptions = class(TPersistent)
   private
     FGridXSOffset: integer;
@@ -60,15 +50,6 @@ type
     property GridLGOffset: integer read FGridLGOffset write FGridLGOffset default 0;
     property GridLGSpan: integer read FGridLGSpan write FGridLGSpan default 0;
   end;
-
-type
-  TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
-
-  TIWBSRenderingSortMethod = (bsrmSortYX, bsrmSortXY);
-
-var
-  aIWBSRenderingSortMethod: TIWBSRenderingSortMethod = bsrmSortYX;
-  aIWBSRenderingGridPrecision: integer = 12;
 
 //******************************************************************************
 

@@ -5,7 +5,7 @@ interface
        IWContainer, IWBSCommon, IWCompTabControl;
 
 type
-  TIWBSFormType = (bsftNoForm, bsftInline, bsftHorizontal, bsftVertical);
+  TIWBSFormType = (bsftInline, bsftHorizontal, bsftVertical);
 
 type
   TIWBSRegionType = (bsrtNone, bsrtContainer, bsrtContainerFluid, bsrtRow, bsrtColumn,
@@ -49,7 +49,7 @@ type
     property InputsSize: TIWBSGridOptions read FInputsSize write SetInputsSize;
   end;
 
-procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer; AFormType: TIWBSFormType);
+procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer);
 
 implementation
 
@@ -107,7 +107,7 @@ begin
 end;
 {$endregion}
 
-procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer; AFormType: TIWBSFormType);
+procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer);
 var
   i: integer;
   LComponent: TComponent;
@@ -127,12 +127,10 @@ begin
         LFrameRegion := TFrame(LComponent).FindComponent('IWFrameRegion');
         if LFrameRegion is TIWRegion then begin
           LRegion := TIWRegion(LFrameRegion);
-          if LRegion.LayoutMgr = nil then begin
+          if LRegion.LayoutMgr = nil then
             LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
-            TIWBSLayoutMgr(LRegion.LayoutMgr).BSFormType := AFormType;
-          end;
           LRegion.LayoutMgr.SetContainer(LRegion);
-          IWBSPrepareChildComponentsForRender(LRegion, AFormType);
+          IWBSPrepareChildComponentsForRender(LRegion);
         end;
      end
 
@@ -140,12 +138,10 @@ begin
     else if LComponent is IWCompTabControl.TIWTabPage then
       begin
         LTabPage := IWBSRegionCommon.TIWTabPage(LComponent);
-        if LTabPage.LayoutMgr = nil then begin
+        if LTabPage.LayoutMgr = nil then
           LTabPage.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
-          TIWBSLayoutMgr(LTabPage.LayoutMgr).BSFormType := AFormType;
-        end;
         LTabPage.LayoutMgr.SetContainer(LTabPage);
-        IWBSPrepareChildComponentsForRender(LTabPage, AFormType);
+        IWBSPrepareChildComponentsForRender(LTabPage);
       end;
 
     // disable child StyleRenderOptions
