@@ -1,6 +1,6 @@
-# IW Bootstrap Framework
+# IW Bootstrap 3 Framework
 
-The intention of this library is to help you in the creation of desktop and mobile responsive applications with IntraWeb using Bootstrap framework.
+The intention of this library is to help you in the creation of desktop and mobile responsive applications with IntraWeb using Bootstrap 3 framework.
 
 It is not intended for replace Intraweb traditional applications where you develop html applications in the same way as vcl applications.
 
