@@ -35,6 +35,7 @@ HTML 5 Elements
 
 Other
 * Dinamically create and destroy components at runtime using ajax.
+* Classes for dinamically create Dialogs a Alerts
 
 ## Requirements:
 
