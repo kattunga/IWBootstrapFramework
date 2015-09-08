@@ -24,6 +24,7 @@ Bootstrap Components
 * Weels
 
 Bootstrap JS
+* Alert
 * Modal
 * Tab
 
