@@ -88,21 +88,19 @@ destructor TIWBSTabControl.Destroy;
 begin
   FTabOptions.Free;
   FGridOptions.Free;
-
-  if Assigned(FWebApplication) then
-    FWebApplication.UnregisterCallBack(HTMLName);
-
   inherited;
 end;
 
 procedure TIWBSTabControl.SetGridOptions(const Value: TIWBSGridOptions);
 begin
   FGridOptions.Assign(Value);
+  invalidate;
 end;
 
 procedure TIWBSTabControl.SetTabOptions(const Value: TIWBSTabOptions);
 begin
-   FTabOptions.Assign(Value);
+  FTabOptions.Assign(Value);
+  invalidate;
 end;
 
 function TIWBSTabControl.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;

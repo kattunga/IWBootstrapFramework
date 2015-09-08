@@ -4,8 +4,7 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.StrUtils, Vcl.Controls,
-  IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag,
-  IWBSCommon, IWBSRegionCommon;
+  IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag;
 
 type
 
@@ -43,7 +42,7 @@ implementation
 uses
   IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists,
   IWRegion, IW.Common.Strings,
-  IWBSRegion;
+  IWBSRegion, IWBSRegionCommon;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
@@ -178,7 +177,7 @@ begin
   LTmp := TIWRenderStream.Create(True, True);
   try
 
-    // TIWBSTabControl
+    // TIWBSTabControl (investigate how to move this to IWBSTabControl)
     if Container.InterfaceInstance.ClassNameIs('TIWBSTabControl') then
       LTmp.WriteLine('<div class="tab-content">');
 
