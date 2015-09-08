@@ -192,7 +192,10 @@ procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   IWBSInput1.Text := 'this text was filled with ajax';
-  IWBSMemo2.Text := IWBSinput22.Text;
+  IWBSMemo2.Lines.Values['type date'] := IWBSInput7.Text;
+  IWBSMemo2.Lines.Values['type datetime'] := IWBSInput13.Text;
+  IWBSMemo2.Lines.Values['type datetimelocal'] := IWBSInput14.Text;
+  IWBSMemo2.Lines.Values['type color'] := IWBSinput22.Text;
 end;
 
 procedure TIWForm2.IWBSButton21AsyncClick(Sender: TObject;
