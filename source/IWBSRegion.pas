@@ -20,7 +20,6 @@ type
     function GetWebApplication: TIWApplication;
   protected
     function ContainerPrefix: string; override;
-    procedure AsyncSetAttributes; virtual;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); virtual;
     procedure InitControl; override;
@@ -36,6 +35,7 @@ type
     function GetClassString: string; virtual;
     function GetRoleString: string; virtual;
     procedure ExecuteJS(const AScript: string; AsCDATA: boolean = False);
+    procedure SetAsyncAttribute(const AName, AValue: string);
   published
     property Align;
     property AsyncDestroy: boolean read FAsyncDestroy write FAsyncDestroy default false;
@@ -51,7 +51,7 @@ type
     FFormType: TIWBSFormType;
     FFormOptions: TIWBSFormOptions;
   protected
-    function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -204,6 +204,11 @@ begin
       LWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript);
 end;
 
+procedure TIWBSCustomRegion.SetAsyncAttribute(const AName, AValue: string);
+begin
+  ExecuteJS('$("#'+HTMLName+'").attr("'+AName+'","'+AValue+'");');
+end;
+
 function TIWBSCustomRegion.GetClassString: string;
 begin
   Result := FGridOptions.GetClassString;
@@ -217,13 +222,6 @@ end;
 function TIWBSCustomRegion.GetRoleString: string;
 begin
   result := '';
-end;
-
-procedure TIWBSCustomRegion.AsyncSetAttributes;
-begin
-  ExecuteJS('$("#'+HTMLName+'").attr("class","'+GetClassString+'");');
-  if GetRoleString <> '' then
-    ExecuteJS('$("#'+HTMLName+'").attr("role","'+GetRoleString+'");');
 end;
 
 procedure TIWBSCustomRegion.AsyncRenderComponent(ARenderContent: boolean = False);
@@ -278,11 +276,14 @@ begin
         LTag.AddStringParam('style', 'visibility: hidden;' + LTag.Params.Values['style']);
     LComponentContext.MarkupLanguageTag := LTag;
     ParentContainer.ContainerContext.AddComponent(LComponentContext);
-    ExecuteJS('AsyncCreateControl("'+FTagType+'","'+LHTMLName+'","'+LContName+'");', True);
+    LBuffer := TIWRenderStream.Create(True, True);
+    try
+      LTag.Render(LBuffer);
+      ExecuteJS('AsyncCreateControl('''+LHTMLName+''','''+LContName+''','''+LBuffer.AsString+''');', True);
+    finally
+      FreeAndNil(LBuffer);
+    end;
   end;
-
-  // render tag properties
-  AsyncSetAttributes;
 
   // render child components
   if ARenderContent then begin
@@ -369,6 +370,7 @@ end;
 function TIWBSCustomRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   FRegionDiv := TIWHTMLTag.CreateTag(FTagType);
+  FRegionDiv.AddStringParam('id',HTMLName);
   FRegionDiv.AddClassParam(GetClassString);
   FRegionDiv.AddStringParam('role',GetRoleString);
   Result := FRegionDiv;
@@ -390,16 +392,6 @@ begin
   inherited;
 end;
 
-function TIWBSInputForm.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
-var
-  LParentForm: TIWBSInputForm;
-begin
-  LParentForm := IWBSFindParentInputForm(Parent);
-  if LParentForm <> nil then
-    raise Exception.Create('forms can not be nested, you try to put '+Name+' inside '+LParentForm.Name);
-  Result := inherited;
-end;
-
 function TIWBSInputForm.GetClassString: string;
 var
   s: string;
@@ -416,6 +408,18 @@ end;
 function TIWBSInputForm.GetRoleString: string;
 begin
   Result := 'form';
+end;
+
+function TIWBSInputForm.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+var
+  LParentForm: TIWBSInputForm;
+begin
+  LParentForm := IWBSFindParentInputForm(Parent);
+  if LParentForm <> nil then
+    raise Exception.Create('forms can not be nested, you try to put '+Name+' inside '+LParentForm.Name);
+
+  Result := inherited;
+  Result.AddStringParam('onSubmit', 'return FormDefaultSubmit();');
 end;
 {$endregion}
 

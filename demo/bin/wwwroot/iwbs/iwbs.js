@@ -5,7 +5,7 @@ $(document).ready(function () {
 	}
 });
 
-function AsyncCreateControl(tag, id, parentId) {
+function AsyncCreateControl(id, parentId, htmlTag) {
 	var elem = document.getElementById(id);
 	if (elem === null) {
 		if (parentId === "body") {
@@ -14,9 +14,7 @@ function AsyncCreateControl(tag, id, parentId) {
 			var parent = document.getElementById(parentId);
 		}
 		if (parent !== null) {
-			elem = document.createElement(tag);
-			elem.id = id;
-			parent.appendChild(elem);
+			parent.insertAdjacentHTML('beforeEnd', htmlTag);
 		}
 	}
 }
