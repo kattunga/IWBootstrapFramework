@@ -21,11 +21,9 @@ type
     FFooterText: string;
     FCloseButton: boolean;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(const AHeaderText, ABodyText: string); reintroduce;
 
-    class function CreateEx(AOwner: TComponent; const AHeaderText, ABodyText: string): TIWBSDialog;
-
-    function Show: TIWBSDialog;
+    procedure Show;
     function AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
 
     function GetTitle: TIWBSRegion;
@@ -49,24 +47,30 @@ type
     FAlertVisible: boolean;
     FAlertPosition: TIWBSAlertPosition;
     FAlertStyle: TIWBSAlertStyle;
-    FBodyText: string;
+    FAlertText: string;
     FFade: boolean;
     FOnAsyncClose: TIWAsyncEvent;
+
+    FAlertLabel: TIWBSLabel;
+    FCloseButton: TIWBSButton;
   protected
     procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); override;
     procedure DoOnAsyncClose(AParams: TStringList); virtual;
     function GetCloseScript: string;
     procedure SetAlertStyle(AValue: TIWBSAlertStyle);
   public
-    constructor Create(AParent: TWinControl; const ABodyText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess); reintroduce;
+    constructor Create(const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess); reintroduce;
     destructor Destroy; override;
 
-    function Show: TIWBSAlert;
+    procedure Show;
+    function AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
 
     property AlertStyle: TIWBSAlertStyle read FAlertStyle write SetAlertStyle default bsasSuccess;
     property AlertPosition: TIWBSAlertPosition read FAlertPosition write FAlertPosition default bsapRightTop;
-    property BodyText: string read FBodyText write FBodyText;
+    property AlertText: string read FAlertText write FAlertText;
     property Fade: boolean read FFade write FFade default True;
+
+    property AlertLabel: TIWBSLabel read FAlertLabel;
 
     function GetClassString: string; override;
     property OnAsyncClose: TIWAsyncEvent read FOnAsyncClose write FOnAsyncClose;
@@ -80,9 +84,10 @@ implementation
 uses IWInit, IWBSRegionCommon;
 
 {$region 'TIWBSDialog'}
-constructor TIWBSDialog.Create(AOwner: TComponent);
+constructor TIWBSDialog.Create(const AHeaderText, ABodyText: string);
 begin
-  inherited;
+  inherited Create(WebApplication.ActiveForm);
+  Parent := TWinControl(WebApplication.ActiveForm);
 
   DestroyOnHide := True;
   BSModalVisible := True;
@@ -90,15 +95,10 @@ begin
   FContent := TIWBSRegion.Create(Owner);
   FContent.BSRegionType := bsrtModalContent;
   FContent.Parent := Self;
-end;
 
-class function TIWBSDialog.CreateEx(AOwner: TComponent; const AHeaderText, ABodyText: string): TIWBSDialog;
-begin
-  Result := Create(AOwner);
-  Result.Parent := TWinControl(WebApplication.ActiveForm);
-  Result.HeaderText := AHeaderText;
-  Result.BodyText := ABodyText;
-  Result.CloseButton := True;
+  FHeaderText := AHeaderText;
+  FBodyText := ABodyText;
+  FCloseButton := True;
 end;
 
 procedure SetTitleLabel(const AValue: string);
@@ -151,7 +151,7 @@ begin
   Result := FFooter;
 end;
 
-function TIWBSDialog.Show: TIWBSDialog;
+procedure TIWBSDialog.Show;
 begin
   // title
   if FTitleText <> '' then
@@ -193,8 +193,6 @@ begin
   end;
 
   AsyncRenderComponent(true);
-
-  Result := Self;
 end;
 
 function TIWBSDialog.AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
@@ -208,16 +206,27 @@ end;
 {$endregion}
 
 {$region 'TIWBSAlert'}
-constructor TIWBSAlert.Create(AParent: TWinControl; const ABodyText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess);
+constructor TIWBSAlert.Create(const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess);
 begin
-  inherited Create(AParent.Owner);
-  Parent := AParent;
+  inherited Create(WebApplication.ActiveForm);
+  Parent := TWinControl(WebApplication.ActiveForm);
   FAlertVisible := False;
   FAlertPosition := bsapRightTop;
   FAlertStyle := bsasSuccess;
   AsyncDestroy := True;
-  FBodyText := ABodyText;
+  FAlertText := AAlertText;
   FFade := True;
+
+  FAlertLabel := TIWBSLabel.Create(Self);
+  FAlertLabel.Parent := Self;
+  FAlertLabel.Name := Name+'_LABEL';
+  FAlertLabel.Caption := AAlertText;
+  FCloseButton := TIWBSButton.Create(Self);
+  FCloseButton.Parent := Self;
+  FCloseButton.Name := Name+'_CLOSEBTN';
+  FCloseButton.Caption := '';
+  FCloseButton.BSButtonStyle := bsbsClose;
+  FCloseButton.BSDataDismiss := bsbdAlert;
 end;
 
 destructor TIWBSAlert.Destroy;
@@ -235,10 +244,6 @@ var
 begin
   inherited;
 
-  ABuffer.WriteLine('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
-  ABuffer.WriteLine(FBodyText);
-
-  // scripts area
   xHTMLName := HTMLName;
   ABuffer.WriteLine('<script>');
   ABuffer.WriteLine('$("#'+xHTMLName+'").on("closed.bs.alert", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncClose", true, null, true); });');
@@ -278,10 +283,18 @@ begin
   Free;
 end;
 
-function TIWBSAlert.Show: TIWBSAlert;
+procedure TIWBSAlert.Show;
 begin
   AsyncRenderComponent(true);
-  Result := Self;
+end;
+
+function TIWBSAlert.AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
+begin
+  Result := TIWBSButton.Create(Owner);
+  Result.Parent := Self;
+  Result.Caption := ACaption;
+  Result.BSDataDismiss := bsbdAlert;
+  Result.AsyncClickProc := AAsyncClickProc;
 end;
 {$endregion}
 

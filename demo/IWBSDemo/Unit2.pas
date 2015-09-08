@@ -164,6 +164,9 @@ type
     IWBSInput23: TIWBSInput;
     IWBSRegion27: TIWBSRegion;
     IWBSButton32: TIWBSButton;
+    IWBSRegion28: TIWBSRegion;
+    IWBSButton33: TIWBSButton;
+    IWBSInput24: TIWBSInput;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -175,6 +178,7 @@ type
     procedure IWBSButton28AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton31AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton32AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton33AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -237,7 +241,7 @@ end;
 procedure TIWForm2.IWBSButton28AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  TIWBSDialog.CreateEx(Self, 'This is the header', 'This is the Body').Show;
+  TIWBSDialog.Create('This is the header', 'This is the Body').Show;
 end;
 
 procedure TIWForm2.IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
@@ -271,7 +275,7 @@ end;
 procedure TIWForm2.IWBSButton31AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  with TIWBSDialog.CreateEx(Self, 'This is the header', 'Press ok to set text to input IWBSInput23') do begin
+  with TIWBSDialog.Create('This is the header', 'Press ok to set text to input IWBSInput23') do begin
     AddButton(GetFooter, 'ok',
       procedure(EventParams: TStringList)
       begin
@@ -284,7 +288,21 @@ end;
 procedure TIWForm2.IWBSButton32AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  TIWBSAlert.Create(IWBSRegion6, 'This is an Alert').Show;
+  TIWBSAlert.Create('This is simple Alert').Show;
+end;
+
+procedure TIWForm2.IWBSButton33AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  with TIWBSAlert.Create('<strong>This is an Alert with a button with AsynClick event</strong><br>') do begin
+    AlertLabel.RawText := True;
+    AddButton('ok',
+      procedure(EventParams: TStringList)
+      begin
+        IWBSInput24.Text := 'You pressed OK in the alert!';
+      end);
+    Show;
+  end;
 end;
 
 initialization
