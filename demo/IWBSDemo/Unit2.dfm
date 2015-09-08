@@ -407,6 +407,824 @@ object IWForm2: TIWForm2
               end
             end
           end
+          object IWTabControl21Page3: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1495
+            RenderInvisibleControls = True
+            TabOrder = 2
+            Title = 'Buttons'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion10: TIWBSRegion
+              Left = 16
+              Top = 81
+              Width = 1041
+              Height = 361
+              RenderInvisibleControls = True
+              object IWBSBtnToolBar1: TIWBSRegion
+                Left = 20
+                Top = 9
+                Width = 900
+                Height = 75
+                RenderInvisibleControls = True
+                BSRegionType = bsrtButtonToolbar
+                object IWBSBtnGroup1: TIWBSRegion
+                  Left = 16
+                  Top = 19
+                  Width = 220
+                  Height = 53
+                  RenderInvisibleControls = True
+                  BSRegionType = bsrtButtonGroup
+                  object IWBSButton1: TIWBSButton
+                    Left = -3
+                    Top = 20
+                    Width = 50
+                    Height = 30
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Caption = 'Left'
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 11
+                    BSButtonSize = bsszLg
+                    BSGlyphicon = 'align-left'
+                  end
+                  object IWBSButton2: TIWBSButton
+                    Left = 47
+                    Top = 20
+                    Width = 50
+                    Height = 30
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Caption = 'Center'
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 12
+                    BSButtonSize = bsszMd
+                    BSGlyphicon = 'align-center'
+                  end
+                  object IWBSButton3: TIWBSButton
+                    Left = 97
+                    Top = 20
+                    Width = 50
+                    Height = 30
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Caption = 'Rigth'
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 13
+                    BSButtonSize = bsszSm
+                    BSGlyphicon = 'align-right'
+                  end
+                  object IWBSButton4: TIWBSButton
+                    Left = 147
+                    Top = 20
+                    Width = 50
+                    Height = 30
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Caption = 'Justify'
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 14
+                    BSButtonSize = bsszXs
+                    BSGlyphicon = 'align-justify'
+                  end
+                end
+                object IWBSBtnGroup2: TIWBSRegion
+                  Left = 242
+                  Top = 20
+                  Width = 415
+                  Height = 51
+                  RenderInvisibleControls = True
+                  BSRegionType = bsrtButtonGroup
+                  object IWBSButton5: TIWBSButton
+                    Left = 17
+                    Top = 22
+                    Width = 75
+                    Height = 25
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 15
+                    BSButtonSize = bsszLg
+                    BSGlyphicon = 'align-left'
+                  end
+                  object IWBSButton6: TIWBSButton
+                    Left = 109
+                    Top = 22
+                    Width = 75
+                    Height = 25
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 16
+                    BSButtonSize = bsszMd
+                    BSGlyphicon = 'align-center'
+                  end
+                  object IWBSButton7: TIWBSButton
+                    Left = 201
+                    Top = 22
+                    Width = 75
+                    Height = 25
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 17
+                    BSButtonSize = bsszSm
+                    BSGlyphicon = 'align-right'
+                  end
+                  object IWBSButton8: TIWBSButton
+                    Left = 287
+                    Top = 22
+                    Width = 75
+                    Height = 25
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 18
+                    BSButtonSize = bsszXs
+                    BSGlyphicon = 'align-justify'
+                  end
+                end
+                object IWBSBtnGroup3: TIWBSRegion
+                  Left = 663
+                  Top = 22
+                  Width = 220
+                  Height = 50
+                  RenderInvisibleControls = True
+                  BSButtonGroupOptions.Vertical = True
+                  BSRegionType = bsrtButtonGroup
+                  object IWBSButton9: TIWBSButton
+                    Left = 9
+                    Top = 17
+                    Width = 50
+                    Height = 30
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Caption = 'Left'
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 19
+                    BSButtonSize = bsszLg
+                    BSGlyphicon = 'align-left'
+                  end
+                  object IWBSButton10: TIWBSButton
+                    Left = 59
+                    Top = 17
+                    Width = 50
+                    Height = 30
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Caption = 'Center'
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 20
+                    BSButtonSize = bsszMd
+                    BSGlyphicon = 'align-center'
+                  end
+                  object IWBSButton11: TIWBSButton
+                    Left = 109
+                    Top = 17
+                    Width = 50
+                    Height = 30
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Caption = 'Rigth'
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 21
+                    BSButtonSize = bsszSm
+                    BSGlyphicon = 'align-right'
+                  end
+                  object IWBSButton12: TIWBSButton
+                    Left = 159
+                    Top = 17
+                    Width = 50
+                    Height = 30
+                    Hint = 'This is a hint'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    Caption = 'Justify'
+                    Color = clBtnFace
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 22
+                    BSButtonSize = bsszXs
+                    BSGlyphicon = 'align-justify'
+                  end
+                end
+              end
+              object IWBSBtnGroup4: TIWBSRegion
+                Left = 20
+                Top = 109
+                Width = 675
+                Height = 60
+                RenderInvisibleControls = True
+                BSRegionType = bsrtButtonGroup
+                object IWBSButton13: TIWBSButton
+                  Left = 13
+                  Top = 20
+                  Width = 75
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Default'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton13'
+                  TabOrder = 23
+                end
+                object IWBSButton14: TIWBSButton
+                  Left = 94
+                  Top = 20
+                  Width = 75
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Info'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton13'
+                  TabOrder = 24
+                  BSButtonStyle = bsbsInfo
+                end
+                object IWBSButton15: TIWBSButton
+                  Left = 175
+                  Top = 20
+                  Width = 75
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Link'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton13'
+                  TabOrder = 25
+                  BSButtonStyle = bsbsLink
+                end
+                object IWBSButton16: TIWBSButton
+                  Left = 256
+                  Top = 20
+                  Width = 75
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Primary'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton13'
+                  TabOrder = 26
+                  BSButtonStyle = bsbsPrimary
+                end
+                object IWBSButton17: TIWBSButton
+                  Left = 337
+                  Top = 20
+                  Width = 75
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Success'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton13'
+                  TabOrder = 27
+                  BSButtonStyle = bsbsSuccess
+                end
+                object IWBSButton18: TIWBSButton
+                  Left = 418
+                  Top = 20
+                  Width = 75
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Warning'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton13'
+                  TabOrder = 28
+                  BSButtonStyle = bsbsWarning
+                end
+                object IWBSButton19: TIWBSButton
+                  Left = 499
+                  Top = 20
+                  Width = 75
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Danger'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton13'
+                  TabOrder = 29
+                  BSButtonStyle = bsbsDanger
+                end
+                object IWBSButton29: TIWBSButton
+                  Left = 580
+                  Top = 18
+                  Width = 75
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Close'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton13'
+                  TabOrder = 75
+                  BSButtonStyle = bsbsClose
+                end
+              end
+            end
+          end
+          object IWTabControl21Page5: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1495
+            RenderInvisibleControls = True
+            TabOrder = 4
+            Title = 'Create components at runtime'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion17: TIWBSRegion
+              Left = 27
+              Top = 260
+              Width = 538
+              Height = 66
+              RenderInvisibleControls = True
+              object IWBSButton26: TIWBSButton
+                Left = 3
+                Top = 3
+                Width = 265
+                Height = 25
+                RenderSize = False
+                StyleRenderOptions.RenderSize = False
+                Caption = 'Dinamically create frame with inputs'
+                Color = clBtnFace
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSButton26'
+                TabOrder = 70
+                OnAsyncClick = IWBSButton26AsyncClick
+              end
+            end
+            object IWBSRegion11: TIWBSRegion
+              Left = 27
+              Top = 335
+              Width = 538
+              Height = 76
+              RenderInvisibleControls = True
+              object IWBSButton21: TIWBSButton
+                Left = 4
+                Top = 3
+                Width = 265
+                Height = 25
+                RenderSize = False
+                StyleRenderOptions.RenderSize = False
+                Caption = 'Dinamically create button with anonymous proc'
+                Color = clBtnFace
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSButton26'
+                TabOrder = 71
+                OnAsyncClick = IWBSButton21AsyncClick
+              end
+              object IWBSInput6: TIWBSInput
+                Left = 3
+                Top = 34
+                Width = 121
+                Height = 21
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSInput6'
+                SubmitOnAsyncEvent = True
+                TabOrder = 72
+                Caption = ''
+              end
+            end
+            object IWBSRegion12: TIWBSRegion
+              Left = 27
+              Top = 12
+              Width = 538
+              Height = 60
+              RenderInvisibleControls = True
+              object IWBSButton27: TIWBSButton
+                Left = -24
+                Top = 16
+                Width = 393
+                Height = 25
+                RenderSize = False
+                StyleRenderOptions.RenderSize = False
+                Caption = 'Dinamically create modal dialog from TIWFrame'
+                Color = clBtnFace
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSButton26'
+                TabOrder = 73
+                OnAsyncClick = IWBSButton27AsyncClick
+              end
+            end
+            object IWBSRegion26: TIWBSRegion
+              Left = 27
+              Top = 85
+              Width = 538
+              Height = 60
+              RenderInvisibleControls = True
+              object IWBSButton28: TIWBSButton
+                Left = -24
+                Top = 16
+                Width = 393
+                Height = 25
+                RenderSize = False
+                StyleRenderOptions.RenderSize = False
+                Caption = 'Dinamically create dialog from code'
+                Color = clBtnFace
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSButton26'
+                TabOrder = 74
+                OnAsyncClick = IWBSButton28AsyncClick
+              end
+            end
+            object IWBSRegion13: TIWBSRegion
+              Left = 27
+              Top = 163
+              Width = 538
+              Height = 91
+              RenderInvisibleControls = True
+              object IWBSButton31: TIWBSButton
+                Left = -24
+                Top = 16
+                Width = 393
+                Height = 25
+                RenderSize = False
+                StyleRenderOptions.RenderSize = False
+                Caption = 'Dinamically create advanced dialog from code'
+                Color = clBtnFace
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSButton26'
+                TabOrder = 76
+                OnAsyncClick = IWBSButton31AsyncClick
+              end
+              object IWBSInput23: TIWBSInput
+                Left = 3
+                Top = 47
+                Width = 121
+                Height = 21
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSInput6'
+                SubmitOnAsyncEvent = True
+                TabOrder = 77
+                Caption = ''
+                PlaceHolder = 'IWBSInput23'
+              end
+            end
+            object IWBSRegion27: TIWBSRegion
+              Left = 27
+              Top = 428
+              Width = 538
+              Height = 60
+              RenderInvisibleControls = True
+              object IWBSButton32: TIWBSButton
+                Left = -24
+                Top = 16
+                Width = 393
+                Height = 25
+                RenderSize = False
+                StyleRenderOptions.RenderSize = False
+                Caption = 'Dinamically create Alert'
+                Color = clBtnFace
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSButton26'
+                TabOrder = 78
+                OnAsyncClick = IWBSButton32AsyncClick
+              end
+            end
+            object IWBSRegion28: TIWBSRegion
+              Left = 27
+              Top = 505
+              Width = 538
+              Height = 104
+              RenderInvisibleControls = True
+              object IWBSButton33: TIWBSButton
+                Left = -24
+                Top = 16
+                Width = 393
+                Height = 25
+                RenderSize = False
+                StyleRenderOptions.RenderSize = False
+                Caption = 'Dinamically create complex Alert'
+                Color = clBtnFace
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSButton26'
+                TabOrder = 79
+                OnAsyncClick = IWBSButton33AsyncClick
+              end
+              object IWBSInput24: TIWBSInput
+                Left = 3
+                Top = 49
+                Width = 121
+                Height = 21
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWBSInput6'
+                SubmitOnAsyncEvent = True
+                TabOrder = 80
+                Caption = ''
+              end
+            end
+          end
+          object IWTabControl21Page4: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1495
+            RenderInvisibleControls = True
+            TabOrder = 3
+            Title = 'Other Bootstrap Controls'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion9: TIWBSRegion
+              Left = 16
+              Top = 12
+              Width = 698
+              Height = 60
+              RenderInvisibleControls = True
+              BSRegionType = bsrtJumbotron
+              object IWText1: TIWText
+                Left = 20
+                Top = 11
+                Width = 540
+                Height = 38
+                BGColor = clNone
+                ConvertSpaces = False
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWText1'
+                Lines.Strings = (
+                  '<h1>This is a Jumbotron</h1>'
+                  '<h2>Example page header <small>Subtext for header</small></h2>')
+                RawText = True
+                UseFrame = False
+                WantReturns = True
+              end
+            end
+            object IWBSRegion14: TIWBSRegion
+              Left = 16
+              Top = 78
+              Width = 698
+              Height = 60
+              RenderInvisibleControls = True
+              BSRegionType = bsrtPageHeader
+              object IWText4: TIWText
+                Left = 20
+                Top = 11
+                Width = 540
+                Height = 38
+                BGColor = clNone
+                ConvertSpaces = False
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWText1'
+                Lines.Strings = (
+                  '<h1>This is a Page Header</h1>'
+                  '<h2>Example page header <small>Subtext for header</small></h2>')
+                RawText = True
+                UseFrame = False
+                WantReturns = True
+              end
+            end
+            object IWBSRegion19: TIWBSRegion
+              Left = 16
+              Top = 255
+              Width = 698
+              Height = 268
+              RenderInvisibleControls = True
+              BSPanelStyle = bspsPrimary
+              BSRegionType = bsrtPanel
+              object IWBSRegion20: TIWBSRegion
+                Left = 8
+                Top = 22
+                Width = 681
+                Height = 80
+                RenderInvisibleControls = True
+                BSRegionType = bsrtPanelHeading
+                object IWText8: TIWText
+                  Left = 19
+                  Top = 55
+                  Width = 269
+                  Height = 22
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText1'
+                  Lines.Strings = (
+                    '<h2>this is panel heading</h2>')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+                object IWBSRegion23: TIWBSRegion
+                  Left = 12
+                  Top = 18
+                  Width = 653
+                  Height = 34
+                  RenderInvisibleControls = True
+                  BSRegionType = bsrtPanelTitle
+                  object IWText7: TIWText
+                    Left = 163
+                    Top = 9
+                    Width = 269
+                    Height = 22
+                    BGColor = clNone
+                    ConvertSpaces = False
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWText1'
+                    Lines.Strings = (
+                      '<h2>this is panel title</h2>')
+                    RawText = True
+                    UseFrame = False
+                    WantReturns = True
+                  end
+                end
+              end
+              object IWBSRegion21: TIWBSRegion
+                Left = 8
+                Top = 193
+                Width = 681
+                Height = 60
+                RenderInvisibleControls = True
+                BSRegionType = bsrtPanelFooter
+                object IWText9: TIWText
+                  Left = 24
+                  Top = 20
+                  Width = 269
+                  Height = 22
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText1'
+                  Lines.Strings = (
+                    '<h2>this is panel footer</h2>')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+              end
+              object IWBSRegion22: TIWBSRegion
+                Left = 8
+                Top = 108
+                Width = 681
+                Height = 79
+                RenderInvisibleControls = True
+                BSRegionType = bsrtPanelBody
+                object IWText6: TIWText
+                  Left = 155
+                  Top = 37
+                  Width = 269
+                  Height = 22
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText1'
+                  Lines.Strings = (
+                    '<h2>this is panel body</h2>')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+              end
+            end
+            object IWBSRegion24: TIWBSRegion
+              Left = 16
+              Top = 151
+              Width = 698
+              Height = 60
+              RenderInvisibleControls = True
+              BSRegionType = bsrtWell
+              BSRelativeSize = bsrzLg
+              object IWText10: TIWText
+                Left = 20
+                Top = 11
+                Width = 540
+                Height = 38
+                BGColor = clNone
+                ConvertSpaces = False
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWText1'
+                Lines.Strings = (
+                  '<h1>This is a Well</h1>'
+                  '<h2>Example page header <small>Subtext for header</small></h2>')
+                RawText = True
+                UseFrame = False
+                WantReturns = True
+              end
+            end
+          end
           object IWTabControl21Page6: TIWTabPage
             Left = 0
             Top = 20
@@ -1982,824 +2800,6 @@ object IWForm2: TIWForm2
               end
             end
           end
-          object IWTabControl21Page4: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 1495
-            RenderInvisibleControls = True
-            TabOrder = 3
-            Title = 'Other Bootstrap Controls'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion9: TIWBSRegion
-              Left = 16
-              Top = 12
-              Width = 698
-              Height = 60
-              RenderInvisibleControls = True
-              BSRegionType = bsrtJumbotron
-              object IWText1: TIWText
-                Left = 20
-                Top = 11
-                Width = 540
-                Height = 38
-                BGColor = clNone
-                ConvertSpaces = False
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWText1'
-                Lines.Strings = (
-                  '<h1>This is a Jumbotron</h1>'
-                  '<h2>Example page header <small>Subtext for header</small></h2>')
-                RawText = True
-                UseFrame = False
-                WantReturns = True
-              end
-            end
-            object IWBSRegion14: TIWBSRegion
-              Left = 16
-              Top = 78
-              Width = 698
-              Height = 60
-              RenderInvisibleControls = True
-              BSRegionType = bsrtPageHeader
-              object IWText4: TIWText
-                Left = 20
-                Top = 11
-                Width = 540
-                Height = 38
-                BGColor = clNone
-                ConvertSpaces = False
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWText1'
-                Lines.Strings = (
-                  '<h1>This is a Page Header</h1>'
-                  '<h2>Example page header <small>Subtext for header</small></h2>')
-                RawText = True
-                UseFrame = False
-                WantReturns = True
-              end
-            end
-            object IWBSRegion19: TIWBSRegion
-              Left = 16
-              Top = 255
-              Width = 698
-              Height = 268
-              RenderInvisibleControls = True
-              BSPanelStyle = bspsPrimary
-              BSRegionType = bsrtPanel
-              object IWBSRegion20: TIWBSRegion
-                Left = 8
-                Top = 22
-                Width = 681
-                Height = 80
-                RenderInvisibleControls = True
-                BSRegionType = bsrtPanelHeading
-                object IWText8: TIWText
-                  Left = 19
-                  Top = 55
-                  Width = 269
-                  Height = 22
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText1'
-                  Lines.Strings = (
-                    '<h2>this is panel heading</h2>')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-                object IWBSRegion23: TIWBSRegion
-                  Left = 12
-                  Top = 18
-                  Width = 653
-                  Height = 34
-                  RenderInvisibleControls = True
-                  BSRegionType = bsrtPanelTitle
-                  object IWText7: TIWText
-                    Left = 163
-                    Top = 9
-                    Width = 269
-                    Height = 22
-                    BGColor = clNone
-                    ConvertSpaces = False
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWText1'
-                    Lines.Strings = (
-                      '<h2>this is panel title</h2>')
-                    RawText = True
-                    UseFrame = False
-                    WantReturns = True
-                  end
-                end
-              end
-              object IWBSRegion21: TIWBSRegion
-                Left = 8
-                Top = 193
-                Width = 681
-                Height = 60
-                RenderInvisibleControls = True
-                BSRegionType = bsrtPanelFooter
-                object IWText9: TIWText
-                  Left = 24
-                  Top = 20
-                  Width = 269
-                  Height = 22
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText1'
-                  Lines.Strings = (
-                    '<h2>this is panel footer</h2>')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-              end
-              object IWBSRegion22: TIWBSRegion
-                Left = 8
-                Top = 108
-                Width = 681
-                Height = 79
-                RenderInvisibleControls = True
-                BSRegionType = bsrtPanelBody
-                object IWText6: TIWText
-                  Left = 155
-                  Top = 37
-                  Width = 269
-                  Height = 22
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText1'
-                  Lines.Strings = (
-                    '<h2>this is panel body</h2>')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-              end
-            end
-            object IWBSRegion24: TIWBSRegion
-              Left = 16
-              Top = 151
-              Width = 698
-              Height = 60
-              RenderInvisibleControls = True
-              BSRegionType = bsrtWell
-              BSRelativeSize = bsrzLg
-              object IWText10: TIWText
-                Left = 20
-                Top = 11
-                Width = 540
-                Height = 38
-                BGColor = clNone
-                ConvertSpaces = False
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWText1'
-                Lines.Strings = (
-                  '<h1>This is a Well</h1>'
-                  '<h2>Example page header <small>Subtext for header</small></h2>')
-                RawText = True
-                UseFrame = False
-                WantReturns = True
-              end
-            end
-          end
-          object IWTabControl21Page3: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 1495
-            RenderInvisibleControls = True
-            TabOrder = 2
-            Title = 'Buttons'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion10: TIWBSRegion
-              Left = 16
-              Top = 81
-              Width = 1041
-              Height = 361
-              RenderInvisibleControls = True
-              object IWBSBtnToolBar1: TIWBSRegion
-                Left = 20
-                Top = 9
-                Width = 900
-                Height = 75
-                RenderInvisibleControls = True
-                BSRegionType = bsrtButtonToolbar
-                object IWBSBtnGroup1: TIWBSRegion
-                  Left = 16
-                  Top = 19
-                  Width = 220
-                  Height = 53
-                  RenderInvisibleControls = True
-                  BSRegionType = bsrtButtonGroup
-                  object IWBSButton1: TIWBSButton
-                    Left = -3
-                    Top = 20
-                    Width = 50
-                    Height = 30
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Caption = 'Left'
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 11
-                    BSButtonSize = bsszLg
-                    BSGlyphicon = 'align-left'
-                  end
-                  object IWBSButton2: TIWBSButton
-                    Left = 47
-                    Top = 20
-                    Width = 50
-                    Height = 30
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Caption = 'Center'
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 12
-                    BSButtonSize = bsszMd
-                    BSGlyphicon = 'align-center'
-                  end
-                  object IWBSButton3: TIWBSButton
-                    Left = 97
-                    Top = 20
-                    Width = 50
-                    Height = 30
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Caption = 'Rigth'
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 13
-                    BSButtonSize = bsszSm
-                    BSGlyphicon = 'align-right'
-                  end
-                  object IWBSButton4: TIWBSButton
-                    Left = 147
-                    Top = 20
-                    Width = 50
-                    Height = 30
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Caption = 'Justify'
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 14
-                    BSButtonSize = bsszXs
-                    BSGlyphicon = 'align-justify'
-                  end
-                end
-                object IWBSBtnGroup2: TIWBSRegion
-                  Left = 242
-                  Top = 20
-                  Width = 415
-                  Height = 51
-                  RenderInvisibleControls = True
-                  BSRegionType = bsrtButtonGroup
-                  object IWBSButton5: TIWBSButton
-                    Left = 17
-                    Top = 22
-                    Width = 75
-                    Height = 25
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 15
-                    BSButtonSize = bsszLg
-                    BSGlyphicon = 'align-left'
-                  end
-                  object IWBSButton6: TIWBSButton
-                    Left = 109
-                    Top = 22
-                    Width = 75
-                    Height = 25
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 16
-                    BSButtonSize = bsszMd
-                    BSGlyphicon = 'align-center'
-                  end
-                  object IWBSButton7: TIWBSButton
-                    Left = 201
-                    Top = 22
-                    Width = 75
-                    Height = 25
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 17
-                    BSButtonSize = bsszSm
-                    BSGlyphicon = 'align-right'
-                  end
-                  object IWBSButton8: TIWBSButton
-                    Left = 287
-                    Top = 22
-                    Width = 75
-                    Height = 25
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 18
-                    BSButtonSize = bsszXs
-                    BSGlyphicon = 'align-justify'
-                  end
-                end
-                object IWBSBtnGroup3: TIWBSRegion
-                  Left = 663
-                  Top = 22
-                  Width = 220
-                  Height = 50
-                  RenderInvisibleControls = True
-                  BSButtonGroupOptions.Vertical = True
-                  BSRegionType = bsrtButtonGroup
-                  object IWBSButton9: TIWBSButton
-                    Left = 9
-                    Top = 17
-                    Width = 50
-                    Height = 30
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Caption = 'Left'
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 19
-                    BSButtonSize = bsszLg
-                    BSGlyphicon = 'align-left'
-                  end
-                  object IWBSButton10: TIWBSButton
-                    Left = 59
-                    Top = 17
-                    Width = 50
-                    Height = 30
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Caption = 'Center'
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 20
-                    BSButtonSize = bsszMd
-                    BSGlyphicon = 'align-center'
-                  end
-                  object IWBSButton11: TIWBSButton
-                    Left = 109
-                    Top = 17
-                    Width = 50
-                    Height = 30
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Caption = 'Rigth'
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 21
-                    BSButtonSize = bsszSm
-                    BSGlyphicon = 'align-right'
-                  end
-                  object IWBSButton12: TIWBSButton
-                    Left = 159
-                    Top = 17
-                    Width = 50
-                    Height = 30
-                    Hint = 'This is a hint'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    Caption = 'Justify'
-                    Color = clBtnFace
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWBSButton1'
-                    TabOrder = 22
-                    BSButtonSize = bsszXs
-                    BSGlyphicon = 'align-justify'
-                  end
-                end
-              end
-              object IWBSBtnGroup4: TIWBSRegion
-                Left = 20
-                Top = 109
-                Width = 675
-                Height = 60
-                RenderInvisibleControls = True
-                BSRegionType = bsrtButtonGroup
-                object IWBSButton13: TIWBSButton
-                  Left = 13
-                  Top = 20
-                  Width = 75
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Default'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton13'
-                  TabOrder = 23
-                end
-                object IWBSButton14: TIWBSButton
-                  Left = 94
-                  Top = 20
-                  Width = 75
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Info'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton13'
-                  TabOrder = 24
-                  BSButtonStyle = bsbsInfo
-                end
-                object IWBSButton15: TIWBSButton
-                  Left = 175
-                  Top = 20
-                  Width = 75
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Link'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton13'
-                  TabOrder = 25
-                  BSButtonStyle = bsbsLink
-                end
-                object IWBSButton16: TIWBSButton
-                  Left = 256
-                  Top = 20
-                  Width = 75
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Primary'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton13'
-                  TabOrder = 26
-                  BSButtonStyle = bsbsPrimary
-                end
-                object IWBSButton17: TIWBSButton
-                  Left = 337
-                  Top = 20
-                  Width = 75
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Success'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton13'
-                  TabOrder = 27
-                  BSButtonStyle = bsbsSuccess
-                end
-                object IWBSButton18: TIWBSButton
-                  Left = 418
-                  Top = 20
-                  Width = 75
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Warning'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton13'
-                  TabOrder = 28
-                  BSButtonStyle = bsbsWarning
-                end
-                object IWBSButton19: TIWBSButton
-                  Left = 499
-                  Top = 20
-                  Width = 75
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Danger'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton13'
-                  TabOrder = 29
-                  BSButtonStyle = bsbsDanger
-                end
-                object IWBSButton29: TIWBSButton
-                  Left = 580
-                  Top = 18
-                  Width = 75
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Close'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton13'
-                  TabOrder = 75
-                  BSButtonStyle = bsbsClose
-                end
-              end
-            end
-          end
-          object IWTabControl21Page5: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 1495
-            RenderInvisibleControls = True
-            TabOrder = 4
-            Title = 'Create components at runtime'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion17: TIWBSRegion
-              Left = 27
-              Top = 260
-              Width = 538
-              Height = 66
-              RenderInvisibleControls = True
-              object IWBSButton26: TIWBSButton
-                Left = 3
-                Top = 3
-                Width = 265
-                Height = 25
-                RenderSize = False
-                StyleRenderOptions.RenderSize = False
-                Caption = 'Dinamically create frame with inputs'
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSButton26'
-                TabOrder = 70
-                OnAsyncClick = IWBSButton26AsyncClick
-              end
-            end
-            object IWBSRegion11: TIWBSRegion
-              Left = 27
-              Top = 335
-              Width = 538
-              Height = 76
-              RenderInvisibleControls = True
-              object IWBSButton21: TIWBSButton
-                Left = 4
-                Top = 3
-                Width = 265
-                Height = 25
-                RenderSize = False
-                StyleRenderOptions.RenderSize = False
-                Caption = 'Dinamically create button with anonymous proc'
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSButton26'
-                TabOrder = 71
-                OnAsyncClick = IWBSButton21AsyncClick
-              end
-              object IWBSInput6: TIWBSInput
-                Left = 3
-                Top = 34
-                Width = 121
-                Height = 21
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSInput6'
-                SubmitOnAsyncEvent = True
-                TabOrder = 72
-                Caption = ''
-              end
-            end
-            object IWBSRegion12: TIWBSRegion
-              Left = 27
-              Top = 12
-              Width = 538
-              Height = 60
-              RenderInvisibleControls = True
-              object IWBSButton27: TIWBSButton
-                Left = -24
-                Top = 16
-                Width = 393
-                Height = 25
-                RenderSize = False
-                StyleRenderOptions.RenderSize = False
-                Caption = 'Dinamically create modal dialog from TIWFrame'
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSButton26'
-                TabOrder = 73
-                OnAsyncClick = IWBSButton27AsyncClick
-              end
-            end
-            object IWBSRegion26: TIWBSRegion
-              Left = 27
-              Top = 85
-              Width = 538
-              Height = 60
-              RenderInvisibleControls = True
-              object IWBSButton28: TIWBSButton
-                Left = -24
-                Top = 16
-                Width = 393
-                Height = 25
-                RenderSize = False
-                StyleRenderOptions.RenderSize = False
-                Caption = 'Dinamically create dialog from code'
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSButton26'
-                TabOrder = 74
-                OnAsyncClick = IWBSButton28AsyncClick
-              end
-            end
-            object IWBSRegion13: TIWBSRegion
-              Left = 27
-              Top = 163
-              Width = 538
-              Height = 91
-              RenderInvisibleControls = True
-              object IWBSButton31: TIWBSButton
-                Left = -24
-                Top = 16
-                Width = 393
-                Height = 25
-                RenderSize = False
-                StyleRenderOptions.RenderSize = False
-                Caption = 'Dinamically create advanced dialog from code'
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSButton26'
-                TabOrder = 76
-                OnAsyncClick = IWBSButton31AsyncClick
-              end
-              object IWBSInput23: TIWBSInput
-                Left = 3
-                Top = 47
-                Width = 121
-                Height = 21
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSInput6'
-                SubmitOnAsyncEvent = True
-                TabOrder = 77
-                Caption = ''
-                PlaceHolder = 'IWBSInput23'
-              end
-            end
-            object IWBSRegion27: TIWBSRegion
-              Left = 27
-              Top = 428
-              Width = 538
-              Height = 60
-              RenderInvisibleControls = True
-              object IWBSButton32: TIWBSButton
-                Left = -24
-                Top = 16
-                Width = 393
-                Height = 25
-                RenderSize = False
-                StyleRenderOptions.RenderSize = False
-                Caption = 'Dinamically create Alert'
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSButton26'
-                TabOrder = 78
-                OnAsyncClick = IWBSButton32AsyncClick
-              end
-            end
-            object IWBSRegion28: TIWBSRegion
-              Left = 27
-              Top = 505
-              Width = 538
-              Height = 104
-              RenderInvisibleControls = True
-              object IWBSButton33: TIWBSButton
-                Left = -24
-                Top = 16
-                Width = 393
-                Height = 25
-                RenderSize = False
-                StyleRenderOptions.RenderSize = False
-                Caption = 'Dinamically create complex Alert'
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSButton26'
-                TabOrder = 79
-                OnAsyncClick = IWBSButton33AsyncClick
-              end
-              object IWBSInput24: TIWBSInput
-                Left = 3
-                Top = 49
-                Width = 121
-                Height = 21
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWBSInput6'
-                SubmitOnAsyncEvent = True
-                TabOrder = 80
-                Caption = ''
-              end
-            end
-          end
           object IWTabControl21Page0: TIWTabPage
             Left = 0
             Top = 20
@@ -2873,7 +2873,6 @@ object IWForm2: TIWForm2
                 Font.Size = 10
                 Font.Style = []
                 FriendlyName = 'IWBSInput1'
-                MaxLength = 20
                 SubmitOnAsyncEvent = True
                 TabOrder = 66
                 BSTextAlignment = bstaCenter

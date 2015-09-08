@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, IWVCLBaseContainer, IWContainer,
   IWHTMLContainer, IWHTML40Container, IWRegion,
   IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl, IWControl, IWCompEdit,
-  IWBSRegion, IWBSTabControl, IWCompButton, IWCompExtCtrls, IWDBStdCtrls,
+  IWBSRegion, IWBSTabControl, IWCompButton, IWCompExtCtrls,
   IWBSInput, IWCompTabControl, IWVCLComponent,
   IWBaseLayoutComponent, IWBaseContainerLayout, IWContainerLayout,
   IWCompLabel, IWCompCheckbox,
