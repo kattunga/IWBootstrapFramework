@@ -43,6 +43,7 @@ type
     property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
     property ClipRegion default False;
     property Css: string read FCss write FCss;
+    property RenderInvisibleControls default False;
     property StyleRenderOptions;
   end;
 
@@ -170,6 +171,7 @@ begin
   FLayoutMrg := True;
   FTagType := 'div';
   ClipRegion := False;
+  RenderInvisibleControls := False;
 end;
 
 destructor TIWBSCustomRegion.Destroy;

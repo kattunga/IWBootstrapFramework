@@ -45,7 +45,7 @@ requires
   IWCGJQCore_140_190,
   Intraweb_14_DXE5,
   IWCGJQComps_140_190,
-  dclIWBootsTrapXE5;
+  IWBootsTrapXE5;
 
 contains
   IWBSCGJQRegion in 'IWBSCGJQRegion.pas';

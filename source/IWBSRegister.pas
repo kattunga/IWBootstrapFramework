@@ -12,7 +12,12 @@ type
     procedure SetValue(const Value: string); override;
   end;
 
-  TIWBSPaintHandlerBSRegion = class (TIWPaintHandlerRegion)
+  TIWBSPaintHandlerRegion = class (TIWPaintHandlerRegion)
+  public
+    procedure Paint; override;
+  end;
+
+  TIWBSPaintHandlerMemo = class (TIWPaintHandlerMemo)
   public
     procedure Paint; override;
   end;
@@ -57,7 +62,7 @@ begin
   SetStrValue(Value);
 end;
 
-procedure TIWBSPaintHandlerBSRegion.Paint;
+procedure TIWBSPaintHandlerRegion.Paint;
 var
   LRect : TRect;
   s: string;
@@ -69,7 +74,21 @@ begin
     ControlCanvas.Font.Color := clGray;
     s := TIWBSCustomRegion(Control).GetClassString;
     w := ControlCanvas.TextWidth(s);
-    LRect := Rect(Control.ClientWidth-w-10, 2, Control.Width, 20);
+    LRect := Rect(Control.ClientWidth-w-10, 2, Control.Width, Control.Height);
+    ControlCanvas.TextRect(LRect,s,[]);
+  end;
+end;
+
+procedure TIWBSPaintHandlerMemo.Paint;
+var
+  LRect : TRect;
+  s: string;
+begin
+  inherited;
+  if Control is TIWBSMemo then begin
+    ControlCanvas.Brush.Color := clWhite;
+    s := TIWBSMemo(Control).DataField;
+    LRect := Rect(5, 5, Control.Width, Control.Height);
     ControlCanvas.TextRect(LRect,s,[]);
   end;
 end;
@@ -87,14 +106,12 @@ begin
 
   RegisterComponents('IW BootsTrap', [TIWBSInput]);
   UnlistPublishedProperty(TIWBSInput, 'Alignment');
-  UnlistPublishedProperty(TIWBSInput, 'Editable');
   UnlistPublishedProperty(TIWBSInput, 'NonEditableAsLabel');
 
   RegisterComponents('IW BootsTrap', [TIWBSMemo]);
-  UnlistPublishedProperty(TIWBSMemo, 'Editable');
 
   RegisterComponents('IW BootsTrap', [TIWBSCheckBox]);
-  UnlistPublishedProperty(TIWBSCheckBox, 'Editable');
+  UnlistPublishedProperty(TIWBSCheckBox, 'Style');
 
   RegisterComponents('IW BootsTrap', [TIWBSRadioButton]);
 
@@ -110,6 +127,8 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSGlyphicon]);
   RegisterPropertyEditor(TypeInfo(string), TIWBSGlyphicon,'BSGlyphicon', TGlyphiconEditor);
 
+  RegisterComponents('IW BootsTrap', [TIWBSImage]);
+
   RegisterComponents('IW BootsTrap', [TIWBSTabControl]);
   UnlistPublishedProperty(TIWBSTabControl, 'ActiveTabFont');
   UnlistPublishedProperty(TIWBSTabControl, 'InactiveTabFont');
@@ -118,13 +137,13 @@ begin
 end;
 
 initialization
-  IWRegisterPaintHandler('TIWBSRegion',TIWBSPaintHandlerBSRegion);
-  IWRegisterPaintHandler('TIWBSInputForm',TIWBSPaintHandlerBSRegion);
-  IWRegisterPaintHandler('TIWBSInputGroup',TIWBSPaintHandlerBSRegion);
-  IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerBSRegion);
+  IWRegisterPaintHandler('TIWBSRegion',TIWBSPaintHandlerRegion);
+  IWRegisterPaintHandler('TIWBSInputForm',TIWBSPaintHandlerRegion);
+  IWRegisterPaintHandler('TIWBSInputGroup',TIWBSPaintHandlerRegion);
+  IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerRegion);
 
   IWRegisterPaintHandler('TIWBSInput',TIWPaintHandlerEdit);
-  IWRegisterPaintHandler('TIWBSMemo',TIWPaintHandlerMemo);
+  IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerMemo);
   IWRegisterPaintHandler('TIWBSCheckBox',TIWPaintHandlerCheckBox);
   IWRegisterPaintHandler('TIWBSRadioButton',TIWPaintHandlerRadioButton);
   IWRegisterPaintHandler('TIWBSListBox',TIWPaintHandlerListBox);
@@ -133,6 +152,8 @@ initialization
   IWRegisterPaintHandler('TIWBSButton',TIWPaintHandlerButton);
 
   IWRegisterPaintHandler('TIWBSLabel',TIWPaintHandlerLabel);
+
+  IWRegisterPaintHandler('TIWBSImage',TIWPaintHandlerImage);
 
   IWRegisterPaintHandler('TIWBSTabControl',TIWPaintHandlerTabControl);
 
@@ -152,6 +173,8 @@ finalization
   IWUnRegisterPaintHandler('TIWBSButton');
 
   IWUnRegisterPaintHandler('TIWBSLabel');
+
+  IWUnRegisterPaintHandler('TIWBSImage');
 
   IWUnRegisterPaintHandler('TIWBSTabControl');
 

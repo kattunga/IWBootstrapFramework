@@ -13,7 +13,7 @@ uses
   IWCompLabel, IWCompCheckbox,
   IWCompText, IWCompMemo, IWLayoutMgrForm, IWBSLayoutMgr,
   IWCompRadioButton, IWCompOrderedListbox, IWHTMLControls, IWCompListbox,
-  IWCompGrids, Vcl.Imaging.jpeg, IWBSControls;
+  IWCompGrids, Vcl.Imaging.jpeg, IWBSControls, IWDBStdCtrls;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -94,7 +94,6 @@ type
     IWBSInputGroup5: TIWBSInputGroup;
     IWBSInput12: TIWBSInput;
     IWBSRadioButton5: TIWBSRadioButton;
-    IWBSInput13: TIWBSInput;
     IWBSInput14: TIWBSInput;
     IWBSInput15: TIWBSInput;
     IWBSInput16: TIWBSInput;
@@ -107,18 +106,6 @@ type
     IWBSListbox3: TIWBSListbox;
     IWTabControl21Page5: TIWTabPage;
     IWBSRegion17: TIWBSRegion;
-    IWTabControl21Page6: TIWTabPage;
-    IWBSRegion18: TIWBSRegion;
-    IWButton1: TIWButton;
-    IWCheckBox1: TIWCheckBox;
-    IWComboBox1: TIWComboBox;
-    IWEdit1: TIWEdit;
-    IWGrid1: TIWGrid;
-    IWImage1: TIWImage;
-    IWLabel2: TIWLabel;
-    IWListbox1: TIWListbox;
-    IWMemo1: TIWMemo;
-    IWRadioGroup1: TIWRadioGroup;
     IWBSLayoutMgr1: TIWBSLayoutMgr;
     IWBSRegion19: TIWBSRegion;
     IWBSRegion20: TIWBSRegion;
@@ -133,14 +120,7 @@ type
     IWText10: TIWText;
     IWBSCheckBox4: TIWBSCheckBox;
     IWBSRegion25: TIWBSRegion;
-    IWBSRadioButton6: TIWBSRadioButton;
-    IWBSRadioButton7: TIWBSRadioButton;
-    IWBSRadioButton8: TIWBSRadioButton;
-    IWBSRadioButton9: TIWBSRadioButton;
     LstFormType: TIWBSListbox;
-    IWBSRegion1: TIWBSRegion;
-    IWLabel3: TIWLabel;
-    IWEdit2: TIWEdit;
     IWBSInputGroup6: TIWBSInputGroup;
     IWBSInput4: TIWBSInput;
     IWBSGlyphicon1: TIWBSGlyphicon;
@@ -167,6 +147,11 @@ type
     IWBSRegion28: TIWBSRegion;
     IWBSButton33: TIWBSButton;
     IWBSInput24: TIWBSInput;
+    IWBSRegion1: TIWBSRegion;
+    IWBSRadioButton6: TIWBSRadioButton;
+    IWBSRadioButton7: TIWBSRadioButton;
+    IWBSRadioButton8: TIWBSRadioButton;
+    IWBSRadioButton9: TIWBSRadioButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -192,9 +177,12 @@ procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   IWBSInput1.Text := 'this text was filled with ajax';
-  IWBSMemo2.Lines.Values['type date'] := IWBSInput7.Text;
-  IWBSMemo2.Lines.Values['type datetime'] := IWBSInput13.Text;
   IWBSMemo2.Lines.Values['type datetimelocal'] := IWBSInput14.Text;
+  IWBSMemo2.Lines.Values['type date'] := IWBSInput7.Text;
+  IWBSMemo2.Lines.Values['type month'] := IWBSInput15.Text;
+  IWBSMemo2.Lines.Values['type time'] := IWBSInput16.Text;
+  IWBSMemo2.Lines.Values['type week'] := IWBSInput17.Text;
+  IWBSMemo2.Lines.Values['type number'] := IWBSInput2.Text;
   IWBSMemo2.Lines.Values['type color'] := IWBSinput22.Text;
 end;
 

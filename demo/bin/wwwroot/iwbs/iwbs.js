@@ -3,6 +3,9 @@ $(document).ready(function () {
 	if (typeof webshims !== "undefined") {
 		webshims.polyfill('forms forms-ext');
 	}
+	$(".btn").mouseup(function(){
+		$(this).blur();
+	})
 });
 
 function AsyncCreateControl(id, parentId, htmlTag) {

@@ -35,6 +35,7 @@ requires
   vclimg,
   dbrtl,
   inet,
+  IWBootsTrapXE5,
   Intraweb_14_DXE5,
   dclIntraweb_14_DXE5;
 

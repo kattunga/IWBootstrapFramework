@@ -42,7 +42,7 @@ implementation
 uses
   IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists,
   IWRegion, IW.Common.Strings,
-  IWBSRegion, IWBSRegionCommon;
+  IWBSRegionCommon;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
@@ -99,7 +99,6 @@ begin
 
   // add missing html5 functionality to most browsers
   // http://afarkas.github.io/webshim/demos/index.html
-  // see also http://modernizr.com/
   if bslyEnablePolyfill in FPageOptions then
     ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'webshim-1.15.8/js-webshim/minified/polyfiller.js"></script>');
 
@@ -232,19 +231,7 @@ begin
   // non IWBS components hacks
   if Assigned(LHTML) then begin
     if AControl.InterfaceInstance.ClassName = 'TIWTabPage' then
-      LHTML.Params.Values['class'] := IWBSRegionCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass
-    else if AControl.InterfaceInstance.ClassName = 'TIWEdit' then
-      LHTML.Params.Values['class'] := 'form-control'
-    else if AControl.InterfaceInstance.ClassName = 'TIWMemo' then
-      LHTML.Params.Values['class'] := 'form-control'
-    else if AControl.InterfaceInstance.ClassName = 'TIWCheckBox' then
-      LHTML.Params.Values['class'] := 'checkbox-inline'
-    else if AControl.InterfaceInstance.ClassName = 'TIWComboBox' then
-      LHTML.Params.Values['class'] := 'form-control'
-    else if AControl.InterfaceInstance.ClassName = 'TIWListbox' then
-      LHTML.Params.Values['class'] := 'form-control'
-    else if AControl.InterfaceInstance.ClassName = 'TIWButton' then
-      LHTML.Params.Values['class'] := 'btn';
+      LHTML.Params.Values['class'] := IWBSRegionCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass;
 
     // bugfix, intraweb ignore StyleRenderOption.UseDisplay
     if not TControl(AControl.InterfaceInstance).Visible and HTML40ControlInterface(AControl.InterfaceInstance).StyleRenderOptions.UseDisplay then begin

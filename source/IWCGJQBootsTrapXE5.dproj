@@ -131,7 +131,7 @@
         <DCCReference Include="IWCGJQCore_140_190.dcp"/>
         <DCCReference Include="Intraweb_14_DXE5.dcp"/>
         <DCCReference Include="IWCGJQComps_140_190.dcp"/>
-        <DCCReference Include="dclIWBootsTrapXE5.dcp"/>
+        <DCCReference Include="IWBootsTrapXE5.dcp"/>
         <DCCReference Include="IWBSCGJQRegion.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
