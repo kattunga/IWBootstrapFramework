@@ -10,8 +10,7 @@ uses
   IWBaseHTMLControl, IWHTMLContainer, IWHTML40Container, IWCompButton,
   IWBSRegion, IWBSInput, IWVCLComponent, IWBaseLayoutComponent,
   IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr, IWBSControls,
-  Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
-  IWCompRadioButton;
+  Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls;
 
 type
   TformMain = class(TIWAppForm)
@@ -57,6 +56,7 @@ type
     btnPrior: TIWBSButton;
     btnNext: TIWBSButton;
     btnLast: TIWBSButton;
+    IWBSRadioGroup1: TIWBSRadioGroup;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWAppFormDestroy(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);
@@ -129,7 +129,6 @@ procedure TformMain.btnNextAsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   ClientDataSet1.Next;
-  IWBSCheckBox1.Checked := True;
 end;
 
 procedure TformMain.btnLastAsyncClick(Sender: TObject;

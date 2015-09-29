@@ -1,8 +1,8 @@
 object formMain: TformMain
   Left = 0
   Top = 0
-  Width = 748
-  Height = 843
+  Width = 752
+  Height = 1062
   Visible = False
   RenderInvisibleControls = False
   AllowPageAccess = True
@@ -19,35 +19,41 @@ object formMain: TformMain
   ShowHint = True
   XPTheme = True
   DesignLeft = 8
-  DesignTop = -238
+  DesignTop = -3
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
-    Width = 748
-    Height = 843
+    Width = 752
+    Height = 1062
     Align = alClient
     BSRegionType = bsrtContainer
+    ExplicitWidth = 748
+    ExplicitHeight = 843
     object IWBSInputForm1: TIWBSInputForm
       Left = 1
       Top = 1
-      Width = 746
-      Height = 841
+      Width = 750
+      Height = 1060
       Align = alClient
       BSFormType = bsftHorizontal
       BSFormOptions.CaptionsSize.GridMDSpan = 4
       BSFormOptions.InputsSize.GridMDSpan = 8
+      ExplicitWidth = 746
+      ExplicitHeight = 841
       object IWBSRegion2: TIWBSRegion
         Left = 1
         Top = 1
-        Width = 744
-        Height = 839
+        Width = 748
+        Height = 1058
         Align = alClient
         BSRegionType = bsrtRow
+        ExplicitWidth = 744
+        ExplicitHeight = 839
         object IWBSRegion3: TIWBSRegion
           Left = 12
           Top = 20
           Width = 593
-          Height = 805
+          Height = 1017
           BSGridOptions.GridMDSpan = 8
           BSRegionType = bsrtColumn
           object IWBSInput1: TIWBSInput
@@ -63,6 +69,7 @@ object formMain: TformMain
             SubmitOnAsyncEvent = True
             TabOrder = 0
             BSTextAlignment = bstaRight
+            BSInputType = bsitNumber
             Caption = 'Length (inches)'
             DataSource = dsrcMain
             DataField = 'Length_In'
@@ -78,6 +85,7 @@ object formMain: TformMain
             FriendlyName = 'IWBSInput2'
             SubmitOnAsyncEvent = True
             TabOrder = 1
+            BSInputType = bsitNumber
             Caption = 'Length (cm)'
             DataSource = dsrcMain
             DataField = 'Length (cm)'
@@ -144,7 +152,7 @@ object formMain: TformMain
           end
           object IWBSMemo1: TIWBSMemo
             Left = 20
-            Top = 640
+            Top = 628
             Width = 317
             Height = 121
             BGColor = clNone
@@ -157,7 +165,7 @@ object formMain: TformMain
             Required = False
             TabOrder = 6
             SubmitOnAsyncEvent = True
-            Caption = ''
+            Caption = 'Notes'
             DataSource = dsrcMain
             DataField = 'Notes'
           end
@@ -172,6 +180,7 @@ object formMain: TformMain
             FriendlyName = 'IWBSInput7'
             SubmitOnAsyncEvent = True
             TabOrder = 7
+            BSInputType = bsitDateTimeLocal
             Caption = 'Found Date'
             DataSource = dsrcMain
             DataField = 'FoundDate'
@@ -236,8 +245,33 @@ object formMain: TformMain
               'Option 2=2'
               'Option 3=3')
             ItemIndex = -1
-            Caption = ''
+            Caption = 'Option'
             NoSelectionText = '-- No Selection --'
+          end
+          object IWBSRadioGroup1: TIWBSRadioGroup
+            Left = 20
+            Top = 768
+            Width = 317
+            Height = 112
+            SubmitOnAsyncEvent = True
+            TrimValues = True
+            Font.Color = clNone
+            Font.Size = 10
+            Font.Style = []
+            Layout = glVertical
+            DataField = 'Option'
+            FriendlyName = 'IWBSRadioGroup1'
+            DataSource = dsrcMain
+            Values.Strings = (
+              '1'
+              '2'
+              '3')
+            Items.Strings = (
+              'Option 1'
+              'Option 2'
+              'Option 3')
+            TabOrder = -1
+            Caption = 'Option'
           end
           object IWBSRegion6: TIWBSRegion
             Left = 20

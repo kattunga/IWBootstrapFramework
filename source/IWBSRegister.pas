@@ -119,6 +119,8 @@ begin
 
   RegisterComponents('IW BootsTrap', [TIWBSComboBox]);
 
+  RegisterComponents('IW BootsTrap', [TIWBSRadioGroup]);
+
   RegisterComponents('IW BootsTrap', [TIWBSButton]);
   RegisterPropertyEditor(TypeInfo(string), TIWBSButton,'BSGlyphicon', TGlyphiconEditor);
 
