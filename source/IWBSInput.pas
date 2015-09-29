@@ -955,14 +955,18 @@ begin
 end;
 
 function TIWBSComboBox.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+var
+  xHTMLName: string;
 begin
+  xHTMLName := HTMLName;
+
   Result := inherited;
-  Result.AddStringParam('id', HTMLName);
+  Result.AddStringParam('id', xHTMLName);
   Result.AddClassParam(RenderCSSClass(AContext));
   if FAutoFocus then
     Result.Add('autofocus');
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Parent, Result, FCaption, HTMLName);
+    Result := CreateInputFormGroup(Parent, Result, FCaption, xHTMLName);
 end;
 {$endregion}
 
