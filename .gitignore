@@ -60,4 +60,5 @@ __history/
 __nogit
 glyphicons/
 
+# submodules
 .git
