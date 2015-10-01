@@ -2,9 +2,6 @@
 
 This framework let you create Boostrap 3 desktop and mobile responsive applications with IntraWeb.
 
-It is not intended for replace Intraweb traditional applications where you develop html applications in the same way as vcl applications.
-Here you need to have some knowledge of bootstrap and css.
-
 ## Online Demo
 
 http://iwbs.sig2k.com/iwbootstrap
