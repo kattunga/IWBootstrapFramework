@@ -7,14 +7,8 @@ object IWForm2: TIWForm2
   AllowPageAccess = True
   ConnectionMode = cmAny
   ExtraHeader.Strings = (
-    
-      '<script src="/iwbs/bootstrap-responsive-tabs/bootstrap-responsiv' +
-      'e-tabs.js"></script>'
-    
-      '<link href="/iwbs/bootstrap-responsive-tabs/bootstrap-responsive' +
-      '-tabs.css" rel="stylesheet">'
-    '<link href="/iwbsdemo.css" rel="stylesheet">'
     '')
+  OnCreate = IWAppFormCreate
   Background.Fixed = False
   LayoutMgr = IWBSLayoutMgr1
   HandleTabs = False

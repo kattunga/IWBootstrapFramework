@@ -171,6 +171,7 @@ type
     procedure IWBSButton33AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton35Click(Sender: TObject);
     procedure IWBSButton36Click(Sender: TObject);
+    procedure IWAppFormCreate(Sender: TObject);
   public
   end;
 
@@ -178,7 +179,13 @@ implementation
 
 {$R *.dfm}
 
-uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact;
+uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact,
+  ServerController;
+
+procedure TIWForm2.IWAppFormCreate(Sender: TObject);
+begin
+  ExtraHeader.Add('<link href="'+IWServerController.URLBase+'/iwbsdemo.css" rel="stylesheet">');
+end;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);

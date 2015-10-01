@@ -179,7 +179,7 @@ begin
   Result.Contents.AddText('<script>');
   try
     if FTabOptions.Responsive then
-      Result.Contents.AddText('$("#'+xHTMLName+'_tabs'+'").bootstrapResponsiveTabs({ minTabWidth: 40, maxTabWidth: 300 });');
+      Result.Contents.AddText('$("#'+xHTMLName+'_tabs'+'").bootstrapDynamicTabs();');
 
     // save seleted tab on change
     Result.Contents.AddText('$("#'+xHTMLName+'").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=e.target.tabIndex; });');
@@ -197,5 +197,8 @@ begin
   Result.Contents.AddHiddenField(HTMLName + '_input', xHTMLInput, IntToStr(tabIndex));
 end;
 {$endregion}
+
+initialization
+  gCmpResponsiveTabs := True;
 
 end.

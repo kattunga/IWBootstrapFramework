@@ -10,7 +10,8 @@ uses
   IWBaseHTMLControl, IWHTMLContainer, IWHTML40Container, IWCompButton,
   IWBSRegion, IWBSInput, IWVCLComponent, IWBaseLayoutComponent,
   IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr, IWBSControls,
-  Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls;
+  Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
+  MidasLib;
 
 type
   TFFishFact = class(TIWAppForm)

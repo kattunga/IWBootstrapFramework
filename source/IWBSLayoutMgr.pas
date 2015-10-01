@@ -37,6 +37,8 @@ var
   gIWBSRenderingSortMethod: TIWBSRenderingSortMethod = bsrmSortYX;
   gIWBSRenderingGridPrecision: integer = 12;
 
+  gCmpResponsiveTabs: boolean = False;
+
 implementation
 
 uses
@@ -91,6 +93,7 @@ begin
 
   ABuffer.WriteLine(PreHeadContent);
 
+  // bootstrap, jquery and iwbs libraries (this is the base)
   ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'bootstrap-'+gIWBSbslibversion+'/css/bootstrap.min.css">');
   ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'iwbs.css?v='+gIWBSRefreshCacheParam+'">');
   ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'jquery-'+gIWBSjqlibversion+'.min.js"></script>');
@@ -101,6 +104,12 @@ begin
   // http://afarkas.github.io/webshim/demos/index.html
   if bslyEnablePolyfill in FPageOptions then
     ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'webshim-1.15.8/js-webshim/minified/polyfiller.js"></script>');
+
+  // libraries for components, we load automatically if component unit is included so user can dinamically create component
+  if gCmpResponsiveTabs then begin
+    ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'dyntabs/bootstrap-dynamic-tabs.css?v='+gIWBSRefreshCacheParam+'">');
+    ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'dyntabs/bootstrap-dynamic-tabs.js?v='+gIWBSRefreshCacheParam+'"></script>');
+  end;
 
   // disable bootstap button plugin for no conflict with jqButton of jQueryUI framework, required if use CGDevtools buttons
   if bslyNoConflictButton in FPageOptions then
