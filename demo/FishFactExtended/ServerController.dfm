@@ -12,7 +12,7 @@ object IWServerController: TIWServerController
   EnableImageToolbar = False
   ExceptionDisplayMode = smAlert
   PageTransitions = True
-  Port = 8888
+  Port = 8090
   RedirectMsgDelay = 0
   ServerResizeTimeout = 0
   ShowLoadingAnimation = True
@@ -21,9 +21,11 @@ object IWServerController: TIWServerController
   SSLOptions.Port = 0
   SSLOptions.SSLVersion = SSLv3
   SSLOptions.SSLVersions = []
+  URLBase = '/iwbootstrap/'
   Version = '14.0.45'
   AllowMultipleSessionsPerUser = False
   JavaScriptOptions.RenderjQuery = False
+  HttpKeepAlive = True
   Height = 304
   Width = 330
 end

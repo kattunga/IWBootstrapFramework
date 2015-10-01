@@ -13,7 +13,11 @@ function  IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTM
 
 procedure IWBSUnregisterCallbacks(const AControlName: string; WebApplication: IWApplication.TIWApplication);
 
+procedure ExecuteJScript(const Script: string);
+
 implementation
+
+uses IWHTML40Interfaces;
 
 procedure IWBSDisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
 begin
@@ -73,6 +77,22 @@ begin
   for idx := CallBacks.Count-1 downto 0 do
     if AnsiStartsStr(xQualifiedName, CallBacks[idx]) then
       CallBacks.Delete(idx);
+end;
+
+procedure ExecuteJScript(const Script: string);
+var
+  IWApp: IWApplication.TIWApplication;
+begin
+  if Length(Script) <= 0 then Exit;
+
+  IWApp := GGetWebApplicationThreadVar;
+  if IWApp = nil then
+    raise Exception.Create('User session not found');
+
+  if IWApp.IsCallBack and IWApp.CallBackProcessing then
+    IWApp.CallBackResponse.AddJavaScriptToExecute(Script)
+  else
+    HTML40FormInterface(IWApp.ActiveForm).PageContext.AddToInitProc(Script);
 end;
 
 end.

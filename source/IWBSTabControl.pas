@@ -14,6 +14,7 @@ type
     FFade: boolean;
     FPills: boolean;
     FJustified: boolean;
+    FResponsive: boolean;
     FStacked: boolean;
   public
     constructor Create(AOwner: TComponent);
@@ -21,6 +22,7 @@ type
     property Fade: boolean read FFade write FFade default false;
     property Pills: boolean read FPills write FPills default false;
     property Justified: boolean read FJustified write FJustified default false;
+    property Responsive: boolean read FResponsive write FResponsive default false;
     property Stacked: boolean read FStacked write FStacked default false;
   end;
 
@@ -141,19 +143,23 @@ begin
 
   // tabs region
   tagTabs := result.Contents.AddTag('ul');
+  tagTabs.AddStringParam('id',xHTMLName+'_tabs');
   tagTabs.AddClassParam('nav');
   if FTabOptions.Pills then
     tagTabs.AddClassParam('nav-pills')
   else
     tagTabs.AddClassParam('nav-tabs');
-  if FTabOptions.Justified then
-    tagTabs.AddClassParam('nav-justified');
-  if FTabOptions.Stacked then
-    tagTabs.AddClassParam('nav-stacked');
 
-  tabIndex := 0;
+  if not FTabOptions.Responsive then
+    if FTabOptions.Justified then
+      tagTabs.AddClassParam('nav-justified');
+    if FTabOptions.Stacked then
+      tagTabs.AddClassParam('nav-stacked');
+
+  tagTabs.AddStringParam('role', 'tablist');
 
   // build the tabs
+  tabIndex := 0;
   MergeSortList(Pages, TabOrderCompare);
   for i := 0 to Pages.Count-1 do begin
     TabPage := TIWTabPage(FPages.Items[i]);
@@ -172,6 +178,9 @@ begin
   // add script tag
   Result.Contents.AddText('<script>');
   try
+    if FTabOptions.Responsive then
+      Result.Contents.AddText('$("#'+xHTMLName+'_tabs'+'").bootstrapResponsiveTabs({ minTabWidth: 40, maxTabWidth: 300 });');
+
     // save seleted tab on change
     Result.Contents.AddText('$("#'+xHTMLName+'").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=e.target.tabIndex; });');
 

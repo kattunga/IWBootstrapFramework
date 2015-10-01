@@ -271,7 +271,7 @@ function CreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: T
 var
   LSpanDiv: TIWHTMLTag;
 begin
-  if not ((AParent is TIWBSRegion) and (TIWBSRegion(AParent).BSRegionType in [bsrtFormGroup,bsrtButtonGroup])) then
+  if (AParentForm <> nil) and not ((AParent is TIWBSRegion) and (TIWBSRegion(AParent).BSRegionType in [bsrtFormGroup,bsrtButtonGroup])) then
     begin
       Result := TIWHTMLTag.CreateTag('div');
       Result.AddClassParam('form-group');
@@ -279,7 +279,7 @@ begin
       if ASpanDiv then
         begin
           LSpanDiv := Result.Contents.AddTag('div');
-          if (AParentForm <> nil) and (AParentForm.BSFormType = bsftHorizontal) then
+          if AParentForm.BSFormType = bsftHorizontal then
             LSpanDiv.AddClassParam(AParentForm.BSFormOptions.GetOffsetClassString);
           LSpanDiv.Contents.AddTagAsObject(aTag);
         end
@@ -1051,18 +1051,22 @@ begin
   if FButtonSize <> bsszDefault then
     Result := Result + ' btn-'+aIWBSSize[FButtonSize];
   Result := Result + ' ' + aIWBSButtonStyle[FButtonStyle];
+  Result := Result + ' ' + Css;
 end;
 
 function TIWBSButton.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 const
   aIWBSButtonDataDismiss: array[bsbdNone..bsbdAlert] of string = ('', 'modal', 'alert');
 var
+  xHTMLName: string;
   s: string;
   gspan: TIWHTMLTag;
 begin
+  xHTMLName := HTMLName;
+
   Result := TIWHTMLTag.CreateTag('button');
   try
-    Result.AddStringParam('id', HTMLName);
+    Result.AddStringParam('id', xHTMLName);
     Result.AddClassParam(RenderCSSClass(AContext));
     if FDataDismiss <> bsbdNone then
       Result.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
@@ -1104,7 +1108,7 @@ begin
   if Parent is TIWBSInputGroup then
     Result := IWBSCreateInputGroupAddOn(Result, 'btn')
   else
-    Result := CreateFormGroup(Parent, IWBSFindParentInputForm(Parent), Result, HTMLName, True);
+    Result := CreateFormGroup(Parent, IWBSFindParentInputForm(Parent), Result, xHTMLName, True);
 end;
 
 procedure TIWBSButton.DoAsyncClickProc(Sender: TObject; EventParams: TStringList);

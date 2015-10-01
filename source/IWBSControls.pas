@@ -4,7 +4,7 @@ interface
 
 uses System.Classes, System.SysUtils, Data.Db,
      IWControl, IWRenderContext, IWMarkupLanguageTag, IWXMLTag, IWHTMLTag,
-     IWCompLabel, IWDBCommon, IWDBStdCtrls, IWDBExtCtrls;
+     IWCompLabel, IWDBCommon, IWDBStdCtrls, IWDBExtCtrls, IWCompText;
 
 type
   TIWBSLabel = class(TIWCustomLabel)
@@ -74,6 +74,12 @@ type
     property JpegOptions;
     property OutputType;
     property RenderEmptyAsSpan;
+  end;
+
+  TIWBSText = class(TIWText)
+  public
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   end;
 
 implementation
@@ -222,6 +228,19 @@ begin
 end;
 
 function TIWBSImage.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+begin
+  Result := inherited;
+  Result.AddClassParam(RenderCSSClass(AContext));
+end;
+{$endregion}
+
+{$region 'TIWBSImage'}
+function TIWBSText.RenderCSSClass(AComponentContext: TIWCompContext): string;
+begin
+  Result := Css;
+end;
+
+function TIWBSText.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result.AddClassParam(RenderCSSClass(AContext));

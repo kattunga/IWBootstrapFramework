@@ -126,6 +126,8 @@ begin
 
   RegisterComponents('IW BootsTrap', [TIWBSLabel]);
 
+  RegisterComponents('IW BootsTrap', [TIWBSText]);
+
   RegisterComponents('IW BootsTrap', [TIWBSGlyphicon]);
   RegisterPropertyEditor(TypeInfo(string), TIWBSGlyphicon,'BSGlyphicon', TGlyphiconEditor);
 
@@ -155,6 +157,8 @@ initialization
 
   IWRegisterPaintHandler('TIWBSLabel',TIWPaintHandlerLabel);
 
+  IWRegisterPaintHandler('TIWBSText',TIWPaintHandlerText);
+
   IWRegisterPaintHandler('TIWBSImage',TIWPaintHandlerImage);
 
   IWRegisterPaintHandler('TIWBSTabControl',TIWPaintHandlerTabControl);
@@ -175,6 +179,8 @@ finalization
   IWUnRegisterPaintHandler('TIWBSButton');
 
   IWUnRegisterPaintHandler('TIWBSLabel');
+
+  IWUnRegisterPaintHandler('TIWBSText');
 
   IWUnRegisterPaintHandler('TIWBSImage');
 

@@ -17,6 +17,7 @@ type
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;
     FRegionDiv: TIWHTMLTag;
+    FStyle: TStrings;
     function GetWebApplication: TIWApplication;
   protected
     function ContainerPrefix: string; override;
@@ -26,7 +27,9 @@ type
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    function StyleValue(AContext: TIWCompContext): string; virtual;
     procedure SetGridOptions(const AValue: TIWBSGridOptions);
+    procedure SetStyle(const AValue: TStrings);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -44,6 +47,7 @@ type
     property ClipRegion default False;
     property Css: string read FCss write FCss;
     property RenderInvisibleControls default False;
+    property Style: TStrings read FStyle write SetStyle;
     property StyleRenderOptions;
   end;
 
@@ -168,6 +172,8 @@ begin
   FAsyncDestroy := False;
   FCss := '';
   FGridOptions := TIWBSGridOptions.Create;
+  FStyle := TStringList.Create;
+  FStyle.NameValueSeparator := ':';
   FLayoutMrg := True;
   FTagType := 'div';
   ClipRegion := False;
@@ -177,6 +183,7 @@ end;
 destructor TIWBSCustomRegion.Destroy;
 begin
   FGridOptions.Free;
+  FStyle.Free;
   if FAsyncDestroy then
     ExecuteJS('AsyncDestroyControl("'+HTMLName+'");');
 
@@ -319,6 +326,12 @@ begin
   Invalidate;
 end;
 
+procedure TIWBSCustomRegion.SetStyle(const AValue: TStrings);
+begin
+  FStyle.Assign(AValue);
+  Invalidate;
+end;
+
 function TIWBSCustomRegion.ContainerPrefix: string;
 begin
   if Owner is TFrame then
@@ -369,12 +382,25 @@ begin
   end;
 end;
 
+function TIWBSCustomRegion.StyleValue(AContext: TIWCompContext): string;
+var
+  i: integer;
+begin
+  Result := '';
+  for i := 0 to FStyle.Count-1 do begin
+    if Result <> '' then
+      Result := Result + ';';
+    Result := Result + FStyle[i];
+  end;
+end;
+
 function TIWBSCustomRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   FRegionDiv := TIWHTMLTag.CreateTag(FTagType);
   FRegionDiv.AddStringParam('id',HTMLName);
   FRegionDiv.AddClassParam(GetClassString);
   FRegionDiv.AddStringParam('role',GetRoleString);
+  FRegionDiv.AddStringParam('style',StyleValue(AContext));
   Result := FRegionDiv;
 end;
 {$endregion}

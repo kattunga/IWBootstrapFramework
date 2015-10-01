@@ -13,19 +13,14 @@ uses
   IWCompLabel, IWCompCheckbox,
   IWCompText, IWCompMemo, IWLayoutMgrForm, IWBSLayoutMgr,
   IWCompRadioButton, IWCompOrderedListbox, IWHTMLControls, IWCompListbox,
-  IWCompGrids, Vcl.Imaging.jpeg, IWBSControls, IWDBStdCtrls;
+  IWCompGrids, Vcl.Imaging.jpeg, IWBSControls, IWDBStdCtrls, IWDBExtCtrls;
 
 type
   TIWForm2 = class(TIWAppForm)
     IWTabControl21: TIWBSTabControl;
     IWTabControl21Page3: TIWTabPage;
     IWBSRegion3: TIWBSRegion;
-    IWBSButton30: TIWBSButton;
-    IWBSRegion4: TIWBSRegion;
     IWBSRegion5: TIWBSRegion;
-    IWLabel1: TIWLabel;
-    IWBSRegion6: TIWBSRegion;
-    IWBSRegion7: TIWBSRegion;
     IWBSRegion8: TIWBSRegion;
     IWBSRegion10: TIWBSRegion;
     IWBSBtnToolBar1: TIWBSRegion;
@@ -55,25 +50,9 @@ type
     IWTabControl21Page4: TIWTabPage;
     IWBSRegion9: TIWBSRegion;
     IWText1: TIWText;
-    chkTabsFade: TIWBSCheckBox;
-    chkTabsJust: TIWBSCheckBox;
-    chkTabsPills: TIWBSCheckBox;
-    chkTabsStacked: TIWBSCheckBox;
-    chkContFluid: TIWBSCheckBox;
     IWTabControl21Page0: TIWTabPage;
-    IWBSRegion2: TIWBSRegion;
-    IWText3: TIWText;
-    IWBSInputForm2: TIWBSInputForm;
-    IWBSInput1: TIWBSInput;
-    IWBSInput2: TIWBSInput;
-    IWBSInput3: TIWBSInput;
-    IWBSMemo2: TIWBSMemo;
-    IWBSListbox2: TIWBSListbox;
-    IWBSComboBox2: TIWBSComboBox;
     IWBSRegion14: TIWBSRegion;
     IWText4: TIWText;
-    IWBSButton20: TIWBSButton;
-    IWBSInput7: TIWBSInput;
     IWTabControl21Page1: TIWTabPage;
     IWBSRegion15: TIWBSRegion;
     IWBSInputGroup1: TIWBSInputGroup;
@@ -94,16 +73,6 @@ type
     IWBSInputGroup5: TIWBSInputGroup;
     IWBSInput12: TIWBSInput;
     IWBSRadioButton5: TIWBSRadioButton;
-    IWBSInput14: TIWBSInput;
-    IWBSInput15: TIWBSInput;
-    IWBSInput16: TIWBSInput;
-    IWBSInput17: TIWBSInput;
-    IWBSInput18: TIWBSInput;
-    IWBSInput19: TIWBSInput;
-    IWBSInput20: TIWBSInput;
-    IWBSInput21: TIWBSInput;
-    IWBSInput22: TIWBSInput;
-    IWBSListbox3: TIWBSListbox;
     IWTabControl21Page5: TIWTabPage;
     IWBSRegion17: TIWBSRegion;
     IWBSLayoutMgr1: TIWBSLayoutMgr;
@@ -118,9 +87,6 @@ type
     IWText9: TIWText;
     IWBSRegion24: TIWBSRegion;
     IWText10: TIWText;
-    IWBSCheckBox4: TIWBSCheckBox;
-    IWBSRegion25: TIWBSRegion;
-    LstFormType: TIWBSListbox;
     IWBSInputGroup6: TIWBSInputGroup;
     IWBSInput4: TIWBSInput;
     IWBSGlyphicon1: TIWBSGlyphicon;
@@ -138,7 +104,6 @@ type
     IWBSRegion26: TIWBSRegion;
     IWBSButton28: TIWBSButton;
     IWBSButton29: TIWBSButton;
-    IWBSInputForm1: TIWBSInputForm;
     IWBSRegion13: TIWBSRegion;
     IWBSButton31: TIWBSButton;
     IWBSInput23: TIWBSInput;
@@ -147,11 +112,51 @@ type
     IWBSRegion28: TIWBSRegion;
     IWBSButton33: TIWBSButton;
     IWBSInput24: TIWBSInput;
+    IWBSRegion25: TIWBSRegion;
+    IWBSRegion2: TIWBSRegion;
+    IWBSRegion18: TIWBSRegion;
+    IWBSInputForm3: TIWBSInputForm;
+    LstFormType: TIWBSRadioGroup;
+    IWBSButton35: TIWBSButton;
+    IWText2: TIWText;
+    IWBSInputForm2: TIWBSInputForm;
+    IWBSInput1: TIWBSInput;
+    IWBSInput2: TIWBSInput;
+    IWBSInput3: TIWBSInput;
+    IWBSMemo2: TIWBSMemo;
+    IWBSListbox2: TIWBSListbox;
+    IWBSComboBox2: TIWBSComboBox;
+    IWBSButton20: TIWBSButton;
+    IWBSInput7: TIWBSInput;
+    IWBSInput14: TIWBSInput;
+    IWBSInput15: TIWBSInput;
+    IWBSInput16: TIWBSInput;
+    IWBSInput17: TIWBSInput;
+    IWBSInput18: TIWBSInput;
+    IWBSInput19: TIWBSInput;
+    IWBSInput20: TIWBSInput;
+    IWBSInput21: TIWBSInput;
+    IWBSInput22: TIWBSInput;
+    IWBSListbox3: TIWBSListbox;
+    IWBSCheckBox4: TIWBSCheckBox;
     IWBSRegion1: TIWBSRegion;
     IWBSRadioButton6: TIWBSRadioButton;
     IWBSRadioButton7: TIWBSRadioButton;
     IWBSRadioButton8: TIWBSRadioButton;
     IWBSRadioButton9: TIWBSRadioButton;
+    IWBSRegion29: TIWBSRegion;
+    IWTabControl21Page2: TIWTabPage;
+    IWBSInputForm1: TIWBSInputForm;
+    IWBSButton30: TIWBSButton;
+    chkContFluid: TIWBSCheckBox;
+    chkTabsJust: TIWBSCheckBox;
+    chkTabsStacked: TIWBSCheckBox;
+    chkTabsPills: TIWBSCheckBox;
+    chkTabsFade: TIWBSCheckBox;
+    IWBSRegion4: TIWBSRegion;
+    IWBSButton36: TIWBSButton;
+    IWText3: TIWBSText;
+    chkTabsResponsive: TIWBSCheckBox;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -164,6 +169,8 @@ type
     procedure IWBSButton31AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton32AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton33AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton35Click(Sender: TObject);
+    procedure IWBSButton36Click(Sender: TObject);
   public
   end;
 
@@ -171,7 +178,7 @@ implementation
 
 {$R *.dfm}
 
-uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3;
+uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);
@@ -249,18 +256,12 @@ begin
   IWTabControl21.BSTabOptions.Justified := chkTabsJust.Checked;
   IWTabControl21.BSTabOptions.Pills := chkTabsPills.Checked;
   IWTabControl21.BSTabOptions.Stacked := chkTabsStacked.Checked;
+  IWTabControl21.BSTabOptions.Responsive := chkTabsResponsive.Checked;
 
   if chkContFluid.Checked then
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainerFluid
   else
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
-
-  if LstFormType.SelectedText = 'form-vertical' then
-    IWBSInputForm2.BSFormType := bsftVertical
-  else if LstFormType.SelectedText = 'form-horizontal' then
-    IWBSInputForm2.BSFormType := bsftHorizontal
-  else if LstFormType.SelectedText = 'form-inline' then
-    IWBSInputForm2.BSFormType := bsftInline;
 end;
 
 procedure TIWForm2.IWBSButton31AsyncClick(Sender: TObject;
@@ -292,6 +293,24 @@ begin
       begin
         IWBSInput24.Text := 'You pressed OK in the alert!';
       end);
+    Show;
+  end;
+end;
+
+procedure TIWForm2.IWBSButton35Click(Sender: TObject);
+begin
+  if LstFormType.ItemIndex = 0 then
+    IWBSInputForm2.BSFormType := bsftVertical
+  else if LstFormType.ItemIndex = 1 then
+    IWBSInputForm2.BSFormType := bsftHorizontal
+  else if LstFormType.ItemIndex = 2 then
+    IWBSInputForm2.BSFormType := bsftInline;
+end;
+
+procedure TIWForm2.IWBSButton36Click(Sender: TObject);
+begin
+  with TFFishFact.Create(WebApplication) do begin
+    IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
     Show;
   end;
 end;

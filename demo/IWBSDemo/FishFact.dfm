@@ -1,4 +1,4 @@
-object formMain: TformMain
+object FFishFact: TFFishFact
   Left = 0
   Top = 0
   Width = 752
@@ -18,6 +18,7 @@ object formMain: TformMain
   LockOnSubmit = True
   ShowHint = True
   XPTheme = True
+  KeepAlive = True
   DesignLeft = 8
   DesignTop = 8
   object IWBSRegion1: TIWBSRegion
@@ -29,9 +30,9 @@ object formMain: TformMain
     BSRegionType = bsrtContainer
     object IWBSInputForm1: TIWBSInputForm
       Left = 1
-      Top = 1
+      Top = 62
       Width = 750
-      Height = 1060
+      Height = 999
       Align = alClient
       BSFormType = bsftHorizontal
       BSFormOptions.CaptionsSize.GridMDSpan = 4
@@ -40,19 +41,19 @@ object formMain: TformMain
         Left = 1
         Top = 1
         Width = 748
-        Height = 1058
+        Height = 997
         Align = alClient
         BSRegionType = bsrtRow
         object IWBSRegion3: TIWBSRegion
-          Left = 12
-          Top = 20
-          Width = 593
-          Height = 1017
+          Left = 9
+          Top = 16
+          Width = 697
+          Height = 921
           BSGridOptions.GridMDSpan = 8
           BSRegionType = bsrtColumn
           object IWBSInput1: TIWBSInput
             Left = 20
-            Top = 258
+            Top = 330
             Width = 121
             Height = 21
             Hint = 'Length in Inches'
@@ -70,7 +71,7 @@ object formMain: TformMain
           end
           object IWBSInput2: TIWBSInput
             Left = 20
-            Top = 289
+            Top = 361
             Width = 121
             Height = 21
             Font.Color = clNone
@@ -86,7 +87,7 @@ object formMain: TformMain
           end
           object IWBSInput3: TIWBSInput
             Left = 20
-            Top = 316
+            Top = 388
             Width = 121
             Height = 21
             Font.Color = clNone
@@ -101,7 +102,7 @@ object formMain: TformMain
           end
           object IWBSInput4: TIWBSInput
             Left = 20
-            Top = 343
+            Top = 415
             Width = 121
             Height = 21
             Font.Color = clNone
@@ -116,7 +117,7 @@ object formMain: TformMain
           end
           object IWBSInput5: TIWBSInput
             Left = 20
-            Top = 370
+            Top = 442
             Width = 121
             Height = 21
             Font.Color = clNone
@@ -131,7 +132,7 @@ object formMain: TformMain
           end
           object IWBSInput6: TIWBSInput
             Left = 20
-            Top = 397
+            Top = 469
             Width = 121
             Height = 21
             Font.Color = clNone
@@ -146,7 +147,7 @@ object formMain: TformMain
           end
           object IWBSMemo1: TIWBSMemo
             Left = 20
-            Top = 628
+            Top = 700
             Width = 317
             Height = 121
             BGColor = clNone
@@ -165,7 +166,7 @@ object formMain: TformMain
           end
           object IWBSInput7: TIWBSInput
             Left = 20
-            Top = 424
+            Top = 497
             Width = 121
             Height = 21
             Font.Color = clNone
@@ -181,7 +182,7 @@ object formMain: TformMain
           end
           object IWBSComboBox1: TIWBSComboBox
             Left = 20
-            Top = 452
+            Top = 524
             Width = 121
             Height = 21
             Font.Color = clNone
@@ -202,7 +203,7 @@ object formMain: TformMain
           end
           object IWBSCheckBox1: TIWBSCheckBox
             Left = 20
-            Top = 601
+            Top = 673
             Width = 253
             Height = 21
             Caption = 'This is a checkbox'
@@ -221,7 +222,7 @@ object formMain: TformMain
           end
           object IWBSListbox1: TIWBSListbox
             Left = 20
-            Top = 488
+            Top = 560
             Width = 317
             Height = 101
             Font.Color = clNone
@@ -244,7 +245,7 @@ object formMain: TformMain
           end
           object IWBSRadioGroup1: TIWBSRadioGroup
             Left = 20
-            Top = 768
+            Top = 840
             Width = 317
             Height = 112
             SubmitOnAsyncEvent = True
@@ -269,7 +270,7 @@ object formMain: TformMain
           end
           object IWBSRegion6: TIWBSRegion
             Left = 20
-            Top = 3
+            Top = 19
             Width = 381
             Height = 195
             BSRegionType = bsrtPageHeader
@@ -1532,7 +1533,7 @@ object formMain: TformMain
           end
           object IWBSRegion7: TIWBSRegion
             Left = 20
-            Top = 201
+            Top = 220
             Width = 449
             Height = 51
             BSRegionType = bsrtPageHeader
@@ -1657,6 +1658,47 @@ object formMain: TformMain
             end
           end
         end
+      end
+    end
+    object IWBSRegion8: TIWBSRegion
+      Left = 1
+      Top = 1
+      Width = 750
+      Height = 61
+      Align = alTop
+      BSRegionType = bsrtRow
+      object IWBSButton1: TIWBSButton
+        Left = 495
+        Top = 16
+        Width = 185
+        Height = 25
+        Css = 'pull-right'
+        Caption = 'Switch to Standard Demo'
+        Color = clBtnFace
+        Font.Color = clNone
+        Font.Size = 10
+        Font.Style = []
+        FriendlyName = 'IWBSButton1'
+        TabOrder = 18
+        OnClick = IWBSButton1Click
+      end
+      object IWText1: TIWBSText
+        Left = 16
+        Top = 16
+        Width = 381
+        Height = 27
+        Css = 'pull-left'
+        BGColor = clNone
+        ConvertSpaces = False
+        Font.Color = clNone
+        Font.Size = 10
+        Font.Style = []
+        FriendlyName = 'IWText1'
+        Lines.Strings = (
+          '<h3>This is the data aware demo</h3>')
+        RawText = True
+        UseFrame = False
+        WantReturns = True
       end
     end
   end
