@@ -260,7 +260,7 @@ begin
   LWebApplication := GetWebApplication;
 
   // if not callback exit now
-  if not LWebApplication.IsCallBack or not LWebApplication.CallBackProcessing then
+  if (LWebApplication = nil) or not LWebApplication.IsCallBack or not LWebApplication.CallBackProcessing then
     Exit;
 
   // read only one time

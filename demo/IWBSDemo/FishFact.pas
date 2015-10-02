@@ -80,12 +80,12 @@ implementation
 
 procedure TFFishFact.IWFormModuleBaseCreate(Sender: TObject);
 begin
-  ClientDataSet1.LoadFromFile('biolife2.cds');
+  //ClientDataSet1.LoadFromFile('biolife2.cds');
 end;
 
 procedure TFFishFact.IWAppFormDestroy(Sender: TObject);
 begin
-  ClientDataSet1.Close;
+  //ClientDataSet1.Close;
 end;
 
 procedure TFFishFact.IWBSButton1Click(Sender: TObject);

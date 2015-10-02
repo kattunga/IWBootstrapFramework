@@ -1,11 +1,8 @@
 $(document).ready(function () {
-	$('[data-toggle="tooltip"]').tooltip();
+	// if library webshims is linked, activate it
 	if (typeof webshims !== "undefined") {
 		webshims.polyfill('forms forms-ext');
 	}
-	$(".btn").mouseup(function(){
-		$(this).blur();
-	})
 });
 
 function AsyncCreateControl(id, parentId, htmlTag) {
