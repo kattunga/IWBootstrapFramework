@@ -19,7 +19,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = 8
+  DesignTop = 0
   object IWBSRegion3: TIWBSRegion
     Left = 0
     Top = 0
@@ -98,7 +98,7 @@ object IWForm2: TIWForm2
                 object IWBSButton22: TIWBSButton
                   Left = 7
                   Top = 8
-                  Width = 75
+                  Width = 87
                   Height = 25
                   Hint = 'Press this button'
                   RenderSize = False
@@ -137,7 +137,7 @@ object IWForm2: TIWForm2
                 object IWBSButton23: TIWBSButton
                   Left = 231
                   Top = 8
-                  Width = 75
+                  Width = 98
                   Height = 25
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
@@ -175,7 +175,7 @@ object IWForm2: TIWForm2
                 object IWBSButton24: TIWBSButton
                   Left = 242
                   Top = 8
-                  Width = 75
+                  Width = 91
                   Height = 25
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
@@ -343,7 +343,7 @@ object IWForm2: TIWForm2
                 object IWBSGlyphicon1: TIWBSGlyphicon
                   Left = 12
                   Top = 12
-                  Width = 21
+                  Width = 29
                   Height = 21
                   BSGlyphicon = 'align-center'
                 end
@@ -398,585 +398,6 @@ object IWForm2: TIWForm2
                   HasTabOrder = False
                   Caption = 'After'
                   FriendlyName = 'IWBSLabel2'
-                end
-              end
-            end
-          end
-          object IWTabControl21Page5: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 1513
-            RenderInvisibleControls = True
-            TabOrder = 4
-            Title = 'Create components at runtime'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion6: TIWBSRegion
-              Left = 0
-              Top = 0
-              Width = 1078
-              Height = 1513
-              Align = alClient
-              Style.Strings = (
-                'margin: 1em')
-              object IWBSRegion12: TIWBSRegion
-                Left = 27
-                Top = 12
-                Width = 538
-                Height = 60
-                BSRegionType = bsrtWell
-                object IWBSButton27: TIWBSButton
-                  Left = 16
-                  Top = 23
-                  Width = 393
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  LockOnAsyncEvents = [aeClick]
-                  Caption = 'Dinamically create modal dialog from TIWFrame'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton26'
-                  TabOrder = 58
-                  OnAsyncClick = IWBSButton27AsyncClick
-                end
-              end
-              object IWBSRegion26: TIWBSRegion
-                Left = 27
-                Top = 85
-                Width = 538
-                Height = 60
-                BSRegionType = bsrtWell
-                object IWBSButton28: TIWBSButton
-                  Left = 12
-                  Top = 24
-                  Width = 393
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  LockOnAsyncEvents = [aeClick]
-                  Caption = 'Dinamically create dialog from code'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton26'
-                  TabOrder = 59
-                  OnAsyncClick = IWBSButton28AsyncClick
-                end
-              end
-              object IWBSRegion13: TIWBSRegion
-                Left = 27
-                Top = 163
-                Width = 538
-                Height = 91
-                BSRegionType = bsrtWell
-                object IWBSButton31: TIWBSButton
-                  Left = 12
-                  Top = 16
-                  Width = 393
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  LockOnAsyncEvents = [aeClick]
-                  Caption = 'Dinamically create advanced dialog from code'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton26'
-                  TabOrder = 60
-                  OnAsyncClick = IWBSButton31AsyncClick
-                end
-                object IWBSInput23: TIWBSInput
-                  Left = 3
-                  Top = 47
-                  Width = 121
-                  Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSInput6'
-                  SubmitOnAsyncEvent = True
-                  TabOrder = 61
-                  Caption = ''
-                  PlaceHolder = 'IWBSInput23'
-                end
-              end
-              object IWBSRegion17: TIWBSRegion
-                Left = 27
-                Top = 260
-                Width = 538
-                Height = 66
-                BSRegionType = bsrtWell
-                object IWBSButton26: TIWBSButton
-                  Left = 12
-                  Top = 13
-                  Width = 265
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Dinamically create frame with inputs'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton26'
-                  TabOrder = 62
-                  OnAsyncClick = IWBSButton26AsyncClick
-                end
-              end
-              object IWBSRegion11: TIWBSRegion
-                Left = 27
-                Top = 335
-                Width = 538
-                Height = 76
-                BSRegionType = bsrtWell
-                object IWBSButton21: TIWBSButton
-                  Left = 12
-                  Top = 7
-                  Width = 397
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Dinamically create button with anonymous proc'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton26'
-                  TabOrder = 63
-                  OnAsyncClick = IWBSButton21AsyncClick
-                end
-                object IWBSInput6: TIWBSInput
-                  Left = 12
-                  Top = 38
-                  Width = 121
-                  Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSInput6'
-                  SubmitOnAsyncEvent = True
-                  TabOrder = 64
-                  Caption = ''
-                end
-              end
-              object IWBSRegion27: TIWBSRegion
-                Left = 27
-                Top = 428
-                Width = 538
-                Height = 60
-                BSRegionType = bsrtWell
-                object IWBSButton32: TIWBSButton
-                  Left = 9
-                  Top = 20
-                  Width = 393
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Dinamically create Alert'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton26'
-                  TabOrder = 65
-                  OnAsyncClick = IWBSButton32AsyncClick
-                end
-              end
-              object IWBSRegion28: TIWBSRegion
-                Left = 27
-                Top = 505
-                Width = 538
-                Height = 104
-                BSRegionType = bsrtWell
-                object IWBSButton33: TIWBSButton
-                  Left = 9
-                  Top = 9
-                  Width = 393
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Dinamically create complex Alert'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton26'
-                  TabOrder = 66
-                  OnAsyncClick = IWBSButton33AsyncClick
-                end
-                object IWBSInput24: TIWBSInput
-                  Left = 9
-                  Top = 49
-                  Width = 121
-                  Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSInput6'
-                  SubmitOnAsyncEvent = True
-                  TabOrder = 67
-                  Caption = ''
-                end
-              end
-            end
-          end
-          object IWTabControl21Page4: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 1513
-            RenderInvisibleControls = True
-            TabOrder = 3
-            Title = 'Other Bootstrap Controls'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion30: TIWBSRegion
-              Left = 0
-              Top = 0
-              Width = 1078
-              Height = 1513
-              Align = alClient
-              Style.Strings = (
-                'margin: 1em')
-              object IWBSRegion9: TIWBSRegion
-                Left = 16
-                Top = 12
-                Width = 698
-                Height = 60
-                BSRegionType = bsrtJumbotron
-                object IWText1: TIWText
-                  Left = 20
-                  Top = 11
-                  Width = 540
-                  Height = 38
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText1'
-                  Lines.Strings = (
-                    '<h1>This is a Jumbotron</h1>'
-                    '<h2>Example page header <small>Subtext for header</small></h2>')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-              end
-              object IWBSRegion14: TIWBSRegion
-                Left = 16
-                Top = 78
-                Width = 698
-                Height = 60
-                BSRegionType = bsrtPageHeader
-                object IWText4: TIWText
-                  Left = 20
-                  Top = 11
-                  Width = 540
-                  Height = 38
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText1'
-                  Lines.Strings = (
-                    '<h1>This is a Page Header</h1>'
-                    '<h2>Example page header <small>Subtext for header</small></h2>')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-              end
-              object IWBSRegion24: TIWBSRegion
-                Left = 16
-                Top = 151
-                Width = 698
-                Height = 60
-                BSRegionType = bsrtWell
-                BSRelativeSize = bsrzLg
-                object IWText10: TIWText
-                  Left = 20
-                  Top = 11
-                  Width = 540
-                  Height = 38
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText1'
-                  Lines.Strings = (
-                    '<h1>This is a Well</h1>'
-                    '<h2>Example page header <small>Subtext for header</small></h2>')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-              end
-              object IWBSRegion19: TIWBSRegion
-                Left = 16
-                Top = 255
-                Width = 698
-                Height = 268
-                BSPanelStyle = bspsPrimary
-                BSRegionType = bsrtPanel
-                object IWBSRegion20: TIWBSRegion
-                  Left = 8
-                  Top = 22
-                  Width = 681
-                  Height = 80
-                  BSRegionType = bsrtPanelHeading
-                  object IWText8: TIWText
-                    Left = 19
-                    Top = 55
-                    Width = 269
-                    Height = 22
-                    BGColor = clNone
-                    ConvertSpaces = False
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWText1'
-                    Lines.Strings = (
-                      '<h2>this is panel heading</h2>')
-                    RawText = True
-                    UseFrame = False
-                    WantReturns = True
-                  end
-                  object IWBSRegion23: TIWBSRegion
-                    Left = 12
-                    Top = 18
-                    Width = 653
-                    Height = 34
-                    BSRegionType = bsrtPanelTitle
-                    object IWText7: TIWText
-                      Left = 163
-                      Top = 9
-                      Width = 269
-                      Height = 22
-                      BGColor = clNone
-                      ConvertSpaces = False
-                      Font.Color = clNone
-                      Font.Size = 10
-                      Font.Style = []
-                      FriendlyName = 'IWText1'
-                      Lines.Strings = (
-                        '<h2>this is panel title</h2>')
-                      RawText = True
-                      UseFrame = False
-                      WantReturns = True
-                    end
-                  end
-                end
-                object IWBSRegion21: TIWBSRegion
-                  Left = 8
-                  Top = 193
-                  Width = 681
-                  Height = 60
-                  BSRegionType = bsrtPanelFooter
-                  object IWText9: TIWText
-                    Left = 24
-                    Top = 20
-                    Width = 269
-                    Height = 22
-                    BGColor = clNone
-                    ConvertSpaces = False
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWText1'
-                    Lines.Strings = (
-                      '<h2>this is panel footer</h2>')
-                    RawText = True
-                    UseFrame = False
-                    WantReturns = True
-                  end
-                end
-                object IWBSRegion22: TIWBSRegion
-                  Left = 8
-                  Top = 108
-                  Width = 681
-                  Height = 79
-                  BSRegionType = bsrtPanelBody
-                  object IWText6: TIWText
-                    Left = 155
-                    Top = 37
-                    Width = 269
-                    Height = 22
-                    BGColor = clNone
-                    ConvertSpaces = False
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWText1'
-                    Lines.Strings = (
-                      '<h2>this is panel body</h2>')
-                    RawText = True
-                    UseFrame = False
-                    WantReturns = True
-                  end
-                end
-              end
-            end
-          end
-          object IWTabControl21Page2: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 1513
-            RenderInvisibleControls = True
-            TabOrder = 5
-            Title = 'TabControl Options'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion7: TIWBSRegion
-              Left = 15
-              Top = 6
-              Width = 433
-              Height = 493
-              BSGridOptions.GridSMSpan = 6
-              Style.Strings = (
-                'margin: 1em')
-              BSRegionType = bsrtWell
-              object IWBSInputForm1: TIWBSInputForm
-                Left = 15
-                Top = 12
-                Width = 293
-                Height = 394
-                object IWBSButton30: TIWBSButton
-                  Left = 17
-                  Top = 229
-                  Width = 184
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Apply settings'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton20aaaaaa'
-                  TabOrder = 68
-                  OnClick = IWBSButton30Click
-                end
-                object chkContFluid: TIWBSCheckBox
-                  Left = 15
-                  Top = 24
-                  Width = 121
-                  Height = 21
-                  ShowHint = False
-                  Caption = 'Container Fluid'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 69
-                  FriendlyName = 'chkContFluid'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = False
-                end
-                object chkTabsJust: TIWBSCheckBox
-                  Left = 15
-                  Top = 111
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Justified'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 70
-                  FriendlyName = 'chkTabsJust'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = False
-                end
-                object chkTabsStacked: TIWBSCheckBox
-                  Left = 15
-                  Top = 138
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Stacked'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 71
-                  FriendlyName = 'chkTabsStacked'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = False
-                end
-                object chkTabsPills: TIWBSCheckBox
-                  Left = 17
-                  Top = 166
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Pills'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 72
-                  FriendlyName = 'chkTabsPills'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = True
-                end
-                object chkTabsFade: TIWBSCheckBox
-                  Left = 16
-                  Top = 196
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Fade'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 73
-                  FriendlyName = 'chkTabsFade'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = False
-                end
-                object chkTabsResponsive: TIWBSCheckBox
-                  Left = 15
-                  Top = 74
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Responsive'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 74
-                  FriendlyName = 'chkTabsJust'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = True
                 end
               end
             end
@@ -1474,6 +895,585 @@ object IWForm2: TIWForm2
               end
             end
           end
+          object IWTabControl21Page4: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1513
+            RenderInvisibleControls = True
+            TabOrder = 3
+            Title = 'Other Bootstrap Controls'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion30: TIWBSRegion
+              Left = 0
+              Top = 0
+              Width = 1078
+              Height = 1513
+              Align = alClient
+              Style.Strings = (
+                'margin: 1em')
+              object IWBSRegion9: TIWBSRegion
+                Left = 16
+                Top = 12
+                Width = 698
+                Height = 60
+                BSRegionType = bsrtJumbotron
+                object IWText1: TIWText
+                  Left = 20
+                  Top = 11
+                  Width = 540
+                  Height = 38
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText1'
+                  Lines.Strings = (
+                    '<h1>This is a Jumbotron</h1>'
+                    '<h2>Example page header <small>Subtext for header</small></h2>')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+              end
+              object IWBSRegion14: TIWBSRegion
+                Left = 16
+                Top = 78
+                Width = 698
+                Height = 60
+                BSRegionType = bsrtPageHeader
+                object IWText4: TIWText
+                  Left = 20
+                  Top = 11
+                  Width = 540
+                  Height = 38
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText1'
+                  Lines.Strings = (
+                    '<h1>This is a Page Header</h1>'
+                    '<h2>Example page header <small>Subtext for header</small></h2>')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+              end
+              object IWBSRegion24: TIWBSRegion
+                Left = 16
+                Top = 151
+                Width = 698
+                Height = 60
+                BSRegionType = bsrtWell
+                BSRelativeSize = bsrzLg
+                object IWText10: TIWText
+                  Left = 20
+                  Top = 11
+                  Width = 540
+                  Height = 38
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText1'
+                  Lines.Strings = (
+                    '<h1>This is a Well</h1>'
+                    '<h2>Example page header <small>Subtext for header</small></h2>')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+              end
+              object IWBSRegion19: TIWBSRegion
+                Left = 16
+                Top = 255
+                Width = 698
+                Height = 268
+                BSPanelStyle = bspsPrimary
+                BSRegionType = bsrtPanel
+                object IWBSRegion20: TIWBSRegion
+                  Left = 8
+                  Top = 22
+                  Width = 681
+                  Height = 80
+                  BSRegionType = bsrtPanelHeading
+                  object IWText8: TIWText
+                    Left = 19
+                    Top = 55
+                    Width = 269
+                    Height = 22
+                    BGColor = clNone
+                    ConvertSpaces = False
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWText1'
+                    Lines.Strings = (
+                      '<h2>this is panel heading</h2>')
+                    RawText = True
+                    UseFrame = False
+                    WantReturns = True
+                  end
+                  object IWBSRegion23: TIWBSRegion
+                    Left = 12
+                    Top = 18
+                    Width = 653
+                    Height = 34
+                    BSRegionType = bsrtPanelTitle
+                    object IWText7: TIWText
+                      Left = 163
+                      Top = 9
+                      Width = 269
+                      Height = 22
+                      BGColor = clNone
+                      ConvertSpaces = False
+                      Font.Color = clNone
+                      Font.Size = 10
+                      Font.Style = []
+                      FriendlyName = 'IWText1'
+                      Lines.Strings = (
+                        '<h2>this is panel title</h2>')
+                      RawText = True
+                      UseFrame = False
+                      WantReturns = True
+                    end
+                  end
+                end
+                object IWBSRegion21: TIWBSRegion
+                  Left = 8
+                  Top = 193
+                  Width = 681
+                  Height = 60
+                  BSRegionType = bsrtPanelFooter
+                  object IWText9: TIWText
+                    Left = 24
+                    Top = 20
+                    Width = 269
+                    Height = 22
+                    BGColor = clNone
+                    ConvertSpaces = False
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWText1'
+                    Lines.Strings = (
+                      '<h2>this is panel footer</h2>')
+                    RawText = True
+                    UseFrame = False
+                    WantReturns = True
+                  end
+                end
+                object IWBSRegion22: TIWBSRegion
+                  Left = 8
+                  Top = 108
+                  Width = 681
+                  Height = 79
+                  BSRegionType = bsrtPanelBody
+                  object IWText6: TIWText
+                    Left = 155
+                    Top = 37
+                    Width = 269
+                    Height = 22
+                    BGColor = clNone
+                    ConvertSpaces = False
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWText1'
+                    Lines.Strings = (
+                      '<h2>this is panel body</h2>')
+                    RawText = True
+                    UseFrame = False
+                    WantReturns = True
+                  end
+                end
+              end
+            end
+          end
+          object IWTabControl21Page5: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1513
+            RenderInvisibleControls = True
+            TabOrder = 4
+            Title = 'Create components at runtime'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion6: TIWBSRegion
+              Left = 0
+              Top = 0
+              Width = 1078
+              Height = 1513
+              Align = alClient
+              Style.Strings = (
+                'margin: 1em')
+              object IWBSRegion12: TIWBSRegion
+                Left = 27
+                Top = 12
+                Width = 538
+                Height = 60
+                BSRegionType = bsrtWell
+                object IWBSButton27: TIWBSButton
+                  Left = 16
+                  Top = 23
+                  Width = 393
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  LockOnAsyncEvents = [aeClick]
+                  Caption = 'Dinamically create modal dialog from TIWFrame'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton26'
+                  TabOrder = 58
+                  OnAsyncClick = IWBSButton27AsyncClick
+                end
+              end
+              object IWBSRegion26: TIWBSRegion
+                Left = 27
+                Top = 85
+                Width = 538
+                Height = 60
+                BSRegionType = bsrtWell
+                object IWBSButton28: TIWBSButton
+                  Left = 12
+                  Top = 24
+                  Width = 393
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  LockOnAsyncEvents = [aeClick]
+                  Caption = 'Dinamically create dialog from code'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton26'
+                  TabOrder = 59
+                  OnAsyncClick = IWBSButton28AsyncClick
+                end
+              end
+              object IWBSRegion13: TIWBSRegion
+                Left = 27
+                Top = 163
+                Width = 538
+                Height = 91
+                BSRegionType = bsrtWell
+                object IWBSButton31: TIWBSButton
+                  Left = 12
+                  Top = 16
+                  Width = 393
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  LockOnAsyncEvents = [aeClick]
+                  Caption = 'Dinamically create advanced dialog from code'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton26'
+                  TabOrder = 60
+                  OnAsyncClick = IWBSButton31AsyncClick
+                end
+                object IWBSInput23: TIWBSInput
+                  Left = 3
+                  Top = 47
+                  Width = 121
+                  Height = 21
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSInput6'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 61
+                  Caption = ''
+                  PlaceHolder = 'IWBSInput23'
+                end
+              end
+              object IWBSRegion17: TIWBSRegion
+                Left = 27
+                Top = 260
+                Width = 538
+                Height = 66
+                BSRegionType = bsrtWell
+                object IWBSButton26: TIWBSButton
+                  Left = 12
+                  Top = 13
+                  Width = 265
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Dinamically create frame with inputs'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton26'
+                  TabOrder = 62
+                  OnAsyncClick = IWBSButton26AsyncClick
+                end
+              end
+              object IWBSRegion11: TIWBSRegion
+                Left = 27
+                Top = 335
+                Width = 538
+                Height = 76
+                BSRegionType = bsrtWell
+                object IWBSButton21: TIWBSButton
+                  Left = 12
+                  Top = 7
+                  Width = 397
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Dinamically create button with anonymous proc'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton26'
+                  TabOrder = 63
+                  OnAsyncClick = IWBSButton21AsyncClick
+                end
+                object IWBSInput6: TIWBSInput
+                  Left = 12
+                  Top = 38
+                  Width = 121
+                  Height = 21
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSInput6'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 64
+                  Caption = ''
+                end
+              end
+              object IWBSRegion27: TIWBSRegion
+                Left = 27
+                Top = 428
+                Width = 538
+                Height = 60
+                BSRegionType = bsrtWell
+                object IWBSButton32: TIWBSButton
+                  Left = 9
+                  Top = 20
+                  Width = 393
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Dinamically create Alert'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton26'
+                  TabOrder = 65
+                  OnAsyncClick = IWBSButton32AsyncClick
+                end
+              end
+              object IWBSRegion28: TIWBSRegion
+                Left = 27
+                Top = 505
+                Width = 538
+                Height = 104
+                BSRegionType = bsrtWell
+                object IWBSButton33: TIWBSButton
+                  Left = 9
+                  Top = 9
+                  Width = 393
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Dinamically create complex Alert'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton26'
+                  TabOrder = 66
+                  OnAsyncClick = IWBSButton33AsyncClick
+                end
+                object IWBSInput24: TIWBSInput
+                  Left = 9
+                  Top = 49
+                  Width = 121
+                  Height = 21
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSInput6'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 67
+                  Caption = ''
+                end
+              end
+            end
+          end
+          object IWTabControl21Page2: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1513
+            RenderInvisibleControls = True
+            TabOrder = 5
+            Title = 'TabControl Options'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion7: TIWBSRegion
+              Left = 15
+              Top = 6
+              Width = 433
+              Height = 493
+              BSGridOptions.GridSMSpan = 6
+              Style.Strings = (
+                'margin: 1em')
+              BSRegionType = bsrtWell
+              object IWBSInputForm1: TIWBSInputForm
+                Left = 15
+                Top = 12
+                Width = 293
+                Height = 394
+                object IWBSButton30: TIWBSButton
+                  Left = 17
+                  Top = 229
+                  Width = 184
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Apply settings'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton20aaaaaa'
+                  TabOrder = 68
+                  OnClick = IWBSButton30Click
+                end
+                object chkContFluid: TIWBSCheckBox
+                  Left = 15
+                  Top = 24
+                  Width = 121
+                  Height = 21
+                  ShowHint = False
+                  Caption = 'Container Fluid'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  SubmitOnAsyncEvent = True
+                  Style = stNormal
+                  TabOrder = 69
+                  FriendlyName = 'chkContFluid'
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                  Checked = False
+                end
+                object chkTabsJust: TIWBSCheckBox
+                  Left = 15
+                  Top = 111
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Justified'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  SubmitOnAsyncEvent = True
+                  Style = stNormal
+                  TabOrder = 70
+                  FriendlyName = 'chkTabsJust'
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                  Checked = False
+                end
+                object chkTabsStacked: TIWBSCheckBox
+                  Left = 15
+                  Top = 138
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Stacked'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  SubmitOnAsyncEvent = True
+                  Style = stNormal
+                  TabOrder = 71
+                  FriendlyName = 'chkTabsStacked'
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                  Checked = False
+                end
+                object chkTabsPills: TIWBSCheckBox
+                  Left = 17
+                  Top = 166
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Pills'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  SubmitOnAsyncEvent = True
+                  Style = stNormal
+                  TabOrder = 72
+                  FriendlyName = 'chkTabsPills'
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                  Checked = True
+                end
+                object chkTabsFade: TIWBSCheckBox
+                  Left = 16
+                  Top = 196
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Fade'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  SubmitOnAsyncEvent = True
+                  Style = stNormal
+                  TabOrder = 73
+                  FriendlyName = 'chkTabsFade'
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                  Checked = False
+                end
+                object chkTabsResponsive: TIWBSCheckBox
+                  Left = 15
+                  Top = 74
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Responsive'
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  SubmitOnAsyncEvent = True
+                  Style = stNormal
+                  TabOrder = 74
+                  FriendlyName = 'chkTabsJust'
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                  Checked = True
+                end
+              end
+            end
+          end
           object IWTabControl21Page3: TIWTabPage
             Left = 0
             Top = 20
@@ -1508,7 +1508,7 @@ object IWForm2: TIWForm2
                   BSRegionType = bsrtButtonGroup
                   object IWBSButton1: TIWBSButton
                     Left = 3
-                    Top = 20
+                    Top = 17
                     Width = 82
                     Height = 30
                     Hint = 'This is a hint'
@@ -1526,7 +1526,7 @@ object IWForm2: TIWForm2
                   end
                   object IWBSButton2: TIWBSButton
                     Left = 91
-                    Top = 20
+                    Top = 17
                     Width = 85
                     Height = 30
                     Hint = 'This is a hint'
@@ -1562,7 +1562,7 @@ object IWForm2: TIWForm2
                   end
                   object IWBSButton4: TIWBSButton
                     Left = 267
-                    Top = 20
+                    Top = 17
                     Width = 82
                     Height = 30
                     Hint = 'This is a hint'

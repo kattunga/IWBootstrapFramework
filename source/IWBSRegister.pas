@@ -27,6 +27,11 @@ type
     procedure Paint; override;
   end;
 
+  TIWBSPaintHandlerGlyphicon = class (TIWPaintHandlerRectangle)
+  public
+    procedure Paint; override;
+  end;
+
 procedure Register;
 
 implementation
@@ -104,7 +109,6 @@ var
   s: string;
   th: integer;
 begin
-  inherited;
   if Control is TIWBSButton then begin
     LRect := Rect(0, 0, Control.Width, Control.Height);
     case TIWBSButton(Control).BSButtonStyle of
@@ -192,6 +196,30 @@ begin
   end;
 end;
 
+procedure TIWBSPaintHandlerGlyphicon.Paint;
+var
+  LRect : TRect;
+  s: string;
+  th: integer;
+begin
+  if Control is TIWBSGlyphicon then begin
+    LRect := Rect(0, 0, Control.Width, Control.Height);
+    ControlCanvas.FillRect(LRect);
+
+    if TIWBSGlyphicon(Control).BSGlyphicon <> '' then
+    try
+      ControlCanvas.Font.Name := 'GLYPHICONS Halflings';
+      ControlCanvas.Font.Style := [fsBold];
+      ControlCanvas.Font.Height := -14;
+      th := ControlCanvas.TextHeight('X');
+      s := Char(StrToInt(slGlyphicons.Values[TIWBSGlyphicon(Control).BSGlyphicon]));
+      ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Height-th) div 2, s);
+      Inc(LRect.Left, th);
+    except
+    end;
+  end;
+end;
+
 procedure Register;
 begin
   RegisterComponents('IW BootsTrap', [TIWBSLayoutMgr]);
@@ -259,6 +287,8 @@ initialization
 
   IWRegisterPaintHandler('TIWBSLabel',TIWPaintHandlerLabel);
 
+  IWRegisterPaintHandler('TIWBSGlyphicon',TIWBSPaintHandlerGlyphicon);
+
   IWRegisterPaintHandler('TIWBSText',TIWPaintHandlerText);
 
   IWRegisterPaintHandler('TIWBSImage',TIWPaintHandlerImage);
@@ -283,6 +313,8 @@ finalization
   IWUnRegisterPaintHandler('TIWBSButton');
 
   IWUnRegisterPaintHandler('TIWBSLabel');
+
+  IWUnRegisterPaintHandler('TIWBSGlyphicon');
 
   IWUnRegisterPaintHandler('TIWBSText');
 
