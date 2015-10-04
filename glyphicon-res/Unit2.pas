@@ -42,7 +42,7 @@ begin
     css.LoadFromFile('..\demo\bin\wwwroot\iwbs\bootstrap-3.3.5\css\bootstrap.css');
     for i := 0 to css.Count-1 do
       if AnsiStartsStr('.glyphicon-',css[i]) and AnsiContainsStr(css[i+1],'content:') then begin
-        name := copy(css[i], 2, Pos(':', css[i])-2);
+        name := copy(css[i], 12, Pos(':', css[i])-12);
         valu := Copy(css[i+1], Pos('\', css[i+1])+1, MaxInt);
         valu := Copy(valu, 1, Pos('"', valu)-1);
         try

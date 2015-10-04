@@ -132,7 +132,7 @@
         <DCCReference Include="Intraweb_14_DXE5.dcp"/>
         <DCCReference Include="dclIntraweb_14_DXE5.dcp"/>
         <DCCReference Include="IWBSRegister.pas"/>
-        <RcItem Include="glyphicon-names.txt">
+        <RcItem Include="glyphicon-res.txt">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>GlyphiconListNames</ResourceId>

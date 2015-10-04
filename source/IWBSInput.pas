@@ -204,6 +204,7 @@ type
     FAsyncClickProc: TIWBSAsyncClickProc;
     procedure DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
     procedure SetAsyncClickProc(Value: TIWBSAsyncClickProc);
+    procedure SetGlyphicon(const Value: string);
   public
     constructor Create(AOwner: TComponent); override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
@@ -213,7 +214,7 @@ type
     property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
     property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write FButtonStyle default bsbsDefault;
     property BSDataDismiss: TIWBSButtonDataDismiss read FDataDismiss write FDataDismiss default bsbdNone;
-    property BSGlyphicon: string read FGlyphicon write FGlyphicon;
+    property BSGlyphicon: string read FGlyphicon write SetGlyphicon;
   end;
 
   TIWBSInputGroup = class(TIWBSCustomRegion)
@@ -1120,6 +1121,12 @@ procedure TIWBSButton.SetAsyncClickProc(Value: TIWBSAsyncClickProc);
 begin
   FAsyncClickProc := Value;
   OnAsyncClick := DoAsyncClickProc
+end;
+
+procedure TIWBSButton.SetGlyphicon(const Value: string);
+begin
+  FGlyphicon := Value;
+  Invalidate;
 end;
 {$endregion}
 
