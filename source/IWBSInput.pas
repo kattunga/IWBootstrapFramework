@@ -500,6 +500,7 @@ begin
     end;
   end;
   inherited SetValue(AValue);
+  FOldText := AValue;
 end;
 
 function TIWBSInput.StyleValue(AContext: TIWCompContext): string;
