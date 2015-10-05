@@ -11,8 +11,6 @@ function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string):
 
 function  IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
 
-procedure IWBSUnregisterCallbacks(const AControlName: string; WebApplication: IWApplication.TIWApplication);
-
 procedure ExecuteJScript(const Script: string);
 
 implementation
@@ -58,30 +56,9 @@ begin
   end;
 end;
 
-type
-  TIWApplication = class(IWApplication.TIWApplication);
-  TIWCallBacks = class(IWApplication.TIWCallBacks);
-
-procedure IWBSUnregisterCallbacks(const AControlName: string; WebApplication: IWApplication.TIWApplication);
-var
-  CallBacks: TIWCallBacks;
-  idx: Integer;
-  xQualifiedName: string;
-begin
-  if (WebApplication = nil) or not WebApplication.IsCallBack then
-    Exit;
-
-  CallBacks := TIWCallBacks(TIWApplication(WebApplication).FCallBacks);
-  xQualifiedName := CallBacks.QualifiedName(WebApplication.ActiveForm, AControlName)+'.';
-
-  for idx := CallBacks.Count-1 downto 0 do
-    if AnsiStartsStr(xQualifiedName, CallBacks[idx]) then
-      CallBacks.Delete(idx);
-end;
-
 procedure ExecuteJScript(const Script: string);
 var
-  IWApp: IWApplication.TIWApplication;
+  IWApp: TIWApplication;
 begin
   if Length(Script) <= 0 then Exit;
 

@@ -4,6 +4,7 @@
 program IWBSDemo;
 
 uses
+  FastMM4,
   IWRtlFix,
   IWJclStackTrace,
   IWJclDebug,

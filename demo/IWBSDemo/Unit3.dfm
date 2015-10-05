@@ -13,6 +13,7 @@ object IWFrame3: TIWFrame3
     TabOrder = 0
     AsyncDestroy = True
     BSModalVisible = True
+    DestroyOnHide = True
     object IWBSRegion1: TIWBSRegion
       Left = 1
       Top = 1
@@ -83,9 +84,9 @@ object IWFrame3: TIWFrame3
           Caption = 'This is the header'
         end
         object IWBSButton199: TIWBSButton
-          Left = 492
+          Left = 544
           Top = 16
-          Width = 81
+          Width = 29
           Height = 29
           RenderSize = False
           StyleRenderOptions.RenderSize = False
@@ -101,8 +102,8 @@ object IWFrame3: TIWFrame3
           Font.Style = []
           FriendlyName = 'IWBSButton199'
           TabOrder = 1
-          OnAsyncClick = IWBSButton199AsyncClick
           BSButtonStyle = bsbsClose
+          BSDataDismiss = bsbdModal
         end
       end
       object IWBSRegion4: TIWBSRegion

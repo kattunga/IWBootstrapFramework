@@ -88,33 +88,27 @@
         </DelphiCompile>
         <DCCReference Include="Unit2.pas">
             <Form>IWForm2</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TIWAppForm</DesignClass>
         </DCCReference>
         <DCCReference Include="ServerController.pas">
             <Form>IWServerController</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TIWServerControllerBase</DesignClass>
         </DCCReference>
         <DCCReference Include="UserSessionUnit.pas">
             <Form>IWUserSession</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TIWUserSessionBase</DesignClass>
         </DCCReference>
         <DCCReference Include="Unit1.pas">
             <Form>IWFrame1</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="Unit3.pas">
             <Form>IWFrame3</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="..\..\source\IWBSDialogs.pas"/>
         <DCCReference Include="FishFact.pas">
             <Form>FFishFact</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TIWAppForm</DesignClass>
         </DCCReference>
         <BuildConfiguration Include="Release">

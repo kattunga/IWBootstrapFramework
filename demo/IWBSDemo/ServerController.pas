@@ -33,8 +33,6 @@ begin
   Result := TIWServerController(GServerController);
 end;
 
-
-
 function UserSession: TIWUserSession;
 begin
   Result := TIWUserSession(WebApplication.Data);
@@ -43,6 +41,7 @@ end;
 procedure TIWServerController.IWServerControllerBaseConfig(Sender: TObject);
 begin
   JavaScriptOptions.RenderjQuery := False;
+  CacheDir := ExtractFilePath(ParamStr(0))+'temp';
 end;
 
 procedure TIWServerController.IWServerControllerBaseNewSession(
@@ -50,7 +49,6 @@ procedure TIWServerController.IWServerControllerBaseNewSession(
 begin
   ASession.Data := TIWUserSession.Create(nil, ASession);
 end;
-
 
 initialization
   TIWServerController.SetServerControllerClass;

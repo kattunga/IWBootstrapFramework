@@ -189,6 +189,8 @@ begin
     end;
 
     s := TIWBSButton(Control).Caption;
+    if (s = '') and (TIWBSButton(Control).BSButtonStyle = bsbsClose) then
+      s := 'X';
     if s <> '' then begin
       ControlCanvas.Font.Name := 'Tahoma';
       ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Height-th) div 2, s);

@@ -24,7 +24,6 @@ type
     IWLabel4: TIWLabel;
     IWBSInput1: TIWBSInput;
     IWBSButton199: TIWBSButton;
-    procedure IWBSButton199AsyncClick(Sender: TObject; EventParams: TStringList);
   private
     { Private declarations }
   public
@@ -34,11 +33,5 @@ type
 implementation
 
 {$R *.dfm}
-
-procedure TIWFrame3.IWBSButton199AsyncClick(Sender: TObject;
-  EventParams: TStringList);
-begin
-  Free;
-end;
 
 end.

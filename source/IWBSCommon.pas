@@ -2,7 +2,7 @@ unit IWBSCommon;
 
 interface
 
-uses System.Classes, System.SysUtils;
+uses System.Classes, System.SysUtils, System.SyncObjs;
 
 type
   TIWBSSize = (bsszDefault, bsszLg, bsszMd, bsszSm, bsszXs);
@@ -51,7 +51,6 @@ type
     property GridLGSpan: integer read FGridLGSpan write FGridLGSpan default 0;
   end;
 
-//******************************************************************************
 
 implementation
 
