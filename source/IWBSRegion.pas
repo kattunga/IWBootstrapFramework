@@ -140,25 +140,9 @@ type
 
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
 
-procedure IWBSRegisterSafeCallBack(AName: string; AIWBSCustomRegion: TIWBSCustomRegion; ACallbackFunction: TIWCallBackFunction);
-procedure IWBSCleanSafeCallBacks(AIWBSCustomRegion: TIWBSCustomRegion);
-
 implementation
 
 uses IWForm, IWUtils, IWContainerLayout, IWBSUtils;
-
-type
-  TIWBSSafeCallBack = class(TObject)
-  private
-    FName: string;
-    FCallbackFunction: TIWCallBackFunction;
-    FIWBSCustomRegion: TIWBSCustomRegion;
-    FReleased: boolean;
-    procedure DoExecuteCallBack(AParams: TStringList);
-  end;
-
-var
-  gSafeCallBacks: TThreadList<TIWBSSafeCallBack>;
 
 {$region 'help functions'}
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -209,13 +193,22 @@ begin
   if FAsyncDestroy then
     ExecuteJS('AsyncDestroyControl("'+HTMLName+'");');
 
-  IWBSCleanSafeCallBacks(Self);
   inherited;
 end;
 
 procedure TIWBSCustomRegion.Release;
+var
+  IWApp: TIWApplication;
 begin
   FReleased := True;
+  Hide;
+
+  IWApp := GetWebApplication;
+  if IWApp <> nil then
+    if Parent is TFrame then
+      IWApp.ReleaseForm(Parent)
+    else
+      IWApp.ReleaseForm(Self);
 end;
 
 function TIWBSCustomRegion.GetWebApplication: TIWApplication;
@@ -629,7 +622,7 @@ begin
   end;
   if Assigned(FOnAsyncHide) or FDestroyOnHide then begin
     ABuffer.WriteLine('$("#'+xHTMLName+'").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });');
-    IWBSRegisterSafeCallBack(xHTMLName+'.DoOnAsyncHide', Self, DoOnAsyncHide);
+    AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
   end;
   if FModalVisible then
     ABuffer.WriteLine(GetShowScript);
@@ -663,78 +656,5 @@ begin
   end;
 end;
 {$endregion}
-
-{$region 'SafeCallbacks'}
-procedure IWBSRegisterSafeCallBack(AName: string; AIWBSCustomRegion: TIWBSCustomRegion; ACallbackFunction: TIWCallBackFunction);
-var
-  IWApp: TIWApplication;
-  List: TList<TIWBSSafeCallBack>;
-  i: integer;
-  Callback: TIWBSSafeCallBack;
-begin
-  IWApp := GGetWebApplicationThreadVar;
-  if IWApp = nil then
-    raise Exception.Create('User session not found');
-
-  List := gSafeCallBacks.LockList;
-  try
-    // clean old released callbacks
-    for i := List.Count-1 downto 0 do
-      if List.Items[i].FReleased or ((List.Items[i].FName = AName) and (List.Items[i].FIWBSCustomRegion = AIWBSCustomRegion)) then
-        List.Delete(i);
-
-    Callback := TIWBSSafeCallBack.Create;
-    CallBack.FName := AName;
-    Callback.FIWBSCustomRegion := AIWBSCustomRegion;
-    Callback.FCallbackFunction := ACallbackFunction;
-    List.Add(Callback);
-
-    IWApp.RegisterCallBack(AName, Callback.DoExecuteCallBack);
-  finally
-    gSafeCallBacks.UnlockList;
-  end;
-end;
-
-procedure IWBSCleanSafeCallBacks(AIWBSCustomRegion: TIWBSCustomRegion);
-var
-  List: TList<TIWBSSafeCallBack>;
-  i: integer;
-begin
-  List := gSafeCallBacks.LockList;
-  try
-    for i := List.Count-1 downto 0 do
-      if List.Items[i].FIWBSCustomRegion = AIWBSCustomRegion then begin
-        List.Items[i].Free;
-        List.Delete(i);
-      end;
-  finally
-    gSafeCallBacks.UnlockList;
-  end;
-end;
-
-procedure TIWBSSafeCallBack.DoExecuteCallBack(AParams: TStringList);
-begin
-  if FReleased then
-    Exit;
-
-  // execute now
-  FCallbackFunction(AParams);
-
-  // destroy region if it was released in callback
-  if FIWBSCustomRegion.Released then begin
-    FReleased := True;
-    if FIWBSCustomRegion.Parent is TFrame then
-      TFrame(FIWBSCustomRegion).Free
-    else
-      FIWBSCustomRegion.Free;
-  end;
-end;
-{$endregion}
-
-initialization
-  gSafeCallBacks := TThreadList<TIWBSSafeCallBack>.Create;
-
-finalization
-  gSafeCallBacks.Free;
 
 end.
