@@ -58,18 +58,18 @@ end;
 
 procedure ExecuteJScript(const Script: string);
 var
-  IWApp: TIWApplication;
+  LWebApplication: TIWApplication;
 begin
   if Length(Script) <= 0 then Exit;
 
-  IWApp := GGetWebApplicationThreadVar;
-  if IWApp = nil then
+  LWebApplication := GGetWebApplicationThreadVar;
+  if LWebApplication = nil then
     raise Exception.Create('User session not found');
 
-  if IWApp.IsCallBack and IWApp.CallBackProcessing then
-    IWApp.CallBackResponse.AddJavaScriptToExecute(Script)
+  if LWebApplication.IsCallBack and LWebApplication.CallBackProcessing then
+    LWebApplication.CallBackResponse.AddJavaScriptToExecute(Script)
   else
-    HTML40FormInterface(IWApp.ActiveForm).PageContext.AddToInitProc(Script);
+    HTML40FormInterface(LWebApplication.ActiveForm).PageContext.AddToInitProc(Script);
 end;
 
 end.

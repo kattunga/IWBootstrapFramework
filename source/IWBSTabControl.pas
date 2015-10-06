@@ -31,7 +31,6 @@ type
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;
     FTabOptions: TIWBSTabOptions;
-    FWebApplication: TIWApplication;
   protected
     procedure SetGridOptions(const Value: TIWBSGridOptions);
     procedure SetTabOptions(const Value: TIWBSTabOptions);
@@ -185,7 +184,6 @@ begin
     Result.Contents.AddText('$("#'+xHTMLName+'").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=e.target.tabIndex; });');
 
     // event async change
-    FWebApplication := AContext.WebApplication;
     if Assigned(OnAsyncChange) then begin
       Result.Contents.AddText('$("#'+xHTMLName+'").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncChange", true, null, true); });');
       AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
