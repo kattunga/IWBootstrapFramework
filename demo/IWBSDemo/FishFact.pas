@@ -61,6 +61,7 @@ type
     IWBSRegion8: TIWBSRegion;
     IWBSButton1: TIWBSButton;
     IWText1: TIWBSText;
+    IWBSInput8: TIWBSInput;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWAppFormDestroy(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);

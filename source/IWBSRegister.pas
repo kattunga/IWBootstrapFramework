@@ -235,7 +235,6 @@ begin
 
   RegisterComponents('IW BootsTrap', [TIWBSInput]);
   UnlistPublishedProperty(TIWBSInput, 'Alignment');
-  UnlistPublishedProperty(TIWBSInput, 'NonEditableAsLabel');
 
   RegisterComponents('IW BootsTrap', [TIWBSMemo]);
 

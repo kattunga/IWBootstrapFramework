@@ -68,6 +68,7 @@ object FFishFact: TFFishFact
             Caption = 'Length (inches)'
             DataSource = dsrcMain
             DataField = 'Length_In'
+            Text = 'Length_In'
           end
           object IWBSInput2: TIWBSInput
             Left = 20
@@ -84,6 +85,7 @@ object FFishFact: TFFishFact
             Caption = 'Length (cm)'
             DataSource = dsrcMain
             DataField = 'Length (cm)'
+            Text = 'Length (cm)'
           end
           object IWBSInput3: TIWBSInput
             Left = 20
@@ -99,6 +101,7 @@ object FFishFact: TFFishFact
             Caption = 'Species Name'
             DataSource = dsrcMain
             DataField = 'Species Name'
+            Text = 'Species Name'
           end
           object IWBSInput4: TIWBSInput
             Left = 20
@@ -114,6 +117,7 @@ object FFishFact: TFFishFact
             Caption = 'Common Name'
             DataSource = dsrcMain
             DataField = 'Common_Name'
+            Text = 'Common_Name'
           end
           object IWBSInput5: TIWBSInput
             Left = 20
@@ -129,6 +133,7 @@ object FFishFact: TFFishFact
             Caption = 'Category'
             DataSource = dsrcMain
             DataField = 'Category'
+            Text = 'Category'
           end
           object IWBSInput6: TIWBSInput
             Left = 20
@@ -144,6 +149,7 @@ object FFishFact: TFFishFact
             Caption = 'Species No'
             DataSource = dsrcMain
             DataField = 'Species No'
+            Text = 'Species No'
           end
           object IWBSMemo1: TIWBSMemo
             Left = 20
@@ -179,6 +185,7 @@ object FFishFact: TFFishFact
             Caption = 'Found Date'
             DataSource = dsrcMain
             DataField = 'FoundDate'
+            Text = 'FoundDate'
           end
           object IWBSComboBox1: TIWBSComboBox
             Left = 20
@@ -267,6 +274,24 @@ object FFishFact: TFFishFact
               'Option 3')
             TabOrder = -1
             Caption = 'Option'
+          end
+          object IWBSInput8: TIWBSInput
+            Left = 20
+            Top = 299
+            Width = 121
+            Height = 21
+            Editable = False
+            NonEditableAsLabel = True
+            Font.Color = clNone
+            Font.Size = 10
+            Font.Style = []
+            FriendlyName = 'IWBSInput2'
+            SubmitOnAsyncEvent = True
+            TabOrder = 19
+            Caption = 'Common Name'
+            DataSource = dsrcMain
+            DataField = 'Common_Name'
+            Text = 'Common_Name'
           end
           object IWBSRegion6: TIWBSRegion
             Left = 20

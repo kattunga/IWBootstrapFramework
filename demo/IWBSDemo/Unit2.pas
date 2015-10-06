@@ -163,6 +163,7 @@ type
     IWBSInput24: TIWBSInput;
     IWBSRegion31: TIWBSRegion;
     IWBSButton34: TIWBSButton;
+    IWBSInput13: TIWBSInput;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);

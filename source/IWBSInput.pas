@@ -13,6 +13,7 @@ type
 
   TIWBSInput = class(TIWCustomEdit, IIWAutoEditableControl)
   private
+    FIsStatic: boolean;
     FAutoFocus: boolean;
     FCaption: string;
     FInputType: TIWBSInputType;
@@ -262,6 +263,14 @@ begin
   end;
 end;
 
+procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+begin
+  if OldValue <> Value then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").html("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");');
+    OldValue := Value;
+  end;
+end;
+
 procedure SetAsyncStyle(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
 begin
   if OldValue <> Value then begin
@@ -376,6 +385,7 @@ begin
   FDataLink := nil;
   FDataField := '';
   FInputType := bsitText;
+  FIsStatic := False;
   FTextAlignment := bstaDefault;
   FTextCase := bstcDefault;
 end;
@@ -522,15 +532,25 @@ begin
   Result := nil;
 
   CheckData;
-  SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
-  SetAsyncReadOnly(AContext, xHTMLName, ReadOnly, FOldReadOnly);
+  if FIsStatic then
+    begin
+      SetAsyncHtml(AContext, xHTMLName, Text, FOldText);
+    end
+  else
+    begin
+      SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
+      SetAsyncReadOnly(AContext, xHTMLName, ReadOnly, FOldReadOnly);
+      SetAsyncText(AContext, xHTMLName, Text, FOldText);
+    end;
   SetAsyncStyle(AContext, xHTMLName, StyleValue(AContext), FOldStyle);
-  SetAsyncText(AContext, xHTMLName, Text, FOldText);
 end;
 
 function TIWBSInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
 begin
-  Result := 'form-control';
+  if FIsStatic then
+    Result := 'form-control-static'
+  else
+    Result := 'form-control';
   if FTextAlignment <> bstaDefault then
     Result := Result + ' ' + aIWBSTextAlignment[FTextAlignment];
   if FTextCase <> bstcDefault then
@@ -545,35 +565,53 @@ begin
   xHTMLName := HTMLName;
   xStyleVal := StyleValue(AContext);
 
+  FIsStatic := not Editable and NonEditableAsLabel;
+
   CheckData;
-  Result := TIWHTMLTag.CreateTag('input');
-  try
-    Result.AddClassParam(RenderCSSClass(AContext));
-    Result.AddStringParam('id', xHTMLName);
-    Result.AddStringParam('name', xHTMLName);
-    Result.AddStringParam('type', aIWBSInputType[FInputType]);
-    if ShowHint and (Hint <> '') then begin
-      Result.AddStringParam('data-toggle', 'tooltip');
-      Result.AddStringParam('title', Hint);
+  if FIsStatic then
+    begin
+      Result := TIWHTMLTag.CreateTag('p');
+      try
+        Result.AddClassParam(RenderCSSClass(AContext));
+        Result.AddStringParam('id', xHTMLName);
+        Result.AddStringParam('style', xStyleVal);
+        Result.Contents.AddText(TextToHTML(Text));
+      except
+        FreeAndNil(Result);
+        raise;
+      end;
+    end
+  else
+    begin
+      Result := TIWHTMLTag.CreateTag('input');
+      try
+        Result.AddClassParam(RenderCSSClass(AContext));
+        Result.AddStringParam('id', xHTMLName);
+        Result.AddStringParam('name', xHTMLName);
+        Result.AddStringParam('type', aIWBSInputType[FInputType]);
+        if ShowHint and (Hint <> '') then begin
+          Result.AddStringParam('data-toggle', 'tooltip');
+          Result.AddStringParam('title', Hint);
+        end;
+        if FAutoFocus then
+          Result.Add('autofocus');
+        if ReadOnly then
+          Result.Add('readonly');
+        if not (Enabled and Editable) then
+          Result.Add('disabled');
+        if MaxLength > 0 then
+          Result.AddIntegerParam('maxlength', MaxLength);
+        Result.AddStringParam('value', TextToHTML(Text));
+        if Required then
+          Result.Add('required');
+        if FPlaceHolder <> '' then
+          Result.AddStringParam('placeholder', TextToHTML(FPlaceHolder));
+        Result.AddStringParam('style', xStyleVal);
+      except
+        FreeAndNil(Result);
+        raise;
+      end;
     end;
-    if FAutoFocus then
-      Result.Add('autofocus');
-    if ReadOnly then
-      Result.Add('readonly');
-    if not (Enabled and Editable) then
-      Result.Add('disabled');
-    if MaxLength > 0 then
-      Result.AddIntegerParam('maxlength', MaxLength);
-    Result.AddStringParam('value', TextToHTML(Text));
-    if Required then
-      Result.Add('required');
-    if FPlaceHolder <> '' then
-      Result.AddStringParam('placeholder', TextToHTML(FPlaceHolder));
-    Result.AddStringParam('style', xStyleVal);
-  except
-    FreeAndNil(Result);
-    raise;
-  end;
 
   if not (Parent is TIWBSInputGroup) then
     Result := CreateInputFormGroup(Parent, Result, FCaption, xHTMLName);

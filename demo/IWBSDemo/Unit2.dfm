@@ -1563,8 +1563,8 @@ object IWForm2: TIWForm2
                   PlaceHolder = 'Password'
                 end
                 object IWBSMemo2: TIWBSMemo
-                  Left = 9
-                  Top = 417
+                  Left = 14
+                  Top = 465
                   Width = 433
                   Height = 121
                   BGColor = clNone
@@ -1583,8 +1583,8 @@ object IWForm2: TIWForm2
                   PlaceHolder = 'This is a text area with right align and uppercase'
                 end
                 object IWBSListbox2: TIWBSListbox
-                  Left = 9
-                  Top = 544
+                  Left = 14
+                  Top = 592
                   Width = 121
                   Height = 77
                   Font.Color = clNone
@@ -1606,8 +1606,8 @@ object IWForm2: TIWForm2
                   NoSelectionText = '-- No Selection --'
                 end
                 object IWBSComboBox2: TIWBSComboBox
-                  Left = 9
-                  Top = 724
+                  Left = 14
+                  Top = 772
                   Width = 121
                   Height = 21
                   Font.Color = clNone
@@ -1797,8 +1797,8 @@ object IWForm2: TIWForm2
                   PlaceHolder = 'Pick a Color'
                 end
                 object IWBSListbox3: TIWBSListbox
-                  Left = 9
-                  Top = 635
+                  Left = 14
+                  Top = 683
                   Width = 121
                   Height = 77
                   Font.Color = clNone
@@ -1819,8 +1819,8 @@ object IWForm2: TIWForm2
                   NoSelectionText = '-- No Selection --'
                 end
                 object IWBSCheckBox4: TIWBSCheckBox
-                  Left = 11
-                  Top = 385
+                  Left = 12
+                  Top = 420
                   Width = 121
                   Height = 21
                   Caption = 'IWBSCheckBox4'
@@ -1835,9 +1835,27 @@ object IWForm2: TIWForm2
                   ValueUnchecked = 'false'
                   Checked = False
                 end
+                object IWBSInput13: TIWBSInput
+                  Left = 11
+                  Top = 381
+                  Width = 121
+                  Height = 21
+                  Editable = False
+                  NonEditableAsLabel = True
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSInput2'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 76
+                  BSInputType = bsitColor
+                  Caption = 'Input NonEditableAsLabel'
+                  PlaceHolder = 'Pick a Color'
+                  Text = 'This is a static text'
+                end
                 object IWBSRegion1: TIWBSRegion
-                  Left = 10
-                  Top = 751
+                  Left = 15
+                  Top = 799
                   Width = 237
                   Height = 121
                   BSRegionType = bsrtFormGroup
