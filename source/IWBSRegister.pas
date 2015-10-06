@@ -41,12 +41,26 @@ procedure Register;
 
 implementation
 
-uses DesignIntf, Winapi.Windows, Vcl.Graphics,
+uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
      IWBaseControl,
      IWBSLayoutMgr, IWBSRegion, IWBSControls, IWBSInput, IWBSTabControl, IWBSCommon;
 
+const
+  CNST_GLYPHICONSFONT = 'GLYPHICONS Halflings';
+
 var
   slGlyphicons: TStringList;
+  lFontAdvice: boolean = True;
+
+// advice to install glyphicon font
+procedure GlyphiconsFontAdvice;
+begin
+  if lFontAdvice then begin
+    lFontAdvice := False;
+    if Screen.Fonts.IndexOf(CNST_GLYPHICONSFONT) = 0 then
+      ShowMessage('Please install "demo\bin\wwwroot\iwbs\bootstrap-3.3.5\fonts\glyphicons-halflings-regular.ttf" to render glyphicons at design time');
+  end;
+end;
 
 procedure LoadGlyphicons;
 var
@@ -114,6 +128,8 @@ var
   s: string;
   th: integer;
 begin
+  GlyphiconsFontAdvice;
+
   if Control is TIWBSButton then begin
     LRect := Rect(0, 0, Control.Width, Control.Height);
     case TIWBSButton(Control).BSButtonStyle of
@@ -186,7 +202,7 @@ begin
 
     if TIWBSButton(Control).BSGlyphicon <> '' then
     try
-      ControlCanvas.Font.Name := 'GLYPHICONS Halflings';
+      ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
       s := Char(StrToInt(slGlyphicons.Values[TIWBSButton(Control).BSGlyphicon]));
       ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Height-th) div 2, s);
       Inc(LRect.Left, th);
@@ -209,13 +225,15 @@ var
   s: string;
   th: integer;
 begin
+  GlyphiconsFontAdvice;
+
   if Control is TIWBSGlyphicon then begin
     LRect := Rect(0, 0, Control.Width, Control.Height);
     ControlCanvas.FillRect(LRect);
 
     if TIWBSGlyphicon(Control).BSGlyphicon <> '' then
     try
-      ControlCanvas.Font.Name := 'GLYPHICONS Halflings';
+      ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
       ControlCanvas.Font.Style := [fsBold];
       ControlCanvas.Font.Height := -14;
       th := ControlCanvas.TextHeight('X');
