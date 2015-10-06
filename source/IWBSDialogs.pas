@@ -201,6 +201,7 @@ begin
   Result.Parent := AParent;
   Result.Caption := ACaption;
   Result.BSDataDismiss := bsbdModal;
+  Result.LockOnAsyncEvents := [aeClick];
   Result.AsyncClickProc := AAsyncClickProc;
 end;
 {$endregion}

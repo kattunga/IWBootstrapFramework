@@ -3,7 +3,7 @@ unit IWBSRegion;
 interface
 
 uses
-  System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, System.Generics.Collections,
+  System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, System.StrUtils,
   IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
   IWBaseContainerLayout, IWContainer, IWControl, IWHTMLContainer, IWHTML40Container, IWRegion, IW.Common.Strings,
   IWRenderContext, IWHTMLTag, IWBaseInterfaces, IWXMLTag, IWMarkupLanguageTag, IW.Common.RenderStream,
@@ -142,7 +142,7 @@ function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
 
 implementation
 
-uses IWForm, IWUtils, IWContainerLayout, IWBSUtils;
+uses IWForm, IWUtils, IWContainerLayout, IWBaseHTMLControl, IWBSUtils;
 
 {$region 'help functions'}
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -200,6 +200,8 @@ procedure TIWBSCustomRegion.Release;
 var
   IWApp: TIWApplication;
 begin
+  if Released then Exit;
+
   FReleased := True;
   Hide;
 
@@ -254,6 +256,13 @@ begin
 end;
 
 procedure TIWBSCustomRegion.AsyncRenderComponent(ARenderContent: boolean = False);
+  function TextToJsText(AText: string): string;
+  begin
+    Result := ReplaceStr(AText, '"', '\"');
+    Result := ReplaceStr(Result, #10, '\n');
+    Result := ReplaceStr(Result, #13, '');
+  end;
+
 var
   LParentContainer: TIWContainer;
   LWebApplication: TIWApplication;
@@ -263,7 +272,6 @@ var
   LPageContext: TIWBasePageContext;
   LComponentContext: TIWBaseComponentContext;
   LBuffer: TIWRenderStream;
-  LScript: string;
 
   LTag: TIWMarkupLanguageTag;
 begin
@@ -308,7 +316,7 @@ begin
     LBuffer := TIWRenderStream.Create(True, True);
     try
       LTag.Render(LBuffer);
-      ExecuteJS('AsyncCreateControl('''+LHTMLName+''','''+LContName+''','''+LBuffer.AsString+''');', True);
+      ExecuteJS('AsyncCreateControl("'+LHTMLName+'","'+LContName+'","'+TextToJsText(LBuffer.AsString)+'");', True);
     finally
       FreeAndNil(LBuffer);
     end;
@@ -321,11 +329,7 @@ begin
       ContainerContext := InitContainerContext(LWebApplication);
       FRegionDiv.Contents.Clear;
       InternalRenderComponents(ContainerContext, LPageContext, LBuffer);
-
-      LScript := LBuffer.AsString;
-      LScript := RemoveCRLF(LScript);
-      LScript := StringReplace(Lscript,'"','\"',[rfReplaceAll]);
-      ExecuteJS('$("#'+LHTMLName+'").html("'+LScript+'");', True);
+      ExecuteJS('AsyncRenderControl("'+LHTMLName+'","'+TextToJsText(LBuffer.AsString)+'");', True);
     finally
       LayoutMgr.SetContainer(nil);
       FreeAndNil(LBuffer);

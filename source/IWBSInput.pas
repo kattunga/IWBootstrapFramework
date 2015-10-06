@@ -52,7 +52,9 @@ type
     property DataSource: TDataSource read FDataSource write SetDataSource;
     property DataField: string read FDataField write SetDataField;
     property Editable default True;
+    property Enabled default True;
     property PlaceHolder: string read FPlaceHolder write FPlaceHolder;
+    property Text;
   end;
 
   TIWBSMemo = class(TIWCustomMemo, IIWAutoEditableControl)
@@ -277,11 +279,11 @@ begin
       Result := TIWHTMLTag.CreateTag('div');
       Result.AddClassParam('form-group');
       Result.AddStringParam('id',AHTMLName+'_FG');
-      if ASpanDiv then
+      Result.AddStringParam('name',AHTMLName+'_FG');
+      if ASpanDiv and (AParentForm.BSFormType = bsftHorizontal) then
         begin
           LSpanDiv := Result.Contents.AddTag('div');
-          if AParentForm.BSFormType = bsftHorizontal then
-            LSpanDiv.AddClassParam(AParentForm.BSFormOptions.GetOffsetClassString);
+          LSpanDiv.AddClassParam(AParentForm.BSFormOptions.GetOffsetClassString);
           LSpanDiv.Contents.AddTagAsObject(aTag);
         end
       else

@@ -14,16 +14,8 @@ object IWFrame1: TIWFrame1
     object IWBSInput1: TIWBSInput
       Left = 28
       Top = 32
-      Width = 121
+      Width = 241
       Height = 21
-      RenderSize = False
-      StyleRenderOptions.RenderSize = False
-      StyleRenderOptions.RenderPosition = False
-      StyleRenderOptions.RenderFont = False
-      StyleRenderOptions.RenderStatus = False
-      StyleRenderOptions.RenderAbsolute = False
-      StyleRenderOptions.RenderPadding = False
-      StyleRenderOptions.RenderBorder = False
       Font.Color = clNone
       Font.Size = 10
       Font.Style = []
@@ -31,11 +23,12 @@ object IWFrame1: TIWFrame1
       SubmitOnAsyncEvent = True
       TabOrder = 0
       Caption = ''
+      PlaceHolder = 'Input text here'
     end
     object IWBSButton198: TIWBSButton
       Left = 28
-      Top = 72
-      Width = 75
+      Top = 116
+      Width = 241
       Height = 25
       RenderSize = False
       StyleRenderOptions.RenderSize = False
@@ -45,7 +38,7 @@ object IWFrame1: TIWFrame1
       StyleRenderOptions.RenderAbsolute = False
       StyleRenderOptions.RenderPadding = False
       StyleRenderOptions.RenderBorder = False
-      Caption = 'IWBSButton198'
+      Caption = 'Press Here'
       Color = clBtnFace
       Font.Color = clNone
       Font.Size = 10
@@ -53,6 +46,19 @@ object IWFrame1: TIWFrame1
       FriendlyName = 'IWBSButton198'
       TabOrder = 1
       OnAsyncClick = IWBSButton198AsyncClick
+    end
+    object IWBSInput2: TIWBSInput
+      Left = 28
+      Top = 72
+      Width = 241
+      Height = 21
+      Font.Color = clNone
+      Font.Size = 10
+      Font.Style = []
+      FriendlyName = 'IWBSInput2'
+      SubmitOnAsyncEvent = True
+      TabOrder = 2
+      Caption = ''
     end
   end
 end

@@ -13,6 +13,7 @@ type
     IWBSRegion1: TIWBSRegion;
     IWBSInput1: TIWBSInput;
     IWBSButton198: TIWBSButton;
+    IWBSInput2: TIWBSInput;
     procedure IWBSButton198AsyncClick(Sender: TObject;
       EventParams: TStringList);
   private
@@ -28,7 +29,7 @@ implementation
 procedure TIWFrame1.IWBSButton198AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  IWBSInput1.Text := 'Seted by ajax'
+  IWBSInput2.Text := IWBSInput1.Text;
 end;
 
 end.

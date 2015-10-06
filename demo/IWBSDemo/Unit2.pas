@@ -118,23 +118,6 @@ type
     IWBSButton36: TIWBSButton;
     IWText3: TIWBSText;
     IWBSRegion6: TIWBSRegion;
-    IWBSRegion12: TIWBSRegion;
-    IWBSButton27: TIWBSButton;
-    IWBSRegion26: TIWBSRegion;
-    IWBSButton28: TIWBSButton;
-    IWBSRegion13: TIWBSRegion;
-    IWBSButton31: TIWBSButton;
-    IWBSInput23: TIWBSInput;
-    IWBSRegion17: TIWBSRegion;
-    IWBSButton26: TIWBSButton;
-    IWBSRegion11: TIWBSRegion;
-    IWBSButton21: TIWBSButton;
-    IWBSInput6: TIWBSInput;
-    IWBSRegion27: TIWBSRegion;
-    IWBSButton32: TIWBSButton;
-    IWBSRegion28: TIWBSRegion;
-    IWBSButton33: TIWBSButton;
-    IWBSInput24: TIWBSInput;
     IWBSRegion7: TIWBSRegion;
     IWBSInputForm1: TIWBSInputForm;
     IWBSButton30: TIWBSButton;
@@ -160,6 +143,26 @@ type
     IWText9: TIWText;
     IWBSRegion22: TIWBSRegion;
     IWText6: TIWText;
+    IWBSInputForm4: TIWBSInputForm;
+    IWBSRegion12: TIWBSRegion;
+    IWBSButton27: TIWBSButton;
+    IWBSRegion26: TIWBSRegion;
+    IWBSButton28: TIWBSButton;
+    IWBSRegion13: TIWBSRegion;
+    IWBSButton31: TIWBSButton;
+    IWBSInput23: TIWBSInput;
+    IWBSRegion17: TIWBSRegion;
+    IWBSButton26: TIWBSButton;
+    IWBSRegion11: TIWBSRegion;
+    IWBSButton21: TIWBSButton;
+    IWBSInput6: TIWBSInput;
+    IWBSRegion27: TIWBSRegion;
+    IWBSButton32: TIWBSButton;
+    IWBSRegion28: TIWBSRegion;
+    IWBSButton33: TIWBSButton;
+    IWBSInput24: TIWBSInput;
+    IWBSRegion31: TIWBSRegion;
+    IWBSButton34: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -175,6 +178,7 @@ type
     procedure IWBSButton35Click(Sender: TObject);
     procedure IWBSButton36Click(Sender: TObject);
     procedure IWAppFormCreate(Sender: TObject);
+    procedure IWBSButton34AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -305,6 +309,12 @@ begin
       end);
     Show;
   end;
+end;
+
+procedure TIWForm2.IWBSButton34AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  raise Exception.Create('Error Message');
 end;
 
 procedure TIWForm2.IWBSButton35Click(Sender: TObject);
