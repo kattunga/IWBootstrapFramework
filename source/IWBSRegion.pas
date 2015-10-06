@@ -198,19 +198,19 @@ end;
 
 procedure TIWBSCustomRegion.Release;
 var
-  IWApp: TIWApplication;
+  LWebApplication: TIWApplication;
 begin
   if Released then Exit;
 
   FReleased := True;
   Hide;
 
-  IWApp := GetWebApplication;
-  if IWApp <> nil then
+  LWebApplication := GetWebApplication;
+  if LWebApplication <> nil then
     if Parent is TFrame then
-      IWApp.ReleaseForm(Parent)
+      LWebApplication.ReleaseForm(Parent)
     else
-      IWApp.ReleaseForm(Self);
+      LWebApplication.ReleaseForm(Self);
 end;
 
 function TIWBSCustomRegion.GetWebApplication: TIWApplication;
