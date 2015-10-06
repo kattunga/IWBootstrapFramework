@@ -302,7 +302,7 @@ begin
     Result := ATag;
 end;
 
-function CreateInputFormGroup(AParent: TControl; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
+function CreateInputFormGroup(AControl, AParent: TControl; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
 var
   lablTag, editTag: TIWHTMLTag;
   ParentForm: TIWBSInputForm;
@@ -324,6 +324,11 @@ begin
             lablTag.AddClassParam(ParentForm.BSFormOptions.CaptionsSize.GetClassString);
             editTag := Result.Contents.AddTag('div');
             editTag.AddClassParam(ParentForm.BSFormOptions.InputsSize.GetClassString);
+            editTag.Contents.AddTagAsObject(aTag);
+          end
+        else if AControl is TIWBSRadioGroup then
+          begin
+            editTag := Result.Contents.AddTag('div');
             editTag.Contents.AddTagAsObject(aTag);
           end
         else
@@ -614,7 +619,7 @@ begin
     end;
 
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Parent, Result, FCaption, xHTMLName);
+    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
 
   FOldDisabled := not (Enabled and Editable);
   FOldReadOnly := ReadOnly;
@@ -808,7 +813,7 @@ begin
   end;
 
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Parent, Result, FCaption, HTMLName);
+    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
 
   FOldDisabled := not (Enabled and Editable);
   FOldReadOnly := ReadOnly;
@@ -967,7 +972,7 @@ begin
   if FAutoFocus then
     Result.Add('autofocus');
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Parent, Result, FCaption, xHTMLName);
+    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
 end;
 {$endregion}
 
@@ -1008,7 +1013,7 @@ begin
   if FAutoFocus then
     Result.Add('autofocus');
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Parent, Result, FCaption, xHTMLName);
+    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
 end;
 {$endregion}
 
@@ -1068,7 +1073,7 @@ begin
   if Parent is TIWBSInputGroup then
     Result := IWBSCreateInputGroupAddOn(Result, 'addon')
   else
-    Result := CreateInputFormGroup(Parent, Result, FCaption, xHTMLName);
+    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
 
   FOldDisabled  := not (Enabled and Editable);
   FOldItemIndex := ItemIndex;
@@ -1194,7 +1199,7 @@ function TIWBSInputGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result.AddClassParam(GetClassString);
-  Result := CreateInputFormGroup(Parent, Result, FCaption, HTMLName);
+  Result := CreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
 end;
 {$endregion}
 

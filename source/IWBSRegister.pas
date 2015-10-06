@@ -32,6 +32,11 @@ type
     procedure Paint; override;
   end;
 
+  TIWBSPaintHandlerRadioGroup = class (TIWPaintHandlerRegion)
+  public
+    procedure Paint; override;
+  end;
+
 procedure Register;
 
 implementation
@@ -222,6 +227,37 @@ begin
   end;
 end;
 
+procedure TIWBSPaintHandlerRadioGroup.Paint;
+var
+  LRect : TRect;
+  s: string;
+  w: integer;
+begin
+  if Control is TIWBSRadioGroup then begin
+    LRect := Rect(0, 0, Control.Width, Control.Height);
+    ControlCanvas.Brush.Color := clWhite;
+    ControlCanvas.Pen.Color := clBlack;
+    ControlCanvas.Rectangle(LRect);
+
+    Inc(LRect.Top, 5);
+    Inc(LRect.Left, 5);
+    Dec(LRect.Right, 5);
+    Dec(LRect.Bottom, 5);
+
+    ControlCanvas.Font.Name := 'Courier New';
+    ControlCanvas.Font.Color := clGray;
+    s := 'RadioGroup';
+    w := ControlCanvas.TextWidth(s);
+    ControlCanvas.TextRect(LRect,Control.ClientWidth-w-10, 5, s);
+
+    ControlCanvas.Font.Name := 'Tahoma';
+    ControlCanvas.Font.Color := clBlack;
+    ControlCanvas.Font.Size := 10;
+    s := TIWBSRadioGroup(Control).Items.Text;
+    ControlCanvas.TextRect(LRect,s,[]);
+  end;
+end;
+
 procedure Register;
 begin
   RegisterComponents('IW BootsTrap', [TIWBSLayoutMgr]);
@@ -283,6 +319,7 @@ initialization
   IWRegisterPaintHandler('TIWBSRadioButton',TIWPaintHandlerRadioButton);
   IWRegisterPaintHandler('TIWBSListBox',TIWPaintHandlerListBox);
   IWRegisterPaintHandler('TIWBSComboBox',TIWPaintHandlerComboBox);
+  IWRegisterPaintHandler('TIWBSRadioGroup',TIWBSPaintHandlerRadioGroup);
 
   IWRegisterPaintHandler('TIWBSButton',TIWBSPaintHandlerButton);
 
@@ -310,6 +347,7 @@ finalization
   IWUnRegisterPaintHandler('TIWBSRadioButton');
   IWUnRegisterPaintHandler('TIWBSListBox');
   IWUnRegisterPaintHandler('TIWBSComboBox');
+  IWUnRegisterPaintHandler('TIWBSRadioGroup');
 
   IWUnRegisterPaintHandler('TIWBSButton');
 

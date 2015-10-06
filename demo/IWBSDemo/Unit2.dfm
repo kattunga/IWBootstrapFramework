@@ -1823,7 +1823,7 @@ object IWForm2: TIWForm2
                   Top = 420
                   Width = 121
                   Height = 21
-                  Caption = 'IWBSCheckBox4'
+                  Caption = 'This is a checkbox'
                   Font.Color = clNone
                   Font.Size = 10
                   Font.Style = []
@@ -1852,6 +1852,26 @@ object IWForm2: TIWForm2
                   Caption = 'Input NonEditableAsLabel'
                   PlaceHolder = 'Pick a Color'
                   Text = 'This is a static text'
+                end
+                object IWBSRadioGroup1: TIWBSRadioGroup
+                  Left = 15
+                  Top = 932
+                  Width = 237
+                  Height = 125
+                  SubmitOnAsyncEvent = True
+                  TrimValues = True
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  Layout = glVertical
+                  FriendlyName = 'IWBSRadioGroup1'
+                  Items.Strings = (
+                    'item 1'
+                    'item 2'
+                    'item 3'
+                    'item 4')
+                  TabOrder = -1
+                  Caption = 'This is a radio group'
                 end
                 object IWBSRegion1: TIWBSRegion
                   Left = 15

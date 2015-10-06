@@ -20,7 +20,7 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = 8
+  DesignTop = -421
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
@@ -48,7 +48,7 @@ object FFishFact: TFFishFact
           Left = 9
           Top = 16
           Width = 697
-          Height = 921
+          Height = 969
           BSGridOptions.GridMDSpan = 8
           BSRegionType = bsrtColumn
           object IWBSInput1: TIWBSInput

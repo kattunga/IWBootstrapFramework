@@ -164,6 +164,7 @@ type
     IWBSRegion31: TIWBSRegion;
     IWBSButton34: TIWBSButton;
     IWBSInput13: TIWBSInput;
+    IWBSRadioGroup1: TIWBSRadioGroup;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -332,6 +333,7 @@ procedure TIWForm2.IWBSButton36Click(Sender: TObject);
 begin
   with TFFishFact.Create(WebApplication) do begin
     IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
+    IWBSInputForm1.BSFormType := Self.IWBSInputForm2.BSFormType;
     Show;
   end;
 end;
