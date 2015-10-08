@@ -12,9 +12,12 @@ type
     FDataLink: TIWDataLink;
     FDataField: string;
     FDataSource: TDataSource;
+    FOldVisible: boolean;
+    FOldText: string;
     procedure CheckData; virtual;
     procedure SetDataField(const AValue: string);
     procedure SetDataSource(const Value: TDataSource);
+    function  RenderLabelText: string;
   protected
     procedure Paint; override;
     procedure Notification(AComponent: TComponent; AOperation: TOperation); override;
@@ -23,6 +26,7 @@ type
     destructor Destroy; override;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    function RenderStyle(AComponentContext: TIWCompContext): string; override;
   published
     property AutoSize;
     property Caption;
@@ -41,11 +45,13 @@ type
   TIWBSGlyphicon = class(TIWCustomControl)
   private
     FGlyphicon: string;
+    FOldVisible: boolean;
   protected
     procedure InitControl; override;
     function get_ShouldRenderTabOrder: boolean;override;
     function get_HasName: Boolean; override;
   public
+    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
     function RenderStyle(AComponentContext: TIWCompContext): string; override;
     function get_HasTabOrder: boolean; override;
@@ -54,11 +60,15 @@ type
   end;
 
   TIWBSImage = class(TIWDBImage)
+  private
+    FOldVisible: boolean;
   protected
     procedure CheckData; override;
   public
+    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    function RenderStyle(AComponentContext: TIWCompContext): string; override;
   published
     property OnAsyncClick;
     property OnAsyncDoubleClick;
@@ -77,14 +87,18 @@ type
   end;
 
   TIWBSText = class(TIWText)
+  private
+    FOldVisible: boolean;
   public
+    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    function RenderStyle(AComponentContext: TIWCompContext): string; override;
   end;
 
 implementation
 
-uses IWBSInput, IWBSUtils;
+uses IWBSInput, IWBSRegion, IWBSUtils, IWBSCommon;
 
 {$region 'TIWBSLabel'}
 procedure TIWBSLabel.InitControl;
@@ -117,18 +131,54 @@ begin
   inherited Paint;
 end;
 
-function TIWBSLabel.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+function TIWBSLabel.RenderLabelText: string;
 begin
+  if RawText then
+    Result := Caption
+  else
+    Result := TextToHTML(Caption, True, FConvertSpaces);
+  if NoWrap then
+    Result := '<nobr>' + Result + '</nobr>';
+end;
+
+function TIWBSLabel.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+var
+  xHTMLName: string;
+begin
+  Result := nil;
+  xHTMLName := HTMLName;
   CheckData;
-  Result := inherited RenderAsync(AContext);
+  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
+  SetAsyncHtml(AContext, xHTMLName, RenderLabelText, FOldText);
 end;
 
 function TIWBSLabel.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+var
+  RawContent: string;
 begin
   CheckData;
-  Result := inherited RenderHTML(AContext);
+  RawContent := RenderLabelText;
+
+  if Assigned(ForControl) then
+    begin
+      Result := TIWHTMLTag.CreateTag('label');
+      Result.AddStringParam('for', ForControl.HTMLName);
+    end
+  else
+    Result := TIWHTMLTag.CreateTag('span');
+  Result.AddStringParam('id', HTMLName);
+  Result.Contents.AddText(RawContent);
+
   if Parent is TIWBSInputGroup then
     Result := IWBSCreateInputGroupAddOn(Result, 'addon');
+
+  FOldVisible := Visible;
+  FOldText := RawContent;
+end;
+
+function TIWBSLabel.RenderStyle(AComponentContext: TIWCompContext): string;
+begin
+  Result := '';
 end;
 
 procedure TIWBSLabel.SetDataField(const AValue: string);
@@ -190,6 +240,15 @@ begin
   Result := False;
 end;
 
+function TIWBSGlyphicon.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+var
+  xHTMLName: string;
+begin
+  Result := nil;
+  xHTMLName := HTMLName;
+  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
+end;
+
 function TIWBSGlyphicon.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := TIWHTMLTag.CreateTag('SPAN');
@@ -207,6 +266,8 @@ begin
   end;
   if Parent is TIWBSInputGroup then
     Result := IWBSCreateInputGroupAddOn(REsult, 'addon');
+
+  FOldVisible := Visible;
 end;
 
 function TIWBSGlyphicon.RenderStyle(AComponentContext: TIWCompContext): string;
@@ -227,23 +288,55 @@ begin
   Result := 'img-responsive';
 end;
 
+function TIWBSImage.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+var
+  xHTMLName: string;
+begin
+  Result := nil;
+  xHTMLName := HTMLName;
+  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
+end;
+
 function TIWBSImage.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result.AddClassParam(RenderCSSClass(AContext));
+
+  FOldVisible := Visible;
+end;
+
+function TIWBSImage.RenderStyle(AComponentContext: TIWCompContext): string;
+begin
+  Result := '';
 end;
 {$endregion}
 
-{$region 'TIWBSImage'}
+{$region 'TIWBSText'}
 function TIWBSText.RenderCSSClass(AComponentContext: TIWCompContext): string;
 begin
   Result := Css;
+end;
+
+function TIWBSText.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+var
+  xHTMLName: string;
+begin
+  Result := nil;
+  xHTMLName := HTMLName;
+  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
 end;
 
 function TIWBSText.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result.AddClassParam(RenderCSSClass(AContext));
+
+  FOldVisible := Visible;
+end;
+
+function TIWBSText.RenderStyle(AComponentContext: TIWCompContext): string;
+begin
+  Result := '';
 end;
 {$endregion}
 

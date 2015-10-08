@@ -37,6 +37,7 @@ type
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    function RenderStyle(AContext: TIWCompContext): string; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -194,6 +195,11 @@ begin
 
   // this hidden input is for input seleted tab page
   Result.Contents.AddHiddenField(xHTMLInput, xHTMLInput, IntToStr(tabIndex));
+end;
+
+function TIWBSTabControl.RenderStyle(AContext: TIWCompContext): string;
+begin
+  Result := '';
 end;
 {$endregion}
 

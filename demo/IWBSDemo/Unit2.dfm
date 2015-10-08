@@ -1836,7 +1836,7 @@ object IWForm2: TIWForm2
                   Checked = False
                 end
                 object IWBSInput13: TIWBSInput
-                  Left = 11
+                  Left = 12
                   Top = 381
                   Width = 121
                   Height = 21

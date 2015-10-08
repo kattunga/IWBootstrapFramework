@@ -331,7 +331,7 @@ initialization
   IWRegisterPaintHandler('TIWBSInputGroup',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerRegion);
 
-  IWRegisterPaintHandler('TIWBSInput',TIWPaintHandlerEdit);
+//  IWRegisterPaintHandler('TIWBSInput',TIWPaintHandlerEdit);
   IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerMemo);
   IWRegisterPaintHandler('TIWBSCheckBox',TIWPaintHandlerCheckBox);
   IWRegisterPaintHandler('TIWBSRadioButton',TIWPaintHandlerRadioButton);

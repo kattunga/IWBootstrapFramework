@@ -29,7 +29,7 @@ type
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function StyleValue(AContext: TIWCompContext): string; virtual;
+    function RenderStyle(AContext: TIWCompContext): string; override;
     procedure SetGridOptions(const AValue: TIWBSGridOptions);
     procedure SetStyle(const AValue: TStrings);
   public
@@ -51,8 +51,6 @@ type
     property ClipRegion default False;
     property Css: string read FCss write FCss;
     property RenderInvisibleControls default False;
-    property Style: TStrings read FStyle write SetStyle;
-    property StyleRenderOptions;
   end;
 
   TIWBSInputForm = class(TIWBSCustomRegion)
@@ -69,6 +67,20 @@ type
   published
     property BSFormType: TIWBSFormType read FFormType write FFormType default bsftVertical;
     property BSFormOptions: TIWBSFormOptions read FFormOptions write FFormOptions;
+  end;
+
+  TIWBSInputGroup = class(TIWBSCustomRegion)
+  private
+    FCaption: string;
+    FRelativeSize: TIWBSRelativeSize;
+  public
+    constructor Create(AOwner: TComponent); override;
+    function GetClassString: string; override;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    function RenderStyle(AContext: TIWCompContext): string; override;
+  published
+    property Caption: string read FCaption write FCaption;
+    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
   end;
 
   TIWBSButonGroupOptions = class(TPersistent)
@@ -142,7 +154,7 @@ function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
 
 implementation
 
-uses IWForm, IWUtils, IWContainerLayout, IWBaseHTMLControl, IWBSUtils;
+uses IWForm, IWUtils, IWContainerLayout, IWBaseHTMLControl, IWBSUtils, IWBSInputCommon;
 
 {$region 'help functions'}
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -406,7 +418,7 @@ begin
   end;
 end;
 
-function TIWBSCustomRegion.StyleValue(AContext: TIWCompContext): string;
+function TIWBSCustomRegion.RenderStyle(AContext: TIWCompContext): string;
 var
   i: integer;
 begin
@@ -424,7 +436,7 @@ begin
   FRegionDiv.AddStringParam('id',HTMLName);
   FRegionDiv.AddClassParam(GetClassString);
   FRegionDiv.AddStringParam('role',GetRoleString);
-  FRegionDiv.AddStringParam('style',StyleValue(AContext));
+  FRegionDiv.AddStringParam('style',RenderStyle(AContext));
   Result := FRegionDiv;
 end;
 {$endregion}
@@ -472,6 +484,38 @@ begin
 
   Result := inherited;
   Result.AddStringParam('onSubmit', 'return FormDefaultSubmit();');
+end;
+{$endregion}
+
+{$region 'TIWBSInputGroup'}
+constructor TIWBSInputGroup.Create(AOwner: TComponent);
+begin
+  inherited;
+  FRelativeSize := bsrzDefault;
+end;
+
+function TIWBSInputGroup.GetClassString: string;
+var
+  s: string;
+begin
+  Result := 'input-group';
+  if FRelativeSize <> bsrzDefault then
+    Result := Result + ' input-group-'+aIWBSRelativeSize[FRelativeSize];
+  s := inherited;
+  if s <> '' then
+    Result := Result + ' ' + s;
+end;
+
+function TIWBSInputGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+begin
+  Result := inherited;
+  Result.AddClassParam(GetClassString);
+  Result := CreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
+end;
+
+function TIWBSInputGroup.RenderStyle(AContext: TIWCompContext): string;
+begin
+  Result := '';
 end;
 {$endregion}
 

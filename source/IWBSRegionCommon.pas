@@ -2,7 +2,7 @@ unit IWBSRegionCommon;
 
 interface
   uses System.Classes, Vcl.Controls, Vcl.Forms,
-       IWContainer, IWBSCommon, IWCompTabControl;
+       IWContainer, IWBSCommon, IWCompTabControl, IWRenderContext;
 
 type
   TIWBSFormType = (bsftInline, bsftHorizontal, bsftVertical);

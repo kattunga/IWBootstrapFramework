@@ -20,7 +20,7 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -421
+  DesignTop = -393
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
@@ -269,9 +269,9 @@ object FFishFact: TFFishFact
               '2'
               '3')
             Items.Strings = (
-              'Option 1'
-              'Option 2'
-              'Option 3')
+              'Option 1=1'
+              'Option 2=2'
+              'Option 3=3')
             TabOrder = -1
             Caption = 'Option'
           end

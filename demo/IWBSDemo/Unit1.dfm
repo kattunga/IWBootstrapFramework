@@ -60,5 +60,24 @@ object IWFrame1: TIWFrame1
       TabOrder = 2
       Caption = ''
     end
+    object IWBSButton1: TIWBSButton
+      Left = 32
+      Top = 156
+      Width = 237
+      Height = 25
+      Caption = 'IWBSButton1'
+      Color = clBtnFace
+      Font.Color = clNone
+      Font.Size = 10
+      Font.Style = []
+      FriendlyName = 'IWBSButton1'
+      ScriptEvents = <
+        item
+          EventCode.Strings = (
+            'console.log('#39'paso'#39');')
+          Event = 'onClick'
+        end>
+      TabOrder = 3
+    end
   end
 end

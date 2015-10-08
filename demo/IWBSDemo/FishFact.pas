@@ -79,9 +79,12 @@ type
 implementation
 {$R *.dfm}
 
+uses ServerController;
+
 procedure TFFishFact.IWFormModuleBaseCreate(Sender: TObject);
 begin
   //ClientDataSet1.LoadFromFile('biolife2.cds');
+  ExtraHeader.Add('<link href="'+IWServerController.URLBase+'/iwbsdemo.css" rel="stylesheet">');
 end;
 
 procedure TFFishFact.IWAppFormDestroy(Sender: TObject);

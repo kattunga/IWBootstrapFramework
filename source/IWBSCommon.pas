@@ -2,7 +2,8 @@ unit IWBSCommon;
 
 interface
 
-uses System.Classes, System.SysUtils, System.SyncObjs;
+uses System.Classes, System.SysUtils, System.SyncObjs,
+     IWRenderContext;
 
 type
   TIWBSSize = (bsszDefault, bsszLg, bsszMd, bsszSm, bsszXs);
@@ -51,8 +52,23 @@ type
     property GridLGSpan: integer read FGridLGSpan write FGridLGSpan default 0;
   end;
 
+  IIBSComponent = interface
+    ['{12925CB3-58EC-4B56-B032-478892548906}']
+
+  end;
+
+procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
+procedure SetAsyncReadOnly(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
+procedure SetAsyncVisible(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
+procedure SetAsyncClass(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncStyle(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncChecked(AContext: TIWCompContext; const HTMLName: string; const Value: boolean; var OldValue: boolean);
+procedure SetAsyncText(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
 
 implementation
+
+uses IW.Common.System, IWBaseHTMLControl;
 
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create;
@@ -98,6 +114,72 @@ end;
 function TIWBSGridOptions.GetClassString: string;
 begin
   Result := GetGridClassString(FGridXSOffset, FGridSMOffset, FGridMDOffset, FGridLGOffset, FGridXSSpan, FGridSMSpan, FGridMDSpan, FGridLGSpan);
+end;
+{$endregion}
+
+{$region 'AsyncRender functions'}
+procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
+begin
+  if OldValue <> Value then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("disabled", '+iif(Value,'true','false')+');');
+    OldValue := Value;
+  end;
+end;
+
+procedure SetAsyncReadOnly(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
+begin
+  if OldValue <> Value then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("readonly", '+iif(Value,'true','false')+');');
+    OldValue := Value;
+  end;
+end;
+
+procedure SetAsyncVisible(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
+begin
+  if OldValue <> Value then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").toggleClass("hidden", '+iif(Value,'false','true')+');');
+    OldValue := Value;
+  end;
+end;
+
+procedure SetAsyncText(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+begin
+  if OldValue <> Value then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").val("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");');
+    OldValue := Value;
+  end;
+end;
+
+procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+begin
+  if OldValue <> Value then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").html("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");');
+    OldValue := Value;
+  end;
+end;
+
+procedure SetAsyncClass(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+begin
+  if OldValue <> Value then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").toggleClass("'+Value+'");');
+    OldValue := Value;
+  end;
+end;
+
+procedure SetAsyncStyle(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+begin
+  if OldValue <> Value then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("style", "'+Value+'");');
+    OldValue := Value;
+  end;
+end;
+
+procedure SetAsyncChecked(AContext: TIWCompContext; const HTMLName: string; const Value: boolean; var OldValue: boolean);
+begin
+  if OldValue <> Value then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked", "'+iif(Value,'true','false')+'");');
+    OldValue := Value;
+  end;
 end;
 {$endregion}
 

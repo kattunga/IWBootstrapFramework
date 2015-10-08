@@ -232,23 +232,27 @@ end;
 
 procedure TIWBSLayoutMgr.ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent);
 var
+  LComponentContext: TIWCompContext;
   LHTML: TIWHTMLTag;
-  LStyle: string;
+  IsIWTabPage: boolean;
 begin
-  LHTML := TIWCompContext(AContainerContext.ComponentContext[AControl.HTMLName]).HTMLTag;
+  IsIWTabPage := AControl.InterfaceInstance.ClassName = 'TIWTabPage';
 
-  // non IWBS components hacks
+  LComponentContext := TIWCompContext(AContainerContext.ComponentContext[AControl.HTMLName]);
+  LHTML := LComponentContext.HTMLTag;
   if Assigned(LHTML) then begin
-    if AControl.InterfaceInstance.ClassName = 'TIWTabPage' then
+    // TIWTabPage hack
+    if IsIWTabPage then
       LHTML.Params.Values['class'] := IWBSRegionCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass;
 
-    // bugfix, intraweb ignore StyleRenderOption.UseDisplay
-    if not TControl(AControl.InterfaceInstance).Visible and HTML40ControlInterface(AControl.InterfaceInstance).StyleRenderOptions.UseDisplay then begin
-      LStyle := LHTML.Params.Values['style'];
-      if not AnsiContainsText(LStyle,'display:') then
-        LStyle := 'display: none;'+LStyle;
-      LHTML.AddStringParam('STYLE', LStyle);
-    end;
+    // render styles
+    if not IsIWTabPage and SupportsInterface(AControl.InterfaceInstance, IIWHTML40Component) then
+      LHTML.Params.Values['style'] := HTML40ComponentInterface(AControl.InterfaceInstance).RenderStyle(LComponentContext);
+
+    // render visibility
+    if not TControl(AControl.InterfaceInstance).Visible then
+      if not AnsiContainsStr(LHTML.Params.Values['class'],'hidden') then
+        LHTML.AddClassParam('hidden');
   end;
 
   inherited;
