@@ -193,7 +193,7 @@ begin
   end;
 
   // this hidden input is for input seleted tab page
-  Result.Contents.AddHiddenField(HTMLName + '_input', xHTMLInput, IntToStr(tabIndex));
+  Result.Contents.AddHiddenField(xHTMLInput, xHTMLInput, IntToStr(tabIndex));
 end;
 {$endregion}
 
