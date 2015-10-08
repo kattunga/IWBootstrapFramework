@@ -172,7 +172,7 @@ type
     property Editable default True;
   end;
 
-  TIWBSRadioGroup = class(TIWDBRadioGroup)
+  TIWBSRadioGroup = class(TIWDBRadioGroup, IIWAutoEditableControl)
   private
     FAutoFocus: boolean;
     FCaption: string;
@@ -182,6 +182,7 @@ type
   protected
     procedure InitControl; override;
     procedure CheckData; override;
+    procedure EditingChanged;
   public
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
@@ -191,6 +192,7 @@ type
     property AutoFocus: boolean read FAutoFocus write FAutoFocus default false;
     property Caption: string read FCaption write FCaption;
     property Editable default True;
+    property Enabled default True;
   end;
 
   TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink, bsbsClose);
@@ -324,11 +326,6 @@ begin
             lablTag.AddClassParam(ParentForm.BSFormOptions.CaptionsSize.GetClassString);
             editTag := Result.Contents.AddTag('div');
             editTag.AddClassParam(ParentForm.BSFormOptions.InputsSize.GetClassString);
-            editTag.Contents.AddTagAsObject(aTag);
-          end
-        else if AControl is TIWBSRadioGroup then
-          begin
-            editTag := Result.Contents.AddTag('div');
             editTag.Contents.AddTagAsObject(aTag);
           end
         else
@@ -499,8 +496,6 @@ var
 begin
   if CheckDataSource(FDataSource, DataField, LField) then begin
     if AValue <> Text then begin
-      if FEditable then
-        FDataSource.Edit;
       if InEditMode(FDataSource.DataSet) and LField.CanModify then
         begin
           if Assigned(LField.OnSetText) then
@@ -880,7 +875,6 @@ begin
       AddStringParam('type', 'checkbox');
       AddStringParam('id', xHTMLName + '_CHECKBOX');
       AddStringParam('name', xHTMLName + '_CHECKBOX');
-//      AddStringParam('OnClick', 'checkBoxClick(event, ''' + xHTMLName + ''');');
       if not Enabled or not Editable then
         Add('disabled');
       if Checked then
@@ -1026,15 +1020,40 @@ begin
   FCaption := '';
 end;
 
-procedure TIWBSRadioGroup.CheckData;
+// I need to use enabled instead of editable because
+procedure TIWBSRadioGroup.EditingChanged;
 begin
-  if DataSource <> nil then begin
-    inherited;
+  if AutoEditable then
     if CheckDataSource(FDataSource) then
-      Editable := InEditMode(FDataSource.Dataset) and FieldIsEditable(FDataSource, FDataField)
+      Enabled := InEditMode(FDataSource.Dataset) and FieldIsEditable(FDataSource, FDataField)
     else
-      Editable := False;
-  end;
+      Enabled := False;
+end;
+
+procedure TIWBSRadioGroup.CheckData;
+var
+  LField: TField;
+  LText: string;
+begin
+  if FDataSource <> nil then
+    if CheckDataSource(FDataSource, DataField, LField) then
+      begin
+        LText := GetFieldText(LField);
+        if TrimValues then
+          LText := Trim(LText);
+        ItemIndex := Values.IndexOf(LText);
+        if AutoEditable then
+          Enabled := InEditMode(FDataSource.Dataset) and FieldIsEditable(FDataSource, FDataField);
+        if ItemIndex < 0 then
+          ItemIndex := Items.IndexOf(LText);
+      end
+    else
+      begin
+        ItemIndex := -1;
+        if AutoEditable then begin
+          Enabled := False;
+      end;
+    end;
 end;
 
 function TIWBSRadioGroup.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
@@ -1045,30 +1064,55 @@ begin
   Result := nil;
 
   CheckData;
-  SetAsyncDisabled(AContext, xHTMLName+' > input', not (Enabled and Editable), FOldDisabled);
-  if ItemIndex <> FOldItemIndex then begin
+  SetAsyncDisabled(AContext, xHTMLName+' input', not (Enabled and Editable), FOldDisabled);
+  if (ItemIndex <> FOldItemIndex) then begin
     if ItemIndex >= 0 then
       AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+xHTMLName+'_INPUT_'+IntToStr(ItemIndex+1)+'").prop("checked", true);')
     else
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+xHTMLName+' > input").prop("checked", false);');
+      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+xHTMLName+' input").prop("checked", false);');
     FOldItemIndex := ItemIndex;
   end;
 end;
 
 function TIWBSRadioGroup.RenderCSSClass(AComponentContext: TIWCompContext): string;
 begin
-  Result := 'form-control';
+  Result := '';
 end;
 
 function TIWBSRadioGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
+  i: Integer;
   xHTMLName: string;
+  xEnabled: boolean;
 begin
+  CheckData;
   xHTMLName := HTMLName;
+  xEnabled := Enabled and Editable;
 
-  Result := inherited;
-  Result.AddStringParam('id', xHTMLName);
-  Result.AddClassParam('radio-inline');
+  Result := TIWHTMLTag.CreateTag('div');
+  try
+    Result.AddStringParam('id', xHTMLName);
+    Result.AddClassParam('radio');
+    for i := 0 to Items.Count - 1 do begin
+      with Result.Contents.AddTag('label') do begin
+        with Contents.AddTag('input') do begin
+          AddStringParam('type', 'radio');
+          Add(iif(ItemIndex = i, 'checked'));
+          AddStringParam('name', xHTMLName + '_INPUT');
+          AddStringParam('id', xHTMLName + '_INPUT_'+IntToStr(i+1));
+          AddStringParam('value', IntToStr(i));
+          if not xEnabled then
+            Add('disabled');
+        end;
+        Contents.AddText(Items.Strings[i]);
+      end;
+      if Layout = glVertical then
+        Result.Contents.AddText('<br>');
+    end;
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
 
   if Parent is TIWBSInputGroup then
     Result := IWBSCreateInputGroupAddOn(Result, 'addon')
