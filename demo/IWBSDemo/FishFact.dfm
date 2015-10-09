@@ -20,7 +20,7 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -393
+  DesignTop = 8
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
@@ -57,50 +57,41 @@ object FFishFact: TFFishFact
             Width = 121
             Height = 21
             Hint = 'Length in Inches'
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
+            Caption = 'Length (inches)'
+            DataSource = dsrcMain
+            DataField = 'Length_In'
             FriendlyName = 'IWBSInput1'
             SubmitOnAsyncEvent = True
             TabOrder = 0
             BSTextAlignment = bstaRight
-            BSInputType = bsitNumber
-            Caption = 'Length (inches)'
-            DataSource = dsrcMain
-            DataField = 'Length_In'
             Text = 'Length_In'
+            BSInputType = bsitNumber
           end
           object IWBSInput2: TIWBSInput
             Left = 20
             Top = 361
             Width = 121
             Height = 21
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 1
-            BSInputType = bsitNumber
             Caption = 'Length (cm)'
             DataSource = dsrcMain
             DataField = 'Length (cm)'
+            FriendlyName = 'IWBSInput2'
+            SubmitOnAsyncEvent = True
+            TabOrder = 1
             Text = 'Length (cm)'
+            BSInputType = bsitNumber
           end
           object IWBSInput3: TIWBSInput
             Left = 20
             Top = 388
             Width = 121
             Height = 21
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 2
             Caption = 'Species Name'
             DataSource = dsrcMain
             DataField = 'Species Name'
+            FriendlyName = 'IWBSInput2'
+            SubmitOnAsyncEvent = True
+            TabOrder = 2
             Text = 'Species Name'
           end
           object IWBSInput4: TIWBSInput
@@ -108,15 +99,12 @@ object FFishFact: TFFishFact
             Top = 415
             Width = 121
             Height = 21
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 3
             Caption = 'Common Name'
             DataSource = dsrcMain
             DataField = 'Common_Name'
+            FriendlyName = 'IWBSInput2'
+            SubmitOnAsyncEvent = True
+            TabOrder = 3
             Text = 'Common_Name'
           end
           object IWBSInput5: TIWBSInput
@@ -124,15 +112,12 @@ object FFishFact: TFFishFact
             Top = 442
             Width = 121
             Height = 21
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 4
             Caption = 'Category'
             DataSource = dsrcMain
             DataField = 'Category'
+            FriendlyName = 'IWBSInput2'
+            SubmitOnAsyncEvent = True
+            TabOrder = 4
             Text = 'Category'
           end
           object IWBSInput6: TIWBSInput
@@ -140,15 +125,12 @@ object FFishFact: TFFishFact
             Top = 469
             Width = 121
             Height = 21
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 5
             Caption = 'Species No'
             DataSource = dsrcMain
             DataField = 'Species No'
+            FriendlyName = 'IWBSInput2'
+            SubmitOnAsyncEvent = True
+            TabOrder = 5
             Text = 'Species No'
           end
           object IWBSMemo1: TIWBSMemo
@@ -156,36 +138,26 @@ object FFishFact: TFFishFact
             Top = 700
             Width = 317
             Height = 121
-            BGColor = clNone
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            InvisibleBorder = False
-            HorizScrollBar = False
-            VertScrollBar = True
-            Required = False
-            TabOrder = 6
-            SubmitOnAsyncEvent = True
             Caption = 'Notes'
             DataSource = dsrcMain
             DataField = 'Notes'
+            FriendlyName = 'IWBSMemo1'
+            SubmitOnAsyncEvent = True
+            TabOrder = 6
           end
           object IWBSInput7: TIWBSInput
             Left = 20
             Top = 497
             Width = 121
             Height = 21
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput7'
-            SubmitOnAsyncEvent = True
-            TabOrder = 7
-            BSInputType = bsitDateTimeLocal
             Caption = 'Found Date'
             DataSource = dsrcMain
             DataField = 'FoundDate'
+            FriendlyName = 'IWBSInput7'
+            SubmitOnAsyncEvent = True
+            TabOrder = 7
             Text = 'FoundDate'
+            BSInputType = bsitDateTimeLocal
           end
           object IWBSComboBox1: TIWBSComboBox
             Left = 20
@@ -277,20 +249,15 @@ object FFishFact: TFFishFact
           end
           object IWBSInput8: TIWBSInput
             Left = 20
-            Top = 299
+            Top = 300
             Width = 121
-            Height = 21
-            Editable = False
-            NonEditableAsLabel = True
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 19
+            Height = 20
             Caption = 'Common Name'
             DataSource = dsrcMain
             DataField = 'Common_Name'
+            FriendlyName = 'IWBSInput2'
+            SubmitOnAsyncEvent = True
+            TabOrder = 19
             Text = 'Common_Name'
           end
           object IWBSRegion6: TIWBSRegion
@@ -1695,7 +1662,7 @@ object FFishFact: TFFishFact
       object IWBSButton1: TIWBSButton
         Left = 495
         Top = 16
-        Width = 185
+        Width = 218
         Height = 25
         Css = 'pull-right'
         Caption = 'Switch to Standard Demo'

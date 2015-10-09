@@ -10,108 +10,48 @@ uses
 
 type
 
-  TIWBSInputType = (bsitText, bsitPassword, bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime, bsitWeek, bsitNumber, bsitEmail, bsitUrl, bsitSearch, bsitTel, bsitColor);
-
-  TIWBSInput = class(TIWCustomInput, IIWAutoEditableControl)
+  TIWBSCustomTextInput = class(TIWBSCustomInput)
   private
-    FIsStatic: boolean;
     FAutoFocus: boolean;
-    FCaption: string;
-    FInputType: TIWBSInputType;
     FPlaceHolder: string;
     FTextAlignment: TIWBSTextAlignment;
     FTextCase: TIWBSTextCase;
-    FDataLink: TIWDataLink;
-    FDataField: string;
-    FDataSource: TDataSource;
-
-    FMainID: string;
-    FOldVisible: boolean;
-    FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
-    FOldReadOnly: boolean;
-    FOldText: string;
-
-    procedure EditingChanged;
-    procedure CheckData;
-    procedure SetDataField(const AValue: string);
-    procedure SetDataSource(const Value: TDataSource);
   protected
     procedure InitControl; override;
-    procedure Paint; override;
-    procedure Notification(AComponent: TComponent; AOperation: TOperation); override;
-    procedure SetValue(const AValue: string); override;
   public
-    destructor Destroy; override;
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
   published
     property AutoFocus: boolean read FAutoFocus write FAutoFocus default False;
     property BSTextAlignment: TIWBSTextAlignment read FTextAlignment write FTextAlignment default bstaDefault;
     property BSTextCase: TIWBSTextCase read FTextCase write FTextCase default bstcDefault;
-    property BSInputType: TIWBSInputType read FInputType write FInputType default bsitText;
-    property Caption: string read FCaption write FCaption;
-    property DataSource: TDataSource read FDataSource write SetDataSource;
-    property DataField: string read FDataField write SetDataField;
-    property Editable default True;
-    property Enabled default True;
     property MaxLength default 0;
     property PlaceHolder: string read FPlaceHolder write FPlaceHolder;
     property ReadOnly default False;
     property Text;
   end;
 
-  TIWBSMemo = class(TIWCustomMemo, IIWAutoEditableControl)
+  TIWBSInput = class(TIWBSCustomTextInput)
+  protected
+    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+  published
+    property BSInputType default bsitText;
+  end;
+
+  TIWBSMemo = class(TIWBSCustomTextInput)
   private
-    FAutoFocus: boolean;
-    FCaption: string;
-    FMaxLength: integer;
-    FPlaceHolder: string;
-    FReadOnly: boolean;
+    FLines: TStrings;
     FRows: integer;
-    FTextAlignment: TIWBSTextAlignment;
-    FTextCase: TIWBSTextCase;
-    FDataLink: TIWDataLink;
-    FDataField: string;
-    FDataSource: TDataSource;
-
-    FMainID: string;
-    FOldVisible: boolean;
-    FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
-    FOldReadOnly: boolean;
-    FOldText: string;
-
-    procedure EditingChanged;
-    procedure CheckData;
-    procedure SetDataField(const AValue: string);
-    procedure SetDataSource(const Value: TDataSource);
   protected
     procedure InitControl; override;
-    procedure Notification(AComponent: TComponent; AOperation: TOperation); override;
-    procedure SetValue(const AValue: string); override;
+    procedure CheckData; override;
+    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure InternalRenderStyle(AStyle: TStrings); override;
+    procedure SetLines(const AValue: TStrings);
   public
     destructor Destroy; override;
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
   published
-    property AutoFocus: boolean read FAutoFocus write FAutoFocus default false;
-    property BSTextAlignment: TIWBSTextAlignment read FTextAlignment write FTextAlignment default bstaDefault;
-    property BSTextCase: TIWBSTextCase read FTextCase write FTextCase default bstcDefault;
-    property Caption: string read FCaption write FCaption;
-    property DataSource: TDataSource read FDataSource write SetDataSource;
-    property DataField: string read FDataField write SetDataField;
-    property Editable default True;
-    property Enabled;
-    property MaxLength: integer read FMaxLength write FMaxLength default 0;
-    property PlaceHolder: string read FPlaceHolder write FPlaceHolder;
-    property ReadOnly: boolean read FReadOnly write FReadOnly default false;
+    property Lines: TStrings read FLines write SetLines;
     property Rows: integer read FRows write FRows default 5;
   end;
 
@@ -291,173 +231,25 @@ implementation
 uses IWColor, IWDBCommon, IWMarkupLanguageTag, IW.Common.System, Graphics,
      IWBSRegionCommon, IWBSUtils, IWBSInputCommon;
 
-{$region 'TIWBSInput'}
-const
-  aIWBSInputType: array[bsitText..bsitColor] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color');
-
-var
-  LFormatSettings: TFormatSettings;
-
-procedure TIWBSInput.InitControl;
+{$region 'TIWBSCustomTextInput'}
+procedure TIWBSCustomTextInput.InitControl;
 begin
   inherited;
   FAutoFocus := False;
-  FCaption := '';
-  FDataLink := nil;
-  FDataField := '';
-  FInputType := bsitText;
-  FIsStatic := False;
+  FSupportReadOnly := True;
   FTextAlignment := bstaDefault;
   FTextCase := bstcDefault;
 end;
 
-destructor TIWBSInput.Destroy;
+procedure TIWBSCustomTextInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
-  FreeAndNil(FDataLink);
-  inherited;
-end;
-
-procedure TIWBSInput.EditingChanged;
-begin
-  invalidate;
-end;
-
-procedure TIWBSInput.CheckData;
-
-  function GetFieldText(AField: TField): String;
-  begin
-    if AField.IsBlob then begin
-      if Assigned(AField.OnGetText) then begin
-        result := AField.Text;
-      end else begin
-        result := AField.AsString;
-      end;
-    end
-    else begin
-      result := AField.Text;
-    end;
-  end;
-
-var
-  LField: TField;
-begin
-  if FDataSource <> nil then begin
-    if CheckDataSource(FDataSource, DataField, LField) then
-      begin
-        ReadOnly := not InEditMode(FDataSource.Dataset) or not FieldIsEditable(FDataSource, FDataField);
-        if Assigned(LField.OnGetText) then
-          Text := LField.Text
-        else if (FInputType = bsitNumber) and (LField.DataType in [ftFloat, ftCurrency, ftBCD, ftFMTBCD, ftExtended]) then
-          Text := FloatToStr(LField.AsExtended, LFormatSettings)
-        else if (FInputType = bsitDateTimeLocal) and (LField.DataType in [ftDate, ftTime, ftDateTime, ftTimeStamp, ftOraTimeStamp]) then
-          Text := FormatDateTime('yyyy-mm-dd"T"hh:nn',LField.AsDateTime)
-        else
-          Text := LField.AsString;
-      end
-    else
-      ReadOnly := True;
-  end;
-end;
-
-procedure TIWBSInput.SetDataField(const AValue: string);
-var
-  xFld: TField;
-begin
-  if not SameText(AValue, FDataField) then begin
-    FDataField := AValue;
-    MaxLength := 0;
-    if FDataField <> '' then begin
-      xFld := GetDataSourceField(FDataSource, FDataField);
-      if Assigned(xFld) and (xFld is TStringField) then
-        MaxLength := TStringField(xFld).Size;
-    end;
-    Invalidate;
-  end;
-end;
-
-procedure TIWBSInput.SetDataSource(const Value: TDataSource);
-begin
-  if Value <> FDataSource then begin
-    FDataSource := Value;
-    if Value = nil then
-      begin
-        FDataField := '';
-        FreeAndNil(FDataLink);
-      end
-    else
-      begin
-        if FDataLink = nil then
-          FDataLink := TIWDataLink.Create(Self);
-        FDataLink.DataSource := FDataSource;
-      end;
-    Invalidate;
-  end;
-end;
-
-procedure TIWBSInput.Paint;
-begin
-  if FDataSource <> nil then
-    Text := FDataField;
-  inherited Paint;
-end;
-
-procedure TIWBSInput.Notification(AComponent: TComponent; AOperation: TOperation);
-begin
-  inherited Notification(AComponent, AOperation);
-  if AOperation = opRemove then
-    if FDatasource = AComponent then
-      SetDataSource(nil);
-end;
-
-procedure TIWBSInput.SetValue(const AValue: string);
-var
-  LField: TField;
-begin
-  FOldText := AValue;
-  inherited SetValue(AValue);
-  if CheckDataSource(FDataSource, DataField, LField) then begin
-    if AValue <> Text then begin
-      if InEditMode(FDataSource.DataSet) and LField.CanModify then
-        begin
-          if Assigned(LField.OnSetText) then
-            LField.Text := AValue
-          else if (FInputType = bsitNumber) and (LField.DataType in [ftFloat, ftCurrency, ftBCD, ftFMTBCD, ftExtended]) then
-            LField.Value := StrToFloat(AValue, LFormatSettings)
-          else if (FInputType = bsitDateTimeLocal) and (LField.DataType in [ftDate, ftTime, ftDateTime, ftTimeStamp, ftOraTimeStamp]) then
-            LField.Value := StrToDateTime(ReplaceStr(AValue,'T',' '), LFormatSettings)
-          else
-            LField.AsString := AValue;
-        end
-      else
-        raise EIWDataSetNotEditingError.Create(FDataSource);
-    end;
-  end;
-end;
-
-function TIWBSInput.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName;
-  Result := nil;
-
-  CheckData;
   if FIsStatic then
-    begin
-      SetAsyncHtml(AContext, xHTMLName, Text, FOldText);
-    end
+    SetAsyncHtml(AContext, AHTMLName, Text, FOldText)
   else
-    begin
-      SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
-      SetAsyncReadOnly(AContext, xHTMLName, ReadOnly, FOldReadOnly);
-      SetAsyncText(AContext, xHTMLName, Text, FOldText);
-    end;
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+    SetAsyncText(AContext, AHTMLName, Text, FOldText);
 end;
 
-function TIWBSInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
+function TIWBSCustomTextInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
 begin
   FIsStatic := not Editable and NonEditableAsLabel;
   if FIsStatic then
@@ -471,27 +263,17 @@ begin
   if Css <> '' then
     Result := Result + ' ' + Css;
 end;
+{$endregion}
 
-function TIWBSInput.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
-var
-  xHTMLName: string;
+{$region 'TIWBSInput'}
+function TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 begin
-  xHTMLName := HTMLName;
-
-  CheckData;
-  FOldVisible := Visible;
-  FOldDisabled := not (Enabled and Editable);
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
-  FOldReadOnly := ReadOnly;
-  FOldText := Text;
-
   if FIsStatic then
     begin
       Result := TIWHTMLTag.CreateTag('p');
       try
         Result.AddClassParam(FOldCss);
-        Result.AddStringParam('id', xHTMLName);
+        Result.AddStringParam('id', AHTMLName);
         Result.AddStringParam('style', FOldStyle);
         Result.Contents.AddText(TextToHTML(Text));
       except
@@ -504,18 +286,18 @@ begin
       Result := TIWHTMLTag.CreateTag('input');
       try
         Result.AddClassParam(FOldCss);
-        Result.AddStringParam('id', xHTMLName);
-        Result.AddStringParam('name', xHTMLName);
-        Result.AddStringParam('type', aIWBSInputType[FInputType]);
+        Result.AddStringParam('id', AHTMLName);
+        Result.AddStringParam('name', AHTMLName);
+        Result.AddStringParam('type', aIWBSInputType[BSInputType]);
         if ShowHint and (Hint <> '') then begin
           Result.AddStringParam('data-toggle', 'tooltip');
           Result.AddStringParam('title', Hint);
         end;
         if FAutoFocus then
           Result.Add('autofocus');
-        if ReadOnly then
+        if IsReadOnly then
           Result.Add('readonly');
-        if FOldDisabled then
+        if IsDisabled then
           Result.Add('disabled');
         if MaxLength > 0 then
           Result.AddIntegerParam('maxlength', MaxLength);
@@ -532,19 +314,7 @@ begin
     end;
 
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
-
-  // save id of final container to set visibility
-  FMainID := Result.Params.Values['id'];
-end;
-
-function TIWBSInput.RenderStyle(AContext: TIWCompContext): string;
-begin
-  Result := '';
-{  if toTColor(WebFont.Color) <> clNone then
-    Result := Result + 'color:' + ColorToRGBString(WebFont.Color) + ';';
-  if toTColor(BGColor) <> clNone then
-    result := result + 'background-color: ' + ColorToRGBString(BGColor) + ';';      }
+    Result := CreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
 end;
 {$endregion}
 
@@ -552,199 +322,75 @@ end;
 procedure TIWBSMemo.InitControl;
 begin
   inherited;
-  FAutoFocus := False;
-  FCaption := '';
-  FDataLink := nil;
-  FDataField := '';
-  FMaxLength := 0;
+  FLines := TStringList.Create;
   FRows := 5;
-  FReadOnly := False;
-  FTextAlignment := bstaDefault;
-  FTextCase := bstcDefault;
+  Height := 101;
+  Width := 121;
 end;
 
 destructor TIWBSMemo.Destroy;
 begin
-  FreeAndNil(FDataLink);
+  FLines.Free;
   inherited;
 end;
 
-procedure TIWBSMemo.EditingChanged;
-begin
-  invalidate;
-end;
-
 procedure TIWBSMemo.CheckData;
-var
-  LField: TField;
 begin
-  if FDataSource <> nil then begin
-    if CheckDataSource(FDataSource, DataField, LField) then
-      begin
-        ReadOnly := not InEditMode(FDataSource.Dataset) or not FieldIsEditable(FDataSource, FDataField);
-        Lines.Text := GetFieldText(LField);
-      end
-    else
-      ReadOnly := True;
-  end;
+  inherited;
+  FLines.Text := Text;
 end;
 
-procedure TIWBSMemo.SetDataField(const AValue: string);
-var
-  xFld: TField;
+procedure TIWBSMemo.SetLines(const AValue: TStrings);
 begin
-  if not SameText(AValue, FDataField) then begin
-    FDataField := AValue;
-    MaxLength := 0;
-    if FDataField <> '' then begin
-      xFld := GetDataSourceField(FDataSource, FDataField);
-      if Assigned(xFld) and (xFld is TStringField) then
-        MaxLength := TStringField(xFld).Size;
-    end;
-    Invalidate;
-  end;
+  FLines.Assign(AValue);
+  Invalidate;
 end;
 
-procedure TIWBSMemo.SetDataSource(const Value: TDataSource);
+function TIWBSMemo.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 begin
-  if Value <> FDataSource then begin
-    FDataSource := Value;
-    if Value = nil then
-      begin
-        FDataField := '';
-        FreeAndNil(FDataLink);
-      end
-    else
-      begin
-        if FDataLink = nil then
-          FDataLink := TIWDataLink.Create(Self);
-        FDataLink.DataSource := FDataSource;
-      end;
-    Invalidate;
-  end;
-end;
-
-procedure TIWBSMemo.Notification(AComponent: TComponent; AOperation: TOperation);
-begin
-  inherited Notification(AComponent, AOperation);
-  if AOperation = opRemove then
-    if FDatasource = AComponent then
-      SetDataSource(nil);
-end;
-
-procedure TIWBSMemo.SetValue(const AValue: string);
-var
-  LField: TField;
-begin
-  FOldText := AValue;
-  inherited SetValue(AValue);
-  if CheckDataSource(FDataSource, DataField, LField) then begin
-    if (GetFieldText(LField) <> Text) then begin
-      if FEditable then
-        FDataSource.Edit;
-      if InEditMode(FDataSource.DataSet) and LField.CanModify then
-        LField.Text := Text
-      else
-        raise EIWDataSetNotEditingError.Create(FDataSource);
-    end;
-  end;
-end;
-
-function TIWBSMemo.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName;
-  Result := nil;
-
-  CheckData;
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
-  SetAsyncReadOnly(AContext, xHTMLName, ReadOnly, FOldReadOnly);
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  SetAsyncText(AContext, xHTMLName, Text, FOldText);
-end;
-
-function TIWBSMemo.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  Result := 'form-control';
-  if FTextAlignment <> bstaDefault then
-    Result := Result + ' ' + aIWBSTextAlignment[FTextAlignment];
-  if FTextCase <> bstcDefault then
-    Result := Result + ' ' + aIWBSTextCase[FTextCase];
-end;
-
-function TIWBSMemo.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
-var
-  xHTMLName: string;
-  s: string;
-begin
-  xHTMLName := HTMLName;
-
-  CheckData;
-  FOldVisible := Visible;
-  FOldDisabled := not (Enabled and Editable);
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
-  FOldReadOnly := ReadOnly;
-  FOldText := Text;
-
   Result := TIWHTMLTag.CreateTag('textarea');
   try
-    Result.AddStringParam('id', xHTMLName);
+    Result.AddStringParam('id', AHTMLName);
     Result.AddClassParam(FOldCss);
-    Result.AddStringParam('name', xHTMLName);
+    Result.AddStringParam('name', AHTMLName);
     if ShowHint and (Hint <> '') then begin
       Result.AddStringParam('data-toggle', 'tooltip');
       Result.AddStringParam('title', Hint);
     end;
     if FAutoFocus then
       Result.Add('autofocus');
-    if ReadOnly then
+    if IsReadOnly then
       Result.Add('readonly');
-    if FOldDisabled then
+    if IsDisabled then
       Result.Add('disabled');
-    if FMaxLength > 0 then
-      Result.AddIntegerParam('maxlength', FMaxLength);
+    if MaxLength > 0 then
+      Result.AddIntegerParam('maxlength', MaxLength);
     if Required then
       Result.Add('required');
     if FPlaceHolder <> '' then
       Result.AddStringParam('placeholder', TextToHTML(FPlaceHolder));
     Result.AddIntegerParam('rows', FRows);
     Result.AddStringParam('style', FOldStyle);
-
-    s := TextToHTML(Text,false,false);
-    if not FEndsWithCRLF and (Length(s) >= Length(sLineBreak)) then
-      SetLength(s, Length(s) - Length(sLineBreak));
-    Result.Contents.AddText(s);
+    Result.Contents.AddText(TextToHTML(Text,false,false));
   except
     FreeAndNil(Result);
     raise;
   end;
 
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
-
-  // save id of final container to set visibility
-  FMainID := Result.Params.Values['id'];
+    Result := CreateInputFormGroup(Self, Parent, Result, Caption, HTMLName);
 end;
 
-function TIWBSMemo.RenderStyle(AContext: TIWCompContext): string;
+procedure TIWBSMemo.InternalRenderStyle(AStyle: TStrings);
 begin
-  Result := '';
-  if toTColor(WebFont.Color) <> clNone then
-    Result := Result + 'color:' + ColorToRGBString(WebFont.Color) + ';';
-  if toTColor(BGColor) <> clNone then
-    result := result + 'background-color: ' + ColorToRGBString(BGColor) + ';';
-  if not FVertScrollBar then
+{  if not FVertScrollBar then
     Result := Result + 'overflow: hidden;';
   case ResizeDirection of
     rdNone: Result := Result + 'resize:none;';
     rdBoth: Result := Result + 'resize:both;';
     rdVertical: Result := Result + 'resize:vertical;';
     rdHorizontal: Result := Result + 'resize:horizontal;';
-  end;
+  end; }
 end;
 {$endregion}
 
@@ -1346,13 +992,5 @@ begin
   Invalidate;
 end;
 {$endregion}
-
-initialization
-  LFormatSettings := TFormatSettings.Create('en-US'); // locale de us
-  LFormatSettings.DateSeparator := '-';
-  LFormatSettings.LongDateFormat := 'yyyy-mm-dd';
-  LFormatSettings.ShortDateFormat := LFormatSettings.LongDateFormat;
-  LFormatSettings.LongTimeFormat := 'hh:nn:ss';
-  LFormatSettings.ShortTimeFormat := LFormatSettings.LongTimeFormat;
 
 end.

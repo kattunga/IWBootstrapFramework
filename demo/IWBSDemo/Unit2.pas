@@ -13,7 +13,8 @@ uses
   IWCompLabel, IWCompCheckbox,
   IWCompText, IWCompMemo, IWLayoutMgrForm, IWBSLayoutMgr,
   IWCompRadioButton, IWCompOrderedListbox, IWHTMLControls, IWCompListbox,
-  IWCompGrids, Vcl.Imaging.jpeg, IWBSControls, IWDBStdCtrls, IWDBExtCtrls;
+  IWCompGrids, Vcl.Imaging.jpeg, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
+  IWBSCustomInput;
 
 type
   TIWForm2 = class(TIWAppForm)

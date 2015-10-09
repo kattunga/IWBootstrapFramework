@@ -6,7 +6,8 @@ uses
   SysUtils, Classes, Controls, Forms,
   IWVCLBaseContainer, IWColor, IWContainer, IWRegion, IWCompButton, IWBSInput,
   IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl, IWControl, IWCompEdit,
-  IWBSRegion, IWHTMLContainer, IWHTML40Container, IWVCLComponent;
+  IWBSRegion, IWHTMLContainer, IWHTML40Container, IWVCLComponent,
+  IWBSCustomInput;
 
 type
   TIWFrame1 = class(TFrame)

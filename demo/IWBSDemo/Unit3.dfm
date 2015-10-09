@@ -54,9 +54,6 @@ object IWFrame3: TIWFrame3
           StyleRenderOptions.RenderAbsolute = False
           StyleRenderOptions.RenderPadding = False
           StyleRenderOptions.RenderBorder = False
-          Font.Color = clNone
-          Font.Size = 10
-          Font.Style = []
           FriendlyName = 'IWBSInput1'
           SubmitOnAsyncEvent = True
           TabOrder = 0

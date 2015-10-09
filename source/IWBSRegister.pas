@@ -17,7 +17,7 @@ type
     procedure Paint; override;
   end;
 
-  TIWBSPaintHandlerMemo = class (TIWPaintHandlerMemo)
+  TIWBSPaintHandlerCustomInput = class (TIWPaintHandlerRectangle)
   public
     procedure Paint; override;
   end;
@@ -43,7 +43,7 @@ implementation
 
 uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
      IWBaseControl,
-     IWBSLayoutMgr, IWBSRegion, IWBSControls, IWBSInput, IWBSTabControl, IWBSCommon;
+     IWBSLayoutMgr, IWBSRegion, IWBSControls, IWBSInput, IWBSCustomInput, IWBSTabControl, IWBSCommon;
 
 const
   CNST_GLYPHICONSFONT = 'GLYPHICONS Halflings';
@@ -108,17 +108,31 @@ begin
   end;
 end;
 
-procedure TIWBSPaintHandlerMemo.Paint;
+procedure TIWBSPaintHandlerCustomInput.Paint;
 var
   LRect : TRect;
   s: string;
+  th: integer;
 begin
-  inherited;
-  if Control is TIWBSMemo then begin
-    ControlCanvas.Brush.Color := clWhite;
-    s := TIWBSMemo(Control).DataField;
-    LRect := Rect(5, 5, Control.Width, Control.Height);
-    ControlCanvas.TextRect(LRect,s,[]);
+  ControlCanvas.Brush.Color := clWhite;
+  ControlCanvas.Pen.Color := clGray;
+  LRect := Rect(0, 0, Control.Width, Control.Height);
+  ControlCanvas.Rectangle(LRect);
+  Inc(LRect.Top, 2);
+  Inc(LRect.Left, 10);
+  Dec(LRect.Bottom, 2);
+  Dec(LRect.Right, 10);
+  if Control is TIWBSCustomInput then begin
+    s := TIWBSCustomInput(Control).DataField;
+    if s <> '' then
+      s := TIWBSCustomInput(Control).Text;
+    if Control is TIWBSInput then
+      begin
+        th := ControlCanvas.TextHeight('X');
+        ControlCanvas.TextRect(LRect, LRect.Left, LRect.Top+(LRect.Height-th) div 2, s);
+      end
+    else
+      ControlCanvas.TextRect(LRect,s,[]);
   end;
 end;
 
@@ -287,8 +301,10 @@ begin
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignPosition');
 
+  UnlistPublishedProperty(TIWBSCustomInput, 'SkinId');
+  UnlistPublishedProperty(TIWBSCustomInput, 'StyleRenderOptions');
+
   RegisterComponents('IW BootsTrap', [TIWBSInput]);
-  UnlistPublishedProperty(TIWBSInput, 'Alignment');
 
   RegisterComponents('IW BootsTrap', [TIWBSMemo]);
 
@@ -331,8 +347,8 @@ initialization
   IWRegisterPaintHandler('TIWBSInputGroup',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerRegion);
 
-//  IWRegisterPaintHandler('TIWBSInput',TIWPaintHandlerEdit);
-  IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerMemo);
+  IWRegisterPaintHandler('TIWBSInput',TIWBSPaintHandlerCustomInput);
+  IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSCheckBox',TIWPaintHandlerCheckBox);
   IWRegisterPaintHandler('TIWBSRadioButton',TIWPaintHandlerRadioButton);
   IWRegisterPaintHandler('TIWBSListBox',TIWPaintHandlerListBox);

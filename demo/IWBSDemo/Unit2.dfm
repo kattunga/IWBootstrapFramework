@@ -471,13 +471,10 @@ object IWForm2: TIWForm2
                   Height = 21
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
                   TabOrder = 25
-                  Caption = ''
                 end
               end
               object IWBSInputGroup2: TIWBSInputGroup
@@ -508,13 +505,10 @@ object IWForm2: TIWForm2
                   Height = 21
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
                   TabOrder = 27
-                  Caption = ''
                 end
               end
               object IWBSInputGroup3: TIWBSInputGroup
@@ -547,13 +541,10 @@ object IWForm2: TIWForm2
                   Height = 21
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
                   TabOrder = 29
-                  Caption = ''
                 end
                 object IWBSButton25: TIWBSButton
                   Left = 11
@@ -609,13 +600,10 @@ object IWForm2: TIWForm2
                   Height = 21
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
                   TabOrder = 31
-                  Caption = ''
                 end
                 object IWBSCheckBox3: TIWBSCheckBox
                   Left = 21
@@ -648,13 +636,10 @@ object IWForm2: TIWForm2
                   Height = 21
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
                   TabOrder = 33
-                  Caption = ''
                 end
                 object IWBSRadioButton5: TIWBSRadioButton
                   Left = 21
@@ -684,13 +669,10 @@ object IWForm2: TIWForm2
                   Height = 21
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
                   TabOrder = 34
-                  Caption = ''
                 end
                 object IWBSGlyphicon1: TIWBSGlyphicon
                   Left = 12
@@ -719,13 +701,10 @@ object IWForm2: TIWForm2
                   Height = 21
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
                   TabOrder = 35
-                  Caption = ''
                 end
                 object IWBSLabel1: TIWBSLabel
                   Left = 11
@@ -1255,13 +1234,10 @@ object IWForm2: TIWForm2
                     Top = 47
                     Width = 121
                     Height = 21
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
+                    Caption = ''
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
                     TabOrder = 68
-                    Caption = ''
                     PlaceHolder = 'IWBSInput23'
                   end
                 end
@@ -1315,13 +1291,10 @@ object IWForm2: TIWForm2
                     Top = 38
                     Width = 121
                     Height = 21
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
+                    Caption = ''
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
                     TabOrder = 71
-                    Caption = ''
                   end
                 end
                 object IWBSRegion27: TIWBSRegion
@@ -1374,13 +1347,10 @@ object IWForm2: TIWForm2
                     Top = 49
                     Width = 121
                     Height = 21
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
+                    Caption = ''
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
                     TabOrder = 74
-                    Caption = ''
                   end
                 end
                 object IWBSRegion31: TIWBSRegion
@@ -1521,14 +1491,11 @@ object IWForm2: TIWForm2
                   Height = 21
                   ExtraTagParams.Strings = (
                     '')
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Text'
                   FriendlyName = 'IWBSInput1'
                   SubmitOnAsyncEvent = True
                   TabOrder = 38
                   BSTextAlignment = bstaCenter
-                  Caption = 'Input Type Text'
                   PlaceHolder = 'Name'
                 end
                 object IWBSInput2: TIWBSInput
@@ -1536,50 +1503,37 @@ object IWForm2: TIWForm2
                   Top = 220
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Numer'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
                   TabOrder = 39
-                  BSInputType = bsitNumber
-                  Caption = 'Input Type Numer'
                   PlaceHolder = 'Amount'
+                  BSInputType = bsitNumber
                 end
                 object IWBSInput3: TIWBSInput
                   Left = 12
                   Top = 62
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Password'
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
                   TabOrder = 40
-                  BSInputType = bsitPassword
-                  Caption = 'Input Type Password'
                   PlaceHolder = 'Password'
+                  BSInputType = bsitPassword
                 end
                 object IWBSMemo2: TIWBSMemo
                   Left = 14
                   Top = 465
                   Width = 433
                   Height = 121
-                  BGColor = clNone
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  InvisibleBorder = False
-                  HorizScrollBar = False
-                  VertScrollBar = False
-                  Required = False
-                  TabOrder = 41
+                  Caption = 'This is a Memo'
+                  FriendlyName = 'IWBSMemo2'
                   SubmitOnAsyncEvent = True
+                  TabOrder = 41
                   BSTextAlignment = bstaRight
                   BSTextCase = bstcUppercase
-                  Caption = 'This is a Memo'
                   PlaceHolder = 'This is a text area with right align and uppercase'
                 end
                 object IWBSListbox2: TIWBSListbox
@@ -1646,155 +1600,125 @@ object IWForm2: TIWForm2
                   Top = 113
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Date'
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
                   TabOrder = 45
-                  BSInputType = bsitDate
-                  Caption = 'Input Type Date'
                   PlaceHolder = 'Date'
+                  BSInputType = bsitDate
                 end
                 object IWBSInput14: TIWBSInput
                   Left = 12
                   Top = 89
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type DateTimeLocal'
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
                   TabOrder = 46
-                  BSInputType = bsitDateTimeLocal
-                  Caption = 'Input Type DateTimeLocal'
                   PlaceHolder = 'DateTimeLocal'
+                  BSInputType = bsitDateTimeLocal
                 end
                 object IWBSInput15: TIWBSInput
                   Left = 12
                   Top = 139
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Month'
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
                   TabOrder = 47
-                  BSInputType = bsitMonth
-                  Caption = 'Input Type Month'
                   PlaceHolder = 'Month'
+                  BSInputType = bsitMonth
                 end
                 object IWBSInput16: TIWBSInput
                   Left = 12
                   Top = 166
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Time'
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
                   TabOrder = 48
-                  BSInputType = bsitTime
-                  Caption = 'Input Type Time'
                   PlaceHolder = 'Time'
+                  BSInputType = bsitTime
                 end
                 object IWBSInput17: TIWBSInput
                   Left = 12
                   Top = 193
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Week'
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
                   TabOrder = 49
-                  BSInputType = bsitWeek
-                  Caption = 'Input Type Week'
                   PlaceHolder = 'Week'
+                  BSInputType = bsitWeek
                 end
                 object IWBSInput18: TIWBSInput
                   Left = 12
                   Top = 244
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Email'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
                   TabOrder = 50
-                  BSInputType = bsitEmail
-                  Caption = 'Input Type Email'
                   PlaceHolder = 'Email'
+                  BSInputType = bsitEmail
                 end
                 object IWBSInput19: TIWBSInput
                   Left = 12
                   Top = 270
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Url'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
                   TabOrder = 51
-                  BSInputType = bsitUrl
-                  Caption = 'Input Type Url'
                   PlaceHolder = 'home page'
+                  BSInputType = bsitUrl
                 end
                 object IWBSInput20: TIWBSInput
                   Left = 12
                   Top = 297
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Search'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
                   TabOrder = 52
-                  BSInputType = bsitSearch
-                  Caption = 'Input Type Search'
                   PlaceHolder = 'Search'
+                  BSInputType = bsitSearch
                 end
                 object IWBSInput21: TIWBSInput
                   Left = 12
                   Top = 324
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Tel'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
                   TabOrder = 53
-                  BSInputType = bsitTel
-                  Caption = 'Input Type Tel'
                   PlaceHolder = 'Telephone'
+                  BSInputType = bsitTel
                 end
                 object IWBSInput22: TIWBSInput
                   Left = 12
                   Top = 351
                   Width = 121
                   Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input Type Color'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
                   TabOrder = 54
-                  BSInputType = bsitColor
-                  Caption = 'Input Type Color'
                   PlaceHolder = 'Pick a Color'
+                  BSInputType = bsitColor
                 end
                 object IWBSListbox3: TIWBSListbox
                   Left = 14
@@ -1840,18 +1764,13 @@ object IWForm2: TIWForm2
                   Top = 381
                   Width = 121
                   Height = 21
-                  Editable = False
-                  NonEditableAsLabel = True
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
+                  Caption = 'Input NonEditableAsLabel'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
                   TabOrder = 76
-                  BSInputType = bsitColor
-                  Caption = 'Input NonEditableAsLabel'
                   PlaceHolder = 'Pick a Color'
                   Text = 'This is a static text'
+                  BSInputType = bsitColor
                 end
                 object IWBSRadioGroup1: TIWBSRadioGroup
                   Left = 15

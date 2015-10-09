@@ -16,9 +16,6 @@ object IWFrame1: TIWFrame1
       Top = 32
       Width = 241
       Height = 21
-      Font.Color = clNone
-      Font.Size = 10
-      Font.Style = []
       FriendlyName = 'IWBSInput'
       SubmitOnAsyncEvent = True
       TabOrder = 0
@@ -52,9 +49,6 @@ object IWFrame1: TIWFrame1
       Top = 72
       Width = 241
       Height = 21
-      Font.Color = clNone
-      Font.Size = 10
-      Font.Style = []
       FriendlyName = 'IWBSInput2'
       SubmitOnAsyncEvent = True
       TabOrder = 2

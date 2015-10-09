@@ -51,6 +51,7 @@ type
     property ClipRegion default False;
     property Css: string read FCss write FCss;
     property RenderInvisibleControls default False;
+    property Style: TStrings read FStyle write SetStyle;
   end;
 
   TIWBSInputForm = class(TIWBSCustomRegion)
