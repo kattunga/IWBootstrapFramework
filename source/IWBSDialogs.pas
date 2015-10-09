@@ -4,7 +4,7 @@ interface
 
 uses System.Classes, System.SysUtils, Vcl.Controls,
      IWControl, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag,
-     IWBSRegion, IWBSInput, IWBSControls;
+     IWBSRegion, IWBSInput, IWBSButton, IWBSControls;
 
 type
   TIWBSDialog = class(TIWBSModal)

@@ -16,10 +16,10 @@ object IWFrame1: TIWFrame1
       Top = 32
       Width = 241
       Height = 21
+      Caption = ''
       FriendlyName = 'IWBSInput'
       SubmitOnAsyncEvent = True
       TabOrder = 0
-      Caption = ''
       PlaceHolder = 'Input text here'
     end
     object IWBSButton198: TIWBSButton
@@ -49,13 +49,13 @@ object IWFrame1: TIWFrame1
       Top = 72
       Width = 241
       Height = 21
+      Caption = ''
       FriendlyName = 'IWBSInput2'
       SubmitOnAsyncEvent = True
       TabOrder = 2
-      Caption = ''
     end
     object IWBSButton1: TIWBSButton
-      Left = 32
+      Left = 28
       Top = 156
       Width = 237
       Height = 25

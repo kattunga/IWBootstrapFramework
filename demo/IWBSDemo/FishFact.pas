@@ -11,7 +11,7 @@ uses
   IWBSRegion, IWBSInput, IWVCLComponent, IWBaseLayoutComponent,
   IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr, IWBSControls,
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
-  MidasLib, IWBSCustomInput;
+  MidasLib, IWBSCustomInput, IWBSButton;
 
 type
   TFFishFact = class(TIWAppForm)
@@ -43,11 +43,9 @@ type
     IWBSInput7: TIWBSInput;
     ClientDataSet1Option: TStringField;
     ClientDataSet1Check: TStringField;
-    IWBSComboBox1: TIWBSComboBox;
     IWBSCheckBox1: TIWBSCheckBox;
     IWBSRegion4: TIWBSRegion;
     IWBSLabel1: TIWBSLabel;
-    IWBSListbox1: TIWBSListbox;
     IWBSRegion7: TIWBSRegion;
     IWBSRegion5: TIWBSRegion;
     btnEdit: TIWBSButton;
@@ -62,6 +60,8 @@ type
     IWBSButton1: TIWBSButton;
     IWText1: TIWBSText;
     IWBSInput8: TIWBSInput;
+    IWBSListbox1: TIWBSSelect;
+    IWBSListbox2: TIWBSSelect;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWAppFormDestroy(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);

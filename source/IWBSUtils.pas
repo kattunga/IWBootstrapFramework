@@ -9,8 +9,6 @@ procedure IWBSDisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
 
 function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
 
-function  IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
-
 procedure ExecuteJScript(const Script: string);
 
 implementation
@@ -40,19 +38,6 @@ begin
   while Assigned(AOwner.FindComponent(Result)) do begin
     inc(i);
     Result:= APrefix + IntToStr(i);
-  end;
-end;
-
-function IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
-begin
-  Result := TIWHTMLTag.CreateTag('span');
-  try
-    Result.AddClassParam('input-group-'+css);
-    Result.Contents.AddTagAsObject(ATag);
-  except
-    FreeAndNil(Result);
-    FreeAndNil(ATag);
-    raise;
   end;
 end;
 

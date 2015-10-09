@@ -6,7 +6,8 @@ uses
   System.Classes, System.SysUtils, System.StrUtils, Data.db,
   IWControl,
   IWBaseControl, IWTypes, IWHTMLTag, IWDBCommon, IWDBStdCtrls,
-  IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces;
+  IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces,
+  IWBSCommon;
 
 type
   TIWBSInputType = (bsitText, bsitPassword, bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime, bsitWeek, bsitNumber, bsitEmail, bsitUrl, bsitSearch, bsitTel, bsitColor);
@@ -18,6 +19,7 @@ type
   TIWBSCustomInput = class(TIWCustomControl, IIWInputControl, IIWSubmitControl, IIWInputControl40, IIWAutoEditableControl)
   private
     FAutoEditable: Boolean;
+    FAutoFocus: boolean;
     FDbEditable: boolean;
     FCaption: string;
     FDataLink: TIWDataLink;
@@ -77,13 +79,16 @@ type
     function GetSubmitParam : String;
   published
     property AutoEditable: Boolean read FAutoEditable write FAutoEditable default True;
+    property AutoFocus: boolean read FAutoFocus write FAutoFocus default False;
     property Caption: string read FCaption write FCaption;
     property DataSource: TDataSource read FDataSource write SetDataSource;
     property DataField: string read FDataField write SetDataField;
     property DoSubmitValidation;
+    property Editable default True;
     property Enabled default True;
     property ExtraTagParams;
     property FriendlyName;
+    property NonEditableAsLabel default False;
     property Required: Boolean read FRequired write SetRequired default False;
     property ScriptEvents;
     property SubmitOnAsyncEvent;
@@ -106,18 +111,61 @@ type
     property OnSubmit: TNotifyEvent read FOnSubmit write FOnSubmit;
   end;
 
+  TIWBSCustomTextInput = class(TIWBSCustomInput)
+  private
+    FPlaceHolder: string;
+    FTextAlignment: TIWBSTextAlignment;
+    FTextCase: TIWBSTextCase;
+  protected
+    procedure InitControl; override;
+  public
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
+  published
+    property BSTextAlignment: TIWBSTextAlignment read FTextAlignment write FTextAlignment default bstaDefault;
+    property BSTextCase: TIWBSTextCase read FTextCase write FTextCase default bstcDefault;
+    property MaxLength default 0;
+    property PlaceHolder: string read FPlaceHolder write FPlaceHolder;
+    property ReadOnly default False;
+    property Text;
+  end;
+
+  TIWBSCustomSelectInput = class(TIWBSCustomInput)
+  private
+    FItemIndex: integer;
+    FItems: TStrings;
+    FItemsHaveValues: boolean;
+  protected
+    procedure InitControl; override;
+    procedure CheckData; override;
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalSetValue(const AValue: string; var AFieldValue: string); override;
+    procedure SetItemIndex(AValue: integer);
+    procedure SetItems(AValue: TStrings);
+    procedure SetItemsHaveValues(AValue: boolean);
+  public
+    destructor Destroy; override;
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
+  published
+    property ItemIndex: integer read FItemIndex write SetItemIndex;
+    property Items: TStrings read FItems write SetItems;
+    property ItemsHaveValues: boolean read FItemsHaveValues write SetItemsHaveValues default False;
+  end;
+
 implementation
 
 uses
-  IWBaseForm, IWForm, IWMarkupLanguageTag, IWBSCommon;
+  IWBaseForm, IWForm, IWMarkupLanguageTag;
 
 var
   LFormatSettings: TFormatSettings;
 
+{$region 'TIWBSCustomInput'}
 procedure TIWBSCustomInput.InitControl;
 begin
   inherited;
   FAutoEditable := True;
+  FAutoFocus := False;
   FCaption := '';
   FDataLink := nil;
   FDataField := '';
@@ -133,7 +181,7 @@ begin
   FIsStatic := False;
   FSupportReadOnly := False;
 
-  Height := 21;
+  Height := 25;
   Width := 121;
 end;
 
@@ -302,12 +350,12 @@ begin
   xHTMLName := HTMLName;
   Result := nil;
   CheckData;
+  InternalRenderAsync(xHTMLName, AContext);
   SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
   SetAsyncReadOnly(AContext, xHTMLName, IsReadOnly, FOldReadOnly);
   SetAsyncDisabled(AContext, xHTMLName, IsDisabled, FOldDisabled);
   SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
   SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  InternalRenderAsync(xHTMLName, AContext);
 end;
 
 function TIWBSCustomInput.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -405,6 +453,119 @@ begin
   FStyle.Assign(AValue);
   Invalidate;
 end;
+{$endregion}
+
+{$region 'TIWBSCustomTextInput'}
+procedure TIWBSCustomTextInput.InitControl;
+begin
+  inherited;
+  FSupportReadOnly := True;
+  FTextAlignment := bstaDefault;
+  FTextCase := bstcDefault;
+end;
+
+procedure TIWBSCustomTextInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+begin
+  if FIsStatic then
+    SetAsyncHtml(AContext, AHTMLName, Text, FOldText)
+  else
+    SetAsyncText(AContext, AHTMLName, Text, FOldText);
+end;
+
+function TIWBSCustomTextInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
+begin
+  FIsStatic := not Editable and NonEditableAsLabel;
+  if FIsStatic then
+    Result := 'form-control-static'
+  else
+    Result := 'form-control';
+  if FTextAlignment <> bstaDefault then
+    Result := Result + ' ' + aIWBSTextAlignment[FTextAlignment];
+  if FTextCase <> bstcDefault then
+    Result := Result + ' ' + aIWBSTextCase[FTextCase];
+  if Css <> '' then
+    Result := Result + ' ' + Css;
+end;
+{$endregion}
+
+{$region 'TIWBSCustomSelectInput'}
+procedure TIWBSCustomSelectInput.InitControl;
+begin
+  inherited;
+  FItemIndex := -1;
+  FItems := TStringList.Create;
+  FItemsHaveValues := False;
+  FSupportReadOnly := False;
+end;
+
+destructor TIWBSCustomSelectInput.Destroy;
+begin
+  FItems.Free;
+  inherited;
+end;
+
+procedure TIWBSCustomSelectInput.CheckData;
+var
+  i: integer;
+begin
+  inherited;
+  if FItemsHaveValues then
+    begin
+      FItemIndex := -1;
+      for i := 0 to Items.Count-1 do
+        if AnsiSameText(Items.ValueFromIndex[i], Text) then begin
+          FItemIndex := i;
+          break;
+        end;
+    end
+  else
+    FItemIndex := Items.IndexOf(Text);
+  Text := IntToStr(FItemIndex);
+end;
+
+procedure TIWBSCustomSelectInput.SetItemIndex(AValue: integer);
+begin
+  FItemIndex := AValue;
+  Invalidate;
+end;
+
+procedure TIWBSCustomSelectInput.SetItems(AValue: TStrings);
+begin
+  FItems.Assign(AValue);
+  Invalidate;
+end;
+
+procedure TIWBSCustomSelectInput.SetItemsHaveValues(AValue: boolean);
+begin
+  FItemsHaveValues := AValue;
+  Invalidate;
+end;
+
+procedure TIWBSCustomSelectInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+begin
+  
+end;
+
+procedure TIWBSCustomSelectInput.InternalSetValue(const AValue: string; var AFieldValue: string);
+var
+  i: integer;
+begin
+  if TryStrToInt(AValue, i) and (i >= 0) and (i < Items.Count) then
+    if ItemsHaveValues then
+      AFieldValue := Items.ValueFromIndex[i]
+    else
+      AFieldValue := Items[i]
+  else
+    AFieldValue := '';
+end;
+
+function TIWBSCustomSelectInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
+begin
+  Result := 'form-control';
+  if Css <> '' then
+    Result := Result + ' ' + Css;
+end;
+{$endregion}
 
 initialization
   LFormatSettings := TFormatSettings.Create('en-US'); // locale de us

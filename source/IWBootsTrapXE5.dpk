@@ -49,7 +49,8 @@ contains
   IWBSRegionCommon in 'IWBSRegionCommon.pas',
   IWBSControls in 'IWBSControls.pas',
   IWBSCustomInput in 'IWBSCustomInput.pas',
-  IWBSInputCommon in 'IWBSInputCommon.pas';
+  IWBSInputCommon in 'IWBSInputCommon.pas',
+  IWBSButton in 'IWBSButton.pas';
 
 end.
 

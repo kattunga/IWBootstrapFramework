@@ -43,10 +43,13 @@ implementation
 
 uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
      IWBaseControl,
-     IWBSLayoutMgr, IWBSRegion, IWBSControls, IWBSInput, IWBSCustomInput, IWBSTabControl, IWBSCommon;
+     IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
+     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon;
 
 const
+  CNST_DEFAULTFONTNAME = 'Tahoma';
   CNST_GLYPHICONSFONT = 'GLYPHICONS Halflings';
+  CNST_PROPORTIONALFONT = 'Courier New';
 
 var
   slGlyphicons: TStringList;
@@ -99,7 +102,7 @@ var
 begin
   inherited;
   if Control is TIWBSCustomRegion then begin
-    ControlCanvas.Font.Name := 'Courier New';
+    ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
     ControlCanvas.Font.Color := clGray;
     s := TIWBSCustomRegion(Control).GetClassString;
     w := ControlCanvas.TextWidth(s);
@@ -110,29 +113,70 @@ end;
 
 procedure TIWBSPaintHandlerCustomInput.Paint;
 var
-  LRect : TRect;
-  s: string;
-  th: integer;
+  LRect, LCaret: TRect;
+  s, c: string;
+  LMultiLine: boolean;
 begin
+  LRect := Rect(0, 0, Control.Width, Control.Height);
+
   ControlCanvas.Brush.Color := clWhite;
   ControlCanvas.Pen.Color := clGray;
-  LRect := Rect(0, 0, Control.Width, Control.Height);
+  ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+  ControlCanvas.Font.Size := 10;
+  ControlCanvas.Font.Color := clBlack;
   ControlCanvas.Rectangle(LRect);
+
   Inc(LRect.Top, 2);
-  Inc(LRect.Left, 10);
+  Inc(LRect.Left, 2);
   Dec(LRect.Bottom, 2);
-  Dec(LRect.Right, 10);
+  Dec(LRect.Right, 2);
+  ControlCanvas.Pen.Color := clLtGray;
+  ControlCanvas.Rectangle(LRect);
+
   if Control is TIWBSCustomInput then begin
+    LMultiLine := False;
+
     s := TIWBSCustomInput(Control).DataField;
-    if s <> '' then
-      s := TIWBSCustomInput(Control).Text;
-    if Control is TIWBSInput then
+    if Control is TIWBSCustomTextInput then
       begin
-        th := ControlCanvas.TextHeight('X');
-        ControlCanvas.TextRect(LRect, LRect.Left, LRect.Top+(LRect.Height-th) div 2, s);
+        if s = '' then
+          s := TIWBSInput(Control).Text;
+        if s = '' then begin
+          s := TIWBSInput(Control).PlaceHolder;
+          ControlCanvas.Font.Color := clLtGray;
+        end;
+        if Control is TIWBSMemo then
+          LMultiLine := True;
       end
+    else if Control is TIWBSSelect then
+      begin
+        LMultiLine := TIWBSSelect(Control).Size <> 1;
+        if s = '' then
+          if LMultiLine then
+            s := TIWBSSelect(Control).Items.Text
+          else if TIWBSSelect(Control).Items.Count > 0 then
+            s := TIWBSSelect(Control).Items[0];
+        if not LMultiLine then begin
+          LCaret := Rect(LRect.Right-18,LRect.Top+1,LRect.Right-1,LRect.Bottom-1);
+          ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
+          ControlCanvas.Brush.Color := clLtGray;
+          ControlCanvas.Rectangle(LCaret);
+          c := Char(StrToInt(slGlyphicons.Values['chevron-down']));
+          DrawTextEx(ControlCanvas.Handle, PChar(c), 1, LCaret, DT_CENTER+DT_SINGLELINE+DT_VCENTER, nil);
+          ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+          ControlCanvas.Brush.Color := clWhite;
+          Dec(LRect.Right, 20);
+        end;
+      end;
+
+    Inc(LRect.Top, 1);
+    Inc(LRect.Left, 8);
+    Dec(LRect.Bottom, 1);
+    Dec(LRect.Right, 8);
+    if LMultiLine then
+      ControlCanvas.TextRect(LRect,s,[])
     else
-      ControlCanvas.TextRect(LRect,s,[]);
+      DrawTextEx(ControlCanvas.Handle, PChar(s), Length(s), LRect, DT_SINGLELINE+DT_VCENTER, nil);
   end;
 end;
 
@@ -203,7 +247,7 @@ begin
     Dec(LRect.Bottom);
     Dec(LRect.Right, 10);
 
-    ControlCanvas.Font.Name := 'Tahoma';
+    ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
     ControlCanvas.Font.Style := [fsBold];
     case TIWBSButton(Control).BSButtonSize of
       bsszLg: ControlCanvas.Font.Height := -18;
@@ -227,7 +271,7 @@ begin
     if (s = '') and (TIWBSButton(Control).BSButtonStyle = bsbsClose) then
       s := 'X';
     if s <> '' then begin
-      ControlCanvas.Font.Name := 'Tahoma';
+      ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
       ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Height-th) div 2, s);
     end;
   end;
@@ -276,13 +320,13 @@ begin
     Dec(LRect.Right, 5);
     Dec(LRect.Bottom, 5);
 
-    ControlCanvas.Font.Name := 'Courier New';
+    ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
     ControlCanvas.Font.Color := clGray;
     s := 'RadioGroup';
     w := ControlCanvas.TextWidth(s);
     ControlCanvas.TextRect(LRect,Control.ClientWidth-w-10, 5, s);
 
-    ControlCanvas.Font.Name := 'Tahoma';
+    ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
     ControlCanvas.Font.Color := clBlack;
     ControlCanvas.Font.Size := 10;
     s := TIWBSRadioGroup(Control).Items.Text;
@@ -305,17 +349,14 @@ begin
   UnlistPublishedProperty(TIWBSCustomInput, 'StyleRenderOptions');
 
   RegisterComponents('IW BootsTrap', [TIWBSInput]);
-
   RegisterComponents('IW BootsTrap', [TIWBSMemo]);
+
+  RegisterComponents('IW BootsTrap', [TIWBSSelect]);
 
   RegisterComponents('IW BootsTrap', [TIWBSCheckBox]);
   UnlistPublishedProperty(TIWBSCheckBox, 'Style');
 
   RegisterComponents('IW BootsTrap', [TIWBSRadioButton]);
-
-  RegisterComponents('IW BootsTrap', [TIWBSListBox]);
-
-  RegisterComponents('IW BootsTrap', [TIWBSComboBox]);
 
   RegisterComponents('IW BootsTrap', [TIWBSRadioGroup]);
 
@@ -349,10 +390,9 @@ initialization
 
   IWRegisterPaintHandler('TIWBSInput',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerCustomInput);
-  IWRegisterPaintHandler('TIWBSCheckBox',TIWPaintHandlerCheckBox);
+  IWRegisterPaintHandler('TIWBSCheckBox',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSRadioButton',TIWPaintHandlerRadioButton);
-  IWRegisterPaintHandler('TIWBSListBox',TIWPaintHandlerListBox);
-  IWRegisterPaintHandler('TIWBSComboBox',TIWPaintHandlerComboBox);
+  IWRegisterPaintHandler('TIWBSSelect',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSRadioGroup',TIWBSPaintHandlerRadioGroup);
 
   IWRegisterPaintHandler('TIWBSButton',TIWBSPaintHandlerButton);
@@ -379,8 +419,7 @@ finalization
   IWUnRegisterPaintHandler('TIWBSMemo');
   IWUnRegisterPaintHandler('TIWBSCheckBox');
   IWUnRegisterPaintHandler('TIWBSRadioButton');
-  IWUnRegisterPaintHandler('TIWBSListBox');
-  IWUnRegisterPaintHandler('TIWBSComboBox');
+  IWUnRegisterPaintHandler('TIWBSSelect');
   IWUnRegisterPaintHandler('TIWBSRadioGroup');
 
   IWUnRegisterPaintHandler('TIWBSButton');

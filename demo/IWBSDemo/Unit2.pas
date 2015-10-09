@@ -14,7 +14,7 @@ uses
   IWCompText, IWCompMemo, IWLayoutMgrForm, IWBSLayoutMgr,
   IWCompRadioButton, IWCompOrderedListbox, IWHTMLControls, IWCompListbox,
   IWCompGrids, Vcl.Imaging.jpeg, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
-  IWBSCustomInput;
+  IWBSCustomInput, IWBSButton;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -93,8 +93,6 @@ type
     IWBSInput2: TIWBSInput;
     IWBSInput3: TIWBSInput;
     IWBSMemo2: TIWBSMemo;
-    IWBSListbox2: TIWBSListbox;
-    IWBSComboBox2: TIWBSComboBox;
     IWBSButton20: TIWBSButton;
     IWBSInput7: TIWBSInput;
     IWBSInput14: TIWBSInput;
@@ -106,7 +104,6 @@ type
     IWBSInput20: TIWBSInput;
     IWBSInput21: TIWBSInput;
     IWBSInput22: TIWBSInput;
-    IWBSListbox3: TIWBSListbox;
     IWBSCheckBox4: TIWBSCheckBox;
     IWBSRegion1: TIWBSRegion;
     IWBSRadioButton6: TIWBSRadioButton;
@@ -166,6 +163,9 @@ type
     IWBSButton34: TIWBSButton;
     IWBSInput13: TIWBSInput;
     IWBSRadioGroup1: TIWBSRadioGroup;
+    IWBSComboBox2: TIWBSSelect;
+    IWBSListbox2: TIWBSSelect;
+    IWBSListbox3: TIWBSSelect;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);

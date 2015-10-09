@@ -43,7 +43,7 @@ object IWFrame3: TIWFrame3
         end
         object IWBSInput1: TIWBSInput
           Left = 24
-          Top = 68
+          Top = 64
           Width = 121
           Height = 21
           RenderSize = False
@@ -54,11 +54,11 @@ object IWFrame3: TIWFrame3
           StyleRenderOptions.RenderAbsolute = False
           StyleRenderOptions.RenderPadding = False
           StyleRenderOptions.RenderBorder = False
+          AutoFocus = True
+          Caption = 'Input'
           FriendlyName = 'IWBSInput1'
           SubmitOnAsyncEvent = True
           TabOrder = 0
-          AutoFocus = True
-          Caption = 'Input'
         end
       end
       object IWBSRegion3: TIWBSRegion

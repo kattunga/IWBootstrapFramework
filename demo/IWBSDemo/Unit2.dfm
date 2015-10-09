@@ -1487,8 +1487,8 @@ object IWForm2: TIWForm2
                 object IWBSInput1: TIWBSInput
                   Left = 12
                   Top = 35
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   ExtraTagParams.Strings = (
                     '')
                   Caption = 'Input Type Text'
@@ -1501,8 +1501,8 @@ object IWForm2: TIWForm2
                 object IWBSInput2: TIWBSInput
                   Left = 12
                   Top = 220
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Numer'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
@@ -1513,8 +1513,8 @@ object IWForm2: TIWForm2
                 object IWBSInput3: TIWBSInput
                   Left = 12
                   Top = 62
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Password'
                   FriendlyName = 'IWBSInput3'
                   Required = True
@@ -1525,7 +1525,7 @@ object IWForm2: TIWForm2
                 end
                 object IWBSMemo2: TIWBSMemo
                   Left = 14
-                  Top = 465
+                  Top = 447
                   Width = 433
                   Height = 121
                   Caption = 'This is a Memo'
@@ -1536,51 +1536,9 @@ object IWForm2: TIWForm2
                   BSTextCase = bstcUppercase
                   PlaceHolder = 'This is a text area with right align and uppercase'
                 end
-                object IWBSListbox2: TIWBSListbox
-                  Left = 14
-                  Top = 592
-                  Width = 121
-                  Height = 77
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  RequireSelection = False
-                  TabOrder = 42
-                  MaxItems = 0
-                  TrimValues = True
-                  FriendlyName = 'IWBSListbox1'
-                  Items.Strings = (
-                    'item 1'
-                    'item 2'
-                    'item 3'
-                    'item 4')
-                  ItemIndex = -1
-                  Caption = 'This is a ListBox with multi select'
-                  MultiSelect = True
-                  NoSelectionText = '-- No Selection --'
-                end
-                object IWBSComboBox2: TIWBSComboBox
-                  Left = 14
-                  Top = 772
-                  Width = 121
-                  Height = 21
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  TabOrder = 43
-                  FriendlyName = 'IWBSComboBox1'
-                  ItemIndex = -1
-                  Items.Strings = (
-                    'item 1'
-                    'item 2'
-                    'item 3'
-                    'item 4')
-                  Caption = 'This is a ComboBox'
-                  NoSelectionText = '-- No Selection --'
-                end
                 object IWBSButton20: TIWBSButton
-                  Left = 11
-                  Top = 3
+                  Left = 12
+                  Top = 4
                   Width = 326
                   Height = 25
                   RenderSize = False
@@ -1598,8 +1556,8 @@ object IWForm2: TIWForm2
                 object IWBSInput7: TIWBSInput
                   Left = 12
                   Top = 113
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Date'
                   FriendlyName = 'IWBSInput3'
                   Required = True
@@ -1611,8 +1569,8 @@ object IWForm2: TIWForm2
                 object IWBSInput14: TIWBSInput
                   Left = 12
                   Top = 89
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type DateTimeLocal'
                   FriendlyName = 'IWBSInput3'
                   Required = True
@@ -1624,8 +1582,8 @@ object IWForm2: TIWForm2
                 object IWBSInput15: TIWBSInput
                   Left = 12
                   Top = 139
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Month'
                   FriendlyName = 'IWBSInput3'
                   Required = True
@@ -1637,8 +1595,8 @@ object IWForm2: TIWForm2
                 object IWBSInput16: TIWBSInput
                   Left = 12
                   Top = 166
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Time'
                   FriendlyName = 'IWBSInput3'
                   Required = True
@@ -1650,8 +1608,8 @@ object IWForm2: TIWForm2
                 object IWBSInput17: TIWBSInput
                   Left = 12
                   Top = 193
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Week'
                   FriendlyName = 'IWBSInput3'
                   Required = True
@@ -1663,8 +1621,8 @@ object IWForm2: TIWForm2
                 object IWBSInput18: TIWBSInput
                   Left = 12
                   Top = 244
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Email'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
@@ -1675,8 +1633,8 @@ object IWForm2: TIWForm2
                 object IWBSInput19: TIWBSInput
                   Left = 12
                   Top = 270
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Url'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
@@ -1687,8 +1645,8 @@ object IWForm2: TIWForm2
                 object IWBSInput20: TIWBSInput
                   Left = 12
                   Top = 297
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Search'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
@@ -1699,8 +1657,8 @@ object IWForm2: TIWForm2
                 object IWBSInput21: TIWBSInput
                   Left = 12
                   Top = 324
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Tel'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
@@ -1711,36 +1669,14 @@ object IWForm2: TIWForm2
                 object IWBSInput22: TIWBSInput
                   Left = 12
                   Top = 351
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input Type Color'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
                   TabOrder = 54
                   PlaceHolder = 'Pick a Color'
                   BSInputType = bsitColor
-                end
-                object IWBSListbox3: TIWBSListbox
-                  Left = 14
-                  Top = 683
-                  Width = 121
-                  Height = 77
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  RequireSelection = False
-                  TabOrder = 55
-                  MaxItems = 0
-                  TrimValues = True
-                  FriendlyName = 'IWBSListbox1'
-                  Items.Strings = (
-                    'item 1'
-                    'item 2'
-                    'item 3'
-                    'item 4')
-                  ItemIndex = -1
-                  Caption = 'This is a Regular ListBox'
-                  NoSelectionText = '-- No Selection --'
                 end
                 object IWBSCheckBox4: TIWBSCheckBox
                   Left = 12
@@ -1762,15 +1698,16 @@ object IWForm2: TIWForm2
                 object IWBSInput13: TIWBSInput
                   Left = 12
                   Top = 381
-                  Width = 121
-                  Height = 21
+                  Width = 201
+                  Height = 25
                   Caption = 'Input NonEditableAsLabel'
+                  Editable = False
                   FriendlyName = 'IWBSInput2'
+                  NonEditableAsLabel = True
                   SubmitOnAsyncEvent = True
                   TabOrder = 76
                   PlaceHolder = 'Pick a Color'
                   Text = 'This is a static text'
-                  BSInputType = bsitColor
                 end
                 object IWBSRadioGroup1: TIWBSRadioGroup
                   Left = 15
@@ -1791,6 +1728,59 @@ object IWForm2: TIWForm2
                     'item 4')
                   TabOrder = -1
                   Caption = 'This is a radio group'
+                end
+                object IWBSComboBox2: TIWBSSelect
+                  Left = 14
+                  Top = 764
+                  Width = 291
+                  Height = 25
+                  Caption = 'This is a ComboBox'
+                  FriendlyName = 'IWBSComboBox1'
+                  SubmitOnAsyncEvent = True
+                  Style.Strings = (
+                    'stNormal')
+                  TabOrder = 43
+                  ItemIndex = -1
+                  Items.Strings = (
+                    'item 1'
+                    'item 2'
+                    'item 3'
+                    'item 4')
+                end
+                object IWBSListbox2: TIWBSSelect
+                  Left = 14
+                  Top = 584
+                  Width = 291
+                  Height = 77
+                  Caption = 'This is a ListBox with multi select'
+                  FriendlyName = 'IWBSListbox1'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 42
+                  ItemIndex = -1
+                  Items.Strings = (
+                    'item 1'
+                    'item 2'
+                    'item 3'
+                    'item 4')
+                  MultiSelect = True
+                  Size = 0
+                end
+                object IWBSListbox3: TIWBSSelect
+                  Left = 14
+                  Top = 675
+                  Width = 291
+                  Height = 77
+                  Caption = 'This is a ListBox with single select'
+                  FriendlyName = 'IWBSListbox1'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 55
+                  ItemIndex = -1
+                  Items.Strings = (
+                    'item 1'
+                    'item 2'
+                    'item 3'
+                    'item 4')
+                  Size = 0
                 end
                 object IWBSRegion1: TIWBSRegion
                   Left = 15

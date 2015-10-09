@@ -3,33 +3,12 @@ unit IWBSInput;
 interface
 
 uses
-  System.SysUtils, System.Classes, IWScriptEvents, data.db, System.StrUtils,
-  IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseHTMLControl, IWBaseInterfaces, IWControl,
-  IWCompEdit, IWCompMemo, IWCompCheckBox, IWCompRadioButton, IWCompListbox, IWCompButton, IWDBStdCtrls, IWDBExtCtrls,
+  System.SysUtils, System.Classes, data.db, System.StrUtils, Vcl.Controls,
+  IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseHTMLControl, IWBaseInterfaces,
+  IWCompCheckBox, IWCompRadioButton, IWCompButton, IWDBStdCtrls, IWDBExtCtrls,
   IWBSRegion, IWBSCommon, IWBSCustomInput;
 
 type
-
-  TIWBSCustomTextInput = class(TIWBSCustomInput)
-  private
-    FAutoFocus: boolean;
-    FPlaceHolder: string;
-    FTextAlignment: TIWBSTextAlignment;
-    FTextCase: TIWBSTextCase;
-  protected
-    procedure InitControl; override;
-  public
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-  published
-    property AutoFocus: boolean read FAutoFocus write FAutoFocus default False;
-    property BSTextAlignment: TIWBSTextAlignment read FTextAlignment write FTextAlignment default bstaDefault;
-    property BSTextCase: TIWBSTextCase read FTextCase write FTextCase default bstcDefault;
-    property MaxLength default 0;
-    property PlaceHolder: string read FPlaceHolder write FPlaceHolder;
-    property ReadOnly default False;
-    property Text;
-  end;
 
   TIWBSInput = class(TIWBSCustomTextInput)
   protected
@@ -44,44 +23,34 @@ type
     FRows: integer;
   protected
     procedure InitControl; override;
-    procedure CheckData; override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure InternalRenderStyle(AStyle: TStrings); override;
     procedure SetLines(const AValue: TStrings);
   public
     destructor Destroy; override;
+    procedure SetText(const AValue: TCaption); override;
   published
     property Lines: TStrings read FLines write SetLines;
     property Rows: integer read FRows write FRows default 5;
   end;
 
-  TIWBSCheckBox = class(TIWDBCheckBox, IIWAutoEditableControl)
+  TIWBSCheckBox = class(TIWBSCustomTextInput)
   private
-    FAutoFocus: boolean;
-
-    FMainID: string;
-    FOldVisible: boolean;
-    FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
-    FOldChecked: boolean;
+    FChecked: boolean;
+    FValueChecked: string;
+    FValueUnchecked: string;
   protected
     procedure InitControl; override;
     procedure CheckData; override;
-    procedure EditingChanged;
-    procedure SetValue(const AValue: string; out AValueChanged: Boolean); override;
+//    procedure SetValue(const AValue: string; out AValueChanged: Boolean); override;
   public
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
+    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
   published
-    property AutoFocus: boolean read FAutoFocus write FAutoFocus default false;
-    property AutoEditable default True;
-    property Checked;
-    property Confirmation;
-    property Enabled;
-    property Editable default True;
+    property Checked: boolean read FChecked write FChecked default False;
+    property ValueChecked: string read FValueChecked write FValueChecked;
+    property ValueUnchecked: string read FValueUnchecked write FValueUnchecked;
   end;
 
   TIWBSRadioButton = class(TIWRadioButton)
@@ -106,59 +75,18 @@ type
     property Editable default True;
   end;
 
-  TIWBSListbox = class(TIWDBListBox, IIWAutoEditableControl)
+  TIWBSSelect = class(TIWBSCustomSelectInput)
   private
-    FAutoFocus: boolean;
-    FCaption: string;
-
-    FMainID: string;
-    FOldVisible: boolean;
-    FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
-    FOldItemIndex: integer;
+    FMultiSelect: boolean;
+    FSize: integer;
   protected
     procedure InitControl; override;
-    procedure CheckData; override;
-    procedure EditingChanged;
-  public
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure SetSize(AValue: integer);
   published
-    property AutoEditable default True;
-    property AutoFocus: boolean read FAutoFocus write FAutoFocus default false;
-    property Caption: string read FCaption write FCaption;
-    property Editable default True;
-    property MultiSelect;
-  end;
-
-  TIWBSComboBox = class(TIWDBComboBox, IIWAutoEditableControl)
-  private
-    FAutoFocus: boolean;
-    FCaption: string;
-
-    FMainID: string;
-    FOldVisible: boolean;
-    FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
-    FOldItemIndex: integer;
-  protected
-    procedure InitControl; override;
-    procedure CheckData; override;
-    procedure EditingChanged;
-  public
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
-  published
-    property AutoEditable default True;
-    property AutoFocus: boolean read FAutoFocus write FAutoFocus default false;
-    property Caption: string read FCaption write FCaption;
-    property Editable default True;
+    property MultiSelect: boolean read FMultiSelect write FMultiSelect default False;
+    property Size: integer read FSize write SetSize default 1;
   end;
 
   TIWBSRadioGroup = class(TIWDBRadioGroup, IIWAutoEditableControl)
@@ -190,80 +118,10 @@ type
     property Enabled default True;
   end;
 
-  TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink, bsbsClose);
-  TIWBSButtonDataDismiss = (bsbdNone, bsbdModal, bsbdAlert);
-
-  TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
-
-  TIWBSButton = class(TIWButton)
-  private
-    FDataDismiss: TIWBSButtonDataDismiss;
-    FButtonSize: TIWBSSize;
-    FButtonStyle: TIWBSButtonStyle;
-    FGlyphicon: string;
-    FAsyncClickProc: TIWBSAsyncClickProc;
-
-    FMainID: string;
-    FOldVisible: boolean;
-    FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
-
-    procedure DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
-    procedure SetAsyncClickProc(Value: TIWBSAsyncClickProc);
-    procedure SetGlyphicon(const Value: string);
-  public
-    constructor Create(AOwner: TComponent); override;
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
-    property AsyncClickProc: TIWBSAsyncClickProc read FAsyncClickProc write SetAsyncClickProc;
-  published
-    property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
-    property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write FButtonStyle default bsbsDefault;
-    property BSDataDismiss: TIWBSButtonDataDismiss read FDataDismiss write FDataDismiss default bsbdNone;
-    property BSGlyphicon: string read FGlyphicon write SetGlyphicon;
-  end;
-
 implementation
 
-uses IWColor, IWDBCommon, IWMarkupLanguageTag, IW.Common.System, Graphics,
+uses IWDBCommon, IWMarkupLanguageTag, IW.Common.System,
      IWBSRegionCommon, IWBSUtils, IWBSInputCommon;
-
-{$region 'TIWBSCustomTextInput'}
-procedure TIWBSCustomTextInput.InitControl;
-begin
-  inherited;
-  FAutoFocus := False;
-  FSupportReadOnly := True;
-  FTextAlignment := bstaDefault;
-  FTextCase := bstcDefault;
-end;
-
-procedure TIWBSCustomTextInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
-begin
-  if FIsStatic then
-    SetAsyncHtml(AContext, AHTMLName, Text, FOldText)
-  else
-    SetAsyncText(AContext, AHTMLName, Text, FOldText);
-end;
-
-function TIWBSCustomTextInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  FIsStatic := not Editable and NonEditableAsLabel;
-  if FIsStatic then
-    Result := 'form-control-static'
-  else
-    Result := 'form-control';
-  if FTextAlignment <> bstaDefault then
-    Result := Result + ' ' + aIWBSTextAlignment[FTextAlignment];
-  if FTextCase <> bstcDefault then
-    Result := Result + ' ' + aIWBSTextCase[FTextCase];
-  if Css <> '' then
-    Result := Result + ' ' + Css;
-end;
-{$endregion}
 
 {$region 'TIWBSInput'}
 function TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
@@ -293,7 +151,7 @@ begin
           Result.AddStringParam('data-toggle', 'tooltip');
           Result.AddStringParam('title', Hint);
         end;
-        if FAutoFocus then
+        if AutoFocus then
           Result.Add('autofocus');
         if IsReadOnly then
           Result.Add('readonly');
@@ -304,8 +162,8 @@ begin
         Result.AddStringParam('value', TextToHTML(Text));
         if Required then
           Result.Add('required');
-        if FPlaceHolder <> '' then
-          Result.AddStringParam('placeholder', TextToHTML(FPlaceHolder));
+        if PlaceHolder <> '' then
+          Result.AddStringParam('placeholder', TextToHTML(PlaceHolder));
         Result.AddStringParam('style', FOldStyle);
       except
         FreeAndNil(Result);
@@ -314,7 +172,7 @@ begin
     end;
 
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
+    Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
 end;
 {$endregion}
 
@@ -334,7 +192,7 @@ begin
   inherited;
 end;
 
-procedure TIWBSMemo.CheckData;
+procedure TIWBSMemo.SetText(const AValue: TCaption);
 begin
   inherited;
   FLines.Text := Text;
@@ -357,7 +215,7 @@ begin
       Result.AddStringParam('data-toggle', 'tooltip');
       Result.AddStringParam('title', Hint);
     end;
-    if FAutoFocus then
+    if AutoFocus then
       Result.Add('autofocus');
     if IsReadOnly then
       Result.Add('readonly');
@@ -367,8 +225,8 @@ begin
       Result.AddIntegerParam('maxlength', MaxLength);
     if Required then
       Result.Add('required');
-    if FPlaceHolder <> '' then
-      Result.AddStringParam('placeholder', TextToHTML(FPlaceHolder));
+    if PlaceHolder <> '' then
+      Result.AddStringParam('placeholder', TextToHTML(PlaceHolder));
     Result.AddIntegerParam('rows', FRows);
     Result.AddStringParam('style', FOldStyle);
     Result.Contents.AddText(TextToHTML(Text,false,false));
@@ -378,7 +236,7 @@ begin
   end;
 
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Self, Parent, Result, Caption, HTMLName);
+    Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, HTMLName);
 end;
 
 procedure TIWBSMemo.InternalRenderStyle(AStyle: TStrings);
@@ -398,44 +256,25 @@ end;
 procedure TIWBSCheckBox.InitControl;
 begin
   inherited;
-  AutoEditable := True;
-  FAutoFocus := False;
+  FChecked := False;
+  FValueChecked := 'true';
+  FValueUnchecked := 'true';
 end;
 
 procedure TIWBSCheckBox.CheckData;
 begin
-  if DataSource <> nil then
-    inherited;
-end;
-
-procedure TIWBSCheckBox.EditingChanged;
-begin
-  if AutoEditable then
-    if CheckDataSource(FDataSource) then
-      Enabled := InEditMode(FDataSource.Dataset) and FieldIsEditable(FDataSource, FDataField)
-    else
-      Enabled := False;
-end;
-
-procedure TIWBSCheckBox.SetValue(const AValue: string; out AValueChanged: Boolean);
-begin
-  FOldChecked := SameText(AValue, 'On');
   inherited;
 end;
-
-function TIWBSCheckBox.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
+{
+procedure TIWBSCheckBox.SetValue(const AValue: string; out AValueChanged: Boolean);
 begin
-  xHTMLName := HTMLName+ '_CHECKBOX';
-  Result := nil;
-
-  CheckData;
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  SetAsyncChecked(AContext, xHTMLName, Checked, FOldChecked);
+  FChecked := SameText(AValue, 'On');
+  inherited;
+end;
+}
+procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+begin
+  inherited;
 end;
 
 function TIWBSCheckBox.RenderCSSClass(AComponentContext: TIWCompContext): string;
@@ -443,29 +282,20 @@ begin
   Result := Css;
 end;
 
-function TIWBSCheckBox.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
-var
-  xHTMLName: string;
+function TIWBSCheckBox.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 begin
-  xHTMLName := HTMLName;
-
-  CheckData;
-  FOldVisible := Visible;
-  FOldDisabled := not (Enabled and Editable);
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
-  FOldChecked := Checked;
+ // FOldChecked := Checked;
 
   Result := TIWHTMLTag.CreateTag('span');
   try
-    Result.AddStringParam('id', xHTMLName);
+    Result.AddStringParam('id', AHTMLName);
     with Result.Contents.AddTag('input') do begin
       AddClassParam(FOldCss);
       if TabOrderInterface(Self).HasTabOrder then
         AddStringParam('tabindex', IntToStr(TabOrderInterface(Self).RealTabOrder + 1));
       AddStringParam('type', 'checkbox');
-      AddStringParam('id', xHTMLName + '_CHECKBOX');
-      AddStringParam('name', xHTMLName + '_CHECKBOX');
+      AddStringParam('id', AHTMLName + '_CHECKBOX');
+      AddStringParam('name', AHTMLName + '_CHECKBOX');
       if FOldDisabled then
         Add('disabled');
       if Checked then
@@ -480,15 +310,7 @@ begin
   if Parent is TIWBSInputGroup then
     Result := IWBSCreateInputGroupAddOn(Result, 'addon')
   else
-    Result := CreateCheckBoxFormGroup(Parent, Result, 'checkbox', Caption, Hint, xHTMLName, ShowHint);
-
-  // save id of final container to set visibility
-  FMainID := Result.Params.Values['id'];
-end;
-
-function TIWBSCheckBox.RenderStyle(AContext: TIWCompContext): string;
-begin
-  Result := '';
+    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, 'checkbox', Caption, Hint, AHTMLName, ShowHint);
 end;
 {$endregion}
 
@@ -551,7 +373,7 @@ begin
   if Parent is TIWBSInputGroup then
     Result := IWBSCreateInputGroupAddOn(Result, 'addon')
   else
-    Result := CreateCheckBoxFormGroup(Parent, Result, 'radio', Caption, Hint, xHTMLName, ShowHint);
+    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, 'radio', Caption, Hint, xHTMLName, ShowHint);
 
   // save id of final container to set visibility
   FMainID := Result.Params.Values['id'];
@@ -563,174 +385,65 @@ begin
 end;
 {$endregion}
 
-{$region 'TIWBSListbox'}
-procedure TIWBSListbox.InitControl;
+{$region 'TIWBSSelect'}
+procedure TIWBSSelect.InitControl;
 begin
   inherited;
-  AutoEditable := True;
-  FAutoFocus := False;
-  FCaption := '';
+  FMultiSelect := False;
+  FSize := 1;
 end;
 
-procedure TIWBSListbox.CheckData;
+procedure  TIWBSSelect.SetSize(AValue: integer);
 begin
-  if DataSource <> nil then
-    inherited;
+  FSize := AValue;
+  Invalidate;
 end;
 
-procedure TIWBSListbox.EditingChanged;
+procedure TIWBSSelect.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
-  if AutoEditable then
-    if CheckDataSource(FDataSource) then
-      Enabled := InEditMode(FDataSource.Dataset) and FieldIsEditable(FDataSource, FDataField)
-    else
-      Enabled := False;
-end;
-
-function TIWBSListbox.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName;
-  Result := nil;
-
-  CheckData;
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  if (ItemIndex <> FOldItemIndex) then begin
+  if (Text <> FOldText) then begin
     if ItemIndex >= 0 then
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+xHTMLName+' option:eq('+IntToStr(ItemIndex)+')").prop("selected", true);')
+      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+' option:eq('+IntToStr(ItemIndex)+')").prop("selected", true);')
     else
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+xHTMLName+' option").prop("selected", false);');
-    FOldItemIndex := ItemIndex;
+      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+' option").prop("selected", false);');
+    FOldText := Text;
   end;
 end;
 
-function TIWBSListbox.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  Result := 'form-control';
-  if Css <> '' then
-    Result := Result + Css;
-end;
-
-function TIWBSListbox.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+function TIWBSSelect.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 var
-  xHTMLName: string;
+  i: Integer;
 begin
-  xHTMLName := HTMLName;
+  Result := TIWHTMLTag.CreateTag('select');
+  try
+    Result.AddStringParam('id', AHTMLName);
+    Result.AddClassParam(FOldCss);
+    Result.AddStringParam('name', AHTMLName);
+    if FSize > 0 then
+      Result.AddIntegerParam('size', FSize)
+    else
+      Result.AddIntegerParam('size', Items.Count);
+    if FMultiSelect then
+      Result.Add('multiple');
+    if IsDisabled then
+      Result.Add('disabled');
+    if AutoFocus then
+      Result.Add('autofocus');
+    for i := 0 to Items.Count - 1 do begin
+      with Result.Contents.AddTag('option') do begin
+        AddStringParam('value', IntToStr(i));
+        if i = ItemIndex then
+          Add('selected');
+        Contents.AddText(TextToHTML(iif(ItemsHaveValues, Items.Names[i], Items[i]), false, true));
+      end;
+    end;
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
 
-  CheckData;
-  FOldVisible := Visible;
-  FOldDisabled := not (Enabled and Editable);
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
-  FOldItemIndex := ItemIndex;
-
-  Result := inherited;
-  Result.AddStringParam('id', xHTMLName);
-  Result.AddClassParam(FOldCss);
-  if FAutoFocus then
-    Result.Add('autofocus');
   if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
-
-  // save id of final container to set visibility
-  FMainID := Result.Params.Values['id'];
-end;
-
-function TIWBSListbox.RenderStyle(AContext: TIWCompContext): string;
-begin
-  Result := '';
-end;
-{$endregion}
-
-{$region 'TIWBSComboBox'}
-procedure TIWBSComboBox.InitControl;
-begin
-  inherited;
-  AutoEditable := True;
-  FAutoFocus := False;
-  FCaption := '';
-end;
-
-procedure TIWBSComboBox.CheckData;
-begin
-  if DataSource <> nil then begin
-    inherited;
-    if CheckDataSource(FDataSource) then
-      Enabled := InEditMode(FDataSource.Dataset) and FieldIsEditable(FDataSource, FDataField)
-    else
-      Enabled := False;
-  end;
-end;
-
-procedure TIWBSComboBox.EditingChanged;
-begin
-  if AutoEditable then
-    if CheckDataSource(FDataSource) then
-      Enabled := InEditMode(FDataSource.Dataset) and FieldIsEditable(FDataSource, FDataField)
-    else
-      Enabled := False;
-end;
-
-function TIWBSComboBox.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName;
-  Result := nil;
-
-  CheckData;
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  if (ItemIndex <> FOldItemIndex) then begin
-    if ItemIndex >= 0 then
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+xHTMLName+' option:eq('+IntToStr(ItemIndex)+')").prop("selected", true);')
-    else
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+xHTMLName+' option").prop("selected", false);');
-    FOldItemIndex := ItemIndex;
-  end;
-end;
-
-function TIWBSComboBox.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  Result := 'form-control';
-  if Css <> '' then
-    Result := Result + Css;
-end;
-
-function TIWBSComboBox.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName;
-
-  CheckData;
-  FOldVisible := Visible;
-  FOldDisabled := not (Enabled and Editable);
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
-  FOldItemIndex := ItemIndex;
-
-  Result := inherited;
-  Result.AddStringParam('id', xHTMLName);
-  Result.AddClassParam(FOldCss);
-  if FAutoFocus then
-    Result.Add('autofocus');
-  if not (Parent is TIWBSInputGroup) then
-    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
-
-  // save id of final container to set visibility
-  FMainID := Result.Params.Values['id'];
-end;
-
-function TIWBSComboBox.RenderStyle(AContext: TIWCompContext): string;
-begin
-  Result := '';
+    Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
 end;
 {$endregion}
 
@@ -856,7 +569,7 @@ begin
   if Parent is TIWBSInputGroup then
     Result := IWBSCreateInputGroupAddOn(Result, 'addon')
   else
-    Result := CreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
+    Result := IWBSCreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
 
   // save id of final container to set visibility
   FMainID := Result.Params.Values['id'];
@@ -865,131 +578,6 @@ end;
 function TIWBSRadioGroup.RenderStyle(AContext: TIWCompContext): string;
 begin
   Result := '';
-end;
-{$endregion}
-
-{$region 'TIWBSButton'}
-constructor TIWBSButton.Create(AOwner: TComponent);
-begin
-  inherited;
-  FButtonSize := bsszDefault;
-  FButtonStyle := bsbsDefault;
-  FDataDismiss := bsbdNone;
-  FGlyphicon := '';
-end;
-
-function TIWBSButton.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName;
-  Result := nil;
-
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-end;
-
-function TIWBSButton.RenderCSSClass(AComponentContext: TIWCompContext): string;
-const
-  aIWBSButtonStyle: array[bsbsDefault..bsbsClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
-begin
-  Result := 'btn';
-  if FButtonSize <> bsszDefault then
-    Result := Result + ' btn-'+aIWBSSize[FButtonSize];
-  Result := Result + ' ' + aIWBSButtonStyle[FButtonStyle];
-  if Css <> '' then
-    Result := Result + ' ' + Css;
-end;
-
-function TIWBSButton.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
-const
-  aIWBSButtonDataDismiss: array[bsbdNone..bsbdAlert] of string = ('', 'modal', 'alert');
-var
-  xHTMLName: string;
-  s: string;
-  gspan: TIWHTMLTag;
-begin
-  xHTMLName := HTMLName;
-
-  FOldVisible := Visible;
-  FOldDisabled := not (Enabled and Editable);
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
-
-  Result := TIWHTMLTag.CreateTag('button');
-  try
-    Result.AddStringParam('id', xHTMLName);
-    Result.AddClassParam(FOldCss);
-    if FDataDismiss <> bsbdNone then
-      Result.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
-    Result.AddStringParam('type', 'button');
-    if ShowHint and (Hint <> '') then begin
-      Result.AddStringParam('data-toggle', 'tooltip');
-      Result.AddStringParam('title', Hint);
-    end;
-    if FOldDisabled then
-      Result.Add('disabled');
-    s := TextToHTML(Caption);
-    if HotKey <> '' then begin
-      Result.AddStringParam('accesskey', HotKey);
-      s := StringReplace(s, FHotKey, '<u>' + FHotKey + '</u>', [rfIgnoreCase]);
-    end;
-    if FButtonStyle = bsbsClose then
-      Result.AddStringParam('aria-label', 'Close');
-    Result.AddStringParam('style', FOldStyle);
-
-    if FGlyphicon <> '' then begin
-      gspan := Result.Contents.AddTag('span');
-      gspan.AddClassParam('glyphicon glyphicon-'+FGlyphicon);
-      gspan.AddBoolParam('aria-hidden',true);
-      s := ' '+s;
-    end;
-
-    // caption after glyphicon
-    if (FButtonStyle = bsbsClose) and (s = '') and (FGlyphicon = '') then
-      Result.Contents.AddText('&times;')
-    else
-      Result.Contents.AddText(s);
-  except
-    FreeAndNil(Result);
-    raise;
-  end;
-
-  if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, 'btn')
-  else
-    Result := CreateFormGroup(Parent, IWBSFindParentInputForm(Parent), Result, xHTMLName, True);
-
-  // save id of final container to set visibility
-  FMainID := Result.Params.Values['id'];
-end;
-
-function TIWBSButton.RenderStyle(AContext: TIWCompContext): string;
-begin
-  Result := '';
-  if (WebFont.Enabled) then
-    Result := Result + WebFont.FontToStringStyle+';';
-  if toTColor(WebColor) <> clBtnFace then
-    Result := Result + RenderBGColor(WebColor)+';';
-end;
-
-procedure TIWBSButton.DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
-begin
-  FAsyncClickProc(EventParams);
-end;
-
-procedure TIWBSButton.SetAsyncClickProc(Value: TIWBSAsyncClickProc);
-begin
-  FAsyncClickProc := Value;
-  OnAsyncClick := DoAsyncClickProc
-end;
-
-procedure TIWBSButton.SetGlyphicon(const Value: string);
-begin
-  FGlyphicon := Value;
-  Invalidate;
 end;
 {$endregion}
 

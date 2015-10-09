@@ -7,7 +7,7 @@ uses
   IWVCLBaseContainer, IWColor, IWContainer, IWRegion, IWCompButton, IWBSInput,
   IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl, IWControl, IWCompEdit,
   IWBSRegion, IWHTMLContainer, IWHTML40Container, IWVCLComponent,
-  IWBSCustomInput;
+  IWBSCustomInput, IWBSButton;
 
 type
   TIWFrame1 = class(TFrame)

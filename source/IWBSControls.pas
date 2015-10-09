@@ -98,7 +98,7 @@ type
 
 implementation
 
-uses IWBSInput, IWBSRegion, IWBSUtils, IWBSCommon;
+uses IWBSInput, IWBSRegion, IWBSInputCommon, IWBSCommon;
 
 {$region 'TIWBSLabel'}
 procedure TIWBSLabel.InitControl;

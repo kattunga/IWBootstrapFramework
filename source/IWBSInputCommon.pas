@@ -5,16 +5,17 @@ interface
 uses System.Classes, System.SysUtils, System.SyncObjs, Vcl.Controls, IWVCLBaseControl, IWBSRegion,
      IWRenderContext, IWHTMLTag;
 
-function CreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: TIWHTMLTag; const AHTMLName: string; ASpanDiv: boolean): TIWHTMLTag;
-function CreateInputFormGroup(AControl, AParent: TControl; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
-function CreateCheckBoxFormGroup(AParent: TControl; ATag: TIWHTMLTag; const ACss, ACaption, AHint, AHTMLName: string; AShowHint: boolean): TIWHTMLTag;
+function IWBSCreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: TIWHTMLTag; const AHTMLName: string; ASpanDiv: boolean): TIWHTMLTag;
+function IWBSCreateInputFormGroup(AControl, AParent: TControl; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
+function IWBSCreateCheckBoxFormGroup(AParent: TControl; ATag: TIWHTMLTag; const ACss, ACaption, AHint, AHTMLName: string; AShowHint: boolean): TIWHTMLTag;
+function IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
 
 implementation
 
 uses IWBSRegionCommon, IWBaseHTMLControl;
 
 {$region 'FormGroup functions'}
-function CreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: TIWHTMLTag; const AHTMLName: string; ASpanDiv: boolean): TIWHTMLTag;
+function IWBSCreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: TIWHTMLTag; const AHTMLName: string; ASpanDiv: boolean): TIWHTMLTag;
 var
   LSpanDiv: TIWHTMLTag;
 begin
@@ -37,7 +38,7 @@ begin
     Result := ATag;
 end;
 
-function CreateInputFormGroup(AControl, AParent: TControl; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
+function IWBSCreateInputFormGroup(AControl, AParent: TControl; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
 var
   lablTag, editTag: TIWHTMLTag;
   ParentForm: TIWBSInputForm;
@@ -70,10 +71,10 @@ begin
       end;
     end
   else
-    Result := CreateFormGroup(AParent, ParentForm, ATag, AHTMLName, True);
+    Result := IWBSCreateFormGroup(AParent, ParentForm, ATag, AHTMLName, True);
 end;
 
-function CreateCheckBoxFormGroup(AParent: TControl; ATag: TIWHTMLTag; const ACss, ACaption, AHint, AHTMLName: string; AShowHint: boolean): TIWHTMLTag;
+function IWBSCreateCheckBoxFormGroup(AParent: TControl; ATag: TIWHTMLTag; const ACss, ACaption, AHint, AHTMLName: string; AShowHint: boolean): TIWHTMLTag;
 var
   lablTag: TIWHTMLTag;
   ParentForm: TIWBSInputForm;
@@ -97,7 +98,22 @@ begin
     lablTag.Contents.AddTagAsObject(ATag);
     lablTag.Contents.AddText(TIWBaseHTMLControl.TextToHTML(ACaption));
 
-    Result := CreateFormGroup(AParent, ParentForm, Result, AHTMLName, False);
+    Result := IWBSCreateFormGroup(AParent, ParentForm, Result, AHTMLName, False);
+  except
+    FreeAndNil(Result);
+    FreeAndNil(ATag);
+    raise;
+  end;
+end;
+{$endregion}
+
+{$region 'InputGroup functions'}
+function IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
+begin
+  Result := TIWHTMLTag.CreateTag('span');
+  try
+    Result.AddClassParam('input-group-'+css);
+    Result.Contents.AddTagAsObject(ATag);
   except
     FreeAndNil(Result);
     FreeAndNil(ATag);

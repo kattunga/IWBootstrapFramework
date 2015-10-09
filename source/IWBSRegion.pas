@@ -511,7 +511,7 @@ function TIWBSInputGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result.AddClassParam(GetClassString);
-  Result := CreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
+  Result := IWBSCreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
 end;
 
 function TIWBSInputGroup.RenderStyle(AContext: TIWCompContext): string;
