@@ -22,6 +22,11 @@ type
     procedure Paint; override;
   end;
 
+  TIWBSPaintHandlerCustomCheck = class (TIWPaintHandlerRectangle)
+  public
+    procedure Paint; override;
+  end;
+
   TIWBSPaintHandlerButton = class (TIWPaintHandlerButton)
   public
     procedure Paint; override;
@@ -32,7 +37,7 @@ type
     procedure Paint; override;
   end;
 
-  TIWBSPaintHandlerRadioGroup = class (TIWPaintHandlerRegion)
+  TIWBSPaintHandlerRadioGroup = class (TIWPaintHandlerRectangle)
   public
     procedure Paint; override;
   end;
@@ -113,7 +118,7 @@ end;
 
 procedure TIWBSPaintHandlerCustomInput.Paint;
 var
-  LRect, LCaret: TRect;
+  LRect, LIcon: TRect;
   s, c: string;
   LMultiLine: boolean;
 begin
@@ -157,12 +162,12 @@ begin
           else if TIWBSSelect(Control).Items.Count > 0 then
             s := TIWBSSelect(Control).Items[0];
         if not LMultiLine then begin
-          LCaret := Rect(LRect.Right-18,LRect.Top+1,LRect.Right-1,LRect.Bottom-1);
+          LIcon := Rect(LRect.Right-18,LRect.Top+1,LRect.Right-1,LRect.Bottom-1);
           ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
           ControlCanvas.Brush.Color := clLtGray;
-          ControlCanvas.Rectangle(LCaret);
+          ControlCanvas.Rectangle(LIcon);
           c := Char(StrToInt(slGlyphicons.Values['chevron-down']));
-          DrawTextEx(ControlCanvas.Handle, PChar(c), 1, LCaret, DT_CENTER+DT_SINGLELINE+DT_VCENTER, nil);
+          DrawTextEx(ControlCanvas.Handle, PChar(c), 1, LIcon, DT_CENTER+DT_SINGLELINE+DT_VCENTER, nil);
           ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
           ControlCanvas.Brush.Color := clWhite;
           Dec(LRect.Right, 20);
@@ -177,6 +182,44 @@ begin
       ControlCanvas.TextRect(LRect,s,[])
     else
       DrawTextEx(ControlCanvas.Handle, PChar(s), Length(s), LRect, DT_SINGLELINE+DT_VCENTER, nil);
+  end;
+end;
+
+procedure TIWBSPaintHandlerCustomCheck.Paint;
+var
+  LRect, LIcon: TRect;
+  LGlyp, LCaption: string;
+  s: string;
+begin
+  ControlCanvas.Font.Size := 10;
+
+  if Control is TIWBSCheckBox then
+    begin
+      LGlyp := 'ok';
+      LCaption := TIWBSCheckBox(Control).Caption;
+    end
+  else if Control is TIWBSRadioButton then
+    begin
+      LGlyp := 'record';
+      LCaption := TIWBSCheckBox(Control).Caption;
+    end
+  else
+    begin
+      LGlyp := '';
+      LCaption := '';
+    end;
+
+  if LGlyp <> '' then begin
+    LIcon := Rect(0, 0, 18,Control.Height);
+    ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
+    s := Char(StrToIntDef(slGlyphicons.Values[LGlyp],78));
+    DrawTextEx(ControlCanvas.Handle, PChar(s), 1, LIcon, DT_SINGLELINE+DT_VCENTER, nil);
+  end;
+
+  if LCaption <> '' then begin
+    LRect := Rect(20, 0, Control.Width, Control.Height);
+    ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+    DrawTextEx(ControlCanvas.Handle, PChar(LCaption), Length(LCaption), LRect, DT_SINGLELINE+DT_VCENTER, nil);
   end;
 end;
 
@@ -390,9 +433,9 @@ initialization
 
   IWRegisterPaintHandler('TIWBSInput',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerCustomInput);
-  IWRegisterPaintHandler('TIWBSCheckBox',TIWBSPaintHandlerCustomInput);
-  IWRegisterPaintHandler('TIWBSRadioButton',TIWPaintHandlerRadioButton);
   IWRegisterPaintHandler('TIWBSSelect',TIWBSPaintHandlerCustomInput);
+  IWRegisterPaintHandler('TIWBSCheckBox',TIWBSPaintHandlerCustomCheck);
+  IWRegisterPaintHandler('TIWBSRadioButton',TIWPaintHandlerRadioButton);
   IWRegisterPaintHandler('TIWBSRadioGroup',TIWBSPaintHandlerRadioGroup);
 
   IWRegisterPaintHandler('TIWBSButton',TIWBSPaintHandlerButton);
@@ -417,9 +460,9 @@ finalization
 
   IWUnRegisterPaintHandler('TIWBSInput');
   IWUnRegisterPaintHandler('TIWBSMemo');
+  IWUnRegisterPaintHandler('TIWBSSelect');
   IWUnRegisterPaintHandler('TIWBSCheckBox');
   IWUnRegisterPaintHandler('TIWBSRadioButton');
-  IWUnRegisterPaintHandler('TIWBSSelect');
   IWUnRegisterPaintHandler('TIWBSRadioGroup');
 
   IWUnRegisterPaintHandler('TIWBSButton');

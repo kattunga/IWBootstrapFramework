@@ -140,7 +140,7 @@ begin
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, 'btn')
+    Result := IWBSCreateInputGroupAddOn(Result, xHTMLName, 'btn')
   else
     Result := IWBSCreateFormGroup(Parent, IWBSFindParentInputForm(Parent), Result, xHTMLName, True);
 

@@ -177,7 +177,7 @@ end;
 procedure SetAsyncChecked(AContext: TIWCompContext; const HTMLName: string; const Value: boolean; var OldValue: boolean);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked", "'+iif(Value,'true','false')+'");');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked", '+iif(Value,'true','false')+');');
     OldValue := Value;
   end;
 end;

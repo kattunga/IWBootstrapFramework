@@ -20,7 +20,7 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = 8
+  DesignTop = -402
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
@@ -159,49 +159,23 @@ object FFishFact: TFFishFact
             Text = 'FoundDate'
             BSInputType = bsitDateTimeLocal
           end
-          object IWBSCheckBox1: TIWBSCheckBox
-            Left = 20
-            Top = 673
-            Width = 253
-            Height = 21
-            Caption = 'This is a checkbox'
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            SubmitOnAsyncEvent = True
-            Style = stNormal
-            TabOrder = 8
-            DataField = 'Check'
-            DataSource = dsrcMain
-            FriendlyName = 'IWBSCheckBox1'
-            ValueChecked = 'Y'
-            ValueUnchecked = 'N'
-            Checked = False
-          end
           object IWBSRadioGroup1: TIWBSRadioGroup
             Left = 20
             Top = 840
             Width = 317
             Height = 112
-            SubmitOnAsyncEvent = True
-            TrimValues = True
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            Layout = glVertical
+            Caption = 'Option'
+            DataSource = dsrcMain
             DataField = 'Option'
             FriendlyName = 'IWBSRadioGroup1'
-            DataSource = dsrcMain
-            Values.Strings = (
-              '1'
-              '2'
-              '3')
+            SubmitOnAsyncEvent = True
+            TabOrder = 8
+            ItemIndex = 0
             Items.Strings = (
               'Option 1=1'
               'Option 2=2'
               'Option 3=3')
-            TabOrder = -1
-            Caption = 'Option'
+            ItemsHaveValues = True
           end
           object IWBSInput8: TIWBSInput
             Left = 20
@@ -252,6 +226,20 @@ object FFishFact: TFFishFact
               'Option 2=2'
               'Option 3=3')
             ItemsHaveValues = True
+          end
+          object IWBSCheckBox1: TIWBSCheckBox
+            Left = 20
+            Top = 669
+            Width = 317
+            Height = 25
+            Caption = 'Check'
+            DataSource = dsrcMain
+            DataField = 'Check'
+            FriendlyName = 'IWBSCheckBox1'
+            SubmitOnAsyncEvent = True
+            TabOrder = 20
+            ValueChecked = 'Y'
+            ValueUnchecked = 'N'
           end
           object IWBSRegion6: TIWBSRegion
             Left = 20

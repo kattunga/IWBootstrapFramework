@@ -43,7 +43,6 @@ type
     IWBSInput7: TIWBSInput;
     ClientDataSet1Option: TStringField;
     ClientDataSet1Check: TStringField;
-    IWBSCheckBox1: TIWBSCheckBox;
     IWBSRegion4: TIWBSRegion;
     IWBSLabel1: TIWBSLabel;
     IWBSRegion7: TIWBSRegion;
@@ -62,6 +61,7 @@ type
     IWBSInput8: TIWBSInput;
     IWBSListbox1: TIWBSSelect;
     IWBSListbox2: TIWBSSelect;
+    IWBSCheckBox1: TIWBSCheckBox;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWAppFormDestroy(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);

@@ -8,7 +8,7 @@ uses System.Classes, System.SysUtils, System.SyncObjs, Vcl.Controls, IWVCLBaseCo
 function IWBSCreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: TIWHTMLTag; const AHTMLName: string; ASpanDiv: boolean): TIWHTMLTag;
 function IWBSCreateInputFormGroup(AControl, AParent: TControl; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
 function IWBSCreateCheckBoxFormGroup(AParent: TControl; ATag: TIWHTMLTag; const ACss, ACaption, AHint, AHTMLName: string; AShowHint: boolean): TIWHTMLTag;
-function IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
+function IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const AHTMLName, css: string): TIWHTMLTag;
 
 implementation
 
@@ -24,7 +24,6 @@ begin
       Result := TIWHTMLTag.CreateTag('div');
       Result.AddClassParam('form-group');
       Result.AddStringParam('id',AHTMLName+'_FG');
-      Result.AddStringParam('name',AHTMLName+'_FG');
       if ASpanDiv and (AParentForm.BSFormType = bsftHorizontal) then
         begin
           LSpanDiv := Result.Contents.AddTag('div');
@@ -50,7 +49,6 @@ begin
       try
         Result.AddClassParam('form-group');
         Result.AddStringParam('id',AHTMLName+'_FG');
-        Result.AddStringParam('name',AHTMLName+'_FG');
         lablTag := Result.Contents.AddTag('label');
         lablTag.AddClassParam('control-label');
         lablTag.AddStringParam('for', AHTMLName);
@@ -108,7 +106,7 @@ end;
 {$endregion}
 
 {$region 'InputGroup functions'}
-function IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const css: string): TIWHTMLTag;
+function IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const AHTMLName, css: string): TIWHTMLTag;
 begin
   Result := TIWHTMLTag.CreateTag('span');
   try

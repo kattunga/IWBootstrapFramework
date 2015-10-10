@@ -66,7 +66,6 @@ type
     IWText5: TIWText;
     IWBSInputGroup4: TIWBSInputGroup;
     IWBSInput11: TIWBSInput;
-    IWBSCheckBox3: TIWBSCheckBox;
     IWBSInputGroup5: TIWBSInputGroup;
     IWBSInput12: TIWBSInput;
     IWBSRadioButton5: TIWBSRadioButton;
@@ -104,7 +103,6 @@ type
     IWBSInput20: TIWBSInput;
     IWBSInput21: TIWBSInput;
     IWBSInput22: TIWBSInput;
-    IWBSCheckBox4: TIWBSCheckBox;
     IWBSRegion1: TIWBSRegion;
     IWBSRadioButton6: TIWBSRadioButton;
     IWBSRadioButton7: TIWBSRadioButton;
@@ -166,6 +164,7 @@ type
     IWBSComboBox2: TIWBSSelect;
     IWBSListbox2: TIWBSSelect;
     IWBSListbox3: TIWBSSelect;
+    IWBSCheckBox1: TIWBSCheckBox;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);

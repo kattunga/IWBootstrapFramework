@@ -170,7 +170,7 @@ begin
   Result.Contents.AddText(RawContent);
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, 'addon');
+    Result := IWBSCreateInputGroupAddOn(Result, HTMLName, 'addon');
 
   FOldVisible := Visible;
   FOldText := RawContent;
@@ -265,7 +265,7 @@ begin
     raise;
   end;
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(REsult, 'addon');
+    Result := IWBSCreateInputGroupAddOn(REsult, HTMLName, 'addon');
 
   FOldVisible := Visible;
 end;

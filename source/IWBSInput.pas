@@ -34,45 +34,33 @@ type
     property Rows: integer read FRows write FRows default 5;
   end;
 
-  TIWBSCheckBox = class(TIWBSCustomTextInput)
+  TIWBSCheckBox = class(TIWBSCustomInput)
   private
     FChecked: boolean;
+    FGroup: string;
+    FType: string;
     FValueChecked: string;
     FValueUnchecked: string;
   protected
     procedure InitControl; override;
     procedure CheckData; override;
-//    procedure SetValue(const AValue: string; out AValueChanged: Boolean); override;
-  public
+    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure SetChecked(AValue: boolean);
   published
-    property Checked: boolean read FChecked write FChecked default False;
+    property Checked: boolean read FChecked write SetChecked default False;
+    property Group: string read FGroup write FGroup;
     property ValueChecked: string read FValueChecked write FValueChecked;
     property ValueUnchecked: string read FValueUnchecked write FValueUnchecked;
   end;
 
-  TIWBSRadioButton = class(TIWRadioButton)
-  private
-    FAutoFocus: boolean;
-
-    FMainID: string;
-    FOldVisible: boolean;
-    FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
-    FOldChecked: boolean;
+  TIWBSRadioButton = class(TIWBSCheckBox)
   protected
     procedure InitControl; override;
   public
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
+
   published
-    property AutoFocus: boolean read FAutoFocus write FAutoFocus default false;
-    property Editable default True;
   end;
 
   TIWBSSelect = class(TIWBSCustomSelectInput)
@@ -89,33 +77,11 @@ type
     property Size: integer read FSize write SetSize default 1;
   end;
 
-  TIWBSRadioGroup = class(TIWDBRadioGroup, IIWAutoEditableControl)
-  private
-    FAutoFocus: boolean;
-    FCaption: string;
-
-    FMainID: string;
-    FOldVisible: boolean;
-    FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
-    FOldItemIndex: integer;
+  TIWBSRadioGroup = class(TIWBSCustomSelectInput)
   protected
     procedure InitControl; override;
-    procedure CheckData; override;
-    procedure EditingChanged;
-    procedure SetValue(const AValue: string; out AValueChanged: Boolean); override;
-  public
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
-  published
-    property AutoEditable default True;
-    property AutoFocus: boolean read FAutoFocus write FAutoFocus default false;
-    property Caption: string read FCaption write FCaption;
-    property Editable default True;
-    property Enabled default True;
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
   end;
 
 implementation
@@ -257,110 +223,56 @@ procedure TIWBSCheckBox.InitControl;
 begin
   inherited;
   FChecked := False;
+  FGroup := '';
+  FType := 'checkbox';
   FValueChecked := 'true';
-  FValueUnchecked := 'true';
+  FValueUnchecked := 'false';
+  Text := FValueUnchecked;
+end;
+
+procedure TIWBSCheckBox.SetChecked(AValue: boolean);
+begin
+  FChecked := AValue;
+  if AValue then
+    Text := FValueChecked
+  else
+    Text := FValueUnchecked;
+  Invalidate;
 end;
 
 procedure TIWBSCheckBox.CheckData;
 begin
   inherited;
-end;
-{
-procedure TIWBSCheckBox.SetValue(const AValue: string; out AValueChanged: Boolean);
-begin
-  FChecked := SameText(AValue, 'On');
-  inherited;
-end;
-}
-procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
-begin
-  inherited;
+  FChecked := Text = FValueChecked;
 end;
 
-function TIWBSCheckBox.RenderCSSClass(AComponentContext: TIWCompContext): string;
+procedure TIWBSCheckBox.InternalSetValue(const ASubmitValue: string; var ATextValue: string);
 begin
-  Result := Css;
+  if ASubmitValue = 'on' then
+    ATextValue := FValueChecked
+  else
+    ATextValue := FValueUnchecked;
+end;
+
+procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+begin
+  if Text <> FOldText then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+FInputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
+    FOldText := Text;
+  end;
 end;
 
 function TIWBSCheckBox.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 begin
- // FOldChecked := Checked;
-
-  Result := TIWHTMLTag.CreateTag('span');
-  try
-    Result.AddStringParam('id', AHTMLName);
-    with Result.Contents.AddTag('input') do begin
-      AddClassParam(FOldCss);
-      if TabOrderInterface(Self).HasTabOrder then
-        AddStringParam('tabindex', IntToStr(TabOrderInterface(Self).RealTabOrder + 1));
-      AddStringParam('type', 'checkbox');
-      AddStringParam('id', AHTMLName + '_CHECKBOX');
-      AddStringParam('name', AHTMLName + '_CHECKBOX');
-      if FOldDisabled then
-        Add('disabled');
-      if Checked then
-        Add('checked');
-      AddStringParam('style', FOldStyle);
-    end;
-  except
-    FreeAndNil(Result);
-    raise;
-  end;
-
-  if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, 'addon')
-  else
-    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, 'checkbox', Caption, Hint, AHTMLName, ShowHint);
-end;
-{$endregion}
-
-{$region 'TIWBSRadioButton'}
-procedure TIWBSRadioButton.InitControl;
-begin
-  inherited;
-  FAutoFocus := False;
-end;
-
-function TIWBSRadioButton.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName;
-  Result := nil;
-
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  SetAsyncChecked(AContext, xHTMLName, Checked, FOldChecked);
-end;
-
-function TIWBSRadioButton.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  Result := Css;
-end;
-
-function TIWBSRadioButton.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName;
-
-  FOldVisible := Visible;
-  FOldDisabled := not (Enabled and Editable);
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
-
   Result := TIWHTMLTag.CreateTag('input');
   try
-    Result.AddStringParam('id', xHTMLName+'_CHECKBOX');
+    Result.AddStringParam('id', AHTMLName);
+    Result.AddStringParam('name', AHTMLName);
     Result.AddClassParam(FOldCss);
-    Result.AddStringParam('name', Group);
-    Result.AddStringParam('type', 'radio');
-    Result.AddStringParam('value', Value);
-    if FAutoFocus then
-      Result.Add('autofocus');
-    if FOldDisabled then
+    Result.AddStringParam('type', FType);
+    if FGroup <> '' then
+      Result.AddStringParam('group', FGroup);
+    if IsDisabled then
       Result.Add('disabled');
     if Checked then
       Result.Add('checked');
@@ -371,17 +283,30 @@ begin
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, 'addon')
+    Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'addon')
   else
-    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, 'radio', Caption, Hint, xHTMLName, ShowHint);
+    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, FType, Caption, Hint, AHTMLName, ShowHint);
 
-  // save id of final container to set visibility
-  FMainID := Result.Params.Values['id'];
+  // if it has group add script to uncheck others
+  if FGroup <> '' then
+    Result.Contents.AddTag('script').Contents.AddText(
+      '$("#'+AHTMLName+'_CHKBCAPTION'+'").click( function(e) { '+
+        'console.log($("input[group='''+FGroup+''']"));'+
+        'console.log(this);'+
+      '});');
 end;
+{$endregion}
 
-function TIWBSRadioButton.RenderStyle(AContext: TIWCompContext): string;
+{$region 'TIWBSRadioButton'}
+procedure TIWBSRadioButton.InitControl;
 begin
-  Result := '';
+  inherited;
+  FGroup := 'group';
+  FInputSuffix := '_RADIOBUTTON';
+  FType := 'radio';
+  FValueChecked := 'true';
+  FValueUnchecked := 'false';
+  Text := 'off';
 end;
 {$endregion}
 
@@ -451,115 +376,44 @@ end;
 procedure TIWBSRadioGroup.InitControl;
 begin
   inherited;
-  AutoEditable := True;
-  FAutoFocus := False;
-  FCaption := '';
+  FInputSelector := ' input';
+  FInputSuffix := '_INPUT';
 end;
 
-// I need to use enabled instead of editable because
-procedure TIWBSRadioGroup.EditingChanged;
+procedure TIWBSRadioGroup.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
-  if AutoEditable then
-    if CheckDataSource(FDataSource) then
-      Enabled := InEditMode(FDataSource.Dataset) and FieldIsEditable(FDataSource, FDataField)
-    else
-      Enabled := False;
-end;
-
-procedure TIWBSRadioGroup.CheckData;
-var
-  LField: TField;
-  LText: string;
-begin
-  if FDataSource <> nil then
-    if CheckDataSource(FDataSource, DataField, LField) then
-      begin
-        LText := GetFieldText(LField);
-        if TrimValues then
-          LText := Trim(LText);
-        ItemIndex := Values.IndexOf(LText);
-        if AutoEditable then
-          Enabled := InEditMode(FDataSource.Dataset) and FieldIsEditable(FDataSource, FDataField);
-        if ItemIndex < 0 then
-          ItemIndex := Items.IndexOf(LText);
-      end
-    else
-      begin
-        ItemIndex := -1;
-        if AutoEditable then begin
-          Enabled := False;
-      end;
-    end;
-end;
-
-procedure TIWBSRadioGroup.SetValue(const AValue: string; out AValueChanged: Boolean);
-begin
-  inherited SetValue(AValue, AValueChanged);
-  FOldItemIndex := ItemIndex;
-end;
-
-function TIWBSRadioGroup.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName;
-  Result := nil;
-
-  CheckData;
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  SetAsyncDisabled(AContext, xHTMLName+' input', not (Enabled and Editable), FOldDisabled);
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  if (ItemIndex <> FOldItemIndex) then begin
+  if (Text <> FOldText) then begin
     if ItemIndex >= 0 then
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+xHTMLName+'_INPUT_'+IntToStr(ItemIndex+1)+'").prop("checked", true);')
+      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'_INPUT_'+IntToStr(ItemIndex)+'").prop("checked", true);')
     else
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+xHTMLName+' input").prop("checked", false);');
-    FOldItemIndex := ItemIndex;
+      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+' input").prop("checked", false);');
+    FOldText := Text;
   end;
 end;
 
-function TIWBSRadioGroup.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  Result := 'radio';
-  if Css <> '' then
-    Result := Result + ' ' + Css;
-end;
-
-function TIWBSRadioGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+function TIWBSRadioGroup.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 var
-  xHTMLName: string;
   i: Integer;
 begin
-  xHTMLName := HTMLName;
-
-  CheckData;
-  FOldVisible := Visible;
-  FOldDisabled := not (Enabled and Editable);
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
-  FOldItemIndex := ItemIndex;
-
   Result := TIWHTMLTag.CreateTag('div');
   try
-    Result.AddStringParam('id', xHTMLName);
-    Result.AddClassParam(FOldCss);
+    Result.AddStringParam('id', AHTMLName);
+    Result.AddClassParam('radio');
     Result.AddStringParam('style', FOldStyle);
     for i := 0 to Items.Count - 1 do begin
       with Result.Contents.AddTag('label') do begin
         with Contents.AddTag('input') do begin
           AddStringParam('type', 'radio');
           Add(iif(ItemIndex = i, 'checked'));
-          AddStringParam('name', xHTMLName + '_INPUT');
-          AddStringParam('id', xHTMLName + '_INPUT_'+IntToStr(i+1));
+          AddStringParam('name', AHTMLName + FInputSuffix);
+          AddStringParam('id', AHTMLName + FInputSuffix+'_'+IntToStr(i));
           AddStringParam('value', IntToStr(i));
-          if FOldDisabled then
+          if IsDisabled then
             Add('disabled');
         end;
-        Contents.AddText(Items.Strings[i]);
+        Contents.AddText(TextToHTML(iif(ItemsHaveValues, Items.Names[i], Items[i]), false, true));
       end;
-      if Layout = glVertical then
-        Result.Contents.AddText('<br>');
+      Result.Contents.AddText('<br>');
     end;
   except
     FreeAndNil(Result);
@@ -567,17 +421,9 @@ begin
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, 'addon')
+    Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'addon')
   else
-    Result := IWBSCreateInputFormGroup(Self, Parent, Result, FCaption, xHTMLName);
-
-  // save id of final container to set visibility
-  FMainID := Result.Params.Values['id'];
-end;
-
-function TIWBSRadioGroup.RenderStyle(AContext: TIWCompContext): string;
-begin
-  Result := '';
+    Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
 end;
 {$endregion}
 

@@ -3,7 +3,7 @@ unit IWBSCustomInput;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.StrUtils, Data.db,
+  System.Classes, System.SysUtils, System.StrUtils, Data.db, Vcl.Controls,
   IWControl,
   IWBaseControl, IWTypes, IWHTMLTag, IWDBCommon, IWDBStdCtrls,
   IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces,
@@ -30,16 +30,19 @@ type
     FOnSubmit: TNotifyEvent;
     FReadOnly: Boolean;
     FRequired: Boolean;
-    FSubmitParam : String;
+    FSubmitParam : string;
+    FScript: TStrings;
     FStyle: TStrings;
 
     procedure EditingChanged;
     procedure SetDataField(const AValue: string);
     procedure SetDataSource(const Value: TDataSource);
   protected
+    FMainID: string;
+    FInputSuffix: string;
+    FInputSelector: string;
     FIsStatic: boolean;
     FSupportReadOnly: boolean;
-    FMainID: string;
     FOldVisible: boolean;
     FOldDisabled: boolean;
     FOldCss: string;
@@ -60,10 +63,14 @@ type
     function FormHasOnDefaultActionSet:boolean;
     function get_ShouldRenderTabOrder: boolean;override;
 
+    procedure GetInputControlNames(ANames: TStringList); override;
+    function IsForThisControl(AName: string): boolean; override;
+
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; virtual;
     procedure InternalRenderStyle(AStyle: TStrings); virtual;
-    procedure InternalSetValue(const AValue: string; var AFieldValue: string); virtual;
+
+    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string); virtual;
 
     function IsReadOnly: boolean;
     function IsDisabled: boolean;
@@ -73,8 +80,11 @@ type
     property BSInputType: TIWBSInputType read FInputType write FInputType;
   public
     destructor Destroy; override;
+    procedure Invalidate; override;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
     function GetSubmitParam : String;
   published
@@ -92,6 +102,7 @@ type
     property Required: Boolean read FRequired write SetRequired default False;
     property ScriptEvents;
     property SubmitOnAsyncEvent;
+    property Script: TStrings read FStyle write FScript;
     property Style: TStrings read FStyle write SetStyle;
     property TabOrder;
 
@@ -135,11 +146,13 @@ type
     FItemIndex: integer;
     FItems: TStrings;
     FItemsHaveValues: boolean;
+    procedure InternalSetItemIndex(AValue: integer);
+    function FindValue(const AValue: string): integer;
   protected
     procedure InitControl; override;
     procedure CheckData; override;
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    procedure InternalSetValue(const AValue: string; var AFieldValue: string); override;
+    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string); override;
+    procedure Loaded; override;
     procedure SetItemIndex(AValue: integer);
     procedure SetItems(AValue: TStrings);
     procedure SetItemsHaveValues(AValue: boolean);
@@ -147,7 +160,7 @@ type
     destructor Destroy; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
   published
-    property ItemIndex: integer read FItemIndex write SetItemIndex;
+    property ItemIndex: integer read FItemIndex write SetItemIndex default -1;
     property Items: TStrings read FItems write SetItems;
     property ItemsHaveValues: boolean read FItemsHaveValues write SetItemsHaveValues default False;
   end;
@@ -173,8 +186,13 @@ begin
   FNonEditableAsLabel := False;
   FReadOnly := False;
   FRequired := False;
+
+  FScript := TStringList.Create;
   FStyle := TStringList.Create;
   FStyle.NameValueSeparator := ':';
+
+  FInputSelector := '';
+  FInputSuffix := '';
 
   FCanReceiveFocus := True;
   FNeedsFormTag := True;
@@ -188,8 +206,25 @@ end;
 destructor TIWBSCustomInput.Destroy;
 begin
   FreeAndNil(FDataLink);
+  FreeAndNil(FScript);
   FreeAndNil(FStyle);
   inherited;
+end;
+
+procedure TIWBSCustomInput.Invalidate;
+begin
+  inherited;
+  DoRefreshControl := true;
+end;
+
+procedure TIWBSCustomInput.GetInputControlNames(ANames: TStringList);
+begin
+  ANames.Text := HTMLName+FInputSuffix;
+end;
+
+function TIWBSCustomInput.IsForThisControl(AName: string): boolean;
+begin
+  Result := SameText(HTMLName+FInputSuffix, AName);
 end;
 
 procedure TIWBSCustomInput.CheckData;
@@ -225,9 +260,39 @@ begin
     FDbEditable := true;
 end;
 
+procedure TIWBSCustomInput.SetValue(const AValue: string);
+var
+  LField: TField;
+  LText: string;
+begin
+  if RequiresUpdateNotification(Parent) then
+    UpdateNotifiedInterface(Parent).NotifyUpdate(Self,AValue);
+  InternalSetValue(AValue, LText);
+  if (FOldText <> LText) or (Text <> LText) then begin
+    FOldText := LText;
+    Text := LText;
+    if CheckDataSource(DataSource, DataField, LField) then
+      if InEditMode(DataSource.DataSet) and LField.CanModify then
+        begin
+          if Assigned(LField.OnSetText) then
+            LField.Text := LText
+          else
+            if FInputType = bsitNumber then
+              LField.AsFloat := StrToFloat(AValue, LFormatSettings)
+            else if FInputType = bsitDateTimeLocal then  // agregar todos los tipos fecha que hay
+              LField.AsDateTime := StrToDateTime(ReplaceStr(AValue,'T',' '), LFormatSettings)
+            else
+              LField.AsString := LText;
+        end
+      else
+        raise EIWDataSetNotEditingError.Create(DataSource);
+    Invalidate;
+  end;
+end;
+
 procedure TIWBSCustomInput.EditingChanged;
 begin
-  invalidate;
+  Invalidate;
 end;
 
 procedure TIWBSCustomInput.SetDataField(const AValue: string);
@@ -323,14 +388,9 @@ begin
   //
 end;
 
-procedure TIWBSCustomInput.InternalSetValue(const AValue: string; var AFieldValue: string);
+procedure TIWBSCustomInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string);
 begin
-  if FInputType = bsitNumber then
-    AFieldValue := FloatToStr(StrToFloat(AValue, LFormatSettings))
-  else if FInputType = bsitDateTimeLocal then                               // agregar todos los tipos fecha que hay
-    AFieldValue := DateTimeToStr(StrToDateTime(ReplaceStr(AValue,'T',' '), LFormatSettings))
-  else
-    AFieldValue := AValue;
+  ATextValue := ASubmitValue;
 end;
 
 function TIWBSCustomInput.IsReadOnly: boolean;
@@ -345,17 +405,27 @@ end;
 
 function TIWBSCustomInput.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
-  xHTMLName: string;
+  xHTMLName, xInputSelector: string;
 begin
   xHTMLName := HTMLName;
+  if FInputSelector <> '' then
+    xInputSelector := FMainID+FInputSelector
+  else
+    xInputSelector := xHTMLName+FInputSuffix;
+
   Result := nil;
   CheckData;
   InternalRenderAsync(xHTMLName, AContext);
   SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncReadOnly(AContext, xHTMLName, IsReadOnly, FOldReadOnly);
-  SetAsyncDisabled(AContext, xHTMLName, IsDisabled, FOldDisabled);
+  SetAsyncReadOnly(AContext, xInputSelector, IsReadOnly, FOldReadOnly);
+  SetAsyncDisabled(AContext, xInputSelector, IsDisabled, FOldDisabled);
   SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
   SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
+end;
+
+function TIWBSCustomInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
+begin
+  Result := Css;
 end;
 
 function TIWBSCustomInput.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -371,6 +441,15 @@ begin
   Result := InternalRenderHTML(HTMLName, AContext);
 
   FMainID := Result.Params.Values['id'];
+
+  // add user scripts (it's more easy to create and destroy dinamically when they are embedded in the tag)
+  if FScript.Count > 0 then
+    Result.Contents.AddTag('script').Contents.AddText(FScript.Text);
+end;
+
+procedure TIWBSCustomInput.RenderScripts(AComponentContext: TIWCompContext);
+begin
+  inherited;
 end;
 
 function TIWBSCustomInput.RenderStyle(AContext: TIWCompContext): string;
@@ -420,34 +499,6 @@ begin
   end;
 end;
 
-procedure TIWBSCustomInput.SetValue(const AValue: string);
-var
-  LField: TField;
-  LValue: string;
-begin
-  if RequiresUpdateNotification(Parent) then
-    UpdateNotifiedInterface(Parent).NotifyUpdate(Self,AValue);
-  if FOldText <> AValue then begin
-    FOldText := AValue;
-    Text := AValue;
-
-    // if db conected
-    if CheckDataSource(DataSource, DataField, LField) then
-      if InEditMode(DataSource.DataSet) and LField.CanModify then
-        begin
-          InternalSetValue(AValue, LValue);
-          if Assigned(LField.OnSetText) then
-            LField.Text := LValue
-          else
-            LField.AsString := LValue;
-        end
-      else
-        raise EIWDataSetNotEditingError.Create(DataSource);
-
-    DoRefreshControl := False;
-  end;
-end;
-
 procedure TIWBSCustomInput.SetStyle(const AValue: TStrings);
 begin
   FStyle.Assign(AValue);
@@ -483,6 +534,7 @@ begin
     Result := Result + ' ' + aIWBSTextAlignment[FTextAlignment];
   if FTextCase <> bstcDefault then
     Result := Result + ' ' + aIWBSTextCase[FTextCase];
+
   if Css <> '' then
     Result := Result + ' ' + Css;
 end;
@@ -504,29 +556,39 @@ begin
   inherited;
 end;
 
-procedure TIWBSCustomSelectInput.CheckData;
-var
-  i: integer;
+procedure TIWBSCustomSelectInput.Loaded;
 begin
-  inherited;
-  if FItemsHaveValues then
+  InternalSetItemIndex(FItemIndex);
+end;
+
+procedure TIWBSCustomSelectInput.InternalSetItemIndex(AValue: integer);
+begin
+  if (AValue >= -1) and (AValue < FItems.Count) then
     begin
-      FItemIndex := -1;
-      for i := 0 to Items.Count-1 do
-        if AnsiSameText(Items.ValueFromIndex[i], Text) then begin
-          FItemIndex := i;
-          break;
-        end;
+      FItemIndex := AValue;
+      if FItemIndex >= 0 then
+        if FItemsHaveValues then
+          Text := FItems.ValueFromIndex[AValue]
+        else
+          Text := FItems[AValue]
+      else
+        Text := '';
     end
   else
-    FItemIndex := Items.IndexOf(Text);
-  Text := IntToStr(FItemIndex);
+    begin
+      FItemIndex := -1;
+      Text := ''
+    end;
+  Invalidate;
 end;
 
 procedure TIWBSCustomSelectInput.SetItemIndex(AValue: integer);
 begin
-  FItemIndex := AValue;
-  Invalidate;
+  if (AValue <> FItemIndex) then begin
+    FItemIndex := AValue;
+    if not IsLoading then
+      InternalSetItemIndex(AValue); // we need to do this because SetItemIndex executes before Fitems is loaded
+  end;
 end;
 
 procedure TIWBSCustomSelectInput.SetItems(AValue: TStrings);
@@ -541,22 +603,46 @@ begin
   Invalidate;
 end;
 
-procedure TIWBSCustomSelectInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
-begin
-  
-end;
-
-procedure TIWBSCustomSelectInput.InternalSetValue(const AValue: string; var AFieldValue: string);
+function TIWBSCustomSelectInput.FindValue(const AValue: string): integer;
 var
   i: integer;
 begin
-  if TryStrToInt(AValue, i) and (i >= 0) and (i < Items.Count) then
-    if ItemsHaveValues then
-      AFieldValue := Items.ValueFromIndex[i]
-    else
-      AFieldValue := Items[i]
+  if FItemsHaveValues then
+    begin
+      Result := -1;
+      for i := 0 to FItems.Count do
+        if AnsiSameText(FItems.ValueFromIndex[i], AValue) then begin
+          Result := i;
+          Break;
+        end;
+    end
   else
-    AFieldValue := '';
+    Result := FItems.IndexOf(AValue);
+end;
+
+procedure TIWBSCustomSelectInput.CheckData;
+begin
+  inherited;
+  FItemIndex := FindValue(Text);
+end;
+
+procedure TIWBSCustomSelectInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string);
+var
+  i: integer;
+begin
+  if TryStrToInt(ASubmitValue, i) and (i >= 0) and (i < Items.Count) then
+    begin
+      if ItemsHaveValues then
+        ATextValue := Items.ValueFromIndex[i]
+      else
+        ATextValue := Items[i];
+      FItemIndex := i;
+    end
+  else
+    begin
+      ATextValue := '';
+      FItemIndex := -1;
+    end;
 end;
 
 function TIWBSCustomSelectInput.RenderCSSClass(AComponentContext: TIWCompContext): string;

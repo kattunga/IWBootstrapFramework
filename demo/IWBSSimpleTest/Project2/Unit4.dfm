@@ -49,7 +49,7 @@ object IWForm4: TIWForm4
     Font.Size = 10
     Font.Style = []
     FriendlyName = 'IWBSButton1'
-    TabOrder = 0
+    TabOrder = 1
     OnAsyncClick = IWBSButton1AsyncClick
   end
   object IWBSButton2: TIWBSButton
@@ -63,7 +63,7 @@ object IWForm4: TIWForm4
     Font.Size = 10
     Font.Style = []
     FriendlyName = 'IWBSButton1'
-    TabOrder = 1
+    TabOrder = 2
   end
   object IWBSInput1: TIWBSInput
     Left = 80
@@ -73,7 +73,7 @@ object IWForm4: TIWForm4
     Caption = ''
     FriendlyName = 'IWBSInput1'
     SubmitOnAsyncEvent = True
-    TabOrder = 2
+    TabOrder = 3
     Text = 'IWBSInput1'
   end
   object IWBSButton3: TIWBSButton
@@ -87,7 +87,7 @@ object IWForm4: TIWForm4
     Font.Size = 10
     Font.Style = []
     FriendlyName = 'IWBSButton3'
-    TabOrder = 3
+    TabOrder = 4
     OnAsyncClick = IWBSButton3AsyncClick
   end
   object IWBSCheckBox1: TIWBSCheckBox
@@ -98,10 +98,24 @@ object IWForm4: TIWForm4
     Caption = ''
     FriendlyName = 'IWBSCheckBox1'
     SubmitOnAsyncEvent = True
-    TabOrder = 4
+    TabOrder = 5
     Text = 'IWBSCheckBox1'
     ValueChecked = 'true'
     ValueUnchecked = 'true'
+  end
+  object IWRadioButton1: TIWRadioButton
+    Left = 256
+    Top = 452
+    Width = 121
+    Height = 21
+    Caption = 'IWRadioButton1'
+    Font.Color = clNone
+    Font.Size = 10
+    Font.Style = []
+    Group = 'no group'
+    Value = 'IWRadioButton1'
+    FriendlyName = 'IWRadioButton1'
+    SubmitOnAsyncEvent = True
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
     Left = 420

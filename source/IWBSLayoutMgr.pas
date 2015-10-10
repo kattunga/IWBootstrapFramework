@@ -232,30 +232,60 @@ end;
 
 procedure TIWBSLayoutMgr.ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent);
 var
-  LComponentContext: TIWCompContext;
-  LHTML: TIWHTMLTag;
   IsIWTabPage: boolean;
+  LRenderInvisibleControls: Boolean;
+  LComponentContext: TIWCompContext;
+  LVisible: boolean;
+  LHTML: TIWHTMLTag;
+  LInputLists: TStringList;
+  i: integer;
 begin
   IsIWTabPage := AControl.InterfaceInstance.ClassName = 'TIWTabPage';
 
+  if SupportsInterface(Container.InterfaceInstance, IIWInvisibleControlRenderer) then
+    LRenderInvisibleControls := (Container as IIWInvisibleControlRenderer).RenderInvisibleControls
+  else
+    LRenderInvisibleControls := False;
+
   LComponentContext := TIWCompContext(AContainerContext.ComponentContext[AControl.HTMLName]);
+
+  if SupportsInterface(AControl.InterfaceInstance, IIWBaseControl) then
+    LVisible := BaseControlInterface(AControl.InterfaceInstance).Visible
+  else
+    LVisible := True;
+
+  // adjust htmltag
   LHTML := LComponentContext.HTMLTag;
   if Assigned(LHTML) then begin
     // TIWTabPage hack
-    if IsIWTabPage then
+    if IsIWTabPage then begin
       LHTML.Params.Values['class'] := IWBSRegionCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass;
-
-    // render styles
-    if not IsIWTabPage and SupportsInterface(AControl.InterfaceInstance, IIWHTML40Component) then
-      LHTML.Params.Values['style'] := HTML40ComponentInterface(AControl.InterfaceInstance).RenderStyle(LComponentContext);
+      LHTML.Params.Values['id'] := AControl.HTMLName;
+    end;
 
     // render visibility
-    if not TControl(AControl.InterfaceInstance).Visible then
+    if not LVisible and LRenderInvisibleControls then
       if not AnsiContainsStr(LHTML.Params.Values['class'],'hidden') then
         LHTML.AddClassParam('hidden');
   end;
 
-  inherited;
+  // render hidden inputs for submit
+  if AControl.SupportsInput then
+    begin
+      LInputLists := TStringList.Create;
+      try
+        InputInterface(AControl.InterfaceInstance).GetInputControlNames(LInputLists);
+        if LVisible or LRenderInvisibleControls then
+          for i := 0 to LInputLists.Count-1 do
+            APageContext.AppendHiddenInput(LInputLists.Strings[i]);
+      finally
+        LInputLists.Free;
+      end;
+    end
+  else
+    APageContext.AppendHiddenInput(AControl.HTMLName);
+
+  APageContext.AppendContext(LComponentContext);
 end;
 
 initialization

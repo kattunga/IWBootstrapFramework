@@ -69,155 +69,6 @@ object IWForm2: TIWForm2
           DesignSize = (
             1078
             1533)
-          object IWTabControl21Page2: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 1513
-            RenderInvisibleControls = True
-            TabOrder = 5
-            Title = 'TabControl Options'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion7: TIWBSRegion
-              Left = 15
-              Top = 6
-              Width = 433
-              Height = 493
-              BSGridOptions.GridSMSpan = 6
-              Style.Strings = (
-                'margin: 1em')
-              BSRegionType = bsrtWell
-              object IWBSInputForm1: TIWBSInputForm
-                Left = 15
-                Top = 12
-                Width = 293
-                Height = 394
-                object IWBSButton30: TIWBSButton
-                  Left = 17
-                  Top = 229
-                  Width = 184
-                  Height = 25
-                  RenderSize = False
-                  StyleRenderOptions.RenderSize = False
-                  Caption = 'Apply settings'
-                  Color = clBtnFace
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWBSButton20aaaaaa'
-                  TabOrder = 58
-                  OnClick = IWBSButton30Click
-                end
-                object chkContFluid: TIWBSCheckBox
-                  Left = 15
-                  Top = 24
-                  Width = 121
-                  Height = 21
-                  ShowHint = False
-                  Caption = 'Container Fluid'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 59
-                  FriendlyName = 'chkContFluid'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = False
-                end
-                object chkTabsJust: TIWBSCheckBox
-                  Left = 15
-                  Top = 111
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Justified'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 60
-                  FriendlyName = 'chkTabsJust'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = False
-                end
-                object chkTabsStacked: TIWBSCheckBox
-                  Left = 15
-                  Top = 138
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Stacked'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 61
-                  FriendlyName = 'chkTabsStacked'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = False
-                end
-                object chkTabsPills: TIWBSCheckBox
-                  Left = 17
-                  Top = 166
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Pills'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 62
-                  FriendlyName = 'chkTabsPills'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = True
-                end
-                object chkTabsFade: TIWBSCheckBox
-                  Left = 16
-                  Top = 196
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Fade'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 63
-                  FriendlyName = 'chkTabsFade'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = False
-                end
-                object chkTabsResponsive: TIWBSCheckBox
-                  Left = 15
-                  Top = 74
-                  Width = 121
-                  Height = 21
-                  Caption = 'Tabs Responsive'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 64
-                  FriendlyName = 'chkTabsJust'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = True
-                end
-              end
-            end
-          end
           object IWTabControl21Page4: TIWTabPage
             Left = 0
             Top = 20
@@ -461,7 +312,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton22'
-                  TabOrder = 24
+                  TabOrder = 20
                   OnAsyncClick = IWBSButton22AsyncClick
                 end
                 object IWBSInput8: TIWBSInput
@@ -474,7 +325,7 @@ object IWForm2: TIWForm2
                   Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 25
+                  TabOrder = 21
                 end
               end
               object IWBSInputGroup2: TIWBSInputGroup
@@ -496,7 +347,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton22'
-                  TabOrder = 26
+                  TabOrder = 22
                 end
                 object IWBSInput9: TIWBSInput
                   Left = 99
@@ -508,7 +359,7 @@ object IWForm2: TIWForm2
                   Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 27
+                  TabOrder = 23
                 end
               end
               object IWBSInputGroup3: TIWBSInputGroup
@@ -531,7 +382,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton22'
-                  TabOrder = 28
+                  TabOrder = 24
                   BSGlyphicon = 'arrow-down'
                 end
                 object IWBSInput10: TIWBSInput
@@ -544,7 +395,7 @@ object IWForm2: TIWForm2
                   Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 29
+                  TabOrder = 25
                 end
                 object IWBSButton25: TIWBSButton
                   Left = 11
@@ -559,7 +410,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton22'
-                  TabOrder = 30
+                  TabOrder = 26
                   BSGlyphicon = 'align-center'
                 end
               end
@@ -603,24 +454,20 @@ object IWForm2: TIWForm2
                   Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 31
+                  TabOrder = 27
                 end
                 object IWBSCheckBox3: TIWBSCheckBox
                   Left = 21
                   Top = 16
                   Width = 121
                   Height = 21
+                  AutoEditable = False
                   Caption = 'IWBSCheckBox3'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 32
                   FriendlyName = 'IWBSCheckBox3'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 28
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
-                  Checked = False
                 end
               end
               object IWBSInputGroup5: TIWBSInputGroup
@@ -639,7 +486,7 @@ object IWForm2: TIWForm2
                   Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 33
+                  TabOrder = 29
                 end
                 object IWBSRadioButton5: TIWBSRadioButton
                   Left = 21
@@ -647,13 +494,12 @@ object IWForm2: TIWForm2
                   Width = 121
                   Height = 21
                   Caption = 'IWBSRadioButton5'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  Group = 'no group'
-                  Value = 'IWBSRadioButton5'
                   FriendlyName = 'IWBSRadioButton5'
                   SubmitOnAsyncEvent = True
+                  TabOrder = 5
+                  Group = 'no group'
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
                 end
               end
               object IWBSInputGroup6: TIWBSInputGroup
@@ -672,7 +518,7 @@ object IWForm2: TIWForm2
                   Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 34
+                  TabOrder = 30
                 end
                 object IWBSGlyphicon1: TIWBSGlyphicon
                   Left = 12
@@ -704,7 +550,7 @@ object IWForm2: TIWForm2
                   Caption = ''
                   FriendlyName = 'IWBSInput8'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 35
+                  TabOrder = 31
                 end
                 object IWBSLabel1: TIWBSLabel
                   Left = 11
@@ -779,7 +625,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 5
+                    TabOrder = 0
                     BSButtonSize = bsszLg
                     BSGlyphicon = 'align-left'
                   end
@@ -797,7 +643,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 6
+                    TabOrder = 1
                     BSButtonSize = bsszMd
                     BSGlyphicon = 'align-center'
                   end
@@ -815,7 +661,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 7
+                    TabOrder = 2
                     BSButtonSize = bsszSm
                     BSGlyphicon = 'align-right'
                   end
@@ -833,7 +679,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 8
+                    TabOrder = 3
                     BSButtonSize = bsszXs
                     BSGlyphicon = 'align-justify'
                   end
@@ -857,7 +703,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 9
+                    TabOrder = 4
                     BSButtonSize = bsszLg
                     BSGlyphicon = 'align-left'
                   end
@@ -874,7 +720,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 10
+                    TabOrder = 6
                     BSButtonSize = bsszMd
                     BSGlyphicon = 'align-center'
                   end
@@ -891,7 +737,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 11
+                    TabOrder = 7
                     BSButtonSize = bsszSm
                     BSGlyphicon = 'align-right'
                   end
@@ -908,7 +754,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 12
+                    TabOrder = 8
                     BSButtonSize = bsszXs
                     BSGlyphicon = 'align-justify'
                   end
@@ -934,7 +780,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 13
+                    TabOrder = 9
                     BSButtonSize = bsszLg
                     BSGlyphicon = 'align-left'
                   end
@@ -952,7 +798,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 14
+                    TabOrder = 10
                     BSButtonSize = bsszMd
                     BSGlyphicon = 'align-center'
                   end
@@ -970,7 +816,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 15
+                    TabOrder = 11
                     BSButtonSize = bsszSm
                     BSGlyphicon = 'align-right'
                   end
@@ -988,7 +834,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 16
+                    TabOrder = 12
                     BSButtonSize = bsszXs
                     BSGlyphicon = 'align-justify'
                   end
@@ -1015,7 +861,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton13'
-                  TabOrder = 17
+                  TabOrder = 13
                 end
                 object IWBSButton14: TIWBSButton
                   Left = 94
@@ -1030,7 +876,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton13'
-                  TabOrder = 18
+                  TabOrder = 14
                   BSButtonStyle = bsbsInfo
                 end
                 object IWBSButton15: TIWBSButton
@@ -1046,7 +892,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton13'
-                  TabOrder = 19
+                  TabOrder = 15
                   BSButtonStyle = bsbsLink
                 end
                 object IWBSButton16: TIWBSButton
@@ -1062,7 +908,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton13'
-                  TabOrder = 20
+                  TabOrder = 16
                   BSButtonStyle = bsbsPrimary
                 end
                 object IWBSButton17: TIWBSButton
@@ -1078,7 +924,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton13'
-                  TabOrder = 21
+                  TabOrder = 17
                   BSButtonStyle = bsbsSuccess
                 end
                 object IWBSButton18: TIWBSButton
@@ -1094,7 +940,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton13'
-                  TabOrder = 22
+                  TabOrder = 18
                   BSButtonStyle = bsbsWarning
                 end
                 object IWBSButton19: TIWBSButton
@@ -1110,7 +956,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton13'
-                  TabOrder = 23
+                  TabOrder = 19
                   BSButtonStyle = bsbsDanger
                 end
                 object IWBSButton29: TIWBSButton
@@ -1126,7 +972,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton13'
-                  TabOrder = 36
+                  TabOrder = 32
                   BSButtonStyle = bsbsClose
                 end
               end
@@ -1178,7 +1024,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 65
+                    TabOrder = 61
                     OnAsyncClick = IWBSButton27AsyncClick
                   end
                 end
@@ -1202,7 +1048,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 66
+                    TabOrder = 62
                     OnAsyncClick = IWBSButton28AsyncClick
                   end
                 end
@@ -1226,7 +1072,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 67
+                    TabOrder = 63
                     OnAsyncClick = IWBSButton31AsyncClick
                   end
                   object IWBSInput23: TIWBSInput
@@ -1237,7 +1083,7 @@ object IWForm2: TIWForm2
                     Caption = ''
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 68
+                    TabOrder = 64
                     PlaceHolder = 'IWBSInput23'
                   end
                 end
@@ -1260,7 +1106,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 69
+                    TabOrder = 65
                     OnAsyncClick = IWBSButton26AsyncClick
                   end
                 end
@@ -1283,7 +1129,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 70
+                    TabOrder = 66
                     OnAsyncClick = IWBSButton21AsyncClick
                   end
                   object IWBSInput6: TIWBSInput
@@ -1294,7 +1140,7 @@ object IWForm2: TIWForm2
                     Caption = ''
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 71
+                    TabOrder = 67
                   end
                 end
                 object IWBSRegion27: TIWBSRegion
@@ -1316,7 +1162,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 72
+                    TabOrder = 68
                     OnAsyncClick = IWBSButton32AsyncClick
                   end
                 end
@@ -1339,7 +1185,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 73
+                    TabOrder = 69
                     OnAsyncClick = IWBSButton33AsyncClick
                   end
                   object IWBSInput24: TIWBSInput
@@ -1350,7 +1196,7 @@ object IWForm2: TIWForm2
                     Caption = ''
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 74
+                    TabOrder = 72
                   end
                 end
                 object IWBSRegion31: TIWBSRegion
@@ -1372,9 +1218,129 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 75
+                    TabOrder = 74
                     OnAsyncClick = IWBSButton34AsyncClick
                   end
+                end
+              end
+            end
+          end
+          object IWTabControl21Page2: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1513
+            RenderInvisibleControls = True
+            TabOrder = 5
+            Title = 'TabControl Options'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion7: TIWBSRegion
+              Left = 15
+              Top = 6
+              Width = 433
+              Height = 493
+              BSGridOptions.GridSMSpan = 6
+              Style.Strings = (
+                'margin: 1em')
+              BSRegionType = bsrtWell
+              object IWBSInputForm1: TIWBSInputForm
+                Left = 15
+                Top = 12
+                Width = 293
+                Height = 394
+                object IWBSButton30: TIWBSButton
+                  Left = 17
+                  Top = 229
+                  Width = 184
+                  Height = 25
+                  RenderSize = False
+                  StyleRenderOptions.RenderSize = False
+                  Caption = 'Apply settings'
+                  Color = clBtnFace
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWBSButton20aaaaaa'
+                  TabOrder = 54
+                  OnClick = IWBSButton30Click
+                end
+                object chkContFluid: TIWBSCheckBox
+                  Left = 15
+                  Top = 41
+                  Width = 121
+                  Height = 21
+                  ShowHint = False
+                  AutoEditable = False
+                  Caption = 'Container Fluid'
+                  FriendlyName = 'chkContFluid'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 55
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                end
+                object chkTabsJust: TIWBSCheckBox
+                  Left = 15
+                  Top = 111
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Justified'
+                  FriendlyName = 'chkTabsJust'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 56
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                end
+                object chkTabsStacked: TIWBSCheckBox
+                  Left = 15
+                  Top = 138
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Stacked'
+                  FriendlyName = 'chkTabsStacked'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 57
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                end
+                object chkTabsPills: TIWBSCheckBox
+                  Left = 15
+                  Top = 169
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Pills'
+                  FriendlyName = 'chkTabsPills'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 58
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                end
+                object chkTabsFade: TIWBSCheckBox
+                  Left = 16
+                  Top = 196
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Fade'
+                  FriendlyName = 'chkTabsFade'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 59
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
+                end
+                object chkTabsResponsive: TIWBSCheckBox
+                  Left = 15
+                  Top = 76
+                  Width = 121
+                  Height = 21
+                  Caption = 'Tabs Responsive'
+                  FriendlyName = 'chkTabsJust'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 60
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
                 end
               end
             end
@@ -1410,8 +1376,8 @@ object IWForm2: TIWForm2
                 BSGridOptions.GridMDSpan = 4
                 BSRegionType = bsrtColumn
                 object IWBSRegion18: TIWBSRegion
-                  Left = 14
-                  Top = 16
+                  Left = 10
+                  Top = 20
                   Width = 245
                   Height = 187
                   BSRegionType = bsrtWell
@@ -1422,22 +1388,18 @@ object IWForm2: TIWForm2
                     Height = 159
                     object LstFormType: TIWBSRadioGroup
                       Left = 10
-                      Top = 51
-                      Width = 125
+                      Top = 47
+                      Width = 128
                       Height = 64
-                      SubmitOnAsyncEvent = True
-                      TrimValues = True
-                      Font.Color = clNone
-                      Font.Size = 10
-                      Font.Style = []
-                      Layout = glVertical
+                      Caption = ''
                       FriendlyName = 'LstFormType'
+                      SubmitOnAsyncEvent = True
+                      TabOrder = 51
+                      ItemIndex = 0
                       Items.Strings = (
                         'form-vertical'
                         'form-horizontal'
                         'form-inline')
-                      TabOrder = -1
-                      Caption = ''
                     end
                     object IWBSButton35: TIWBSButton
                       Left = 10
@@ -1452,7 +1414,7 @@ object IWForm2: TIWForm2
                       Font.Size = 10
                       Font.Style = []
                       FriendlyName = 'IWBSButton20aaaaaa'
-                      TabOrder = 37
+                      TabOrder = 33
                       OnClick = IWBSButton35Click
                     end
                     object IWText2: TIWText
@@ -1494,7 +1456,7 @@ object IWForm2: TIWForm2
                   Caption = 'Input Type Text'
                   FriendlyName = 'IWBSInput1'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 38
+                  TabOrder = 34
                   BSTextAlignment = bstaCenter
                   PlaceHolder = 'Name'
                 end
@@ -1506,7 +1468,7 @@ object IWForm2: TIWForm2
                   Caption = 'Input Type Numer'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 39
+                  TabOrder = 35
                   PlaceHolder = 'Amount'
                   BSInputType = bsitNumber
                 end
@@ -1519,7 +1481,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
-                  TabOrder = 40
+                  TabOrder = 36
                   PlaceHolder = 'Password'
                   BSInputType = bsitPassword
                 end
@@ -1531,7 +1493,7 @@ object IWForm2: TIWForm2
                   Caption = 'This is a Memo'
                   FriendlyName = 'IWBSMemo2'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 41
+                  TabOrder = 37
                   BSTextAlignment = bstaRight
                   BSTextCase = bstcUppercase
                   PlaceHolder = 'This is a text area with right align and uppercase'
@@ -1549,7 +1511,7 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton20'
-                  TabOrder = 44
+                  TabOrder = 40
                   OnAsyncClick = IWBSButton20AsyncClick
                   BSGlyphicon = 'check'
                 end
@@ -1562,7 +1524,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
-                  TabOrder = 45
+                  TabOrder = 41
                   PlaceHolder = 'Date'
                   BSInputType = bsitDate
                 end
@@ -1575,7 +1537,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
-                  TabOrder = 46
+                  TabOrder = 42
                   PlaceHolder = 'DateTimeLocal'
                   BSInputType = bsitDateTimeLocal
                 end
@@ -1588,7 +1550,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
-                  TabOrder = 47
+                  TabOrder = 43
                   PlaceHolder = 'Month'
                   BSInputType = bsitMonth
                 end
@@ -1601,7 +1563,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
-                  TabOrder = 48
+                  TabOrder = 44
                   PlaceHolder = 'Time'
                   BSInputType = bsitTime
                 end
@@ -1614,7 +1576,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSInput3'
                   Required = True
                   SubmitOnAsyncEvent = True
-                  TabOrder = 49
+                  TabOrder = 45
                   PlaceHolder = 'Week'
                   BSInputType = bsitWeek
                 end
@@ -1626,7 +1588,7 @@ object IWForm2: TIWForm2
                   Caption = 'Input Type Email'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 50
+                  TabOrder = 46
                   PlaceHolder = 'Email'
                   BSInputType = bsitEmail
                 end
@@ -1638,7 +1600,7 @@ object IWForm2: TIWForm2
                   Caption = 'Input Type Url'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 51
+                  TabOrder = 47
                   PlaceHolder = 'home page'
                   BSInputType = bsitUrl
                 end
@@ -1650,7 +1612,7 @@ object IWForm2: TIWForm2
                   Caption = 'Input Type Search'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 52
+                  TabOrder = 48
                   PlaceHolder = 'Search'
                   BSInputType = bsitSearch
                 end
@@ -1662,7 +1624,7 @@ object IWForm2: TIWForm2
                   Caption = 'Input Type Tel'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 53
+                  TabOrder = 49
                   PlaceHolder = 'Telephone'
                   BSInputType = bsitTel
                 end
@@ -1674,26 +1636,9 @@ object IWForm2: TIWForm2
                   Caption = 'Input Type Color'
                   FriendlyName = 'IWBSInput2'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 54
+                  TabOrder = 50
                   PlaceHolder = 'Pick a Color'
                   BSInputType = bsitColor
-                end
-                object IWBSCheckBox4: TIWBSCheckBox
-                  Left = 12
-                  Top = 420
-                  Width = 121
-                  Height = 21
-                  Caption = 'This is a checkbox'
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  SubmitOnAsyncEvent = True
-                  Style = stNormal
-                  TabOrder = 56
-                  FriendlyName = 'IWBSCheckBox4'
-                  ValueChecked = 'true'
-                  ValueUnchecked = 'false'
-                  Checked = False
                 end
                 object IWBSInput13: TIWBSInput
                   Left = 12
@@ -1714,20 +1659,15 @@ object IWForm2: TIWForm2
                   Top = 932
                   Width = 237
                   Height = 125
-                  SubmitOnAsyncEvent = True
-                  TrimValues = True
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  Layout = glVertical
+                  Caption = 'This is a radio group'
                   FriendlyName = 'IWBSRadioGroup1'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 70
                   Items.Strings = (
                     'item 1'
                     'item 2'
                     'item 3'
                     'item 4')
-                  TabOrder = -1
-                  Caption = 'This is a radio group'
                 end
                 object IWBSComboBox2: TIWBSSelect
                   Left = 14
@@ -1737,10 +1677,7 @@ object IWForm2: TIWForm2
                   Caption = 'This is a ComboBox'
                   FriendlyName = 'IWBSComboBox1'
                   SubmitOnAsyncEvent = True
-                  Style.Strings = (
-                    'stNormal')
-                  TabOrder = 43
-                  ItemIndex = -1
+                  TabOrder = 39
                   Items.Strings = (
                     'item 1'
                     'item 2'
@@ -1755,8 +1692,7 @@ object IWForm2: TIWForm2
                   Caption = 'This is a ListBox with multi select'
                   FriendlyName = 'IWBSListbox1'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 42
-                  ItemIndex = -1
+                  TabOrder = 38
                   Items.Strings = (
                     'item 1'
                     'item 2'
@@ -1773,14 +1709,25 @@ object IWForm2: TIWForm2
                   Caption = 'This is a ListBox with single select'
                   FriendlyName = 'IWBSListbox1'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 55
-                  ItemIndex = -1
+                  TabOrder = 52
                   Items.Strings = (
                     'item 1'
                     'item 2'
                     'item 3'
                     'item 4')
                   Size = 0
+                end
+                object IWBSCheckBox1: TIWBSCheckBox
+                  Left = 12
+                  Top = 416
+                  Width = 201
+                  Height = 25
+                  Caption = 'IWBSCheckBox1'
+                  FriendlyName = 'IWBSCheckBox1'
+                  SubmitOnAsyncEvent = True
+                  TabOrder = 78
+                  ValueChecked = 'true'
+                  ValueUnchecked = 'false'
                 end
                 object IWBSRegion1: TIWBSRegion
                   Left = 15
@@ -1794,14 +1741,13 @@ object IWForm2: TIWForm2
                     Width = 121
                     Height = 21
                     Caption = 'Radio Button 1'
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    Checked = True
-                    Group = 'group1'
-                    Value = 'IWBSRadioButton6'
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
+                    TabOrder = 71
+                    Checked = True
+                    Group = 'group1'
+                    ValueChecked = 'true'
+                    ValueUnchecked = 'false'
                   end
                   object IWBSRadioButton7: TIWBSRadioButton
                     Left = 8
@@ -1809,13 +1755,12 @@ object IWForm2: TIWForm2
                     Width = 121
                     Height = 21
                     Caption = 'Radio Button 2'
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    Group = 'group1'
-                    Value = 'IWBSRadioButton6'
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
+                    TabOrder = 73
+                    Group = 'group1'
+                    ValueChecked = 'true'
+                    ValueUnchecked = 'false'
                   end
                   object IWBSRadioButton8: TIWBSRadioButton
                     Left = 8
@@ -1823,13 +1768,12 @@ object IWForm2: TIWForm2
                     Width = 121
                     Height = 21
                     Caption = 'Radio Button 3'
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    Group = 'group1'
-                    Value = 'IWBSRadioButton6'
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
+                    TabOrder = 75
+                    Group = 'group1'
+                    ValueChecked = 'true'
+                    ValueUnchecked = 'false'
                   end
                   object IWBSRadioButton9: TIWBSRadioButton
                     Left = 8
@@ -1837,13 +1781,12 @@ object IWForm2: TIWForm2
                     Width = 121
                     Height = 21
                     Caption = 'Radio Button 4'
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    Group = 'group1'
-                    Value = 'IWBSRadioButton6'
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
+                    TabOrder = 77
+                    Group = 'group1'
+                    ValueChecked = 'true'
+                    ValueUnchecked = 'false'
                   end
                 end
               end
@@ -1878,7 +1821,7 @@ object IWForm2: TIWForm2
           Font.Size = 10
           Font.Style = []
           FriendlyName = 'IWBSButton1'
-          TabOrder = 57
+          TabOrder = 53
           OnClick = IWBSButton36Click
         end
         object IWText3: TIWBSText

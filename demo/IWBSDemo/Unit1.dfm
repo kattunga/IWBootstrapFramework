@@ -73,5 +73,18 @@ object IWFrame1: TIWFrame1
         end>
       TabOrder = 3
     end
+    object IWBSRadioButton1: TIWBSRadioButton
+      Left = 28
+      Top = 196
+      Width = 237
+      Height = 25
+      Caption = ''
+      FriendlyName = 'IWBSRadioButton1'
+      SubmitOnAsyncEvent = True
+      TabOrder = 4
+      ValueChecked = 'true'
+      ValueUnchecked = 'false'
+      Group = 'group'
+    end
   end
 end
