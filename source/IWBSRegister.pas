@@ -191,16 +191,14 @@ var
   LGlyp, LCaption: string;
   s: string;
 begin
-  ControlCanvas.Font.Size := 10;
-
-  if Control is TIWBSCheckBox then
-    begin
-      LGlyp := 'ok';
-      LCaption := TIWBSCheckBox(Control).Caption;
-    end
-  else if Control is TIWBSRadioButton then
+  if Control is TIWBSRadioButton then
     begin
       LGlyp := 'record';
+      LCaption := TIWBSCheckBox(Control).Caption;
+    end
+  else if Control is TIWBSCheckBox then
+    begin
+      LGlyp := 'ok';
       LCaption := TIWBSCheckBox(Control).Caption;
     end
   else
@@ -210,15 +208,17 @@ begin
     end;
 
   if LGlyp <> '' then begin
-    LIcon := Rect(0, 0, 18,Control.Height);
+    LIcon := Rect(0, 0, 16,Control.Height);
     ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
+    ControlCanvas.Font.Size := 8;
     s := Char(StrToIntDef(slGlyphicons.Values[LGlyp],78));
     DrawTextEx(ControlCanvas.Handle, PChar(s), 1, LIcon, DT_SINGLELINE+DT_VCENTER, nil);
   end;
 
   if LCaption <> '' then begin
-    LRect := Rect(20, 0, Control.Width, Control.Height);
+    LRect := Rect(17, 0, Control.Width, Control.Height);
     ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+    ControlCanvas.Font.Size := 10;
     DrawTextEx(ControlCanvas.Handle, PChar(LCaption), Length(LCaption), LRect, DT_SINGLELINE+DT_VCENTER, nil);
   end;
 end;
@@ -388,17 +388,13 @@ begin
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignPosition');
 
+  RegisterComponents('IW BootsTrap', [TIWBSInput]);
+  RegisterComponents('IW BootsTrap', [TIWBSMemo]);
+  RegisterComponents('IW BootsTrap', [TIWBSSelect]);
   UnlistPublishedProperty(TIWBSCustomInput, 'SkinId');
   UnlistPublishedProperty(TIWBSCustomInput, 'StyleRenderOptions');
 
-  RegisterComponents('IW BootsTrap', [TIWBSInput]);
-  RegisterComponents('IW BootsTrap', [TIWBSMemo]);
-
-  RegisterComponents('IW BootsTrap', [TIWBSSelect]);
-
   RegisterComponents('IW BootsTrap', [TIWBSCheckBox]);
-  UnlistPublishedProperty(TIWBSCheckBox, 'Style');
-
   RegisterComponents('IW BootsTrap', [TIWBSRadioButton]);
 
   RegisterComponents('IW BootsTrap', [TIWBSRadioGroup]);
@@ -407,7 +403,6 @@ begin
   RegisterPropertyEditor(TypeInfo(string), TIWBSButton,'BSGlyphicon', TGlyphiconEditor);
 
   RegisterComponents('IW BootsTrap', [TIWBSLabel]);
-
   RegisterComponents('IW BootsTrap', [TIWBSText]);
 
   RegisterComponents('IW BootsTrap', [TIWBSGlyphicon]);
@@ -435,7 +430,7 @@ initialization
   IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSSelect',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSCheckBox',TIWBSPaintHandlerCustomCheck);
-  IWRegisterPaintHandler('TIWBSRadioButton',TIWPaintHandlerRadioButton);
+  IWRegisterPaintHandler('TIWBSRadioButton',TIWBSPaintHandlerCustomCheck);
   IWRegisterPaintHandler('TIWBSRadioGroup',TIWBSPaintHandlerRadioGroup);
 
   IWRegisterPaintHandler('TIWBSButton',TIWBSPaintHandlerButton);
