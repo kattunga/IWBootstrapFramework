@@ -62,6 +62,10 @@ type
     IWBSListbox1: TIWBSSelect;
     IWBSListbox2: TIWBSSelect;
     IWBSCheckBox1: TIWBSCheckBox;
+    IWBSRegion9: TIWBSRegion;
+    IWBSRadioButton1: TIWBSRadioButton;
+    IWBSRadioButton2: TIWBSRadioButton;
+    IWBSRadioButton3: TIWBSRadioButton;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWAppFormDestroy(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);

@@ -2,7 +2,7 @@ object FFishFact: TFFishFact
   Left = 0
   Top = 0
   Width = 752
-  Height = 1062
+  Height = 1180
   Visible = False
   RenderInvisibleControls = False
   AllowPageAccess = True
@@ -20,35 +20,38 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -402
+  DesignTop = -388
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
     Width = 752
-    Height = 1062
+    Height = 1180
     Align = alClient
     BSRegionType = bsrtContainer
+    ExplicitHeight = 1062
     object IWBSInputForm1: TIWBSInputForm
       Left = 1
       Top = 62
       Width = 750
-      Height = 999
+      Height = 1117
       Align = alClient
       BSFormType = bsftHorizontal
       BSFormOptions.CaptionsSize.GridMDSpan = 4
       BSFormOptions.InputsSize.GridMDSpan = 8
+      ExplicitHeight = 999
       object IWBSRegion2: TIWBSRegion
         Left = 1
         Top = 1
         Width = 748
-        Height = 997
+        Height = 1115
         Align = alClient
         BSRegionType = bsrtRow
+        ExplicitHeight = 997
         object IWBSRegion3: TIWBSRegion
           Left = 9
           Top = 16
           Width = 697
-          Height = 969
+          Height = 1061
           BSGridOptions.GridMDSpan = 8
           BSRegionType = bsrtColumn
           object IWBSInput1: TIWBSInput
@@ -135,9 +138,9 @@ object FFishFact: TFFishFact
           end
           object IWBSMemo1: TIWBSMemo
             Left = 20
-            Top = 700
+            Top = 678
             Width = 317
-            Height = 121
+            Height = 103
             Caption = 'Notes'
             DataSource = dsrcMain
             DataField = 'Notes'
@@ -161,9 +164,9 @@ object FFishFact: TFFishFact
           end
           object IWBSRadioGroup1: TIWBSRadioGroup
             Left = 20
-            Top = 840
+            Top = 796
             Width = 317
-            Height = 112
+            Height = 85
             Caption = 'Option'
             DataSource = dsrcMain
             DataField = 'Option'
@@ -194,14 +197,13 @@ object FFishFact: TFFishFact
             Left = 20
             Top = 560
             Width = 317
-            Height = 101
+            Height = 81
             Caption = 'Option'
             DataSource = dsrcMain
             DataField = 'Option'
             FriendlyName = 'IWBSListbox1'
             SubmitOnAsyncEvent = True
             TabOrder = 9
-            ItemIndex = -1
             Items.Strings = (
               'Option 1=1'
               'Option 2=2'
@@ -220,7 +222,6 @@ object FFishFact: TFFishFact
             FriendlyName = 'IWBSListbox1'
             SubmitOnAsyncEvent = True
             TabOrder = 19
-            ItemIndex = -1
             Items.Strings = (
               'Option 1=1'
               'Option 2=2'
@@ -229,7 +230,7 @@ object FFishFact: TFFishFact
           end
           object IWBSCheckBox1: TIWBSCheckBox
             Left = 20
-            Top = 669
+            Top = 647
             Width = 317
             Height = 25
             Caption = 'Check'
@@ -1628,6 +1629,58 @@ object FFishFact: TFFishFact
                 OnAsyncClick = btnLastAsyncClick
                 BSGlyphicon = 'fast-forward'
               end
+            end
+          end
+          object IWBSRegion9: TIWBSRegion
+            Left = 20
+            Top = 892
+            Width = 317
+            Height = 137
+            BSRegionType = bsrtFormGroup
+            object IWBSRadioButton1: TIWBSRadioButton
+              Left = 20
+              Top = 16
+              Width = 121
+              Height = 25
+              Caption = 'Option 1'
+              DataSource = dsrcMain
+              DataField = 'Option'
+              FriendlyName = 'IWBSRadioButton1'
+              SubmitOnAsyncEvent = True
+              TabOrder = 21
+              SaveUnchecked = False
+              Group = 'group'
+              ValueChecked = '1'
+            end
+            object IWBSRadioButton2: TIWBSRadioButton
+              Left = 20
+              Top = 40
+              Width = 121
+              Height = 25
+              Caption = 'Option 2'
+              DataSource = dsrcMain
+              DataField = 'Option'
+              FriendlyName = 'IWBSRadioButton1'
+              SubmitOnAsyncEvent = True
+              TabOrder = 22
+              SaveUnchecked = False
+              Group = 'group'
+              ValueChecked = '2'
+            end
+            object IWBSRadioButton3: TIWBSRadioButton
+              Left = 20
+              Top = 67
+              Width = 121
+              Height = 25
+              Caption = 'Option 3'
+              DataSource = dsrcMain
+              DataField = 'Option'
+              FriendlyName = 'IWBSRadioButton1'
+              SubmitOnAsyncEvent = True
+              TabOrder = 23
+              SaveUnchecked = False
+              Group = 'group'
+              ValueChecked = '3'
             end
           end
         end

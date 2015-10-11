@@ -23,20 +23,15 @@ object IWForm4: TIWForm4
     Height = 193
     Visible = False
     StyleRenderOptions.RenderVisibility = False
-    SubmitOnAsyncEvent = True
-    TrimValues = True
-    Font.Color = clNone
-    Font.Size = 10
-    Font.Style = []
-    Layout = glVertical
+    Caption = ''
+    Enabled = False
     FriendlyName = 'IWBSRadioGroup1'
+    SubmitOnAsyncEvent = True
+    TabOrder = 0
     Items.Strings = (
       'item 1'
       'item 2'
       'item 3')
-    TabOrder = -1
-    Caption = ''
-    Enabled = False
   end
   object IWBSButton1: TIWBSButton
     Left = 80
@@ -95,27 +90,39 @@ object IWForm4: TIWForm4
     Top = 452
     Width = 121
     Height = 25
-    Caption = ''
+    Caption = 'Checkbox'
     FriendlyName = 'IWBSCheckBox1'
     SubmitOnAsyncEvent = True
     TabOrder = 5
-    Text = 'IWBSCheckBox1'
     ValueChecked = 'true'
     ValueUnchecked = 'true'
   end
-  object IWRadioButton1: TIWRadioButton
-    Left = 256
+  object IWBSRadioButton1: TIWBSRadioButton
+    Left = 288
     Top = 452
     Width = 121
-    Height = 21
-    Caption = 'IWRadioButton1'
-    Font.Color = clNone
-    Font.Size = 10
-    Font.Style = []
-    Group = 'no group'
-    Value = 'IWRadioButton1'
-    FriendlyName = 'IWRadioButton1'
+    Height = 25
+    Caption = 'IWBSRadioButton1'
+    FriendlyName = 'IWBSRadioButton1'
     SubmitOnAsyncEvent = True
+    TabOrder = 6
+    Checked = True
+    Group = 'group'
+    ValueChecked = 'true'
+    ValueUnchecked = 'false'
+  end
+  object IWBSRadioButton2: TIWBSRadioButton
+    Left = 288
+    Top = 491
+    Width = 121
+    Height = 25
+    Caption = 'IWBSRadioButton2'
+    FriendlyName = 'IWBSRadioButton2'
+    SubmitOnAsyncEvent = True
+    TabOrder = 7
+    Group = 'group'
+    ValueChecked = 'true'
+    ValueUnchecked = 'false'
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
     Left = 420

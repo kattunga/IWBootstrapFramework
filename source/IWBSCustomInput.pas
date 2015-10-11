@@ -10,10 +10,10 @@ uses
   IWBSCommon;
 
 type
-  TIWBSInputType = (bsitText, bsitPassword, bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime, bsitWeek, bsitNumber, bsitEmail, bsitUrl, bsitSearch, bsitTel, bsitColor);
+  TIWBSInputType = (bsitText, bsitPassword, bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime, bsitWeek, bsitNumber, bsitEmail, bsitUrl, bsitSearch, bsitTel, bsitColor, bsitHidden);
 
 const
-  aIWBSInputType: array[bsitText..bsitColor] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color');
+  aIWBSInputType: array[bsitText..bsitHidden] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color', 'hidden');
 
 type
   TIWBSCustomInput = class(TIWCustomControl, IIWInputControl, IIWSubmitControl, IIWInputControl40, IIWAutoEditableControl)
@@ -54,11 +54,12 @@ type
     procedure CheckData; virtual;
     procedure DoSubmit;
     procedure Notification(AComponent: TComponent; AOperation: TOperation); override;
+    procedure SetCaption(const AValue: string);
     procedure SetMaxLength(const AValue:integer);
     procedure SetReadOnly(const AValue:boolean);
     procedure SetRequired(const AValue:boolean);
     procedure SetStyle(const AValue: TStrings);
-    procedure SetValue(const AValue: string); virtual;
+    procedure SetValue(const AValue: string);
     procedure Submit(const AValue: string); override;
     function FormHasOnDefaultActionSet:boolean;
     function get_ShouldRenderTabOrder: boolean;override;
@@ -70,7 +71,7 @@ type
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; virtual;
     procedure InternalRenderStyle(AStyle: TStrings); virtual;
 
-    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string); virtual;
+    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); virtual;
 
     function IsReadOnly: boolean;
     function IsDisabled: boolean;
@@ -90,7 +91,7 @@ type
   published
     property AutoEditable: Boolean read FAutoEditable write FAutoEditable default True;
     property AutoFocus: boolean read FAutoFocus write FAutoFocus default False;
-    property Caption: string read FCaption write FCaption;
+    property Caption: string read FCaption write SetCaption;
     property DataSource: TDataSource read FDataSource write SetDataSource;
     property DataField: string read FDataField write SetDataField;
     property DoSubmitValidation;
@@ -151,7 +152,7 @@ type
   protected
     procedure InitControl; override;
     procedure CheckData; override;
-    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string); override;
+    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure Loaded; override;
     procedure SetItemIndex(AValue: integer);
     procedure SetItems(AValue: TStrings);
@@ -264,14 +265,16 @@ procedure TIWBSCustomInput.SetValue(const AValue: string);
 var
   LField: TField;
   LText: string;
+  LSave: boolean;
 begin
   if RequiresUpdateNotification(Parent) then
     UpdateNotifiedInterface(Parent).NotifyUpdate(Self,AValue);
-  InternalSetValue(AValue, LText);
+  LSave := True;
+  InternalSetValue(AValue, LText, LSave);
   if (FOldText <> LText) or (Text <> LText) then begin
     FOldText := LText;
     Text := LText;
-    if CheckDataSource(DataSource, DataField, LField) then
+    if CheckDataSource(DataSource, DataField, LField) and LSave then
       if InEditMode(DataSource.DataSet) and LField.CanModify then
         begin
           if Assigned(LField.OnSetText) then
@@ -286,6 +289,7 @@ begin
         end
       else
         raise EIWDataSetNotEditingError.Create(DataSource);
+    CheckData;
     Invalidate;
   end;
 end;
@@ -388,7 +392,7 @@ begin
   //
 end;
 
-procedure TIWBSCustomInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string);
+procedure TIWBSCustomInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
 begin
   ATextValue := ASubmitValue;
 end;
@@ -471,6 +475,12 @@ begin
   finally
     xStyle.Free;
   end;
+end;
+
+procedure TIWBSCustomInput.SetCaption(const AValue: string);
+begin
+  FCaption := AValue;
+  Invalidate;
 end;
 
 procedure TIWBSCustomInput.SetMaxLength(const AValue:integer);
@@ -610,7 +620,7 @@ begin
   if FItemsHaveValues then
     begin
       Result := -1;
-      for i := 0 to FItems.Count do
+      for i := 0 to FItems.Count-1 do
         if AnsiSameText(FItems.ValueFromIndex[i], AValue) then begin
           Result := i;
           Break;
@@ -626,7 +636,7 @@ begin
   FItemIndex := FindValue(Text);
 end;
 
-procedure TIWBSCustomSelectInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string);
+procedure TIWBSCustomSelectInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
 var
   i: integer;
 begin

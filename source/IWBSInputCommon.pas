@@ -40,9 +40,9 @@ end;
 function IWBSCreateInputFormGroup(AControl, AParent: TControl; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
 var
   lablTag, editTag: TIWHTMLTag;
-  ParentForm: TIWBSInputForm;
+  InputForm: TIWBSInputForm;
 begin
-  ParentForm := IWBSFindParentInputForm(AParent);
+  InputForm := IWBSFindParentInputForm(AParent);
   if ACaption <> '' then
     begin
       Result := TIWHTMLTag.CreateTag('div');
@@ -53,11 +53,11 @@ begin
         lablTag.AddClassParam('control-label');
         lablTag.AddStringParam('for', AHTMLName);
         lablTag.Contents.AddText(TIWBaseHTMLControl.TextToHTML(ACaption));
-        if (ParentForm <> nil) and (ParentForm.BSFormType = bsftHorizontal) then
+        if (InputForm <> nil) and (InputForm.BSFormType = bsftHorizontal) then
           begin
-            lablTag.AddClassParam(ParentForm.BSFormOptions.CaptionsSize.GetClassString);
+            lablTag.AddClassParam(InputForm.BSFormOptions.CaptionsSize.GetClassString);
             editTag := Result.Contents.AddTag('div');
-            editTag.AddClassParam(ParentForm.BSFormOptions.InputsSize.GetClassString);
+            editTag.AddClassParam(InputForm.BSFormOptions.InputsSize.GetClassString);
             editTag.Contents.AddTagAsObject(aTag);
           end
         else
@@ -69,24 +69,24 @@ begin
       end;
     end
   else
-    Result := IWBSCreateFormGroup(AParent, ParentForm, ATag, AHTMLName, True);
+    Result := IWBSCreateFormGroup(AParent, InputForm, ATag, AHTMLName, True);
 end;
 
 function IWBSCreateCheckBoxFormGroup(AParent: TControl; ATag: TIWHTMLTag; const ACss, ACaption, AHint, AHTMLName: string; AShowHint: boolean): TIWHTMLTag;
 var
   lablTag: TIWHTMLTag;
-  ParentForm: TIWBSInputForm;
+  InputForm: TIWBSInputForm;
 begin
-  ParentForm := IWBSFindParentInputForm(AParent);
+  InputForm := IWBSFindParentInputForm(AParent);
   Result := TIWHTMLTag.CreateTag('div');
   try
     Result.AddStringParam('id', AHTMLName+'_FG');
-    if (ParentForm <> nil) and (ParentForm.BSFormType = bsftInline) then
+    if (InputForm <> nil) and (InputForm.BSFormType = bsftInline) then
       Result.AddClassParam(ACss+'-inline')
     else
       Result.AddClassParam(ACss);
-    if (ParentForm <> nil) and (ParentForm.BSFormType = bsftHorizontal) then
-      Result.AddClassParam(ParentForm.BSFormOptions.GetOffsetClassString);
+    if (InputForm <> nil) and (InputForm.BSFormType = bsftHorizontal) then
+      Result.AddClassParam(InputForm.BSFormOptions.GetOffsetClassString);
     lablTag := Result.Contents.AddTag('label');
     lablTag.AddStringParam('id', AHTMLName+'_CHKBCAPTION');
     if AShowHint and (AHint <> '') then begin
@@ -96,7 +96,7 @@ begin
     lablTag.Contents.AddTagAsObject(ATag);
     lablTag.Contents.AddText(TIWBaseHTMLControl.TextToHTML(ACaption));
 
-    Result := IWBSCreateFormGroup(AParent, ParentForm, Result, AHTMLName, False);
+    Result := IWBSCreateFormGroup(AParent, InputForm, Result, AHTMLName, False);
   except
     FreeAndNil(Result);
     FreeAndNil(ATag);

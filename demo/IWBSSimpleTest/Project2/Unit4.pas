@@ -20,7 +20,8 @@ type
     IWBSLayoutMgr1: TIWBSLayoutMgr;
     IWBSButton3: TIWBSButton;
     IWBSCheckBox1: TIWBSCheckBox;
-    IWRadioButton1: TIWRadioButton;
+    IWBSRadioButton1: TIWBSRadioButton;
+    IWBSRadioButton2: TIWBSRadioButton;
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
   public

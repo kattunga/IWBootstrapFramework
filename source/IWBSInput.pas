@@ -37,30 +37,43 @@ type
   TIWBSCheckBox = class(TIWBSCustomInput)
   private
     FChecked: boolean;
-    FGroup: string;
-    FType: string;
     FValueChecked: string;
     FValueUnchecked: string;
   protected
     procedure InitControl; override;
     procedure CheckData; override;
-    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string); override;
+    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure SetChecked(AValue: boolean);
   published
+    constructor Create(AOwner: TComponent); override;
     property Checked: boolean read FChecked write SetChecked default False;
-    property Group: string read FGroup write FGroup;
     property ValueChecked: string read FValueChecked write FValueChecked;
     property ValueUnchecked: string read FValueUnchecked write FValueUnchecked;
   end;
 
-  TIWBSRadioButton = class(TIWBSCheckBox)
+  TIWBSRadioButton = class(TIWBSCustomInput)
+  private
+    FChecked: boolean;
+    FGroup: string;
+    FSaveUnchecked: boolean;
+    FValueChecked: string;
+    FValueUnchecked: string;
   protected
     procedure InitControl; override;
-  public
-
+    procedure CheckData; override;
+    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure SetChecked(AValue: boolean);
   published
+    constructor Create(AOwner: TComponent); override;
+    property Checked: boolean read FChecked write SetChecked default False;
+    property SaveUnchecked: boolean read FSaveUnchecked write FSaveUnchecked default True;
+    property Group: string read FGroup write FGroup;
+    property ValueChecked: string read FValueChecked write FValueChecked;
+    property ValueUnchecked: string read FValueUnchecked write FValueUnchecked;
   end;
 
   TIWBSSelect = class(TIWBSCustomSelectInput)
@@ -137,7 +150,7 @@ begin
       end;
     end;
 
-  if not (Parent is TIWBSInputGroup) then
+  if not (Parent is TIWBSInputGroup) and (BSInputType <> bsitHidden) then
     Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
 end;
 {$endregion}
@@ -219,12 +232,16 @@ end;
 {$endregion}
 
 {$region 'TIWBSCheckBox'}
+constructor TIWBSCheckBox.Create(AOwner: TComponent);
+begin
+  inherited;
+  Caption := Name;
+end;
+
 procedure TIWBSCheckBox.InitControl;
 begin
   inherited;
   FChecked := False;
-  FGroup := '';
-  FType := 'checkbox';
   FValueChecked := 'true';
   FValueUnchecked := 'false';
   Text := FValueUnchecked;
@@ -246,7 +263,7 @@ begin
   FChecked := Text = FValueChecked;
 end;
 
-procedure TIWBSCheckBox.InternalSetValue(const ASubmitValue: string; var ATextValue: string);
+procedure TIWBSCheckBox.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
 begin
   if ASubmitValue = 'on' then
     ATextValue := FValueChecked
@@ -269,9 +286,7 @@ begin
     Result.AddStringParam('id', AHTMLName);
     Result.AddStringParam('name', AHTMLName);
     Result.AddClassParam(FOldCss);
-    Result.AddStringParam('type', FType);
-    if FGroup <> '' then
-      Result.AddStringParam('group', FGroup);
+    Result.AddStringParam('type', 'checkbox');
     if IsDisabled then
       Result.Add('disabled');
     if Checked then
@@ -285,28 +300,88 @@ begin
   if Parent is TIWBSInputGroup then
     Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'addon')
   else
-    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, FType, Caption, Hint, AHTMLName, ShowHint);
-
-  // if it has group add script to uncheck others
-  if FGroup <> '' then
-    Result.Contents.AddTag('script').Contents.AddText(
-      '$("#'+AHTMLName+'_CHKBCAPTION'+'").click( function(e) { '+
-        'console.log($("input[group='''+FGroup+''']"));'+
-        'console.log(this);'+
-      '});');
+    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, 'checkbox', Caption, Hint, AHTMLName, ShowHint);
 end;
 {$endregion}
 
 {$region 'TIWBSRadioButton'}
+constructor TIWBSRadioButton.Create(AOwner: TComponent);
+begin
+  inherited;
+  Caption := Name;
+end;
+
 procedure TIWBSRadioButton.InitControl;
 begin
   inherited;
+  FChecked := False;
   FGroup := 'group';
-  FInputSuffix := '_RADIOBUTTON';
-  FType := 'radio';
+  FInputSuffix := '_INPUT';
+  FSaveUnchecked := True;
   FValueChecked := 'true';
   FValueUnchecked := 'false';
-  Text := 'off';
+  Text := FValueUnchecked;
+end;
+
+procedure TIWBSRadioButton.SetChecked(AValue: boolean);
+begin
+  FChecked := AValue;
+  if AValue then
+    Text := FValueChecked
+  else
+    Text := FValueUnchecked;
+  Invalidate;
+end;
+
+procedure TIWBSRadioButton.CheckData;
+begin
+  inherited;
+  FChecked := Text = FValueChecked;
+end;
+
+procedure TIWBSRadioButton.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
+begin
+  if ASubmitValue = 'on' then
+    ATextValue := FValueChecked
+  else
+    begin
+      ATextValue := FValueUnchecked;
+      ASetFieldValue := FSaveUnchecked;
+    end;
+end;
+
+procedure TIWBSRadioButton.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+begin
+  if Text <> FOldText then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+FInputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
+    FOldText := Text;
+  end;
+end;
+
+function TIWBSRadioButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+begin
+  Result := TIWHTMLTag.CreateTag('input');
+  try
+    Result.AddStringParam('id', AHTMLName+FInputSuffix);
+    Result.AddStringParam('name', FGroup);
+    Result.AddClassParam(FOldCss);
+    Result.AddStringParam('type', 'radio');
+    if IsDisabled then
+      Result.Add('disabled');
+    if FChecked then
+      Result.Add('checked');
+    Result.AddStringParam('onclick', 'radioButtonClick(event, '''+FGroup+''','''+AHTMLName+FInputSuffix+''');');
+    Result.AddStringParam('value', 'on');
+    Result.AddStringParam('style', FOldStyle);
+  except
+    FreeAndNil(Result);
+    raise;
+  end;
+
+  if Parent is TIWBSInputGroup then
+    Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'addon')
+  else
+    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, 'radio', Caption, Hint, AHTMLName, ShowHint);
 end;
 {$endregion}
 
