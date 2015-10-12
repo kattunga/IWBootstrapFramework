@@ -20,7 +20,7 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -388
+  DesignTop = -539
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
@@ -28,7 +28,6 @@ object FFishFact: TFFishFact
     Height = 1180
     Align = alClient
     BSRegionType = bsrtContainer
-    ExplicitHeight = 1062
     object IWBSInputForm1: TIWBSInputForm
       Left = 1
       Top = 62
@@ -38,7 +37,6 @@ object FFishFact: TFFishFact
       BSFormType = bsftHorizontal
       BSFormOptions.CaptionsSize.GridMDSpan = 4
       BSFormOptions.InputsSize.GridMDSpan = 8
-      ExplicitHeight = 999
       object IWBSRegion2: TIWBSRegion
         Left = 1
         Top = 1
@@ -46,7 +44,6 @@ object FFishFact: TFFishFact
         Height = 1115
         Align = alClient
         BSRegionType = bsrtRow
-        ExplicitHeight = 997
         object IWBSRegion3: TIWBSRegion
           Left = 9
           Top = 16
@@ -1651,6 +1648,7 @@ object FFishFact: TFFishFact
               SaveUnchecked = False
               Group = 'group'
               ValueChecked = '1'
+              ValueUnchecked = 'false'
             end
             object IWBSRadioButton2: TIWBSRadioButton
               Left = 20
@@ -1666,6 +1664,7 @@ object FFishFact: TFFishFact
               SaveUnchecked = False
               Group = 'group'
               ValueChecked = '2'
+              ValueUnchecked = 'false'
             end
             object IWBSRadioButton3: TIWBSRadioButton
               Left = 20
@@ -1681,6 +1680,7 @@ object FFishFact: TFFishFact
               SaveUnchecked = False
               Group = 'group'
               ValueChecked = '3'
+              ValueUnchecked = 'false'
             end
           end
         end

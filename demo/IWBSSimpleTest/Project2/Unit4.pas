@@ -9,7 +9,7 @@ uses
   IWVCLComponent, IWBaseLayoutComponent, IWBaseContainerLayout,
   IWContainerLayout, IWBSLayoutMgr, Vcl.Forms, IWVCLBaseContainer, IWContainer,
   IWHTMLContainer, IWHTML40Container, IWRegion, IWBSRegion, IWBSCustomInput,
-  IWBSButton, IWCompRadioButton;
+  IWBSButton, IWCompRadioButton, IWCompMemo;
 
 type
   TIWForm4 = class(TIWAppForm)
@@ -22,6 +22,8 @@ type
     IWBSCheckBox1: TIWBSCheckBox;
     IWBSRadioButton1: TIWBSRadioButton;
     IWBSRadioButton2: TIWBSRadioButton;
+    IWMemo1: TIWMemo;
+    IWDBMemo1: TIWDBMemo;
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
   public

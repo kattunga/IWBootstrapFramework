@@ -20,18 +20,23 @@ type
   TIWBSMemo = class(TIWBSCustomTextInput)
   private
     FLines: TStrings;
+    FResizeDirection: TIWBSResizeDirection;
     FRows: integer;
+    FVertScrollBar: boolean;
   protected
     procedure InitControl; override;
+    procedure CheckData; override;
+    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure InternalRenderStyle(AStyle: TStrings); override;
     procedure SetLines(const AValue: TStrings);
   public
     destructor Destroy; override;
-    procedure SetText(const AValue: TCaption); override;
   published
     property Lines: TStrings read FLines write SetLines;
+    property ResizeDirection: TIWBSResizeDirection read FResizeDirection write FResizeDirection default bsrdDefault;
     property Rows: integer read FRows write FRows default 5;
+    property VertScrollBar: boolean read FVertScrollBar write FVertScrollBar default True;
   end;
 
   TIWBSCheckBox = class(TIWBSCustomInput)
@@ -160,7 +165,9 @@ procedure TIWBSMemo.InitControl;
 begin
   inherited;
   FLines := TStringList.Create;
+  FResizeDirection := bsrdDefault;
   FRows := 5;
+  FVertScrollBar := True;
   Height := 101;
   Width := 121;
 end;
@@ -171,16 +178,24 @@ begin
   inherited;
 end;
 
-procedure TIWBSMemo.SetText(const AValue: TCaption);
-begin
-  inherited;
-  FLines.Text := Text;
-end;
-
 procedure TIWBSMemo.SetLines(const AValue: TStrings);
 begin
   FLines.Assign(AValue);
+  Text := FLines.Text;
   Invalidate;
+end;
+
+procedure TIWBSMemo.CheckData;
+begin
+  inherited;
+  FLines.Text := Text;
+  Text := FLines.Text;  // this autoadjust linebreaks
+end;
+
+procedure TIWBSMemo.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
+begin
+  FLines.Text := ASubmitValue;
+  ATextValue := FLines.Text;
 end;
 
 function TIWBSMemo.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
@@ -220,14 +235,10 @@ end;
 
 procedure TIWBSMemo.InternalRenderStyle(AStyle: TStrings);
 begin
-{  if not FVertScrollBar then
-    Result := Result + 'overflow: hidden;';
-  case ResizeDirection of
-    rdNone: Result := Result + 'resize:none;';
-    rdBoth: Result := Result + 'resize:both;';
-    rdVertical: Result := Result + 'resize:vertical;';
-    rdHorizontal: Result := Result + 'resize:horizontal;';
-  end; }
+  if not FVertScrollBar then
+    AStyle.Values['overflow'] := 'hidden';
+  if FResizeDirection <> bsrdDefault then
+    AStyle.Values['resize'] := aIWBSResizeDirection[FResizeDirection];
 end;
 {$endregion}
 

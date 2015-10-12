@@ -124,6 +124,43 @@ object IWForm4: TIWForm4
     ValueChecked = 'true'
     ValueUnchecked = 'false'
   end
+  object IWMemo1: TIWMemo
+    Left = 28
+    Top = 92
+    Width = 121
+    Height = 121
+    BGColor = clNone
+    Editable = True
+    Font.Color = clNone
+    Font.Size = 10
+    Font.Style = []
+    InvisibleBorder = False
+    HorizScrollBar = False
+    VertScrollBar = True
+    Required = False
+    TabOrder = 8
+    SubmitOnAsyncEvent = True
+    FriendlyName = 'IWMemo1'
+  end
+  object IWDBMemo1: TIWDBMemo
+    Left = 172
+    Top = 96
+    Width = 121
+    Height = 121
+    BGColor = clNone
+    Editable = True
+    Font.Color = clNone
+    Font.Size = 10
+    Font.Style = []
+    InvisibleBorder = False
+    HorizScrollBar = False
+    VertScrollBar = True
+    Required = False
+    TabOrder = 9
+    SubmitOnAsyncEvent = True
+    AutoEditable = False
+    FriendlyName = 'IWDBMemo1'
+  end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
     Left = 420
     Top = 24
