@@ -19,21 +19,22 @@ type
 
   TIWBSMemo = class(TIWBSCustomTextInput)
   private
-    FLines: TStrings;
+    FLines: TStringList;
     FResizeDirection: TIWBSResizeDirection;
     FRows: integer;
     FVertScrollBar: boolean;
+    procedure OnLinesChange(ASender : TObject);
+    procedure SetLines(const AValue: TStringList);
   protected
     procedure InitControl; override;
     procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure InternalRenderStyle(AStyle: TStrings); override;
-    procedure SetLines(const AValue: TStrings);
   public
     destructor Destroy; override;
   published
-    property Lines: TStrings read FLines write SetLines;
+    property Lines: TStringList read FLines write SetLines;
     property ResizeDirection: TIWBSResizeDirection read FResizeDirection write FResizeDirection default bsrdDefault;
     property Rows: integer read FRows write FRows default 5;
     property VertScrollBar: boolean read FVertScrollBar write FVertScrollBar default True;
@@ -84,14 +85,20 @@ type
   TIWBSSelect = class(TIWBSCustomSelectInput)
   private
     FMultiSelect: boolean;
+    FSelectedItems: TStringList;
     FSize: integer;
+    procedure OnSelectedItemsChange(ASender : TObject);
+    procedure SetSelectedItems(AValue: TStringList);
+    procedure SetSize(AValue: integer);
   protected
     procedure InitControl; override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
-    procedure SetSize(AValue: integer);
+  public
+    destructor Destroy; override;
   published
     property MultiSelect: boolean read FMultiSelect write FMultiSelect default False;
+    property SelectedItems: TStringList read FSelectedItems write SetSelectedItems;
     property Size: integer read FSize write SetSize default 1;
   end;
 
@@ -104,8 +111,7 @@ type
 
 implementation
 
-uses IWDBCommon, IWMarkupLanguageTag, IW.Common.System,
-     IWBSRegionCommon, IWBSUtils, IWBSInputCommon;
+uses IW.Common.System, IWBSUtils, IWBSInputCommon;
 
 {$region 'TIWBSInput'}
 function TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
@@ -165,6 +171,7 @@ procedure TIWBSMemo.InitControl;
 begin
   inherited;
   FLines := TStringList.Create;
+  FLines.OnChange := OnLinesChange;
   FResizeDirection := bsrdDefault;
   FRows := 5;
   FVertScrollBar := True;
@@ -174,11 +181,16 @@ end;
 
 destructor TIWBSMemo.Destroy;
 begin
-  FLines.Free;
+  FreeAndNil(FLines);
   inherited;
 end;
 
-procedure TIWBSMemo.SetLines(const AValue: TStrings);
+procedure TIWBSMemo.OnLinesChange(ASender : TObject);
+begin
+  Invalidate;
+end;
+
+procedure TIWBSMemo.SetLines(const AValue: TStringList);
 begin
   FLines.Assign(AValue);
   Text := FLines.Text;
@@ -401,10 +413,29 @@ procedure TIWBSSelect.InitControl;
 begin
   inherited;
   FMultiSelect := False;
+  FSelectedItems := TStringList.Create;
+  FSelectedItems.OnChange := OnSelectedItemsChange;
   FSize := 1;
 end;
 
-procedure  TIWBSSelect.SetSize(AValue: integer);
+destructor TIWBSSelect.Destroy;
+begin
+  FreeAndNil(FSelectedItems);
+  inherited;
+end;
+
+procedure TIWBSSelect.OnSelectedItemsChange(ASender : TObject);
+begin
+  Invalidate;
+end;
+
+procedure TIWBSSelect.SetSelectedItems(AValue: TStringList);
+begin
+  FSelectedItems.Assign(AValue);
+  Invalidate;
+end;
+
+procedure TIWBSSelect.SetSize(AValue: integer);
 begin
   FSize := AValue;
   Invalidate;

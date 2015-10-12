@@ -63,8 +63,8 @@ object FFishFact: TFFishFact
             FriendlyName = 'IWBSInput1'
             SubmitOnAsyncEvent = True
             TabOrder = 0
-            BSTextAlignment = bstaRight
             Text = 'Length_In'
+            BSTextAlignment = bstaRight
             BSInputType = bsitNumber
           end
           object IWBSInput2: TIWBSInput
@@ -170,6 +170,7 @@ object FFishFact: TFFishFact
             FriendlyName = 'IWBSRadioGroup1'
             SubmitOnAsyncEvent = True
             TabOrder = 8
+            Text = '1'
             ItemIndex = 0
             Items.Strings = (
               'Option 1=1'
@@ -236,6 +237,7 @@ object FFishFact: TFFishFact
             FriendlyName = 'IWBSCheckBox1'
             SubmitOnAsyncEvent = True
             TabOrder = 20
+            Text = 'false'
             ValueChecked = 'Y'
             ValueUnchecked = 'N'
           end
@@ -1632,11 +1634,11 @@ object FFishFact: TFFishFact
             Left = 20
             Top = 892
             Width = 317
-            Height = 137
+            Height = 117
             BSRegionType = bsrtFormGroup
             object IWBSRadioButton1: TIWBSRadioButton
-              Left = 20
-              Top = 16
+              Left = 19
+              Top = 32
               Width = 121
               Height = 25
               Caption = 'Option 1'
@@ -1645,14 +1647,15 @@ object FFishFact: TFFishFact
               FriendlyName = 'IWBSRadioButton1'
               SubmitOnAsyncEvent = True
               TabOrder = 21
+              Text = 'false'
               SaveUnchecked = False
               Group = 'group'
               ValueChecked = '1'
               ValueUnchecked = 'false'
             end
             object IWBSRadioButton2: TIWBSRadioButton
-              Left = 20
-              Top = 40
+              Left = 19
+              Top = 56
               Width = 121
               Height = 25
               Caption = 'Option 2'
@@ -1661,14 +1664,15 @@ object FFishFact: TFFishFact
               FriendlyName = 'IWBSRadioButton1'
               SubmitOnAsyncEvent = True
               TabOrder = 22
+              Text = 'false'
               SaveUnchecked = False
               Group = 'group'
               ValueChecked = '2'
               ValueUnchecked = 'false'
             end
             object IWBSRadioButton3: TIWBSRadioButton
-              Left = 20
-              Top = 67
+              Left = 19
+              Top = 83
               Width = 121
               Height = 25
               Caption = 'Option 3'
@@ -1677,10 +1681,30 @@ object FFishFact: TFFishFact
               FriendlyName = 'IWBSRadioButton1'
               SubmitOnAsyncEvent = True
               TabOrder = 23
+              Text = 'false'
               SaveUnchecked = False
               Group = 'group'
               ValueChecked = '3'
               ValueUnchecked = 'false'
+            end
+            object IWBSText1: TIWBSText
+              Left = 19
+              Top = 3
+              Width = 278
+              Height = 23
+              BGColor = clNone
+              ConvertSpaces = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSText1'
+              Lines.Strings = (
+                
+                  '<strong>This are independent radio buttons attached to same Tabl' +
+                  'e Field.</strong>')
+              RawText = True
+              UseFrame = False
+              WantReturns = True
             end
           end
         end

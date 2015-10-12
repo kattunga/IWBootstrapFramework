@@ -161,6 +161,17 @@ object IWForm4: TIWForm4
     AutoEditable = False
     FriendlyName = 'IWDBMemo1'
   end
+  object IWBSMemo1: TIWBSMemo
+    Left = 340
+    Top = 112
+    Width = 121
+    Height = 101
+    Caption = ''
+    FriendlyName = 'IWBSMemo1'
+    SubmitOnAsyncEvent = True
+    TabOrder = 10
+    Text = 'IWBSMemo1'
+  end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
     Left = 420
     Top = 24

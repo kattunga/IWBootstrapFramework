@@ -19,7 +19,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = 8
+  DesignTop = -799
   object IWBSRegion3: TIWBSRegion
     Left = 0
     Top = 0
@@ -466,6 +466,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSCheckBox3'
                   SubmitOnAsyncEvent = True
                   TabOrder = 28
+                  Text = 'false'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
                 end
@@ -497,6 +498,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSRadioButton5'
                   SubmitOnAsyncEvent = True
                   TabOrder = 5
+                  Text = 'false'
                   Group = 'no group'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
@@ -1279,6 +1281,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'chkContFluid'
                   SubmitOnAsyncEvent = True
                   TabOrder = 55
+                  Text = 'false'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
                 end
@@ -1291,6 +1294,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'chkTabsJust'
                   SubmitOnAsyncEvent = True
                   TabOrder = 56
+                  Text = 'false'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
                 end
@@ -1303,6 +1307,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'chkTabsStacked'
                   SubmitOnAsyncEvent = True
                   TabOrder = 57
+                  Text = 'false'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
                 end
@@ -1315,6 +1320,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'chkTabsPills'
                   SubmitOnAsyncEvent = True
                   TabOrder = 58
+                  Text = 'false'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
                 end
@@ -1327,6 +1333,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'chkTabsFade'
                   SubmitOnAsyncEvent = True
                   TabOrder = 59
+                  Text = 'false'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
                 end
@@ -1339,6 +1346,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'chkTabsJust'
                   SubmitOnAsyncEvent = True
                   TabOrder = 60
+                  Text = 'false'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
                 end
@@ -1395,6 +1403,7 @@ object IWForm2: TIWForm2
                       FriendlyName = 'LstFormType'
                       SubmitOnAsyncEvent = True
                       TabOrder = 51
+                      Text = 'form-vertical'
                       ItemIndex = 0
                       Items.Strings = (
                         'form-vertical'
@@ -1651,8 +1660,8 @@ object IWForm2: TIWForm2
                   NonEditableAsLabel = True
                   SubmitOnAsyncEvent = True
                   TabOrder = 76
-                  PlaceHolder = 'Pick a Color'
                   Text = 'This is a static text'
+                  PlaceHolder = 'Pick a Color'
                 end
                 object IWBSRadioGroup1: TIWBSRadioGroup
                   Left = 15
@@ -1663,6 +1672,8 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSRadioGroup1'
                   SubmitOnAsyncEvent = True
                   TabOrder = 70
+                  Text = 'item 1'
+                  ItemIndex = 0
                   Items.Strings = (
                     'item 1'
                     'item 2'
@@ -1726,6 +1737,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSCheckBox1'
                   SubmitOnAsyncEvent = True
                   TabOrder = 78
+                  Text = 'false'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
                 end
@@ -1744,6 +1756,7 @@ object IWForm2: TIWForm2
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
                     TabOrder = 71
+                    Text = 'true'
                     Checked = True
                     Group = 'group1'
                     ValueChecked = 'true'
@@ -1758,6 +1771,7 @@ object IWForm2: TIWForm2
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
                     TabOrder = 73
+                    Text = 'false'
                     Group = 'group1'
                     ValueChecked = 'true'
                     ValueUnchecked = 'false'
@@ -1771,6 +1785,7 @@ object IWForm2: TIWForm2
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
                     TabOrder = 75
+                    Text = 'false'
                     Group = 'group1'
                     ValueChecked = 'true'
                     ValueUnchecked = 'false'
@@ -1784,6 +1799,7 @@ object IWForm2: TIWForm2
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
                     TabOrder = 77
+                    Text = 'false'
                     Group = 'group1'
                     ValueChecked = 'true'
                     ValueUnchecked = 'false'

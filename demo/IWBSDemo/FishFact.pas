@@ -66,6 +66,7 @@ type
     IWBSRadioButton1: TIWBSRadioButton;
     IWBSRadioButton2: TIWBSRadioButton;
     IWBSRadioButton3: TIWBSRadioButton;
+    IWBSText1: TIWBSText;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWAppFormDestroy(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);

@@ -2,7 +2,7 @@ unit IWBSControls;
 
 interface
 
-uses System.Classes, System.SysUtils, Data.Db,
+uses System.Classes, System.SysUtils, Data.Db, Vcl.Graphics,
      IWControl, IWRenderContext, IWMarkupLanguageTag, IWXMLTag, IWHTMLTag,
      IWCompLabel, IWDBCommon, IWDBStdCtrls, IWDBExtCtrls, IWCompText;
 
@@ -94,6 +94,12 @@ type
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
     function RenderStyle(AComponentContext: TIWCompContext): string; override;
+  published
+    property BGColor default clNone;
+    property ConvertSpaces default False;
+    property RawText default False;
+    property UseFrame default False;
+    property WantReturns default True;
   end;
 
 implementation

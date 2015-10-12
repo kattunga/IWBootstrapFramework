@@ -106,6 +106,7 @@ type
     property Script: TStrings read FStyle write FScript;
     property Style: TStrings read FStyle write SetStyle;
     property TabOrder;
+    property Text;
 
     property OnAsyncClick;
     property OnAsyncDoubleClick;
@@ -139,30 +140,30 @@ type
     property MaxLength default 0;
     property PlaceHolder: string read FPlaceHolder write FPlaceHolder;
     property ReadOnly default False;
-    property Text;
   end;
 
   TIWBSCustomSelectInput = class(TIWBSCustomInput)
   private
     FItemIndex: integer;
-    FItems: TStrings;
+    FItems: TStringList;
     FItemsHaveValues: boolean;
+    procedure OnItemsChange(ASender : TObject);
     procedure InternalSetItemIndex(AValue: integer);
     function FindValue(const AValue: string): integer;
+    procedure SetItemIndex(AValue: integer);
+    procedure SetItems(AValue: TStringList);
+    procedure SetItemsHaveValues(AValue: boolean);
   protected
     procedure InitControl; override;
     procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure Loaded; override;
-    procedure SetItemIndex(AValue: integer);
-    procedure SetItems(AValue: TStrings);
-    procedure SetItemsHaveValues(AValue: boolean);
   public
     destructor Destroy; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
   published
     property ItemIndex: integer read FItemIndex write SetItemIndex default -1;
-    property Items: TStrings read FItems write SetItems;
+    property Items: TStringList read FItems write SetItems;
     property ItemsHaveValues: boolean read FItemsHaveValues write SetItemsHaveValues default False;
   end;
 
@@ -556,14 +557,20 @@ begin
   inherited;
   FItemIndex := -1;
   FItems := TStringList.Create;
+  FItems.OnChange := OnItemsChange;
   FItemsHaveValues := False;
   FSupportReadOnly := False;
 end;
 
 destructor TIWBSCustomSelectInput.Destroy;
 begin
-  FItems.Free;
+  FreeAndNil(FItems);
   inherited;
+end;
+
+procedure TIWBSCustomSelectInput.OnItemsChange(ASender : TObject);
+begin
+  Invalidate;
 end;
 
 procedure TIWBSCustomSelectInput.Loaded;
@@ -601,7 +608,7 @@ begin
   end;
 end;
 
-procedure TIWBSCustomSelectInput.SetItems(AValue: TStrings);
+procedure TIWBSCustomSelectInput.SetItems(AValue: TStringList);
 begin
   FItems.Assign(AValue);
   Invalidate;

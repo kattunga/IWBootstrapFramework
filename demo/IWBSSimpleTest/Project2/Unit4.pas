@@ -24,6 +24,7 @@ type
     IWBSRadioButton2: TIWBSRadioButton;
     IWMemo1: TIWMemo;
     IWDBMemo1: TIWDBMemo;
+    IWBSMemo1: TIWBSMemo;
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
   public
