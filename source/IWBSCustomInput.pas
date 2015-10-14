@@ -215,8 +215,8 @@ end;
 
 procedure TIWBSCustomInput.Invalidate;
 begin
-  inherited;
   DoRefreshControl := true;
+  inherited;
 end;
 
 procedure TIWBSCustomInput.GetInputControlNames(ANames: TStringList);

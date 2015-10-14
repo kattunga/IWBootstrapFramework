@@ -46,12 +46,12 @@ type
     FValueChecked: string;
     FValueUnchecked: string;
   protected
-    procedure InitControl; override;
     procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure SetChecked(AValue: boolean);
+    procedure SetName(const AValue: TComponentName); override;
   published
     constructor Create(AOwner: TComponent); override;
     property Checked: boolean read FChecked write SetChecked default False;
@@ -67,12 +67,12 @@ type
     FValueChecked: string;
     FValueUnchecked: string;
   protected
-    procedure InitControl; override;
     procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure SetChecked(AValue: boolean);
+    procedure SetName(const AValue: TComponentName); override;
   published
     constructor Create(AOwner: TComponent); override;
     property Checked: boolean read FChecked write SetChecked default False;
@@ -111,7 +111,7 @@ type
 
 implementation
 
-uses IW.Common.System, IWBSUtils, IWBSInputCommon;
+uses IW.Common.System, IWBSUtils, IWBSInputCommon, Dialogs;
 
 {$region 'TIWBSInput'}
 function TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
@@ -258,16 +258,16 @@ end;
 constructor TIWBSCheckBox.Create(AOwner: TComponent);
 begin
   inherited;
-  Caption := Name;
-end;
-
-procedure TIWBSCheckBox.InitControl;
-begin
-  inherited;
   FChecked := False;
   FValueChecked := 'true';
   FValueUnchecked := 'false';
   Text := FValueUnchecked;
+end;
+
+procedure TIWBSCheckBox.SetName(const AValue: TComponentName);
+begin
+  inherited;
+  Caption := Name;
 end;
 
 procedure TIWBSCheckBox.SetChecked(AValue: boolean);
@@ -331,12 +331,6 @@ end;
 constructor TIWBSRadioButton.Create(AOwner: TComponent);
 begin
   inherited;
-  Caption := Name;
-end;
-
-procedure TIWBSRadioButton.InitControl;
-begin
-  inherited;
   FChecked := False;
   FGroup := 'group';
   FInputSuffix := '_INPUT';
@@ -344,6 +338,12 @@ begin
   FValueChecked := 'true';
   FValueUnchecked := 'false';
   Text := FValueUnchecked;
+end;
+
+procedure TIWBSRadioButton.SetName(const AValue: TComponentName);
+begin
+  inherited;
+  Caption := Name;
 end;
 
 procedure TIWBSRadioButton.SetChecked(AValue: boolean);

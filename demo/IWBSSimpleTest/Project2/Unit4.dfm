@@ -23,7 +23,6 @@ object IWForm4: TIWForm4
     Height = 193
     Visible = False
     StyleRenderOptions.RenderVisibility = False
-    Caption = ''
     Enabled = False
     FriendlyName = 'IWBSRadioGroup1'
     SubmitOnAsyncEvent = True
@@ -65,7 +64,7 @@ object IWForm4: TIWForm4
     Top = 60
     Width = 405
     Height = 21
-    Caption = ''
+    Caption = 'IWBSInput1'
     FriendlyName = 'IWBSInput1'
     SubmitOnAsyncEvent = True
     TabOrder = 3
@@ -90,10 +89,11 @@ object IWForm4: TIWForm4
     Top = 452
     Width = 121
     Height = 25
-    Caption = 'Checkbox'
+    Caption = 'false'
     FriendlyName = 'IWBSCheckBox1'
     SubmitOnAsyncEvent = True
     TabOrder = 5
+    Text = 'false'
     ValueChecked = 'true'
     ValueUnchecked = 'true'
   end
@@ -102,10 +102,11 @@ object IWForm4: TIWForm4
     Top = 452
     Width = 121
     Height = 25
-    Caption = 'IWBSRadioButton1'
+    Caption = 'true'
     FriendlyName = 'IWBSRadioButton1'
     SubmitOnAsyncEvent = True
     TabOrder = 6
+    Text = 'true'
     Checked = True
     Group = 'group'
     ValueChecked = 'true'
@@ -116,61 +117,67 @@ object IWForm4: TIWForm4
     Top = 491
     Width = 121
     Height = 25
-    Caption = 'IWBSRadioButton2'
+    Caption = 'false'
     FriendlyName = 'IWBSRadioButton2'
     SubmitOnAsyncEvent = True
     TabOrder = 7
+    Text = 'false'
     Group = 'group'
     ValueChecked = 'true'
     ValueUnchecked = 'false'
   end
-  object IWMemo1: TIWMemo
-    Left = 28
-    Top = 92
-    Width = 121
-    Height = 121
-    BGColor = clNone
-    Editable = True
-    Font.Color = clNone
-    Font.Size = 10
-    Font.Style = []
-    InvisibleBorder = False
-    HorizScrollBar = False
-    VertScrollBar = True
-    Required = False
-    TabOrder = 8
-    SubmitOnAsyncEvent = True
-    FriendlyName = 'IWMemo1'
-  end
-  object IWDBMemo1: TIWDBMemo
-    Left = 172
+  object IWListbox1: TIWListbox
+    Left = 224
     Top = 96
     Width = 121
     Height = 121
-    BGColor = clNone
+    Font.Color = clNone
+    Font.Size = 10
+    Font.Style = []
+    TabOrder = 8
+    MaxItems = 0
+    FriendlyName = 'IWListbox1'
+    NoSelectionText = '-- No Selection --'
+  end
+  object IWCheckBox1: TIWCheckBox
+    Left = 80
+    Top = 492
+    Width = 121
+    Height = 21
+    Caption = 'IWCheckBox1'
     Editable = True
     Font.Color = clNone
     Font.Size = 10
     Font.Style = []
-    InvisibleBorder = False
-    HorizScrollBar = False
-    VertScrollBar = True
-    Required = False
-    TabOrder = 9
     SubmitOnAsyncEvent = True
-    AutoEditable = False
-    FriendlyName = 'IWDBMemo1'
+    Style = stNormal
+    TabOrder = 9
+    Checked = False
+    FriendlyName = 'IWCheckBox1'
   end
-  object IWBSMemo1: TIWBSMemo
-    Left = 340
-    Top = 112
+  object IWBSCheckBox2: TIWBSCheckBox
+    Left = 80
+    Top = 519
     Width = 121
-    Height = 101
-    Caption = ''
-    FriendlyName = 'IWBSMemo1'
+    Height = 25
+    Caption = 'false'
+    FriendlyName = 'IWBSCheckBox2'
     SubmitOnAsyncEvent = True
     TabOrder = 10
-    Text = 'IWBSMemo1'
+    Text = 'false'
+    ValueChecked = 'true'
+    ValueUnchecked = 'false'
+  end
+  object IWBSInput2: TIWBSInput
+    Left = 80
+    Top = 20
+    Width = 121
+    Height = 25
+    Caption = 'IWBSInput2'
+    FriendlyName = 'IWBSInput2'
+    SubmitOnAsyncEvent = True
+    TabOrder = 11
+    Text = 'IWBSInput2'
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
     Left = 420
