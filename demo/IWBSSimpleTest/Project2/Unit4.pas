@@ -13,21 +13,15 @@ uses
 
 type
   TIWForm4 = class(TIWAppForm)
-    IWBSRadioGroup1: TIWBSRadioGroup;
     IWBSButton1: TIWBSButton;
-    IWBSButton2: TIWBSButton;
     IWBSInput1: TIWBSInput;
     IWBSLayoutMgr1: TIWBSLayoutMgr;
     IWBSButton3: TIWBSButton;
-    IWBSCheckBox1: TIWBSCheckBox;
-    IWBSRadioButton1: TIWBSRadioButton;
-    IWBSRadioButton2: TIWBSRadioButton;
-    IWListbox1: TIWListbox;
-    IWCheckBox1: TIWCheckBox;
-    IWBSCheckBox2: TIWBSCheckBox;
-    IWBSInput2: TIWBSInput;
+    IWBSSelect1: TIWBSSelect;
+    IWBSButton2: TIWBSButton;
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton2AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -38,7 +32,13 @@ implementation
 procedure TIWForm4.IWBSButton1AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-//
+  IWBSSelect1.Text := IWBSInput1.Text;
+end;
+
+procedure TIWForm4.IWBSButton2AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  IWBSInput1.Text := IWBSSelect1.Text;
 end;
 
 procedure TIWForm4.IWBSButton3AsyncClick(Sender: TObject;

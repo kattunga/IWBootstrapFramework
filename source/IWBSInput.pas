@@ -84,21 +84,23 @@ type
 
   TIWBSSelect = class(TIWBSCustomSelectInput)
   private
+    FItemsSelected: array of boolean;
     FMultiSelect: boolean;
-    FSelectedItems: TStringList;
     FSize: integer;
-    procedure OnSelectedItemsChange(ASender : TObject);
-    procedure SetSelectedItems(AValue: TStringList);
+    procedure ResetItemsSelected;
     procedure SetSize(AValue: integer);
   protected
     procedure InitControl; override;
+    procedure CheckData; override;
+    procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure OnItemsChange(ASender : TObject); override;
+    procedure SetItemIndex(AValue: integer); override;
   public
-    destructor Destroy; override;
+    procedure SetText(const AValue: TCaption); override;
   published
     property MultiSelect: boolean read FMultiSelect write FMultiSelect default False;
-    property SelectedItems: TStringList read FSelectedItems write SetSelectedItems;
     property Size: integer read FSize write SetSize default 1;
   end;
 
@@ -123,7 +125,7 @@ begin
         Result.AddClassParam(FOldCss);
         Result.AddStringParam('id', AHTMLName);
         Result.AddStringParam('style', FOldStyle);
-        Result.Contents.AddText(TextToHTML(Text));
+        Result.Contents.AddText(TextToHTML(FText));
       except
         FreeAndNil(Result);
         raise;
@@ -149,7 +151,7 @@ begin
           Result.Add('disabled');
         if MaxLength > 0 then
           Result.AddIntegerParam('maxlength', MaxLength);
-        Result.AddStringParam('value', TextToHTML(Text));
+        Result.AddStringParam('value', TextToHTML(FText));
         if Required then
           Result.Add('required');
         if PlaceHolder <> '' then
@@ -193,15 +195,15 @@ end;
 procedure TIWBSMemo.SetLines(const AValue: TStringList);
 begin
   FLines.Assign(AValue);
-  Text := FLines.Text;
+  FText := FLines.Text;
   Invalidate;
 end;
 
 procedure TIWBSMemo.CheckData;
 begin
   inherited;
-  FLines.Text := Text;
-  Text := FLines.Text;  // this autoadjust linebreaks
+  FLines.Text := FText;
+  FText := FLines.Text;  // this autoadjust linebreaks
 end;
 
 procedure TIWBSMemo.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
@@ -235,7 +237,7 @@ begin
       Result.AddStringParam('placeholder', TextToHTML(PlaceHolder));
     Result.AddIntegerParam('rows', FRows);
     Result.AddStringParam('style', FOldStyle);
-    Result.Contents.AddText(TextToHTML(Text,false,false));
+    Result.Contents.AddText(TextToHTML(FText,false,false));
   except
     FreeAndNil(Result);
     raise;
@@ -261,7 +263,7 @@ begin
   FChecked := False;
   FValueChecked := 'true';
   FValueUnchecked := 'false';
-  Text := FValueUnchecked;
+  FText := FValueUnchecked;
 end;
 
 procedure TIWBSCheckBox.SetName(const AValue: TComponentName);
@@ -274,16 +276,16 @@ procedure TIWBSCheckBox.SetChecked(AValue: boolean);
 begin
   FChecked := AValue;
   if AValue then
-    Text := FValueChecked
+    FText := FValueChecked
   else
-    Text := FValueUnchecked;
+    FText := FValueUnchecked;
   Invalidate;
 end;
 
 procedure TIWBSCheckBox.CheckData;
 begin
   inherited;
-  FChecked := Text = FValueChecked;
+  FChecked := FText = FValueChecked;
 end;
 
 procedure TIWBSCheckBox.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
@@ -296,9 +298,9 @@ end;
 
 procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
-  if Text <> FOldText then begin
+  if FText <> FOldText then begin
     AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+FInputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
-    FOldText := Text;
+    FOldText := FText;
   end;
 end;
 
@@ -337,7 +339,7 @@ begin
   FSaveUnchecked := True;
   FValueChecked := 'true';
   FValueUnchecked := 'false';
-  Text := FValueUnchecked;
+  FText := FValueUnchecked;
 end;
 
 procedure TIWBSRadioButton.SetName(const AValue: TComponentName);
@@ -350,16 +352,16 @@ procedure TIWBSRadioButton.SetChecked(AValue: boolean);
 begin
   FChecked := AValue;
   if AValue then
-    Text := FValueChecked
+    FText := FValueChecked
   else
-    Text := FValueUnchecked;
+    FText := FValueUnchecked;
   Invalidate;
 end;
 
 procedure TIWBSRadioButton.CheckData;
 begin
   inherited;
-  FChecked := Text = FValueChecked;
+  FChecked := FText = FValueChecked;
 end;
 
 procedure TIWBSRadioButton.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
@@ -375,9 +377,9 @@ end;
 
 procedure TIWBSRadioButton.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
-  if Text <> FOldText then begin
+  if FText <> FOldText then begin
     AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+FInputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
-    FOldText := Text;
+    FOldText := FText;
   end;
 end;
 
@@ -413,26 +415,30 @@ procedure TIWBSSelect.InitControl;
 begin
   inherited;
   FMultiSelect := False;
-  FSelectedItems := TStringList.Create;
-  FSelectedItems.OnChange := OnSelectedItemsChange;
   FSize := 1;
 end;
 
-destructor TIWBSSelect.Destroy;
+procedure TIWBSSelect.OnItemsChange(ASender : TObject);
 begin
-  FreeAndNil(FSelectedItems);
   inherited;
+  SetLength(FItemsSelected, Items.Count);
+  ResetItemsSelected;
 end;
 
-procedure TIWBSSelect.OnSelectedItemsChange(ASender : TObject);
+procedure TIWBSSelect.SetItemIndex(AValue: integer);
 begin
-  Invalidate;
+  inherited;
+  ResetItemsSelected;
 end;
 
-procedure TIWBSSelect.SetSelectedItems(AValue: TStringList);
+procedure TIWBSSelect.ResetItemsSelected;
+var
+  i: integer;
 begin
-  FSelectedItems.Assign(AValue);
-  Invalidate;
+  for i := 0 to Length(FItemsSelected)-1 do
+    FItemsSelected[i] := false;
+  if (FItemIndex >= 0) and (FItemIndex < Length(FItemsSelected)) then
+    FItemsSelected[FItemIndex] := True;
 end;
 
 procedure TIWBSSelect.SetSize(AValue: integer);
@@ -441,14 +447,93 @@ begin
   Invalidate;
 end;
 
-procedure TIWBSSelect.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSSelect.SetText(const AValue: TCaption);
+var
+  LSelectedVal: TStringList;
+  i, j: integer;
 begin
-  if (Text <> FOldText) then begin
-    if ItemIndex >= 0 then
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+' option:eq('+IntToStr(ItemIndex)+')").prop("selected", true);')
-    else
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+' option").prop("selected", false);');
-    FOldText := Text;
+  FText := AValue;
+  ResetItemsSelected;
+  if FMultiSelect and AnsiContainsStr(FText,',') then
+    begin
+      LSelectedVal := TStringList.Create;
+      try
+        LSelectedVal.CommaText := FText;
+        for i := 0 to LSelectedVal.Count-1 do
+          for j := 0 to Items.Count-1 do
+            if AnsiSameStr(IfThen(ItemsHaveValues, Items.ValueFromIndex[j], Items[j]), LSelectedVal[i]) then
+              FItemsSelected[j] := True;
+      finally
+        LSelectedVal.Free;
+      end;
+    end
+  else
+    FItemIndex := FindValue(FText);
+  Invalidate;
+end;
+
+procedure TIWBSSelect.CheckData;
+begin
+  inherited;
+end;
+
+procedure TIWBSSelect.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
+var
+  LSelectedIdx, LSelectedVal: TStringList;
+  i, v: integer;
+begin
+  if FMultiSelect and AnsiContainsStr(ASubmitValue,',') then
+    begin
+      FItemIndex := -1;
+      ResetItemsSelected;
+      LSelectedIdx := TStringList.Create;
+      LSelectedVal := TStringList.Create;
+      try
+        LSelectedIdx.CommaText := ASubmitValue;
+        for i := 0 to LSelectedIdx.Count-1 do
+          if TryStrToInt(LSelectedIdx[i], v) and (v >= 0) and (v < Items.Count) then begin
+            if i = 0 then
+              FItemIndex := v
+            else if ItemsHaveValues then
+              LSelectedVal.Add(Items.ValueFromIndex[v])
+            else
+              LSelectedVal.Add(Items[i]);
+            FItemsSelected[i] := True;
+          end;
+        ATextValue := LSelectedVal.CommaText;
+      finally
+        LSelectedIdx.Free;
+        LSelectedVal.Free;
+      end;
+    end
+  else
+    begin
+      inherited InternalSetValue(ASubmitValue, ATextValue, ASetFieldValue);
+      ResetItemsSelected;
+    end;
+end;
+
+procedure TIWBSSelect.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+var
+  LSelectedIdx: string;
+  i: integer;
+begin
+  inherited;
+  if (FText <> FOldText) then begin
+    LSelectedIdx := '';
+    if FMultiSelect then
+      begin
+        for i := 0 to Length(FItemsSelected)-1 do
+          if FItemsSelected[i] then begin
+            if LSelectedIdx <> '' then
+              LSelectedIdx := LSelectedIdx + ',';
+            LSelectedIdx := LSelectedIdx + IntToStr(i);
+          end;
+      end
+    else if FItemIndex >= 0 then
+      LSelectedIdx := IntToStr(FItemIndex);
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").val(['+LSelectedIdx+']);');
+    FOldText := FText;
   end;
 end;
 
@@ -474,7 +559,7 @@ begin
     for i := 0 to Items.Count - 1 do begin
       with Result.Contents.AddTag('option') do begin
         AddStringParam('value', IntToStr(i));
-        if i = ItemIndex then
+        if FItemsSelected[i] then
           Add('selected');
         Contents.AddText(TextToHTML(iif(ItemsHaveValues, Items.Names[i], Items[i]), false, true));
       end;
@@ -499,12 +584,12 @@ end;
 
 procedure TIWBSRadioGroup.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
-  if (Text <> FOldText) then begin
-    if ItemIndex >= 0 then
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'_INPUT_'+IntToStr(ItemIndex)+'").prop("checked", true);')
+  if (FText <> FOldText) then begin
+    if FItemIndex >= 0 then
+      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'_INPUT_'+IntToStr(FItemIndex)+'").prop("checked", true);')
     else
       AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+' input").prop("checked", false);');
-    FOldText := Text;
+    FOldText := FText;
   end;
 end;
 
@@ -521,7 +606,7 @@ begin
       with Result.Contents.AddTag('label') do begin
         with Contents.AddTag('input') do begin
           AddStringParam('type', 'radio');
-          Add(iif(ItemIndex = i, 'checked'));
+          Add(iif(FItemIndex = i, 'checked'));
           AddStringParam('name', AHTMLName + FInputSuffix);
           AddStringParam('id', AHTMLName + FInputSuffix+'_'+IntToStr(i));
           AddStringParam('value', IntToStr(i));

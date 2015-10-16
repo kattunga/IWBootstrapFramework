@@ -43,6 +43,8 @@ type
     FInputSelector: string;
     FIsStatic: boolean;
     FSupportReadOnly: boolean;
+    FText: TCaption;
+
     FOldVisible: boolean;
     FOldDisabled: boolean;
     FOldCss: string;
@@ -76,6 +78,8 @@ type
     function IsReadOnly: boolean;
     function IsDisabled: boolean;
 
+    function getText: TCaption; override;
+
     property MaxLength: Integer read FMaxLength write SetMaxLength;
     property ReadOnly: boolean read FReadOnly write SetReadOnly;
     property BSInputType: TIWBSInputType read FInputType write FInputType;
@@ -88,6 +92,7 @@ type
     procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
     function GetSubmitParam : String;
+    procedure SetText(const AValue: TCaption); override;
   published
     property AutoEditable: Boolean read FAutoEditable write FAutoEditable default True;
     property AutoFocus: boolean read FAutoFocus write FAutoFocus default False;
@@ -106,7 +111,7 @@ type
     property Script: TStrings read FStyle write FScript;
     property Style: TStrings read FStyle write SetStyle;
     property TabOrder;
-    property Text;
+    property Text: TCaption read GetText write SetText;
 
     property OnAsyncClick;
     property OnAsyncDoubleClick;
@@ -144,23 +149,24 @@ type
 
   TIWBSCustomSelectInput = class(TIWBSCustomInput)
   private
-    FItemIndex: integer;
     FItems: TStringList;
     FItemsHaveValues: boolean;
-    procedure OnItemsChange(ASender : TObject);
-    procedure InternalSetItemIndex(AValue: integer);
-    function FindValue(const AValue: string): integer;
-    procedure SetItemIndex(AValue: integer);
     procedure SetItems(AValue: TStringList);
     procedure SetItemsHaveValues(AValue: boolean);
   protected
+    FItemIndex: integer;
+
     procedure InitControl; override;
     procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
+    function FindValue(const AValue: string): integer;
     procedure Loaded; override;
+    procedure OnItemsChange(ASender : TObject); virtual;
+    procedure SetItemIndex(AValue: integer); virtual;
   public
     destructor Destroy; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
+    procedure SetText(const AValue: TCaption); override;
   published
     property ItemIndex: integer read FItemIndex write SetItemIndex default -1;
     property Items: TStringList read FItems write SetItems;
@@ -170,7 +176,7 @@ type
 implementation
 
 uses
-  IWBaseForm, IWForm, IWMarkupLanguageTag;
+  IWBaseForm, IWForm, IWMarkupLanguageTag, Dialogs;
 
 var
   LFormatSettings: TFormatSettings;
@@ -229,6 +235,17 @@ begin
   Result := SameText(HTMLName+FInputSuffix, AName);
 end;
 
+function TIWBSCustomInput.GetText: TCaption;
+begin
+  Result := FText;
+end;
+
+procedure TIWBSCustomInput.SetText(const AValue: TCaption);
+begin
+  FText := AValue;
+  invalidate;
+end;
+
 procedure TIWBSCustomInput.CheckData;
 var
   LField: TField;
@@ -272,9 +289,9 @@ begin
     UpdateNotifiedInterface(Parent).NotifyUpdate(Self,AValue);
   LSave := True;
   InternalSetValue(AValue, LText, LSave);
-  if (FOldText <> LText) or (Text <> LText) then begin
+  if (FOldText <> LText) or (FText <> LText) then begin
     FOldText := LText;
-    Text := LText;
+    FText := LText;
     if CheckDataSource(DataSource, DataField, LField) and LSave then
       if InEditMode(DataSource.DataSet) and LField.CanModify then
         begin
@@ -441,7 +458,7 @@ begin
   FOldCss := RenderCSSClass(AContext);
   FOldStyle := RenderStyle(AContext);
   FOldReadOnly := IsReadOnly;
-  FOldText := Text;
+  FOldText := FText;
 
   Result := InternalRenderHTML(HTMLName, AContext);
 
@@ -529,9 +546,9 @@ end;
 procedure TIWBSCustomTextInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
   if FIsStatic then
-    SetAsyncHtml(AContext, AHTMLName, Text, FOldText)
+    SetAsyncHtml(AContext, AHTMLName, FText, FOldText)
   else
-    SetAsyncText(AContext, AHTMLName, Text, FOldText);
+    SetAsyncText(AContext, AHTMLName, FText, FOldText);
 end;
 
 function TIWBSCustomTextInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
@@ -575,43 +592,38 @@ end;
 
 procedure TIWBSCustomSelectInput.Loaded;
 begin
-  InternalSetItemIndex(FItemIndex);
-end;
-
-procedure TIWBSCustomSelectInput.InternalSetItemIndex(AValue: integer);
-begin
-  if (AValue >= -1) and (AValue < FItems.Count) then
-    begin
-      FItemIndex := AValue;
-      if FItemIndex >= 0 then
-        if FItemsHaveValues then
-          Text := FItems.ValueFromIndex[AValue]
-        else
-          Text := FItems[AValue]
-      else
-        Text := '';
-    end
-  else
-    begin
-      FItemIndex := -1;
-      Text := ''
-    end;
-  Invalidate;
+  SetItemIndex(FItemIndex);
 end;
 
 procedure TIWBSCustomSelectInput.SetItemIndex(AValue: integer);
 begin
-  if (AValue <> FItemIndex) then begin
-    FItemIndex := AValue;
-    if not IsLoading then
-      InternalSetItemIndex(AValue); // we need to do this because SetItemIndex executes before Fitems is loaded
-  end;
+  if csReading in ComponentState then
+    FItemIndex := AValue
+  else
+    begin
+      if (AValue >= -1) and (AValue < FItems.Count) then
+        begin
+          FItemIndex := AValue;
+          if FItemIndex >= 0 then
+            if FItemsHaveValues then
+              FText := FItems.ValueFromIndex[AValue]
+            else
+              FText := FItems[AValue]
+          else
+            FText := '';
+        end
+      else
+        begin
+          FItemIndex := -1;
+          FText := ''
+        end;
+      Invalidate;
+    end;
 end;
 
 procedure TIWBSCustomSelectInput.SetItems(AValue: TStringList);
 begin
   FItems.Assign(AValue);
-  Invalidate;
 end;
 
 procedure TIWBSCustomSelectInput.SetItemsHaveValues(AValue: boolean);
@@ -624,23 +636,24 @@ function TIWBSCustomSelectInput.FindValue(const AValue: string): integer;
 var
   i: integer;
 begin
-  if FItemsHaveValues then
-    begin
-      Result := -1;
-      for i := 0 to FItems.Count-1 do
-        if AnsiSameText(FItems.ValueFromIndex[i], AValue) then begin
-          Result := i;
-          Break;
-        end;
-    end
-  else
-    Result := FItems.IndexOf(AValue);
+  Result := -1;
+  for i := 0 to FItems.Count-1 do
+    if AnsiSameStr(IfThen(FItemsHaveValues, FItems.ValueFromIndex[i], FItems[i]), AValue) then begin
+      Result := i;
+      Break;
+    end;
+end;
+
+procedure TIWBSCustomSelectInput.SetText(const AValue: TCaption);
+begin
+  inherited;
+  FItemIndex := FindValue(FText);
 end;
 
 procedure TIWBSCustomSelectInput.CheckData;
 begin
   inherited;
-  FItemIndex := FindValue(Text);
+  FItemIndex := FindValue(FText);
 end;
 
 procedure TIWBSCustomSelectInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
