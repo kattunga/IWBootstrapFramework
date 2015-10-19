@@ -578,7 +578,7 @@ begin
         AddStringParam('value', IntToStr(i));
         if FItemsSelected[i] then
           Add('selected');
-        Contents.AddText(TextToHTML(iif(ItemsHaveValues, Items.Names[i], Items[i]), false, true));
+        Contents.AddText(TextToHTML(iif(ItemsHaveValues, Items.Names[i], Items[i])));
       end;
     end;
   except
@@ -630,7 +630,7 @@ begin
           if IsDisabled then
             Add('disabled');
         end;
-        Contents.AddText(TextToHTML(iif(ItemsHaveValues, Items.Names[i], Items[i]), false, true));
+        Contents.AddText(TextToHTML(iif(ItemsHaveValues, Items.Names[i], Items[i])));
       end;
       Result.Contents.AddText('<br>');
     end;

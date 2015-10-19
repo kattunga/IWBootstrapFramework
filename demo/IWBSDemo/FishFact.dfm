@@ -20,7 +20,7 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -539
+  DesignTop = 8
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
@@ -144,6 +144,7 @@ object FFishFact: TFFishFact
             FriendlyName = 'IWBSMemo1'
             SubmitOnAsyncEvent = True
             TabOrder = 6
+            Text = ''
           end
           object IWBSInput7: TIWBSInput
             Left = 20
@@ -202,6 +203,7 @@ object FFishFact: TFFishFact
             FriendlyName = 'IWBSListbox1'
             SubmitOnAsyncEvent = True
             TabOrder = 9
+            Text = ''
             Items.Strings = (
               'Option 1=1'
               'Option 2=2'
@@ -220,6 +222,7 @@ object FFishFact: TFFishFact
             FriendlyName = 'IWBSListbox1'
             SubmitOnAsyncEvent = True
             TabOrder = 19
+            Text = ''
             Items.Strings = (
               'Option 1=1'
               'Option 2=2'
@@ -1523,14 +1526,10 @@ object FFishFact: TFFishFact
                 Height = 25
                 Hint = 'Edit'
                 LockOnAsyncEvents = [aeClick]
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
+                BSGlyphicon = 'edit'
                 FriendlyName = 'btnEdit'
                 TabOrder = 10
                 OnAsyncClick = btnEditAsyncClick
-                BSGlyphicon = 'edit'
               end
               object btnPost: TIWBSButton
                 Left = 243
@@ -1539,14 +1538,10 @@ object FFishFact: TFFishFact
                 Height = 25
                 Hint = 'Post'
                 LockOnAsyncEvents = [aeClick]
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
+                BSGlyphicon = 'check'
                 FriendlyName = 'IWBSButton1'
                 TabOrder = 11
                 OnAsyncClick = btnPostAsyncClick
-                BSGlyphicon = 'check'
               end
               object btnCancel: TIWBSButton
                 Left = 286
@@ -1555,14 +1550,10 @@ object FFishFact: TFFishFact
                 Height = 25
                 Hint = 'Cancel'
                 LockOnAsyncEvents = [aeClick]
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
+                BSGlyphicon = 'remove'
                 FriendlyName = 'IWBSButton1'
                 TabOrder = 12
                 OnAsyncClick = btnCancelAsyncClick
-                BSGlyphicon = 'remove'
               end
               object btnFirst: TIWBSButton
                 Left = 3
@@ -1571,14 +1562,10 @@ object FFishFact: TFFishFact
                 Height = 25
                 Hint = 'First'
                 LockOnAsyncEvents = [aeClick]
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
+                BSGlyphicon = 'fast-backward'
                 FriendlyName = 'IWBSButton1'
                 TabOrder = 13
                 OnAsyncClick = btnFirstAsyncClick
-                BSGlyphicon = 'fast-backward'
               end
               object btnPrior: TIWBSButton
                 Left = 46
@@ -1587,14 +1574,10 @@ object FFishFact: TFFishFact
                 Height = 25
                 Hint = 'Prior'
                 LockOnAsyncEvents = [aeClick]
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
+                BSGlyphicon = 'backward'
                 FriendlyName = 'IWBSButton1'
                 TabOrder = 14
                 OnAsyncClick = btnPriorAsyncClick
-                BSGlyphicon = 'backward'
               end
               object btnNext: TIWBSButton
                 Left = 89
@@ -1603,14 +1586,10 @@ object FFishFact: TFFishFact
                 Height = 25
                 Hint = 'Next'
                 LockOnAsyncEvents = [aeClick]
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
+                BSGlyphicon = 'forward'
                 FriendlyName = 'IWBSButton1'
                 TabOrder = 15
                 OnAsyncClick = btnNextAsyncClick
-                BSGlyphicon = 'forward'
               end
               object btnLast: TIWBSButton
                 Left = 132
@@ -1619,14 +1598,10 @@ object FFishFact: TFFishFact
                 Height = 25
                 Hint = 'Last'
                 LockOnAsyncEvents = [aeClick]
-                Color = clBtnFace
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
+                BSGlyphicon = 'fast-forward'
                 FriendlyName = 'IWBSButton1'
                 TabOrder = 16
                 OnAsyncClick = btnLastAsyncClick
-                BSGlyphicon = 'fast-forward'
               end
             end
           end
@@ -1692,8 +1667,6 @@ object FFishFact: TFFishFact
               Top = 3
               Width = 278
               Height = 23
-              BGColor = clNone
-              ConvertSpaces = False
               Font.Color = clNone
               Font.Size = 10
               Font.Style = []
@@ -1703,8 +1676,6 @@ object FFishFact: TFFishFact
                   '<strong>This are independent radio buttons attached to same Tabl' +
                   'e Field.</strong>')
               RawText = True
-              UseFrame = False
-              WantReturns = True
             end
           end
         end
@@ -1724,10 +1695,6 @@ object FFishFact: TFFishFact
         Height = 25
         Css = 'pull-right'
         Caption = 'Switch to Standard Demo'
-        Color = clBtnFace
-        Font.Color = clNone
-        Font.Size = 10
-        Font.Style = []
         FriendlyName = 'IWBSButton1'
         TabOrder = 17
         OnClick = IWBSButton1Click
@@ -1738,8 +1705,6 @@ object FFishFact: TFFishFact
         Width = 381
         Height = 27
         Css = 'pull-left'
-        BGColor = clNone
-        ConvertSpaces = False
         Font.Color = clNone
         Font.Size = 10
         Font.Style = []
@@ -1747,8 +1712,6 @@ object FFishFact: TFFishFact
         Lines.Strings = (
           '<h3>This is the data aware demo</h3>')
         RawText = True
-        UseFrame = False
-        WantReturns = True
       end
     end
   end

@@ -4,9 +4,8 @@ interface
 
 uses
   System.SysUtils, System.Classes, data.db, System.StrUtils, Vcl.Controls,
-  IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseHTMLControl, IWBaseInterfaces,
-  IWCompCheckBox, IWCompRadioButton, IWCompButton, IWDBStdCtrls, IWDBExtCtrls,
-  IWBSRegion, IWBSCommon, IWBSCustomInput;
+  IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseInterfaces,
+  IWControl, IWScriptEvents, IWBSRegion, IWBSCommon;
 
 type
   TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink, bsbsClose);
@@ -14,12 +13,13 @@ type
 
   TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
 
-  TIWBSButton = class(TIWButton)
+  TIWBSButton = class(TIWCustomControl, IIWSubmitControl)
   private
     FDataDismiss: TIWBSButtonDataDismiss;
     FButtonSize: TIWBSSize;
     FButtonStyle: TIWBSButtonStyle;
     FGlyphicon: string;
+    FHotKey: string;
     FAsyncClickProc: TIWBSAsyncClickProc;
 
     FMainID: string;
@@ -31,8 +31,12 @@ type
     procedure DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
     procedure SetAsyncClickProc(Value: TIWBSAsyncClickProc);
     procedure SetGlyphicon(const Value: string);
+  protected
+    procedure Submit(const AValue: string); override;
+    procedure HookEvents(APageContext: TIWPageContext40; AScriptEvents: TIWScriptEvents); override;
   public
     constructor Create(AOwner: TComponent); override;
+    function GetSubmitParam : String;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
@@ -43,6 +47,24 @@ type
     property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write FButtonStyle default bsbsDefault;
     property BSDataDismiss: TIWBSButtonDataDismiss read FDataDismiss write FDataDismiss default bsbdNone;
     property BSGlyphicon: string read FGlyphicon write SetGlyphicon;
+    property Caption;
+    property Confirmation;
+    property DoSubmitValidation;
+    property Enabled;
+    property ExtraTagParams;
+    property HotKey: string read FHotkey write FHotKey;
+    property FriendlyName;
+    property ScriptEvents;
+    property TabOrder;
+
+    property OnClick;
+    property OnAsyncClick;
+    property OnAsyncDoubleClick;
+    property OnAsyncEnter;
+    property OnAsyncExit;
+    property OnAsyncMouseMove;
+    property OnAsyncMouseOver;
+    property OnAsyncMouseOut;
   end;
 
 implementation
@@ -58,6 +80,30 @@ begin
   FButtonStyle := bsbsDefault;
   FDataDismiss := bsbdNone;
   FGlyphicon := '';
+
+  FCanReceiveFocus := True;
+  FNeedsFormTag := True;
+  Height := 25;
+  Width := 75;
+end;
+
+function TIWBSButton.GetSubmitParam: String;
+begin
+  Result := FSubmitParam;
+end;
+
+procedure TIWBSButton.Submit(const AValue: string);
+begin
+  FSubmitParam := AValue;
+  DoClick;
+end;
+
+procedure TIWBSButton.HookEvents(APageContext: TIWPageContext40; AScriptEvents: TIWScriptEvents);
+begin
+  inherited HookEvents(APageContext, AScriptEvents);
+  if HasOnClick then begin
+    AScriptEvents.HookEvent('OnClick', SubmitHandler(''));
+  end;
 end;
 
 function TIWBSButton.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
@@ -114,8 +160,8 @@ begin
     if FOldDisabled then
       Result.Add('disabled');
     s := TextToHTML(Caption);
-    if HotKey <> '' then begin
-      Result.AddStringParam('accesskey', HotKey);
+    if FHotKey <> '' then begin
+      Result.AddStringParam('accesskey', FHotKey);
       s := StringReplace(s, FHotKey, '<u>' + FHotKey + '</u>', [rfIgnoreCase]);
     end;
     if FButtonStyle = bsbsClose then
@@ -151,10 +197,6 @@ end;
 function TIWBSButton.RenderStyle(AContext: TIWCompContext): string;
 begin
   Result := '';
-  if (WebFont.Enabled) then
-    Result := Result + WebFont.FontToStringStyle+';';
-  if toTColor(WebColor) <> clBtnFace then
-    Result := Result + RenderBGColor(WebColor)+';';
 end;
 
 procedure TIWBSButton.DoAsyncClickProc(Sender: TObject; EventParams: TStringList);

@@ -59,6 +59,24 @@ object IWFrame3: TIWFrame3
           FriendlyName = 'IWBSInput1'
           SubmitOnAsyncEvent = True
           TabOrder = 0
+          Text = ''
+        end
+        object IWBSSelect1: TIWBSSelect
+          Left = 24
+          Top = 104
+          Width = 121
+          Height = 25
+          Caption = ''
+          FriendlyName = 'IWBSSelect1'
+          SubmitOnAsyncEvent = True
+          TabOrder = 2
+          Text = ''
+          Items.Strings = (
+            'item 1'
+            'item 2'
+            'item 3'
+            'item 4')
+          MultiSelect = True
         end
       end
       object IWBSRegion3: TIWBSRegion
@@ -93,14 +111,10 @@ object IWFrame3: TIWFrame3
           StyleRenderOptions.RenderAbsolute = False
           StyleRenderOptions.RenderPadding = False
           StyleRenderOptions.RenderBorder = False
-          Color = clBtnFace
-          Font.Color = clNone
-          Font.Size = 10
-          Font.Style = []
-          FriendlyName = 'IWBSButton199'
-          TabOrder = 1
           BSButtonStyle = bsbsClose
           BSDataDismiss = bsbdModal
+          FriendlyName = 'IWBSButton199'
+          TabOrder = 1
         end
       end
       object IWBSRegion4: TIWBSRegion

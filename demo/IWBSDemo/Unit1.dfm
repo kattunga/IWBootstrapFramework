@@ -20,6 +20,7 @@ object IWFrame1: TIWFrame1
       FriendlyName = 'IWBSInput'
       SubmitOnAsyncEvent = True
       TabOrder = 0
+      Text = ''
       PlaceHolder = 'Input text here'
     end
     object IWBSButton198: TIWBSButton
@@ -36,10 +37,6 @@ object IWFrame1: TIWFrame1
       StyleRenderOptions.RenderPadding = False
       StyleRenderOptions.RenderBorder = False
       Caption = 'Press Here'
-      Color = clBtnFace
-      Font.Color = clNone
-      Font.Size = 10
-      Font.Style = []
       FriendlyName = 'IWBSButton198'
       TabOrder = 1
       OnAsyncClick = IWBSButton198AsyncClick
@@ -53,6 +50,7 @@ object IWFrame1: TIWFrame1
       FriendlyName = 'IWBSInput2'
       SubmitOnAsyncEvent = True
       TabOrder = 2
+      Text = ''
     end
     object IWBSButton1: TIWBSButton
       Left = 28
@@ -60,10 +58,6 @@ object IWFrame1: TIWFrame1
       Width = 237
       Height = 25
       Caption = 'IWBSButton1'
-      Color = clBtnFace
-      Font.Color = clNone
-      Font.Size = 10
-      Font.Style = []
       FriendlyName = 'IWBSButton1'
       ScriptEvents = <
         item
@@ -72,19 +66,6 @@ object IWFrame1: TIWFrame1
           Event = 'onClick'
         end>
       TabOrder = 3
-    end
-    object IWBSRadioButton1: TIWBSRadioButton
-      Left = 28
-      Top = 196
-      Width = 237
-      Height = 25
-      Caption = ''
-      FriendlyName = 'IWBSRadioButton1'
-      SubmitOnAsyncEvent = True
-      TabOrder = 4
-      ValueChecked = 'true'
-      ValueUnchecked = 'false'
-      Group = 'group'
     end
   end
 end

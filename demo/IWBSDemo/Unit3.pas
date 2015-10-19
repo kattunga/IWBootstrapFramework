@@ -24,6 +24,7 @@ type
     IWLabel4: TIWLabel;
     IWBSInput1: TIWBSInput;
     IWBSButton199: TIWBSButton;
+    IWBSSelect1: TIWBSSelect;
   private
     { Private declarations }
   public

@@ -27,7 +27,7 @@ type
     procedure Paint; override;
   end;
 
-  TIWBSPaintHandlerButton = class (TIWPaintHandlerButton)
+  TIWBSPaintHandlerButton = class (TIWPaintHandlerRectangle)
   public
     procedure Paint; override;
   end;
