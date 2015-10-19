@@ -547,7 +547,8 @@ function TIWBSSelect.RenderCSSClass(AComponentContext: TIWCompContext): string;
 begin
   Result := 'form-control';
 {$IFDEF IWBSBOOTSTRAPSELECT}
-  Result := Result + ' selectpicker';
+  if FSize = 1 then
+    Result := Result + ' selectpicker';
 {$ENDIF}
   if Css <> '' then
     Result := Result + ' ' + Css;

@@ -19,7 +19,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = 8
+  DesignTop = -333
   object IWBSRegion3: TIWBSRegion
     Left = 0
     Top = 0
@@ -1693,10 +1693,10 @@ object IWForm2: TIWForm2
                 end
                 object IWBSComboBox2: TIWBSSelect
                   Left = 14
-                  Top = 764
+                  Top = 715
                   Width = 291
                   Height = 25
-                  Caption = 'This is a ComboBox'
+                  Caption = 'This is a Select (Size = 1)'
                   FriendlyName = 'IWBSComboBox1'
                   SubmitOnAsyncEvent = True
                   TabOrder = 39
@@ -1711,8 +1711,10 @@ object IWForm2: TIWForm2
                   Left = 14
                   Top = 584
                   Width = 291
-                  Height = 77
-                  Caption = 'This is a ListBox with multi select'
+                  Height = 29
+                  Caption = 
+                    'This is a ListBox with multi select and plugin enabled (Size = 1' +
+                    ')'
                   FriendlyName = 'IWBSListbox1'
                   SubmitOnAsyncEvent = True
                   TabOrder = 38
@@ -1723,14 +1725,13 @@ object IWForm2: TIWForm2
                     'item 3'
                     'item 4')
                   MultiSelect = True
-                  Size = 0
                 end
                 object IWBSListbox3: TIWBSSelect
                   Left = 14
-                  Top = 675
+                  Top = 626
                   Width = 291
                   Height = 77
-                  Caption = 'This is a ListBox with single select'
+                  Caption = 'This is a Select (Size <> 1)'
                   FriendlyName = 'IWBSListbox1'
                   SubmitOnAsyncEvent = True
                   TabOrder = 52
