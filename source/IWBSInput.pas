@@ -27,12 +27,12 @@ type
     procedure SetLines(const AValue: TStringList);
   protected
     procedure InitControl; override;
-    procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure InternalRenderStyle(AStyle: TStrings); override;
   public
     destructor Destroy; override;
+    procedure SetText(const AValue: TCaption); override;
   published
     property Lines: TStringList read FLines write SetLines;
     property ResizeDirection: TIWBSResizeDirection read FResizeDirection write FResizeDirection default bsrdDefault;
@@ -46,12 +46,13 @@ type
     FValueChecked: string;
     FValueUnchecked: string;
   protected
-    procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure SetChecked(AValue: boolean);
     procedure SetName(const AValue: TComponentName); override;
+  public
+    procedure SetText(const AValue: TCaption); override;
   published
     constructor Create(AOwner: TComponent); override;
     property Checked: boolean read FChecked write SetChecked default False;
@@ -67,12 +68,13 @@ type
     FValueChecked: string;
     FValueUnchecked: string;
   protected
-    procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure SetChecked(AValue: boolean);
     procedure SetName(const AValue: TComponentName); override;
+  public
+    procedure SetText(const AValue: TCaption); override;
   published
     constructor Create(AOwner: TComponent); override;
     property Checked: boolean read FChecked write SetChecked default False;
@@ -91,7 +93,6 @@ type
     procedure SetSize(AValue: integer);
   protected
     procedure InitControl; override;
-    procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
@@ -199,11 +200,11 @@ begin
   Invalidate;
 end;
 
-procedure TIWBSMemo.CheckData;
+procedure TIWBSMemo.SetText(const AValue: TCaption);
 begin
   inherited;
   FLines.Text := FText;
-  FText := FLines.Text;  // this autoadjust linebreaks
+  FText := FLines.Text; // this autoadjust linebreaks
 end;
 
 procedure TIWBSMemo.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
@@ -282,7 +283,7 @@ begin
   Invalidate;
 end;
 
-procedure TIWBSCheckBox.CheckData;
+procedure TIWBSCheckBox.SetText(const AValue: TCaption);
 begin
   inherited;
   FChecked := FText = FValueChecked;
@@ -358,7 +359,7 @@ begin
   Invalidate;
 end;
 
-procedure TIWBSRadioButton.CheckData;
+procedure TIWBSRadioButton.SetText(const AValue: TCaption);
 begin
   inherited;
   FChecked := FText = FValueChecked;
@@ -453,9 +454,9 @@ var
   i, j: integer;
 begin
   FText := AValue;
-  ResetItemsSelected;
   if FMultiSelect and AnsiContainsStr(FText,',') then
     begin
+      ResetItemsSelected;
       LSelectedVal := TStringList.Create;
       try
         LSelectedVal.CommaText := FText;
@@ -468,13 +469,11 @@ begin
       end;
     end
   else
-    FItemIndex := FindValue(FText);
+    begin
+      FItemIndex := FindValue(FText);
+      ResetItemsSelected;
+    end;
   Invalidate;
-end;
-
-procedure TIWBSSelect.CheckData;
-begin
-  inherited;
 end;
 
 procedure TIWBSSelect.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);

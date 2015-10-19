@@ -157,7 +157,6 @@ type
     FItemIndex: integer;
 
     procedure InitControl; override;
-    procedure CheckData; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     function FindValue(const AValue: string): integer;
     procedure Loaded; override;
@@ -645,12 +644,6 @@ begin
 end;
 
 procedure TIWBSCustomSelectInput.SetText(const AValue: TCaption);
-begin
-  inherited;
-  FItemIndex := FindValue(FText);
-end;
-
-procedure TIWBSCustomSelectInput.CheckData;
 begin
   inherited;
   FItemIndex := FindValue(FText);
