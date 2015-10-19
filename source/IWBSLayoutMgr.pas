@@ -2,6 +2,8 @@ unit IWBSLayoutMgr;
 
 interface
 
+{$I IWBSConfig.inc}
+
 uses
   System.Classes, System.SysUtils, System.StrUtils, Vcl.Controls,
   IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag;
@@ -10,7 +12,7 @@ type
 
   TIWBSRenderingSortMethod = (bsrmSortYX, bsrmSortXY);
 
-  TIWBSPageOption = (bslyNoConflictButton, bslyEnablePolyfill);
+  TIWBSPageOption = (bslyNoConflictButton);
 
   TIWBSPageOptions = set of TIWBSPageOption;
 
@@ -24,8 +26,11 @@ type
     procedure ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent); override;
     procedure ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
     procedure Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext); override;
+
+    class procedure AddLinkFile(const AFile: string);
+    class function ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
   published
-    property BSPageOptions: TIWBSPageOptions read FPageOptions write FPageOptions default [bslyEnablePolyfill];
+    property BSPageOptions: TIWBSPageOptions read FPageOptions write FPageOptions default [];
   end;
 
 var
@@ -37,8 +42,6 @@ var
   gIWBSRenderingSortMethod: TIWBSRenderingSortMethod = bsrmSortYX;
   gIWBSRenderingGridPrecision: integer = 12;
 
-  gCmpResponsiveTabs: boolean = False;
-
 implementation
 
 uses
@@ -46,10 +49,33 @@ uses
   IWRegion, IW.Common.Strings,
   IWBSRegionCommon;
 
+var
+  gIWBSLinkFiles: TStringList = nil;
+
+// to add files should be done only in initialization section, it's not thread safe
+class procedure TIWBSLayoutMgr.AddLinkFile(const AFile: string);
+begin
+  if gIWBSLinkFiles = nil then
+    gIWBSLinkFiles := TStringList.Create;
+  gIWBSLinkFiles.Add(AFile);
+end;
+
+class function TIWBSLayoutMgr.ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
+begin
+  if AnsiEndsStr('.js', AFile) then
+    Result := '<script type="text/javascript" src="'+AFile+IfThen(ADisableCache,'?v='+gIWBSRefreshCacheParam)+'"></script>'
+
+  else if AnsiEndsStr('.css', AFile) then
+    Result := '<link rel="stylesheet" type="text/css" href="'+AFile+IfThen(ADisableCache,'?v='+gIWBSRefreshCacheParam)+'">'
+
+  else
+    raise Exception.Create('Unknown file type');
+end;
+
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
   inherited;
-  FPageOptions := [bslyEnablePolyfill];
+  FPageOptions := [];
 end;
 
 procedure TIWBSLayoutMgr.InitControl;
@@ -64,6 +90,7 @@ var
   LPageContext: TIWPageContext40;
   LTerminated: Boolean;
   FLibPath: string;
+  i: integer;
 begin
 
   // get library path
@@ -93,27 +120,25 @@ begin
 
   ABuffer.WriteLine(PreHeadContent);
 
-  // bootstrap, jquery and iwbs libraries (this is the base)
-  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'bootstrap-'+gIWBSbslibversion+'/css/bootstrap.min.css">');
-  ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'iwbs.css?v='+gIWBSRefreshCacheParam+'">');
-  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'jquery-'+gIWBSjqlibversion+'.min.js"></script>');
-  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'bootstrap-'+gIWBSbslibversion+'/js/bootstrap.min.js"></script>');
-  ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'iwbs.js?v='+gIWBSRefreshCacheParam+'"></script>');
+  // jquery
+  ABuffer.WriteLine(ParseLinkFile(FLibPath+'jquery-'+gIWBSjqlibversion+'.min.js', False));
 
-  // add missing html5 functionality to most browsers
-  // http://afarkas.github.io/webshim/demos/index.html
-  if bslyEnablePolyfill in FPageOptions then
-    ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'webshim-1.15.8/js-webshim/minified/polyfiller.js"></script>');
-
-  // libraries for components, we load automatically if component unit is included so user can dinamically create component
-  if gCmpResponsiveTabs then begin
-    ABuffer.WriteLine('<link rel="stylesheet" type="text/css" href="'+FLibPath+'dyntabs/bootstrap-dynamic-tabs.css?v='+gIWBSRefreshCacheParam+'">');
-    ABuffer.WriteLine('<script type="text/javascript" src="'+FLibPath+'dyntabs/bootstrap-dynamic-tabs.js?v='+gIWBSRefreshCacheParam+'"></script>');
-  end;
+  // bootstrap
+  ABuffer.WriteLine(ParseLinkFile(FLibPath+'bootstrap-'+gIWBSbslibversion+'/css/bootstrap.min.css', False));
+  ABuffer.WriteLine(ParseLinkFile(FLibPath+'bootstrap-'+gIWBSbslibversion+'/js/bootstrap.min.js', False));
 
   // disable bootstap button plugin for no conflict with jqButton of jQueryUI framework, required if use CGDevtools buttons
   if bslyNoConflictButton in FPageOptions then
     ABuffer.WriteLine('<script type="text/javascript">$.fn.button.noConflict();</script>');
+
+  // iwbs
+  ABuffer.WriteLine(ParseLinkFile(FLibPath+'iwbs.css'));
+  ABuffer.WriteLine(ParseLinkFile(FLibPath+'iwbs.js'));
+
+  // add global linkfiles
+  if gIWBSLinkFiles <> nil then
+    for i := 0 to gIWBSLinkFiles.Count-1 do
+      ABuffer.WriteLine(ParseLinkFile(FLibPath+gIWBSLinkFiles[i]));
 
   ABuffer.WriteLine(ScriptSection(LPageContext));
   ABuffer.WriteLine(HeadContent);
@@ -290,5 +315,12 @@ end;
 
 initialization
   gIWBSRefreshCacheParam := FormatDateTime('yyyymmddhhnnsszzz', now);
+
+{$IFDEF IWBSWEBSHIM}
+  TIWBSLayoutMgr.AddLinkFile('webshim-1.15.8/js-webshim/minified/polyfiller.js');
+{$ENDIF}
+
+finalization
+  FreeAndNil(gIWBSLinkFiles);
 
 end.

@@ -6,15 +6,13 @@ uses
   Classes, SysUtils, IWAppForm, IWApplication, IWColor, IWTypes,
   Vcl.Controls, Vcl.Forms, IWVCLBaseContainer, IWContainer,
   IWHTMLContainer, IWHTML40Container, IWRegion,
-  IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl, IWControl, IWCompEdit,
-  IWBSRegion, IWBSTabControl, IWCompButton, IWCompExtCtrls,
-  IWBSInput, IWCompTabControl, IWVCLComponent,
-  IWBaseLayoutComponent, IWBaseContainerLayout, IWContainerLayout,
-  IWCompLabel, IWCompCheckbox,
-  IWCompText, IWCompMemo, IWLayoutMgrForm, IWBSLayoutMgr,
-  IWCompRadioButton, IWCompOrderedListbox, IWHTMLControls, IWCompListbox,
-  IWCompGrids, Vcl.Imaging.jpeg, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
-  IWBSCustomInput, IWBSButton;
+  IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl, IWControl,
+  IWBSRegion,
+  IWCompTabControl, IWBSTabControl,
+  IWCompButton,
+  IWBaseLayoutComponent, IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr,
+  IWBSInput, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
+  IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -122,7 +120,6 @@ type
     chkTabsStacked: TIWBSCheckBox;
     chkTabsPills: TIWBSCheckBox;
     chkTabsFade: TIWBSCheckBox;
-    chkTabsResponsive: TIWBSCheckBox;
     IWBSRegion30: TIWBSRegion;
     IWBSRegion9: TIWBSRegion;
     IWText1: TIWText;
@@ -169,8 +166,6 @@ type
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton27AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
-      AColumn: Integer);
     procedure IWBSButton30Click(Sender: TObject);
     procedure IWBSButton21AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton28AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -258,12 +253,6 @@ begin
   TIWBSDialog.Create('This is the header', 'This is the Body').Show;
 end;
 
-procedure TIWForm2.IWGrid1RenderCell(ACell: TIWGridCell; const ARow,
-  AColumn: Integer);
-begin
-  ACell.Text := 'Cell '+IntToStr(ARow)+' / '+IntToStr(AColumn);
-end;
-
 procedure TIWForm2.IWBSButton30Click(Sender: TObject);
 begin
   chkTabsFade.TabOrder := 0;
@@ -272,7 +261,6 @@ begin
   IWTabControl21.BSTabOptions.Justified := chkTabsJust.Checked;
   IWTabControl21.BSTabOptions.Pills := chkTabsPills.Checked;
   IWTabControl21.BSTabOptions.Stacked := chkTabsStacked.Checked;
-  IWTabControl21.BSTabOptions.Responsive := chkTabsResponsive.Checked;
 
   if chkContFluid.Checked then
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainerFluid

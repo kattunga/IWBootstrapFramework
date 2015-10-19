@@ -436,12 +436,12 @@ begin
 
   Result := nil;
   CheckData;
-  InternalRenderAsync(xHTMLName, AContext);
   SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
   SetAsyncReadOnly(AContext, xInputSelector, IsReadOnly, FOldReadOnly);
   SetAsyncDisabled(AContext, xInputSelector, IsDisabled, FOldDisabled);
   SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
   SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
+  InternalRenderAsync(xHTMLName, AContext);
 end;
 
 function TIWBSCustomInput.RenderCSSClass(AComponentContext: TIWCompContext): string;

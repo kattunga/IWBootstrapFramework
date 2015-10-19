@@ -2,6 +2,8 @@ unit IWBSInput;
 
 interface
 
+{$I IWBSConfig.inc}
+
 uses
   System.SysUtils, System.Classes, data.db, System.StrUtils, Vcl.Controls,
   IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseHTMLControl, IWBaseInterfaces,
@@ -99,6 +101,7 @@ type
     procedure OnItemsChange(ASender : TObject); override;
     procedure SetItemIndex(AValue: integer); override;
   public
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     procedure SetText(const AValue: TCaption); override;
   published
     property MultiSelect: boolean read FMultiSelect write FMultiSelect default False;
@@ -114,7 +117,7 @@ type
 
 implementation
 
-uses IW.Common.System, IWBSUtils, IWBSInputCommon, Dialogs;
+uses IW.Common.System, IWBSUtils, IWBSInputCommon, IWBSLayoutMgr;
 
 {$region 'TIWBSInput'}
 function TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
@@ -291,7 +294,8 @@ end;
 
 procedure TIWBSCheckBox.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
 begin
-  if ASubmitValue = 'on' then
+  FChecked := ASubmitValue = 'on';
+  if FChecked then
     ATextValue := FValueChecked
   else
     ATextValue := FValueUnchecked;
@@ -496,8 +500,8 @@ begin
             else if ItemsHaveValues then
               LSelectedVal.Add(Items.ValueFromIndex[v])
             else
-              LSelectedVal.Add(Items[i]);
-            FItemsSelected[i] := True;
+              LSelectedVal.Add(Items[v]);
+            FItemsSelected[v] := True;
           end;
         ATextValue := LSelectedVal.CommaText;
       finally
@@ -534,6 +538,19 @@ begin
     AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").val(['+LSelectedIdx+']);');
     FOldText := FText;
   end;
+{$IFDEF IWBSBOOTSTRAPSELECT}
+  AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").selectpicker("refresh");');
+{$ENDIF}
+end;
+
+function TIWBSSelect.RenderCSSClass(AComponentContext: TIWCompContext): string;
+begin
+  Result := 'form-control';
+{$IFDEF IWBSBOOTSTRAPSELECT}
+  Result := Result + ' selectpicker';
+{$ENDIF}
+  if Css <> '' then
+    Result := Result + ' ' + Css;
 end;
 
 function TIWBSSelect.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
@@ -627,5 +644,11 @@ begin
     Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
 end;
 {$endregion}
+
+{$IFDEF IWBSBOOTSTRAPSELECT}
+initialization
+  TIWBSLayoutMgr.AddLinkFile('select/dist/css/bootstrap-select.min.css');
+  TIWBSLayoutMgr.AddLinkFile('select/dist/js/bootstrap-select.min.js');
+{$ENDIF}
 
 end.
