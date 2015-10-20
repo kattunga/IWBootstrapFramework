@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, data.db, System.StrUtils, Vcl.Controls,
   IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseInterfaces,
-  IWControl, IWScriptEvents, IWBSRegion, IWBSCommon;
+  IWBSCustomControl, IWScriptEvents, IWBSRegion, IWBSCommon;
 
 type
   TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink, bsbsClose);
@@ -13,7 +13,7 @@ type
 
   TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
 
-  TIWBSButton = class(TIWCustomControl, IIWSubmitControl)
+  TIWBSButton = class(TIWBSCustomControl, IIWSubmitControl)
   private
     FDataDismiss: TIWBSButtonDataDismiss;
     FButtonSize: TIWBSSize;

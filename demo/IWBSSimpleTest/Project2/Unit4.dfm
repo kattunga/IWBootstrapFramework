@@ -22,10 +22,6 @@ object IWForm4: TIWForm4
     Width = 169
     Height = 25
     Caption = 'Submit Input'
-    Color = clBtnFace
-    Font.Color = clNone
-    Font.Size = 10
-    Font.Style = []
     FriendlyName = 'IWBSButton1'
     TabOrder = 0
     OnAsyncClick = IWBSButton1AsyncClick
@@ -47,13 +43,8 @@ object IWForm4: TIWForm4
     Width = 189
     Height = 25
     Caption = 'Toggle visibility'
-    Color = clBtnFace
-    Font.Color = clNone
-    Font.Size = 10
-    Font.Style = []
     FriendlyName = 'IWBSButton3'
     TabOrder = 2
-    OnAsyncClick = IWBSButton3AsyncClick
   end
   object IWBSSelect1: TIWBSSelect
     Left = 80
@@ -83,13 +74,23 @@ object IWForm4: TIWForm4
     Width = 169
     Height = 25
     Caption = 'Submit Lookup'
-    Color = clBtnFace
-    Font.Color = clNone
-    Font.Size = 10
-    Font.Style = []
     FriendlyName = 'IWBSButton1'
     TabOrder = 4
     OnAsyncClick = IWBSButton2AsyncClick
+  end
+  object IWImageFile1: TIWImageFile
+    Left = 80
+    Top = 188
+    Width = 273
+    Height = 165
+    RenderSize = False
+    StyleRenderOptions.RenderSize = False
+    BorderOptions.Width = 0
+    TabOrder = -1
+    UseSize = False
+    Cacheable = True
+    FriendlyName = 'IWImageFile1'
+    ImageFile.Filename = 'desert.jpg'
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
     Left = 420

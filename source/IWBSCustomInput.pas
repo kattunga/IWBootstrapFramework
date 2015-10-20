@@ -4,8 +4,8 @@ interface
 
 uses
   System.Classes, System.SysUtils, System.StrUtils, Data.db, Vcl.Controls,
-  IWControl,
-  IWBaseControl, IWTypes, IWHTMLTag, IWDBCommon, IWDBStdCtrls,
+  IWBSCustomControl,
+  IWTypes, IWHTMLTag, IWDBCommon, IWDBStdCtrls,
   IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces,
   IWBSCommon;
 
@@ -16,7 +16,7 @@ const
   aIWBSInputType: array[bsitText..bsitHidden] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color', 'hidden');
 
 type
-  TIWBSCustomInput = class(TIWCustomControl, IIWInputControl, IIWSubmitControl, IIWInputControl40, IIWAutoEditableControl)
+  TIWBSCustomInput = class(TIWBSCustomControl, IIWInputControl, IIWSubmitControl, IIWInputControl40, IIWAutoEditableControl)
   private
     FAutoEditable: Boolean;
     FAutoFocus: boolean;
@@ -31,14 +31,11 @@ type
     FReadOnly: Boolean;
     FRequired: Boolean;
     FSubmitParam : string;
-    FScript: TStrings;
-    FStyle: TStrings;
 
     procedure EditingChanged;
     procedure SetDataField(const AValue: string);
     procedure SetDataSource(const Value: TDataSource);
   protected
-    FMainID: string;
     FInputSuffix: string;
     FInputSelector: string;
     FIsStatic: boolean;
@@ -60,7 +57,6 @@ type
     procedure SetMaxLength(const AValue:integer);
     procedure SetReadOnly(const AValue:boolean);
     procedure SetRequired(const AValue:boolean);
-    procedure SetStyle(const AValue: TStrings);
     procedure SetValue(const AValue: string);
     procedure Submit(const AValue: string); override;
     function FormHasOnDefaultActionSet:boolean;
@@ -68,10 +64,6 @@ type
 
     procedure GetInputControlNames(ANames: TStringList); override;
     function IsForThisControl(AName: string): boolean; override;
-
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; virtual;
-    procedure InternalRenderStyle(AStyle: TStrings); virtual;
 
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); virtual;
 
@@ -89,8 +81,6 @@ type
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    procedure RenderScripts(AComponentContext: TIWCompContext); override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
     function GetSubmitParam : String;
     procedure SetText(const AValue: TCaption); override;
   published
@@ -108,8 +98,6 @@ type
     property Required: Boolean read FRequired write SetRequired default False;
     property ScriptEvents;
     property SubmitOnAsyncEvent;
-    property Script: TStrings read FStyle write FScript;
-    property Style: TStrings read FStyle write SetStyle;
     property TabOrder;
     property Text: TCaption read GetText write SetText;
 
@@ -194,10 +182,6 @@ begin
   FReadOnly := False;
   FRequired := False;
 
-  FScript := TStringList.Create;
-  FStyle := TStringList.Create;
-  FStyle.NameValueSeparator := ':';
-
   FInputSelector := '';
   FInputSuffix := '';
 
@@ -213,8 +197,6 @@ end;
 destructor TIWBSCustomInput.Destroy;
 begin
   FreeAndNil(FDataLink);
-  FreeAndNil(FScript);
-  FreeAndNil(FStyle);
   inherited;
 end;
 
@@ -394,21 +376,6 @@ begin
   DoSubmit;
 end;
 
-procedure TIWBSCustomInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
-begin
-  //
-end;
-
-function TIWBSCustomInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
-begin
-  Result := nil;
-end;
-
-procedure TIWBSCustomInput.InternalRenderStyle(AStyle: TStrings);
-begin
-  //
-end;
-
 procedure TIWBSCustomInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
 begin
   ATextValue := ASubmitValue;
@@ -459,39 +426,7 @@ begin
   FOldReadOnly := IsReadOnly;
   FOldText := FText;
 
-  Result := InternalRenderHTML(HTMLName, AContext);
-
-  FMainID := Result.Params.Values['id'];
-
-  // add user scripts (it's more easy to create and destroy dinamically when they are embedded in the tag)
-  if FScript.Count > 0 then
-    Result.Contents.AddTag('script').Contents.AddText(FScript.Text);
-end;
-
-procedure TIWBSCustomInput.RenderScripts(AComponentContext: TIWCompContext);
-begin
-  inherited;
-end;
-
-function TIWBSCustomInput.RenderStyle(AContext: TIWCompContext): string;
-var
-  xStyle: TStringList;
-  i: integer;
-begin
-  Result := '';
-
-  xStyle := TStringList.Create;
-  try
-    xStyle.Assign(FStyle);
-    InternalRenderStyle(xStyle);
-    for i := 0 to xStyle.Count-1 do begin
-      if Result <> '' then
-        Result := Result + ';';
-      Result := Result + xStyle[i];
-    end;
-  finally
-    xStyle.Free;
-  end;
+  Result := inherited;
 end;
 
 procedure TIWBSCustomInput.SetCaption(const AValue: string);
@@ -524,12 +459,6 @@ begin
     FRequired := AValue;
     Invalidate;
   end;
-end;
-
-procedure TIWBSCustomInput.SetStyle(const AValue: TStrings);
-begin
-  FStyle.Assign(AValue);
-  Invalidate;
 end;
 {$endregion}
 

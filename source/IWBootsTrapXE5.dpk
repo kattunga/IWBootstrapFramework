@@ -50,7 +50,8 @@ contains
   IWBSControls in 'IWBSControls.pas',
   IWBSCustomInput in 'IWBSCustomInput.pas',
   IWBSInputCommon in 'IWBSInputCommon.pas',
-  IWBSButton in 'IWBSButton.pas';
+  IWBSButton in 'IWBSButton.pas',
+  IWBSCustomControl in 'IWBSCustomControl.pas';
 
 end.
 

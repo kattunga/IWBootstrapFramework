@@ -3,7 +3,7 @@
         <ProjectGuid>{A2055AD6-AB8B-437B-952A-38530818ED86}</ProjectGuid>
         <ProjectVersion>15.3</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
-        <MainSource>IWBSDemo.dpr</MainSource>
+        <MainSource>IWBSStandardComponents.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -178,7 +178,7 @@
                     <VersionInfoKeys Name="theme"/>
                 </VersionInfoKeys>
                 <Source>
-                    <Source Name="MainSource">IWBSDemo.dpr</Source>
+                    <Source Name="MainSource">IWBSStandardComponents.dpr</Source>
                 </Source>
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k190.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>

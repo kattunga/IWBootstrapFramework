@@ -136,6 +136,7 @@
         <DCCReference Include="IWBSCustomInput.pas"/>
         <DCCReference Include="IWBSInputCommon.pas"/>
         <DCCReference Include="IWBSButton.pas"/>
+        <DCCReference Include="IWBSCustomControl.pas"/>
         <None Include="IWBSConfig.inc"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
