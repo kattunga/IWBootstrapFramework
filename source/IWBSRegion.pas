@@ -10,7 +10,7 @@ uses
   IWBSCommon, IWBSRegionCommon, IWBSLayoutMgr;
 
 type
-  TIWBSCustomRegion = class(TIWCustomRegion)
+  TIWBSCustomRegion = class(TIWCustomRegion, IIWBSComponent)
   private
     FTagType: string;
     FAsyncDestroy: boolean;
@@ -83,21 +83,16 @@ type
     property Caption: string read FCaption write FCaption;
     property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
   end;
-{
+
   TIWBSFormControl = class(TIWBSCustomRegion)
   private
     FCaption: string;
-    FRelativeSize: TIWBSRelativeSize;
   public
-    constructor Create(AOwner: TComponent); override;
-    function GetClassString: string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
   published
     property Caption: string read FCaption write FCaption;
-    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
   end;
-}
+
   TIWBSButonGroupOptions = class(TPersistent)
   private
     FVertical: boolean;
@@ -524,13 +519,20 @@ end;
 function TIWBSInputGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
-  Result.AddClassParam(GetClassString);
   Result := IWBSCreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
 end;
 
 function TIWBSInputGroup.RenderStyle(AContext: TIWCompContext): string;
 begin
   Result := '';
+end;
+{$endregion}
+
+{$region 'TIWBSFormControl'}
+function TIWBSFormControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+begin
+  Result := Inherited;
+  Result := IWBSCreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
 end;
 {$endregion}
 

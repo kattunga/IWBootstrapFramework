@@ -19,6 +19,7 @@ type
   TIWBSLayoutMgr = class(TIWContainerLayout)
   private
     FPageOptions: TIWBSPageOptions;
+    function SetNotVisible(const AStyle: string): string;
   protected
     procedure InitControl; override;
   public
@@ -34,7 +35,7 @@ type
   end;
 
 var
-  gIWBSLibraryPath: string = '/iwbs';
+  gIWBSLibraryPath: string = '/iwbs/';
   gIWBSRefreshCacheParam: string;
   gIWBSjqlibversion: string = '1.11.3';
   gIWBSbslibversion: string = '3.3.5';
@@ -45,9 +46,9 @@ var
 implementation
 
 uses
-  IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists,
+  IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists, IWURL,
   IWRegion, IW.Common.Strings,
-  IWBSRegionCommon;
+  IWBSRegionCommon, IWBSCommon;
 
 var
   gIWBSLinkFiles: TStringList = nil;
@@ -93,17 +94,12 @@ var
   i: integer;
 begin
 
+  // library path must end with /
+  if not AnsiEndsStr('/', gIWBSLibraryPath) then
+    gIWBSLibraryPath := gIWBSLibraryPath+'/';
+
   // get library path
-  if AnsiEndsStr('/', gSC.URLBase) then
-    FLibPath := Copy(gSC.URLBase, 1, Length(gSC.URLBase)-1)
-  else
-    FLibPath := gSC.URLBase;
-  if gIWBSLibraryPath <> '' then begin
-    TString.ForcePreFix(gIWBSLibraryPath, '/');
-    FLibPath := FLibPath + gIWBSLibraryPath;
-  end;
-  TString.ForcePreFix(FLibPath, '/');
-  TString.ForceSuffix(FLibPath, '/');
+  FLibPath := TURL.Concat(gSC.URLBase,gIWBSLibraryPath);
 
   LPageContext := TIWPageContext40(APage);
   LTerminated := Assigned(LPageContext.WebApplication) and LPageContext.WebApplication.Terminated;
@@ -138,7 +134,7 @@ begin
   // add global linkfiles
   if gIWBSLinkFiles <> nil then
     for i := 0 to gIWBSLinkFiles.Count-1 do
-      ABuffer.WriteLine(ParseLinkFile(FLibPath+gIWBSLinkFiles[i]));
+      ABuffer.WriteLine(ParseLinkFile(TURL.Concat(gSC.URLBase,ReplaceStr(gIWBSLinkFiles[i],'/<iwbspath>/',gIWBSLibraryPath))));
 
   ABuffer.WriteLine(ScriptSection(LPageContext));
   ABuffer.WriteLine(HeadContent);
@@ -255,16 +251,31 @@ begin
   end;
 end;
 
+function TIWBSLayoutMgr.SetNotVisible(const AStyle: string): string;
+begin
+  Result := Trim(AStyle);
+  if not AnsiEndsStr(';', Result) then
+    Result := Result+';';
+  if not AnsiContainsStr(AStyle, 'visibility:') then
+    Result := Result +  'visibility: hidden';
+  if not AnsiContainsStr(AStyle, 'display:') then
+    Result := Result +  'display: none';
+end;
+
 procedure TIWBSLayoutMgr.ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent);
 var
+  xHTMLName: string;
   IsIWTabPage: boolean;
   LRenderInvisibleControls: Boolean;
   LComponentContext: TIWCompContext;
   LVisible: boolean;
   LHTML: TIWHTMLTag;
+  L40Component: IIWHTML40Component;
   LInputLists: TStringList;
   i: integer;
 begin
+  xHTMLName := AControl.HTMLName;
+
   IsIWTabPage := AControl.InterfaceInstance.ClassName = 'TIWTabPage';
 
   if SupportsInterface(Container.InterfaceInstance, IIWInvisibleControlRenderer) then
@@ -272,26 +283,42 @@ begin
   else
     LRenderInvisibleControls := False;
 
-  LComponentContext := TIWCompContext(AContainerContext.ComponentContext[AControl.HTMLName]);
+  LComponentContext := TIWCompContext(AContainerContext.ComponentContext[xHTMLName]);
 
   if SupportsInterface(AControl.InterfaceInstance, IIWBaseControl) then
     LVisible := BaseControlInterface(AControl.InterfaceInstance).Visible
   else
     LVisible := True;
 
-  // adjust htmltag
   LHTML := LComponentContext.HTMLTag;
   if Assigned(LHTML) then begin
-    // TIWTabPage hack
-    if IsIWTabPage then begin
-      LHTML.Params.Values['class'] := IWBSRegionCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass;
-      LHTML.Params.Values['id'] := AControl.HTMLName;
-    end;
 
-    // render visibility
-    if not LVisible and LRenderInvisibleControls then
-      if not AnsiContainsStr(LHTML.Params.Values['class'],'hidden') then
-        LHTML.AddClassParam('hidden');
+    // TIWTabPage hack
+    if IsIWTabPage then
+      begin
+        LHTML.Params.Values['class'] := IWBSRegionCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass;
+        LHTML.Params.Values['id'] := xHTMLName;
+      end
+
+    else if AControl.InterfaceInstance.GetInterfaceEntry(IIWBSComponent) = nil then
+      begin
+        L40Component := HTML40ComponentInterface(AControl.InterfaceInstance);
+        if L40Component <> nil then begin
+          if LHTML.Params.Values['ID'] = '' then
+            LHTML.AddStringParam('ID', xHTMLName);
+          if L40Component.SupportsInput and (AControl.HasName) and (LHTML.Params.Values['NAME'] = '') then
+            LHTML.AddStringParam('NAME', xHTMLName);
+          if LHTML.Params.Values['CLASS'] = '' then
+            LHTML.AddStringParam('CLASS', L40Component.RenderCSSClass(nil));
+          LHTML.Params.Values['STYLE'] := L40Component.RenderStyle(LComponentContext) + LHTML.Params.Values['STYLE'];
+        end;
+      end
+
+    else
+      begin
+        if not LVisible and LRenderInvisibleControls then
+          LHTML.Params.Values['STYLE'] := SetNotVisible(LHTML.Params.Values['STYLE']);
+      end;
   end;
 
   // render hidden inputs for submit
@@ -317,7 +344,7 @@ initialization
   gIWBSRefreshCacheParam := FormatDateTime('yyyymmddhhnnsszzz', now);
 
 {$IFDEF IWBSWEBSHIM}
-  TIWBSLayoutMgr.AddLinkFile('webshim-1.15.8/js-webshim/minified/polyfiller.js');
+  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/webshim-1.15.8/js-webshim/minified/polyfiller.js');
 {$ENDIF}
 
 finalization

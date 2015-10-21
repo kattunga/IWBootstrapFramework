@@ -11,23 +11,12 @@ object IWFrame1: TIWFrame1
     Height = 413
     RenderInvisibleControls = True
     TabOrder = 0
-    object IWBSInput1: TIWBSInput
-      Left = 28
-      Top = 32
-      Width = 241
-      Height = 21
-      Caption = ''
-      FriendlyName = 'IWBSInput'
-      SubmitOnAsyncEvent = True
-      TabOrder = 0
-      Text = ''
-      PlaceHolder = 'Input text here'
-    end
-    object IWBSButton198: TIWBSButton
+    object IWBSButton198: TIWButton
       Left = 28
       Top = 116
       Width = 241
       Height = 25
+      Css = 'btn btn-default'
       RenderSize = False
       StyleRenderOptions.RenderSize = False
       StyleRenderOptions.RenderPosition = False
@@ -37,35 +26,40 @@ object IWFrame1: TIWFrame1
       StyleRenderOptions.RenderPadding = False
       StyleRenderOptions.RenderBorder = False
       Caption = 'Press Here'
+      Color = clBtnFace
+      Font.Color = clNone
+      Font.Size = 10
+      Font.Style = []
       FriendlyName = 'IWBSButton198'
       TabOrder = 1
       OnAsyncClick = IWBSButton198AsyncClick
     end
-    object IWBSInput2: TIWBSInput
+    object IWBSInput1: TIWEdit
+      Left = 28
+      Top = 32
+      Width = 241
+      Height = 21
+      Css = 'form-control'
+      Font.Color = clNone
+      Font.Size = 10
+      Font.Style = []
+      FriendlyName = 'IWBSInput'
+      SubmitOnAsyncEvent = True
+      TabOrder = 0
+      Text = 'Write here'
+    end
+    object IWBSInput2: TIWEdit
       Left = 28
       Top = 72
       Width = 241
       Height = 21
-      Caption = ''
+      Css = 'form-control'
+      Font.Color = clNone
+      Font.Size = 10
+      Font.Style = []
       FriendlyName = 'IWBSInput2'
       SubmitOnAsyncEvent = True
       TabOrder = 2
-      Text = ''
-    end
-    object IWBSButton1: TIWBSButton
-      Left = 28
-      Top = 156
-      Width = 237
-      Height = 25
-      Caption = 'IWBSButton1'
-      FriendlyName = 'IWBSButton1'
-      ScriptEvents = <
-        item
-          EventCode.Strings = (
-            'console.log('#39'paso'#39');')
-          Event = 'onClick'
-        end>
-      TabOrder = 3
     end
   end
 end

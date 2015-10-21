@@ -46,9 +46,8 @@ type
     property GridLGSpan: integer read FGridLGSpan write FGridLGSpan default 0;
   end;
 
-  IIBSComponent = interface
+  IIWBSComponent = interface
     ['{12925CB3-58EC-4B56-B032-478892548906}']
-
   end;
 
 procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
@@ -115,7 +114,7 @@ end;
 procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("disabled", '+iif(Value,'true','false')+');');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("disabled",'+iif(Value,'true','false')+');');
     OldValue := Value;
   end;
 end;
@@ -123,7 +122,7 @@ end;
 procedure SetAsyncReadOnly(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("readonly", '+iif(Value,'true','false')+');');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("readonly",'+iif(Value,'true','false')+');');
     OldValue := Value;
   end;
 end;
@@ -131,7 +130,8 @@ end;
 procedure SetAsyncVisible(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").toggleClass("hidden", '+iif(Value,'false','true')+');');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").css("visibility","'+iif(Value,'','hidden')+'");');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").css("display","'+iif(Value,'','none')+'");');
     OldValue := Value;
   end;
 end;
@@ -163,7 +163,7 @@ end;
 procedure SetAsyncStyle(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("style", "'+Value+'");');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("style","'+Value+'");');
     OldValue := Value;
   end;
 end;
@@ -171,7 +171,7 @@ end;
 procedure SetAsyncChecked(AContext: TIWCompContext; const HTMLName: string; const Value: boolean; var OldValue: boolean);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked", '+iif(Value,'true','false')+');');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked",'+iif(Value,'true','false')+');');
     OldValue := Value;
   end;
 end;

@@ -3,17 +3,22 @@ unit IWBSCustomControl;
 interface
 
 uses System.Classes, System.SysUtils,
-     IWControl, IWRenderContext, IWHTMLTag;
+     IWControl, IWRenderContext, IWHTMLTag, IWXMLTag,
+     IWBSCommon;
 
 type
-  TIWBSCustomControl = class(TIWCustomControl)
+  TIWBSCustomControl = class(TIWCustomControl, IIWBSComponent)
   private
+    FMainID: string;
+    FOldCss: string;
+    FOldStyle: string;
+    FOldVisible: boolean;
+
     FScript: TStrings;
     FStyle: TStrings;
 
     procedure SetStyle(const AValue: TStrings);
   protected
-    FMainID: string;
 
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; virtual;
@@ -21,9 +26,14 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
     procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
+
+    property MainID: string read FMainID;
+    property ActiveCss: string read FOldCss;
+    property ActiveStyle: string read FOldStyle;
   published
     property Script: TStrings read FScript write FScript;
     property Style: TStrings read FStyle write SetStyle;
@@ -34,6 +44,7 @@ implementation
 constructor TIWBSCustomControl.Create(AOwner: TComponent);
 begin
   inherited;
+  FMainID := '';
   FScript := TStringList.Create;
   FStyle := TStringList.Create;
   FStyle.NameValueSeparator := ':';
@@ -67,8 +78,24 @@ begin
   //
 end;
 
+function TIWBSCustomControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+var
+  xHTMLName: string;
+begin
+  Result := nil;
+  xHTMLName := HTMLName;
+  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
+  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
+  InternalRenderAsync(xHTMLName, AContext);
+end;
+
 function TIWBSCustomControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
+  FOldCss := RenderCSSClass(AContext);
+  FOldStyle := RenderStyle(AContext);
+  FOldVisible := Visible;
+
   Result := InternalRenderHTML(HTMLName, AContext);
 
   FMainID := Result.Params.Values['id'];

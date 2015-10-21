@@ -206,8 +206,8 @@ end;
 
 {$IFDEF IWBSDYNTABS}
 initialization
-  TIWBSLayoutMgr.AddLinkFile('dyntabs/bootstrap-dynamic-tabs.css');
-  TIWBSLayoutMgr.AddLinkFile('dyntabs/bootstrap-dynamic-tabs.js');
+  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.css');
+  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.js');
 {$ENDIF}
 
 end.

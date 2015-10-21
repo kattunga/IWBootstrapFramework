@@ -7,15 +7,14 @@ uses
   IWVCLBaseContainer, IWColor, IWContainer, IWRegion, IWCompButton, IWBSInput,
   IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl, IWControl, IWCompEdit,
   IWBSRegion, IWHTMLContainer, IWHTML40Container, IWVCLComponent,
-  IWBSCustomInput, IWBSButton;
+  IWBSCustomInput, IWBSButton, IWBSCustomControl;
 
 type
   TIWFrame1 = class(TFrame)
     IWBSRegion1: TIWBSRegion;
-    IWBSInput1: TIWBSInput;
-    IWBSButton198: TIWBSButton;
-    IWBSInput2: TIWBSInput;
-    IWBSButton1: TIWBSButton;
+    IWBSButton198: TIWButton;
+    IWBSInput1: TIWEdit;
+    IWBSInput2: TIWEdit;
     procedure IWBSButton198AsyncClick(Sender: TObject;
       EventParams: TStringList);
   private

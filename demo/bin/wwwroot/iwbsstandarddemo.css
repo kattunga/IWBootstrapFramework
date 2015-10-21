@@ -1,0 +1,12 @@
+.container-fluid {
+	margin-left: 10px;
+	margin-right:10px;
+}
+
+.iwcheckbox {
+	display: block;
+}
+
+.iwradio {
+	display: block;
+}

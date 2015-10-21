@@ -42,10 +42,7 @@ type
     FSupportReadOnly: boolean;
     FText: TCaption;
 
-    FOldVisible: boolean;
     FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
     FOldReadOnly: boolean;
     FOldText: string;
 
@@ -397,18 +394,15 @@ var
 begin
   xHTMLName := HTMLName;
   if FInputSelector <> '' then
-    xInputSelector := FMainID+FInputSelector
+    xInputSelector := MainID+FInputSelector
   else
     xInputSelector := xHTMLName+FInputSuffix;
 
-  Result := nil;
   CheckData;
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
   SetAsyncReadOnly(AContext, xInputSelector, IsReadOnly, FOldReadOnly);
   SetAsyncDisabled(AContext, xInputSelector, IsDisabled, FOldDisabled);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  InternalRenderAsync(xHTMLName, AContext);
+
+  Result := inherited;
 end;
 
 function TIWBSCustomInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
@@ -419,10 +413,7 @@ end;
 function TIWBSCustomInput.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   CheckData;
-  FOldVisible := Visible;
   FOldDisabled := IsDisabled;
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
   FOldReadOnly := IsReadOnly;
   FOldText := FText;
 

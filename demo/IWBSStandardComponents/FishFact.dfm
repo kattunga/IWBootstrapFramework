@@ -20,7 +20,7 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -6
+  DesignTop = 8
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
@@ -45,268 +45,27 @@ object FFishFact: TFFishFact
         Align = alClient
         BSRegionType = bsrtRow
         object IWBSRegion3: TIWBSRegion
-          Left = 9
-          Top = 16
+          Left = 15
+          Top = 20
           Width = 697
           Height = 1061
           BSGridOptions.GridMDSpan = 8
           BSRegionType = bsrtColumn
-          object IWBSInput1: TIWDBEdit
-            Left = 20
-            Top = 330
-            Width = 201
-            Height = 25
-            Hint = 'Length in Inches'
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput1'
-            SubmitOnAsyncEvent = True
-            TabOrder = 0
-            AutoEditable = True
-            DataField = 'Length_In'
-            PasswordPrompt = False
-            DataSource = dsrcMain
-          end
-          object IWBSInput2: TIWDBEdit
-            Left = 20
-            Top = 361
-            Width = 201
-            Height = 25
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 1
-            AutoEditable = True
-            DataField = 'Length (cm)'
-            PasswordPrompt = False
-            DataSource = dsrcMain
-          end
-          object IWBSInput3: TIWDBEdit
-            Left = 20
-            Top = 388
-            Width = 201
-            Height = 25
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 2
-            AutoEditable = True
-            DataField = 'Species Name'
-            PasswordPrompt = False
-            DataSource = dsrcMain
-          end
-          object IWBSInput4: TIWDBEdit
-            Left = 20
-            Top = 415
-            Width = 201
-            Height = 25
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 3
-            AutoEditable = True
-            DataField = 'Common_Name'
-            PasswordPrompt = False
-            DataSource = dsrcMain
-          end
-          object IWBSInput5: TIWDBEdit
-            Left = 20
-            Top = 442
-            Width = 201
-            Height = 25
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 4
-            AutoEditable = True
-            DataField = 'Category'
-            PasswordPrompt = False
-            DataSource = dsrcMain
-          end
-          object IWBSInput6: TIWDBEdit
-            Left = 20
-            Top = 469
-            Width = 201
-            Height = 25
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 5
-            AutoEditable = True
-            DataField = 'Species No'
-            PasswordPrompt = False
-            DataSource = dsrcMain
-          end
-          object IWBSInput7: TIWDBEdit
-            Left = 20
-            Top = 497
-            Width = 201
-            Height = 25
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput7'
-            SubmitOnAsyncEvent = True
-            TabOrder = 7
-            AutoEditable = True
-            DataField = 'FoundDate'
-            PasswordPrompt = False
-            DataSource = dsrcMain
-          end
-          object IWBSInput8: TIWDBEdit
-            Left = 20
-            Top = 300
-            Width = 201
-            Height = 25
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            FriendlyName = 'IWBSInput2'
-            SubmitOnAsyncEvent = True
-            TabOrder = 17
-            AutoEditable = True
-            DataField = 'Common_Name'
-            PasswordPrompt = False
-            DataSource = dsrcMain
-          end
-          object IWBSRadioGroup1: TIWDBRadioGroup
-            Left = 20
-            Top = 796
-            Width = 317
-            Height = 85
-            SubmitOnAsyncEvent = True
-            TrimValues = True
-            AutoEditable = True
-            Editable = True
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            Layout = glVertical
-            DataField = 'Option'
-            FriendlyName = 'IWBSRadioGroup1'
-            DataSource = dsrcMain
-            Values.Strings = (
-              '1'
-              '2'
-              '3')
-            Items.Strings = (
-              'Option 1'
-              'Option 2'
-              'Option 3')
-            TabOrder = -1
-          end
-          object IWBSMemo1: TIWDBMemo
-            Left = 20
-            Top = 678
-            Width = 317
-            Height = 103
-            BGColor = clNone
-            Editable = True
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            InvisibleBorder = False
-            HorizScrollBar = False
-            VertScrollBar = True
-            Required = False
-            TabOrder = 6
-            SubmitOnAsyncEvent = True
-            AutoEditable = True
-            DataField = 'Notes'
-            DataSource = dsrcMain
-            FriendlyName = 'IWBSMemo1'
-          end
-          object IWBSCheckBox1: TIWDBCheckBox
-            Left = 20
-            Top = 647
-            Width = 317
-            Height = 25
-            Caption = 'Check'
-            Editable = True
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            SubmitOnAsyncEvent = True
-            Style = stNormal
-            TabOrder = 19
-            AutoEditable = True
-            DataField = 'Check'
-            DataSource = dsrcMain
-            FriendlyName = 'IWBSCheckBox1'
-            ValueChecked = 'Y'
-            ValueUnchecked = 'N'
-          end
-          object IWBSListbox1: TIWDBListbox
-            Left = 20
-            Top = 560
-            Width = 317
-            Height = 81
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            ItemsHaveValues = True
-            TabOrder = 8
-            MaxItems = 0
-            TrimValues = True
-            AutoEditable = True
-            DataField = 'Option'
-            DataSource = dsrcMain
-            FriendlyName = 'IWBSListbox1'
-            Items.Strings = (
-              'Option 1=1'
-              'Option 2=2'
-              'Option 3=3')
-            ItemIndex = -1
-            NoSelectionText = '-- No Selection --'
-          end
-          object IWBSListbox2: TIWDBComboBox
-            Left = 20
-            Top = 528
-            Width = 317
-            Height = 25
-            Font.Color = clNone
-            Font.Size = 10
-            Font.Style = []
-            ItemsHaveValues = True
-            TabOrder = 18
-            AutoEditable = True
-            DataField = 'Option'
-            DataSource = dsrcMain
-            FriendlyName = 'IWBSListbox1'
-            ItemIndex = -1
-            Items.Strings = (
-              'Option 1=1'
-              'Option 2=2'
-              'Option 3=3')
-            NoSelectionText = '-- No Selection --'
-          end
           object IWBSRegion6: TIWBSRegion
             Left = 20
-            Top = 19
+            Top = 12
             Width = 381
-            Height = 195
+            Height = 202
             BSRegionType = bsrtPageHeader
             object IWImage1: TIWDBImage
-              Left = 15
-              Top = 11
+              Left = 16
+              Top = 3
               Width = 250
               Height = 150
-              RenderSize = False
-              StyleRenderOptions.RenderSize = False
+              Css = 'img-responsive img-circle'
               BorderOptions.Width = 0
               TabOrder = -1
-              UseSize = False
+              UseSize = True
               FriendlyName = 'IWImage1'
               DataField = 'Graphic'
               DataSource = dsrcMain
@@ -354,7 +113,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'edit'
                 FriendlyName = 'btnEdit'
-                TabOrder = 9
+                TabOrder = 0
                 OnAsyncClick = btnEditAsyncClick
               end
               object btnPost: TIWBSButton
@@ -366,7 +125,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'check'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 10
+                TabOrder = 1
                 OnAsyncClick = btnPostAsyncClick
               end
               object btnCancel: TIWBSButton
@@ -378,7 +137,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'remove'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 11
+                TabOrder = 2
                 OnAsyncClick = btnCancelAsyncClick
               end
               object btnFirst: TIWBSButton
@@ -390,7 +149,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'fast-backward'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 12
+                TabOrder = 3
                 OnAsyncClick = btnFirstAsyncClick
               end
               object btnPrior: TIWBSButton
@@ -402,7 +161,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'backward'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 13
+                TabOrder = 4
                 OnAsyncClick = btnPriorAsyncClick
               end
               object btnNext: TIWBSButton
@@ -414,7 +173,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'forward'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 14
+                TabOrder = 5
                 OnAsyncClick = btnNextAsyncClick
               end
               object btnLast: TIWBSButton
@@ -426,9 +185,361 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'fast-forward'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 15
+                TabOrder = 6
                 OnAsyncClick = btnLastAsyncClick
               end
+            end
+          end
+          object IWBSFormControl1: TIWBSFormControl
+            Left = 20
+            Top = 277
+            Width = 329
+            Height = 33
+            Caption = 'Common Name'
+            object IWBSInput8: TIWDBEdit
+              Left = 8
+              Top = 5
+              Width = 201
+              Height = 25
+              Css = 'form-control'
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSInput2'
+              SubmitOnAsyncEvent = True
+              TabOrder = 8
+              AutoEditable = True
+              DataField = 'Common_Name'
+              PasswordPrompt = False
+              DataSource = dsrcMain
+            end
+          end
+          object IWBSFormControl2: TIWBSFormControl
+            Left = 20
+            Top = 313
+            Width = 329
+            Height = 33
+            Caption = 'Length in Inches'
+            object IWBSInput1: TIWDBEdit
+              Left = 8
+              Top = 5
+              Width = 201
+              Height = 25
+              Hint = 'Length in Inches'
+              Css = 'form-control'
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSInput1'
+              SubmitOnAsyncEvent = True
+              TabOrder = 9
+              AutoEditable = True
+              DataField = 'Length_In'
+              PasswordPrompt = False
+              DataSource = dsrcMain
+            end
+          end
+          object IWBSFormControl3: TIWBSFormControl
+            Left = 20
+            Top = 349
+            Width = 329
+            Height = 33
+            Caption = 'Length (cm)'
+            object IWBSInput2: TIWDBEdit
+              Left = 8
+              Top = 5
+              Width = 201
+              Height = 25
+              Css = 'form-control'
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSInput2'
+              SubmitOnAsyncEvent = True
+              TabOrder = 10
+              AutoEditable = True
+              DataField = 'Length (cm)'
+              PasswordPrompt = False
+              DataSource = dsrcMain
+            end
+          end
+          object IWBSFormControl4: TIWBSFormControl
+            Left = 20
+            Top = 385
+            Width = 329
+            Height = 33
+            Caption = 'Species Name'
+            object IWBSInput3: TIWDBEdit
+              Left = 8
+              Top = 5
+              Width = 201
+              Height = 25
+              Css = 'form-control'
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSInput2'
+              SubmitOnAsyncEvent = True
+              TabOrder = 11
+              AutoEditable = True
+              DataField = 'Species Name'
+              PasswordPrompt = False
+              DataSource = dsrcMain
+            end
+          end
+          object IWBSFormControl5: TIWBSFormControl
+            Left = 20
+            Top = 421
+            Width = 329
+            Height = 33
+            Caption = 'Common_Name'
+            object IWBSInput4: TIWDBEdit
+              Left = 8
+              Top = 3
+              Width = 201
+              Height = 25
+              Css = 'form-control'
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSInput2'
+              SubmitOnAsyncEvent = True
+              TabOrder = 12
+              AutoEditable = True
+              DataField = 'Common_Name'
+              PasswordPrompt = False
+              DataSource = dsrcMain
+            end
+          end
+          object IWBSFormControl6: TIWBSFormControl
+            Left = 20
+            Top = 460
+            Width = 329
+            Height = 33
+            Caption = 'Category'
+            object IWBSInput5: TIWDBEdit
+              Left = 8
+              Top = 5
+              Width = 201
+              Height = 25
+              Css = 'form-control'
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSInput2'
+              SubmitOnAsyncEvent = True
+              TabOrder = 13
+              AutoEditable = True
+              DataField = 'Category'
+              PasswordPrompt = False
+              DataSource = dsrcMain
+            end
+          end
+          object IWBSFormControl7: TIWBSFormControl
+            Left = 20
+            Top = 496
+            Width = 329
+            Height = 33
+            Caption = 'Species No'
+            object IWBSInput6: TIWDBEdit
+              Left = 8
+              Top = 3
+              Width = 201
+              Height = 25
+              Css = 'form-control'
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSInput2'
+              SubmitOnAsyncEvent = True
+              TabOrder = 14
+              AutoEditable = True
+              DataField = 'Species No'
+              PasswordPrompt = False
+              DataSource = dsrcMain
+            end
+          end
+          object IWBSFormControl8: TIWBSFormControl
+            Left = 20
+            Top = 535
+            Width = 329
+            Height = 33
+            Caption = 'FoundDate'
+            object IWBSInput7: TIWDBEdit
+              Left = 8
+              Top = 3
+              Width = 201
+              Height = 25
+              Css = 'form-control'
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              FriendlyName = 'IWBSInput7'
+              SubmitOnAsyncEvent = True
+              TabOrder = 15
+              AutoEditable = True
+              DataField = 'FoundDate'
+              PasswordPrompt = False
+              DataSource = dsrcMain
+            end
+          end
+          object IWBSFormControl9: TIWBSFormControl
+            Left = 20
+            Top = 574
+            Width = 329
+            Height = 33
+            Caption = 'Option'
+            object IWBDBComboBox: TIWDBComboBox
+              Left = 8
+              Top = 3
+              Width = 249
+              Height = 25
+              Css = 'form-control'
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              ItemsHaveValues = True
+              Editable = False
+              TabOrder = 16
+              AutoEditable = True
+              DataField = 'Option'
+              DataSource = dsrcMain
+              FriendlyName = 'IWBSListbox1'
+              ItemIndex = -1
+              Items.Strings = (
+                'Option 1=1'
+                'Option 2=2'
+                'Option 3=3')
+              NoSelectionText = '-- No Selection --'
+            end
+          end
+          object IWBSFormControl10: TIWBSFormControl
+            Left = 20
+            Top = 613
+            Width = 329
+            Height = 101
+            Caption = 'Option'
+            object IWDBListbox1: TIWDBListbox
+              Left = 8
+              Top = 8
+              Width = 225
+              Height = 81
+              Css = 'form-control'
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              ItemsHaveValues = True
+              Editable = False
+              TabOrder = 17
+              MaxItems = 0
+              TrimValues = True
+              AutoEditable = True
+              DataField = 'Option'
+              DataSource = dsrcMain
+              FriendlyName = 'IWDBListbox1'
+              Items.Strings = (
+                'Option 1=1'
+                'Option 2=2'
+                'Option 3=3')
+              ItemIndex = -1
+              NoSelectionText = '-- No Selection --'
+            end
+          end
+          object IWBSFormControl11: TIWBSFormControl
+            Left = 20
+            Top = 720
+            Width = 329
+            Height = 41
+            Caption = ''
+            object IWDBCheckBox1: TIWDBCheckBox
+              Left = 16
+              Top = 11
+              Width = 121
+              Height = 25
+              Caption = 'Check'
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              SubmitOnAsyncEvent = True
+              Style = stNormal
+              TabOrder = 18
+              AutoEditable = True
+              DataField = 'Check'
+              DataSource = dsrcMain
+              FriendlyName = 'IWDBCheckBox1'
+              ValueChecked = 'Y'
+              ValueUnchecked = 'N'
+            end
+          end
+          object IWBSFormControl12: TIWBSFormControl
+            Left = 20
+            Top = 767
+            Width = 329
+            Height = 129
+            Caption = 'Notes'
+            object IWDBMemo1: TIWDBMemo
+              Left = 8
+              Top = 22
+              Width = 317
+              Height = 103
+              Css = 'form-control'
+              BGColor = clNone
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              InvisibleBorder = False
+              HorizScrollBar = False
+              VertScrollBar = True
+              Required = False
+              TabOrder = 19
+              SubmitOnAsyncEvent = True
+              AutoEditable = True
+              DataField = 'Notes'
+              DataSource = dsrcMain
+              FriendlyName = 'IWDBMemo1'
+            end
+          end
+          object IWBSFormControl13: TIWBSFormControl
+            Left = 18
+            Top = 902
+            Width = 331
+            Height = 127
+            Caption = 'Option'
+            object IWDBRadioGroup1: TIWDBRadioGroup
+              Left = 12
+              Top = 24
+              Width = 309
+              Height = 93
+              SubmitOnAsyncEvent = True
+              TrimValues = True
+              AutoEditable = True
+              Editable = False
+              Font.Color = clNone
+              Font.Size = 10
+              Font.Style = []
+              Layout = glVertical
+              DataField = 'Option'
+              FriendlyName = 'IWDBRadioGroup1'
+              DataSource = dsrcMain
+              Values.Strings = (
+                '1'
+                '2'
+                '3')
+              Items.Strings = (
+                'Option 1'
+                'Option 2'
+                'Option 3')
+              TabOrder = -1
             end
           end
         end
@@ -441,23 +552,29 @@ object FFishFact: TFFishFact
       Height = 61
       Align = alTop
       BSRegionType = bsrtRow
-      object IWBSButton1: TIWBSButton
+      object IWButton1: TIWButton
         Left = 495
         Top = 16
         Width = 218
         Height = 25
-        Css = 'pull-right'
+        Css = 'btn btn-default pull-right'
         Caption = 'Switch to Standard Demo'
-        FriendlyName = 'IWBSButton1'
-        TabOrder = 16
-        OnClick = IWBSButton1Click
+        Color = clBtnFace
+        Font.Color = clNone
+        Font.Size = 10
+        Font.Style = []
+        FriendlyName = 'IWButton1'
+        TabOrder = 7
+        OnClick = IWButton1Click
       end
-      object IWText1: TIWBSText
+      object IWText1: TIWText
         Left = 16
         Top = 16
         Width = 381
         Height = 27
         Css = 'pull-left'
+        BGColor = clNone
+        ConvertSpaces = False
         Font.Color = clNone
         Font.Size = 10
         Font.Style = []
@@ -465,6 +582,8 @@ object FFishFact: TFFishFact
         Lines.Strings = (
           '<h3>This is the data aware demo</h3>')
         RawText = True
+        UseFrame = False
+        WantReturns = True
       end
     end
   end

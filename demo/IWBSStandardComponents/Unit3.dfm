@@ -41,43 +41,6 @@ object IWFrame3: TIWFrame3
           FriendlyName = 'IWLabel1'
           Caption = 'This is the body'
         end
-        object IWBSInput1: TIWBSInput
-          Left = 24
-          Top = 64
-          Width = 121
-          Height = 21
-          RenderSize = False
-          StyleRenderOptions.RenderSize = False
-          StyleRenderOptions.RenderPosition = False
-          StyleRenderOptions.RenderFont = False
-          StyleRenderOptions.RenderStatus = False
-          StyleRenderOptions.RenderAbsolute = False
-          StyleRenderOptions.RenderPadding = False
-          StyleRenderOptions.RenderBorder = False
-          AutoFocus = True
-          Caption = 'Input'
-          FriendlyName = 'IWBSInput1'
-          SubmitOnAsyncEvent = True
-          TabOrder = 0
-          Text = ''
-        end
-        object IWBSSelect1: TIWBSSelect
-          Left = 24
-          Top = 104
-          Width = 121
-          Height = 25
-          Caption = ''
-          FriendlyName = 'IWBSSelect1'
-          SubmitOnAsyncEvent = True
-          TabOrder = 2
-          Text = ''
-          Items.Strings = (
-            'item 1'
-            'item 2'
-            'item 3'
-            'item 4')
-          MultiSelect = True
-        end
       end
       object IWBSRegion3: TIWBSRegion
         Left = 40
@@ -114,7 +77,7 @@ object IWFrame3: TIWFrame3
           BSButtonStyle = bsbsClose
           BSDataDismiss = bsbdModal
           FriendlyName = 'IWBSButton199'
-          TabOrder = 1
+          TabOrder = 0
         end
       end
       object IWBSRegion4: TIWBSRegion

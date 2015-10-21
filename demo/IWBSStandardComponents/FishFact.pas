@@ -11,7 +11,7 @@ uses
   IWBSRegion, IWVCLComponent, IWBaseLayoutComponent,
   IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr,
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
-  MidasLib, IWBSCustomControl, IWBSButton, IWBSControls;
+  MidasLib, IWBSCustomControl, IWBSControls, IWBSButton;
 
 type
   TFFishFact = class(TIWAppForm)
@@ -45,8 +45,18 @@ type
     btnNext: TIWBSButton;
     btnLast: TIWBSButton;
     IWBSRegion8: TIWBSRegion;
-    IWBSButton1: TIWBSButton;
-    IWText1: TIWBSText;
+    IWImage1: TIWDBImage;
+    IWBSLabel1: TIWDBLabel;
+    IWBSFormControl1: TIWBSFormControl;
+    IWBSInput8: TIWDBEdit;
+    IWBSFormControl2: TIWBSFormControl;
+    IWBSFormControl3: TIWBSFormControl;
+    IWBSFormControl4: TIWBSFormControl;
+    IWBSFormControl5: TIWBSFormControl;
+    IWBSFormControl6: TIWBSFormControl;
+    IWBSFormControl7: TIWBSFormControl;
+    IWBSFormControl8: TIWBSFormControl;
+    IWBSFormControl9: TIWBSFormControl;
     IWBSInput1: TIWDBEdit;
     IWBSInput2: TIWDBEdit;
     IWBSInput3: TIWDBEdit;
@@ -54,14 +64,17 @@ type
     IWBSInput5: TIWDBEdit;
     IWBSInput6: TIWDBEdit;
     IWBSInput7: TIWDBEdit;
-    IWBSInput8: TIWDBEdit;
-    IWImage1: TIWDBImage;
-    IWBSLabel1: TIWDBLabel;
-    IWBSRadioGroup1: TIWDBRadioGroup;
-    IWBSMemo1: TIWDBMemo;
-    IWBSCheckBox1: TIWDBCheckBox;
-    IWBSListbox1: TIWDBListbox;
-    IWBSListbox2: TIWDBComboBox;
+    IWBDBComboBox: TIWDBComboBox;
+    IWBSFormControl10: TIWBSFormControl;
+    IWDBListbox1: TIWDBListbox;
+    IWBSFormControl11: TIWBSFormControl;
+    IWDBCheckBox1: TIWDBCheckBox;
+    IWBSFormControl12: TIWBSFormControl;
+    IWDBMemo1: TIWDBMemo;
+    IWBSFormControl13: TIWBSFormControl;
+    IWDBRadioGroup1: TIWDBRadioGroup;
+    IWButton1: TIWButton;
+    IWText1: TIWText;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWAppFormDestroy(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);
@@ -72,7 +85,7 @@ type
     procedure btnNextAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure btnLastAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure dsrcMainStateChange(Sender: TObject);
-    procedure IWBSButton1Click(Sender: TObject);
+    procedure IWButton1Click(Sender: TObject);
   public
   end;
 
@@ -84,7 +97,6 @@ uses ServerController;
 procedure TFFishFact.IWFormModuleBaseCreate(Sender: TObject);
 begin
   //ClientDataSet1.LoadFromFile('biolife2.cds');
-  ExtraHeader.Add('<link href="'+IWServerController.URLBase+'/iwbsdemo.css" rel="stylesheet">');
 end;
 
 procedure TFFishFact.IWAppFormDestroy(Sender: TObject);
@@ -92,7 +104,7 @@ begin
   //ClientDataSet1.Close;
 end;
 
-procedure TFFishFact.IWBSButton1Click(Sender: TObject);
+procedure TFFishFact.IWButton1Click(Sender: TObject);
 begin
   Release;
 end;

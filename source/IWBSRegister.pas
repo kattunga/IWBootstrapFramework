@@ -110,6 +110,11 @@ begin
     ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
     ControlCanvas.Font.Color := clGray;
     s := TIWBSCustomRegion(Control).GetClassString;
+    if Control is TIWBSFormControl then begin
+      if s <> '' then
+        s := ' '+s;
+      s := 'form-control'+s;
+    end;
     w := ControlCanvas.TextWidth(s);
     LRect := Rect(Control.ClientWidth-w-10, 2, Control.Width, Control.Height);
     ControlCanvas.TextRect(LRect,s,[]);
@@ -384,6 +389,7 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSRegion]);
   RegisterComponents('IW BootsTrap', [TIWBSInputForm]);
   RegisterComponents('IW BootsTrap', [TIWBSInputGroup]);
+  RegisterComponents('IW BootsTrap', [TIWBSFormControl]);
   RegisterComponents('IW BootsTrap', [TIWBSModal]);
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignPosition');
@@ -424,6 +430,7 @@ initialization
   IWRegisterPaintHandler('TIWBSRegion',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSInputForm',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSInputGroup',TIWBSPaintHandlerRegion);
+  IWRegisterPaintHandler('TIWBSFormControl',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerRegion);
 
   IWRegisterPaintHandler('TIWBSInput',TIWBSPaintHandlerCustomInput);
@@ -451,6 +458,7 @@ finalization
   IWUnRegisterPaintHandler('TIWBSRegion');
   IWUnRegisterPaintHandler('TIWBSInputForm');
   IWUnRegisterPaintHandler('TIWBSInputGroup');
+  IWUnRegisterPaintHandler('TIWBSFormControl');
   IWUnRegisterPaintHandler('TIWBSModal');
 
   IWUnRegisterPaintHandler('TIWBSInput');

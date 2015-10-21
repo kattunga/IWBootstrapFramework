@@ -126,9 +126,9 @@ begin
     begin
       Result := TIWHTMLTag.CreateTag('p');
       try
-        Result.AddClassParam(FOldCss);
+        Result.AddClassParam(ActiveCss);
         Result.AddStringParam('id', AHTMLName);
-        Result.AddStringParam('style', FOldStyle);
+        Result.AddStringParam('style', ActiveStyle);
         Result.Contents.AddText(TextToHTML(FText));
       except
         FreeAndNil(Result);
@@ -139,7 +139,7 @@ begin
     begin
       Result := TIWHTMLTag.CreateTag('input');
       try
-        Result.AddClassParam(FOldCss);
+        Result.AddClassParam(ActiveCss);
         Result.AddStringParam('id', AHTMLName);
         Result.AddStringParam('name', AHTMLName);
         Result.AddStringParam('type', aIWBSInputType[BSInputType]);
@@ -160,7 +160,7 @@ begin
           Result.Add('required');
         if PlaceHolder <> '' then
           Result.AddStringParam('placeholder', TextToHTML(PlaceHolder));
-        Result.AddStringParam('style', FOldStyle);
+        Result.AddStringParam('style', ActiveStyle);
       except
         FreeAndNil(Result);
         raise;
@@ -221,7 +221,7 @@ begin
   Result := TIWHTMLTag.CreateTag('textarea');
   try
     Result.AddStringParam('id', AHTMLName);
-    Result.AddClassParam(FOldCss);
+    Result.AddClassParam(ActiveCss);
     Result.AddStringParam('name', AHTMLName);
     if ShowHint and (Hint <> '') then begin
       Result.AddStringParam('data-toggle', 'tooltip');
@@ -240,7 +240,7 @@ begin
     if PlaceHolder <> '' then
       Result.AddStringParam('placeholder', TextToHTML(PlaceHolder));
     Result.AddIntegerParam('rows', FRows);
-    Result.AddStringParam('style', FOldStyle);
+    Result.AddStringParam('style', ActiveStyle);
     Result.Contents.AddText(TextToHTML(FText,false,false));
   except
     FreeAndNil(Result);
@@ -315,13 +315,13 @@ begin
   try
     Result.AddStringParam('id', AHTMLName);
     Result.AddStringParam('name', AHTMLName);
-    Result.AddClassParam(FOldCss);
+    Result.AddClassParam(ActiveCss);
     Result.AddStringParam('type', 'checkbox');
     if IsDisabled then
       Result.Add('disabled');
     if Checked then
       Result.Add('checked');
-    Result.AddStringParam('style', FOldStyle);
+    Result.AddStringParam('style', ActiveStyle);
   except
     FreeAndNil(Result);
     raise;
@@ -394,7 +394,7 @@ begin
   try
     Result.AddStringParam('id', AHTMLName+FInputSuffix);
     Result.AddStringParam('name', FGroup);
-    Result.AddClassParam(FOldCss);
+    Result.AddClassParam(ActiveCss);
     Result.AddStringParam('type', 'radio');
     if IsDisabled then
       Result.Add('disabled');
@@ -402,7 +402,7 @@ begin
       Result.Add('checked');
     Result.AddStringParam('onclick', 'radioButtonClick(event, '''+FGroup+''','''+AHTMLName+FInputSuffix+''');');
     Result.AddStringParam('value', 'on');
-    Result.AddStringParam('style', FOldStyle);
+    Result.AddStringParam('style', ActiveStyle);
   except
     FreeAndNil(Result);
     raise;
@@ -561,7 +561,7 @@ begin
   Result := TIWHTMLTag.CreateTag('select');
   try
     Result.AddStringParam('id', AHTMLName);
-    Result.AddClassParam(FOldCss);
+    Result.AddClassParam(ActiveCss);
     Result.AddStringParam('name', AHTMLName);
     if FSize > 0 then
       Result.AddIntegerParam('size', FSize)
@@ -618,7 +618,7 @@ begin
   try
     Result.AddStringParam('id', AHTMLName);
     Result.AddClassParam('radio');
-    Result.AddStringParam('style', FOldStyle);
+    Result.AddStringParam('style', ActiveStyle);
     for i := 0 to Items.Count - 1 do begin
       with Result.Contents.AddTag('label') do begin
         with Contents.AddTag('input') do begin
@@ -648,8 +648,8 @@ end;
 
 {$IFDEF IWBSBOOTSTRAPSELECT}
 initialization
-  TIWBSLayoutMgr.AddLinkFile('select/dist/css/bootstrap-select.min.css');
-  TIWBSLayoutMgr.AddLinkFile('select/dist/js/bootstrap-select.min.js');
+  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/select/dist/css/bootstrap-select.min.css');
+  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/select/dist/js/bootstrap-select.min.js');
 {$ENDIF}
 
 end.
