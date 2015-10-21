@@ -26,7 +26,7 @@ type
     property Stacked: boolean read FStacked write FStacked default false;
   end;
 
-  TIWBSTabControl = class(TIWTabControl)
+  TIWBSTabControl = class(TIWTabControl, IIWBSComponent)
   private
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;

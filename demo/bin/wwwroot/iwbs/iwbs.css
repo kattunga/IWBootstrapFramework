@@ -25,16 +25,12 @@
 		width: auto;
 		left: 1em;
 	}
-	
-	
-	
 }
 
-/**** buttons *********/
-.btn {
-	max-width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
+/**** select plugin ***/
+.form-control.disabled > button, .form-control.disabled > button:hover {
+    background-color: #eee;
+    opacity: 1;
 }
 
 /**** height classes ***/

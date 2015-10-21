@@ -4,10 +4,10 @@ interface
 
 uses System.Classes, System.SysUtils, Data.Db, Vcl.Graphics,
      IWControl, IWRenderContext, IWMarkupLanguageTag, IWXMLTag, IWHTMLTag,
-     IWCompLabel, IWDBCommon, IWDBStdCtrls, IWDBExtCtrls, IWCompText;
+     IWCompLabel, IWDBCommon, IWDBStdCtrls, IWDBExtCtrls, IWCompText, IWBSCommon;
 
 type
-  TIWBSLabel = class(TIWCustomLabel)
+  TIWBSLabel = class(TIWCustomLabel, IIWBSComponent)
   private
     FDataLink: TIWDataLink;
     FDataField: string;
@@ -42,7 +42,7 @@ type
     property OnAsyncMouseUp;
   end;
 
-  TIWBSGlyphicon = class(TIWCustomControl)
+  TIWBSGlyphicon = class(TIWCustomControl, IIWBSComponent)
   private
     FGlyphicon: string;
     FOldVisible: boolean;
@@ -59,7 +59,7 @@ type
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
   end;
 
-  TIWBSImage = class(TIWDBImage)
+  TIWBSImage = class(TIWDBImage, IIWBSComponent)
   private
     FOldVisible: boolean;
   protected
@@ -86,7 +86,7 @@ type
     property RenderEmptyAsSpan;
   end;
 
-  TIWBSText = class(TIWText)
+  TIWBSText = class(TIWText, IIWBSComponent)
   private
     FOldVisible: boolean;
   public
@@ -104,7 +104,7 @@ type
 
 implementation
 
-uses IWBSInput, IWBSRegion, IWBSInputCommon, IWBSCommon;
+uses IWBSInput, IWBSRegion, IWBSInputCommon;
 
 {$region 'TIWBSLabel'}
 procedure TIWBSLabel.InitControl;
