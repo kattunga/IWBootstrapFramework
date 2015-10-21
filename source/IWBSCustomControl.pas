@@ -120,6 +120,11 @@ begin
   xStyle := TStringList.Create;
   try
     xStyle.Assign(FStyle);
+
+    // here we render z-index
+    if ZIndex <> 0 then
+      xStyle.Values['z-index'] := IntToStr(Zindex);
+
     InternalRenderStyle(xStyle);
     for i := 0 to xStyle.Count-1 do begin
       if Result <> '' then

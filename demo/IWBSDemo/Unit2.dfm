@@ -68,209 +68,6 @@ object IWForm2: TIWForm2
           DesignSize = (
             1078
             1533)
-          object IWTabControl21Page4: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 1513
-            RenderInvisibleControls = True
-            TabOrder = 3
-            Title = 'Other Bootstrap Controls'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion30: TIWBSRegion
-              Left = 0
-              Top = 0
-              Width = 1078
-              Height = 1513
-              Align = alClient
-              Style.Strings = (
-                'margin: 1em')
-              object IWBSRegion9: TIWBSRegion
-                Left = 16
-                Top = 12
-                Width = 698
-                Height = 60
-                BSRegionType = bsrtJumbotron
-                object IWText1: TIWText
-                  Left = 20
-                  Top = 11
-                  Width = 540
-                  Height = 38
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText1'
-                  Lines.Strings = (
-                    '<h1>This is a Jumbotron</h1>'
-                    '<h2>Example page header <small>Subtext for header</small></h2>')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-              end
-              object IWBSRegion14: TIWBSRegion
-                Left = 16
-                Top = 78
-                Width = 698
-                Height = 60
-                BSRegionType = bsrtPageHeader
-                object IWText4: TIWText
-                  Left = 20
-                  Top = 11
-                  Width = 540
-                  Height = 38
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText1'
-                  Lines.Strings = (
-                    '<h1>This is a Page Header</h1>'
-                    '<h2>Example page header <small>Subtext for header</small></h2>')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-              end
-              object IWBSRegion24: TIWBSRegion
-                Left = 16
-                Top = 151
-                Width = 698
-                Height = 60
-                BSRegionType = bsrtWell
-                BSRelativeSize = bsrzLg
-                object IWText10: TIWText
-                  Left = 20
-                  Top = 11
-                  Width = 540
-                  Height = 38
-                  BGColor = clNone
-                  ConvertSpaces = False
-                  Font.Color = clNone
-                  Font.Size = 10
-                  Font.Style = []
-                  FriendlyName = 'IWText1'
-                  Lines.Strings = (
-                    '<h1>This is a Well</h1>'
-                    '<h2>Example page header <small>Subtext for header</small></h2>')
-                  RawText = True
-                  UseFrame = False
-                  WantReturns = True
-                end
-              end
-              object IWBSRegion19: TIWBSRegion
-                Left = 16
-                Top = 255
-                Width = 698
-                Height = 268
-                BSPanelStyle = bspsPrimary
-                BSRegionType = bsrtPanel
-                object IWBSRegion20: TIWBSRegion
-                  Left = 8
-                  Top = 22
-                  Width = 681
-                  Height = 80
-                  BSRegionType = bsrtPanelHeading
-                  object IWText8: TIWText
-                    Left = 19
-                    Top = 55
-                    Width = 269
-                    Height = 22
-                    BGColor = clNone
-                    ConvertSpaces = False
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWText1'
-                    Lines.Strings = (
-                      '<h2>this is panel heading</h2>')
-                    RawText = True
-                    UseFrame = False
-                    WantReturns = True
-                  end
-                  object IWBSRegion23: TIWBSRegion
-                    Left = 12
-                    Top = 18
-                    Width = 653
-                    Height = 34
-                    BSRegionType = bsrtPanelTitle
-                    object IWText7: TIWText
-                      Left = 163
-                      Top = 9
-                      Width = 269
-                      Height = 22
-                      BGColor = clNone
-                      ConvertSpaces = False
-                      Font.Color = clNone
-                      Font.Size = 10
-                      Font.Style = []
-                      FriendlyName = 'IWText1'
-                      Lines.Strings = (
-                        '<h2>this is panel title</h2>')
-                      RawText = True
-                      UseFrame = False
-                      WantReturns = True
-                    end
-                  end
-                end
-                object IWBSRegion21: TIWBSRegion
-                  Left = 8
-                  Top = 193
-                  Width = 681
-                  Height = 60
-                  BSRegionType = bsrtPanelFooter
-                  object IWText9: TIWText
-                    Left = 24
-                    Top = 20
-                    Width = 269
-                    Height = 22
-                    BGColor = clNone
-                    ConvertSpaces = False
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWText1'
-                    Lines.Strings = (
-                      '<h2>this is panel footer</h2>')
-                    RawText = True
-                    UseFrame = False
-                    WantReturns = True
-                  end
-                end
-                object IWBSRegion22: TIWBSRegion
-                  Left = 8
-                  Top = 108
-                  Width = 681
-                  Height = 79
-                  BSRegionType = bsrtPanelBody
-                  object IWText6: TIWText
-                    Left = 155
-                    Top = 37
-                    Width = 269
-                    Height = 22
-                    BGColor = clNone
-                    ConvertSpaces = False
-                    Font.Color = clNone
-                    Font.Size = 10
-                    Font.Style = []
-                    FriendlyName = 'IWText1'
-                    Lines.Strings = (
-                      '<h2>this is panel body</h2>')
-                    RawText = True
-                    UseFrame = False
-                    WantReturns = True
-                  end
-                end
-              end
-            end
-          end
           object IWTabControl21Page1: TIWTabPage
             Left = 0
             Top = 20
@@ -1218,6 +1015,280 @@ object IWForm2: TIWForm2
               end
             end
           end
+          object IWTabControl21Page4: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1513
+            RenderInvisibleControls = True
+            TabOrder = 3
+            Title = 'Other Bootstrap Controls'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion30: TIWBSRegion
+              Left = 0
+              Top = 0
+              Width = 1078
+              Height = 1513
+              Align = alClient
+              Style.Strings = (
+                'margin: 1em')
+              object IWBSRegion9: TIWBSRegion
+                Left = 16
+                Top = 12
+                Width = 698
+                Height = 60
+                BSRegionType = bsrtJumbotron
+                object IWText1: TIWText
+                  Left = 20
+                  Top = 11
+                  Width = 540
+                  Height = 38
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText1'
+                  Lines.Strings = (
+                    '<h1>This is a Jumbotron</h1>'
+                    '<h2>Example page header <small>Subtext for header</small></h2>')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+              end
+              object IWBSRegion14: TIWBSRegion
+                Left = 16
+                Top = 78
+                Width = 698
+                Height = 60
+                BSRegionType = bsrtPageHeader
+                object IWText4: TIWText
+                  Left = 20
+                  Top = 11
+                  Width = 540
+                  Height = 38
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText1'
+                  Lines.Strings = (
+                    '<h1>This is a Page Header</h1>'
+                    '<h2>Example page header <small>Subtext for header</small></h2>')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+              end
+              object IWBSRegion24: TIWBSRegion
+                Left = 16
+                Top = 151
+                Width = 698
+                Height = 60
+                BSRegionType = bsrtWell
+                BSRelativeSize = bsrzLg
+                object IWText10: TIWText
+                  Left = 20
+                  Top = 11
+                  Width = 540
+                  Height = 38
+                  BGColor = clNone
+                  ConvertSpaces = False
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  FriendlyName = 'IWText1'
+                  Lines.Strings = (
+                    '<h1>This is a Well</h1>'
+                    '<h2>Example page header <small>Subtext for header</small></h2>')
+                  RawText = True
+                  UseFrame = False
+                  WantReturns = True
+                end
+              end
+              object IWBSRegion19: TIWBSRegion
+                Left = 16
+                Top = 255
+                Width = 698
+                Height = 268
+                BSPanelStyle = bspsPrimary
+                BSRegionType = bsrtPanel
+                object IWBSRegion20: TIWBSRegion
+                  Left = 8
+                  Top = 22
+                  Width = 681
+                  Height = 80
+                  BSRegionType = bsrtPanelHeading
+                  object IWText8: TIWText
+                    Left = 19
+                    Top = 55
+                    Width = 269
+                    Height = 22
+                    BGColor = clNone
+                    ConvertSpaces = False
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWText1'
+                    Lines.Strings = (
+                      '<h2>this is panel heading</h2>')
+                    RawText = True
+                    UseFrame = False
+                    WantReturns = True
+                  end
+                  object IWBSRegion23: TIWBSRegion
+                    Left = 12
+                    Top = 18
+                    Width = 653
+                    Height = 34
+                    BSRegionType = bsrtPanelTitle
+                    object IWText7: TIWText
+                      Left = 163
+                      Top = 9
+                      Width = 269
+                      Height = 22
+                      BGColor = clNone
+                      ConvertSpaces = False
+                      Font.Color = clNone
+                      Font.Size = 10
+                      Font.Style = []
+                      FriendlyName = 'IWText1'
+                      Lines.Strings = (
+                        '<h2>this is panel title</h2>')
+                      RawText = True
+                      UseFrame = False
+                      WantReturns = True
+                    end
+                  end
+                end
+                object IWBSRegion21: TIWBSRegion
+                  Left = 8
+                  Top = 193
+                  Width = 681
+                  Height = 60
+                  BSRegionType = bsrtPanelFooter
+                  object IWText9: TIWText
+                    Left = 24
+                    Top = 20
+                    Width = 269
+                    Height = 22
+                    BGColor = clNone
+                    ConvertSpaces = False
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWText1'
+                    Lines.Strings = (
+                      '<h2>this is panel footer</h2>')
+                    RawText = True
+                    UseFrame = False
+                    WantReturns = True
+                  end
+                end
+                object IWBSRegion22: TIWBSRegion
+                  Left = 8
+                  Top = 108
+                  Width = 681
+                  Height = 79
+                  BSRegionType = bsrtPanelBody
+                  object IWText6: TIWText
+                    Left = 155
+                    Top = 37
+                    Width = 269
+                    Height = 22
+                    BGColor = clNone
+                    ConvertSpaces = False
+                    Font.Color = clNone
+                    Font.Size = 10
+                    Font.Style = []
+                    FriendlyName = 'IWText1'
+                    Lines.Strings = (
+                      '<h2>this is panel body</h2>')
+                    RawText = True
+                    UseFrame = False
+                    WantReturns = True
+                  end
+                end
+              end
+            end
+          end
+          object IWTabControl21Page6: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1513
+            RenderInvisibleControls = True
+            TabOrder = 4
+            Title = 'Funtionality'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSButton37: TIWBSButton
+              Left = 40
+              Top = 40
+              Width = 307
+              Height = 25
+              Caption = 'Toggle Visibility'
+              FriendlyName = 'IWBSButton37'
+              TabOrder = 78
+              OnAsyncClick = IWBSButton37AsyncClick
+            end
+            object IWBSRegion32: TIWBSRegion
+              Left = 40
+              Top = 90
+              Width = 698
+              Height = 60
+              BSRegionType = bsrtWell
+              object IWText11: TIWText
+                Left = 20
+                Top = 8
+                Width = 540
+                Height = 38
+                BGColor = clNone
+                ConvertSpaces = False
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWText1'
+                Lines.Strings = (
+                  '<h1>This is a Well</h1>'
+                  '<h2>Example page header <small>Subtext for header</small></h2>')
+                RawText = True
+                UseFrame = False
+                WantReturns = True
+              end
+            end
+            object IWBSRegion33: TIWBSRegion
+              Left = 38
+              Top = 163
+              Width = 700
+              Height = 91
+              BSRegionType = bsrtWell
+              object IWBSInput25: TIWBSInput
+                Left = 19
+                Top = 35
+                Width = 201
+                Height = 25
+                ExtraTagParams.Strings = (
+                  '')
+                Caption = 'Input Type Text'
+                FriendlyName = 'IWBSInput1'
+                SubmitOnAsyncEvent = True
+                TabOrder = 79
+                Text = ''
+                BSTextAlignment = bstaCenter
+                PlaceHolder = 'Name'
+              end
+            end
+          end
           object IWTabControl21Page0: TIWTabPage
             Left = 0
             Top = 20
@@ -1249,8 +1320,8 @@ object IWForm2: TIWForm2
                 BSGridOptions.GridMDSpan = 4
                 BSRegionType = bsrtColumn
                 object IWBSRegion18: TIWBSRegion
-                  Left = 10
-                  Top = 20
+                  Left = 12
+                  Top = 27
                   Width = 245
                   Height = 195
                   BSRegionType = bsrtWell
@@ -1522,7 +1593,7 @@ object IWForm2: TIWForm2
                 end
                 object IWBSInput13: TIWBSInput
                   Left = 12
-                  Top = 381
+                  Top = 382
                   Width = 201
                   Height = 25
                   Caption = 'Input NonEditableAsLabel'

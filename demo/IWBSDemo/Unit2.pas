@@ -12,7 +12,8 @@ uses
   IWCompButton,
   IWBaseLayoutComponent, IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr,
   IWBSInput, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
-  IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent;
+  IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent,
+  IWBSCustomControl;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -162,6 +163,12 @@ type
     IWBSListbox2: TIWBSSelect;
     IWBSListbox3: TIWBSSelect;
     IWBSCheckBox1: TIWBSCheckBox;
+    IWTabControl21Page6: TIWTabPage;
+    IWBSButton37: TIWBSButton;
+    IWBSRegion32: TIWBSRegion;
+    IWText11: TIWText;
+    IWBSRegion33: TIWBSRegion;
+    IWBSInput25: TIWBSInput;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -176,6 +183,7 @@ type
     procedure IWBSButton36Click(Sender: TObject);
     procedure IWAppFormCreate(Sender: TObject);
     procedure IWBSButton34AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton37AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -324,6 +332,13 @@ begin
     IWBSInputForm1.BSFormType := Self.IWBSInputForm2.BSFormType;
     Show;
   end;
+end;
+
+procedure TIWForm2.IWBSButton37AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  IWBSRegion32.Visible := not IWBSRegion32.Visible;
+  IWBSInput25.Visible := IWBSRegion32.Visible;
 end;
 
 initialization

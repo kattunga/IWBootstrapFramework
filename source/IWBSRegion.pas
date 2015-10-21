@@ -20,6 +20,11 @@ type
     FRegionDiv: TIWHTMLTag;
     FStyle: TStrings;
     FReleased: boolean;
+
+    FOldCss: string;
+    FOldStyle: string;
+    FOldVisible: boolean;
+
     function GetWebApplication: TIWApplication;
   protected
     function ContainerPrefix: string; override;
@@ -52,6 +57,7 @@ type
     property Css: string read FCss write FCss;
     property RenderInvisibleControls default False;
     property Style: TStrings read FStyle write SetStyle;
+    property ZIndex default 0;
   end;
 
   TIWBSInputForm = class(TIWBSCustomRegion)
@@ -205,6 +211,7 @@ begin
   FTagType := 'div';
   ClipRegion := False;
   RenderInvisibleControls := False;
+  ZIndex := 0;
 end;
 
 destructor TIWBSCustomRegion.Destroy;
@@ -306,6 +313,10 @@ begin
   else
     Exit;
 
+  // not render invisible control
+  if (not Visible) and (not LParentContainer.RenderInvisibleControls) then
+    Exit;
+
   // get webapplication
   LWebApplication := GetWebApplication;
 
@@ -328,11 +339,8 @@ begin
     LComponentContext := TIWCompContext.Create(Self, ParentContainer.ContainerContext , LPageContext);
     LTag := RenderMarkupLanguageTag(LComponentContext);
     LTag := DoPostRenderProcessing(LTag, LComponentContext, Self);
-    if (not Visible) and LParentContainer.RenderInvisibleControls then
-      if StyleRenderOptions.UseDisplay then
-        LTag.AddStringParam('style', 'display: none;' + LTag.Params.Values['style'])
-      else
-        LTag.AddStringParam('style', 'visibility: hidden;' + LTag.Params.Values['style']);
+    if not Visible then
+      LTag.Params.Values['style'] := 'display: none; visibility: hidden;'+LTag.Params.Values['style'];
     LComponentContext.MarkupLanguageTag := LTag;
     ParentContainer.ContainerContext.AddComponent(LComponentContext);
     LBuffer := TIWRenderStream.Create(True, True);
@@ -397,8 +405,14 @@ begin
 end;
 
 function TIWBSCustomRegion.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+var
+  xHTMLName: string;
 begin
-  result := nil;
+  Result := nil;
+  xHTMLName := HTMLName;
+  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
+  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
 end;
 
 procedure TIWBSCustomRegion.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
@@ -430,18 +444,35 @@ end;
 
 function TIWBSCustomRegion.RenderStyle(AContext: TIWCompContext): string;
 var
+  xStyle: TStringList;
   i: integer;
 begin
   Result := '';
-  for i := 0 to FStyle.Count-1 do begin
-    if Result <> '' then
-      Result := Result + ';';
-    Result := Result + FStyle[i];
+
+  xStyle := TStringList.Create;
+  try
+    xStyle.Assign(FStyle);
+
+    // here we render z-index
+    if ZIndex <> 0 then
+      xStyle.Values['z-index'] := IntToStr(Zindex);
+
+    for i := 0 to xStyle.Count-1 do begin
+      if Result <> '' then
+        Result := Result + ';';
+      Result := Result + xStyle[i];
+    end;
+  finally
+    xStyle.Free;
   end;
 end;
 
 function TIWBSCustomRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
+  FOldCss := RenderCSSClass(AContext);
+  FOldStyle := RenderStyle(AContext);
+  FOldVisible := Visible;
+
   FRegionDiv := TIWHTMLTag.CreateTag(FTagType);
   FRegionDiv.AddStringParam('id',HTMLName);
   FRegionDiv.AddClassParam(GetClassString);
