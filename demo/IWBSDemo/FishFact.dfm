@@ -57,9 +57,9 @@ object FFishFact: TFFishFact
             Width = 201
             Height = 25
             Hint = 'Length in Inches'
-            Caption = 'Length (inches)'
             DataSource = dsrcMain
             DataField = 'Length_In'
+            Caption = 'Length (inches)'
             FriendlyName = 'IWBSInput1'
             SubmitOnAsyncEvent = True
             TabOrder = 0
@@ -72,9 +72,9 @@ object FFishFact: TFFishFact
             Top = 361
             Width = 201
             Height = 25
-            Caption = 'Length (cm)'
             DataSource = dsrcMain
             DataField = 'Length (cm)'
+            Caption = 'Length (cm)'
             FriendlyName = 'IWBSInput2'
             SubmitOnAsyncEvent = True
             TabOrder = 1
@@ -86,9 +86,9 @@ object FFishFact: TFFishFact
             Top = 388
             Width = 201
             Height = 25
-            Caption = 'Species Name'
             DataSource = dsrcMain
             DataField = 'Species Name'
+            Caption = 'Species Name'
             FriendlyName = 'IWBSInput2'
             SubmitOnAsyncEvent = True
             TabOrder = 2
@@ -99,9 +99,9 @@ object FFishFact: TFFishFact
             Top = 415
             Width = 201
             Height = 25
-            Caption = 'Common Name'
             DataSource = dsrcMain
             DataField = 'Common_Name'
+            Caption = 'Common Name'
             FriendlyName = 'IWBSInput2'
             SubmitOnAsyncEvent = True
             TabOrder = 3
@@ -112,9 +112,9 @@ object FFishFact: TFFishFact
             Top = 442
             Width = 201
             Height = 25
-            Caption = 'Category'
             DataSource = dsrcMain
             DataField = 'Category'
+            Caption = 'Category'
             FriendlyName = 'IWBSInput2'
             SubmitOnAsyncEvent = True
             TabOrder = 4
@@ -125,9 +125,9 @@ object FFishFact: TFFishFact
             Top = 469
             Width = 201
             Height = 25
-            Caption = 'Species No'
             DataSource = dsrcMain
             DataField = 'Species No'
+            Caption = 'Species No'
             FriendlyName = 'IWBSInput2'
             SubmitOnAsyncEvent = True
             TabOrder = 5
@@ -138,9 +138,9 @@ object FFishFact: TFFishFact
             Top = 678
             Width = 317
             Height = 103
-            Caption = 'Notes'
             DataSource = dsrcMain
             DataField = 'Notes'
+            Caption = 'Notes'
             FriendlyName = 'IWBSMemo1'
             SubmitOnAsyncEvent = True
             TabOrder = 6
@@ -151,9 +151,9 @@ object FFishFact: TFFishFact
             Top = 497
             Width = 201
             Height = 25
-            Caption = 'Found Date'
             DataSource = dsrcMain
             DataField = 'FoundDate'
+            Caption = 'Found Date'
             FriendlyName = 'IWBSInput7'
             SubmitOnAsyncEvent = True
             TabOrder = 7
@@ -165,9 +165,9 @@ object FFishFact: TFFishFact
             Top = 796
             Width = 317
             Height = 85
-            Caption = 'Option'
             DataSource = dsrcMain
             DataField = 'Option'
+            Caption = 'Option'
             FriendlyName = 'IWBSRadioGroup1'
             SubmitOnAsyncEvent = True
             TabOrder = 8
@@ -184,12 +184,12 @@ object FFishFact: TFFishFact
             Top = 300
             Width = 201
             Height = 25
-            Caption = 'Common Name'
             DataSource = dsrcMain
             DataField = 'Common_Name'
+            Caption = 'Common Name'
             FriendlyName = 'IWBSInput2'
             SubmitOnAsyncEvent = True
-            TabOrder = 18
+            TabOrder = 19
             Text = 'Common_Name'
           end
           object IWBSListbox1: TIWBSSelect
@@ -197,9 +197,9 @@ object FFishFact: TFFishFact
             Top = 560
             Width = 317
             Height = 81
-            Caption = 'Option'
             DataSource = dsrcMain
             DataField = 'Option'
+            Caption = 'Option'
             FriendlyName = 'IWBSListbox1'
             SubmitOnAsyncEvent = True
             TabOrder = 9
@@ -216,12 +216,12 @@ object FFishFact: TFFishFact
             Top = 528
             Width = 317
             Height = 25
-            Caption = 'Option'
             DataSource = dsrcMain
             DataField = 'Option'
+            Caption = 'Option'
             FriendlyName = 'IWBSListbox1'
             SubmitOnAsyncEvent = True
-            TabOrder = 19
+            TabOrder = 20
             Text = ''
             Items.Strings = (
               'Option 1=1'
@@ -234,12 +234,12 @@ object FFishFact: TFFishFact
             Top = 647
             Width = 317
             Height = 25
-            Caption = 'Check'
             DataSource = dsrcMain
             DataField = 'Check'
+            Caption = 'Check'
             FriendlyName = 'IWBSCheckBox1'
             SubmitOnAsyncEvent = True
-            TabOrder = 20
+            TabOrder = 21
             Text = 'false'
             ValueChecked = 'Y'
             ValueUnchecked = 'N'
@@ -1496,14 +1496,9 @@ object FFishFact: TFFishFact
                 Top = 3
                 Width = 100
                 Height = 16
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                HasTabOrder = False
-                Caption = 'Common_Name'
-                DataField = 'Common_Name'
                 DataSource = dsrcMain
-                FriendlyName = 'IWBSLabel1'
+                DataField = 'Common_Name'
+                Caption = 'Common_Name'
               end
             end
           end
@@ -1564,7 +1559,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'fast-backward'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 13
+                TabOrder = 14
                 OnAsyncClick = btnFirstAsyncClick
               end
               object btnPrior: TIWBSButton
@@ -1576,7 +1571,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'backward'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 14
+                TabOrder = 15
                 OnAsyncClick = btnPriorAsyncClick
               end
               object btnNext: TIWBSButton
@@ -1588,7 +1583,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'forward'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 15
+                TabOrder = 16
                 OnAsyncClick = btnNextAsyncClick
               end
               object btnLast: TIWBSButton
@@ -1600,7 +1595,7 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 BSGlyphicon = 'fast-forward'
                 FriendlyName = 'IWBSButton1'
-                TabOrder = 16
+                TabOrder = 17
                 OnAsyncClick = btnLastAsyncClick
               end
             end
@@ -1616,12 +1611,12 @@ object FFishFact: TFFishFact
               Top = 32
               Width = 121
               Height = 25
-              Caption = 'Option 1'
               DataSource = dsrcMain
               DataField = 'Option'
+              Caption = 'Option 1'
               FriendlyName = 'IWBSRadioButton1'
               SubmitOnAsyncEvent = True
-              TabOrder = 21
+              TabOrder = 22
               Text = 'false'
               SaveUnchecked = False
               Group = 'group'
@@ -1633,12 +1628,12 @@ object FFishFact: TFFishFact
               Top = 56
               Width = 121
               Height = 25
-              Caption = 'Option 2'
               DataSource = dsrcMain
               DataField = 'Option'
+              Caption = 'Option 2'
               FriendlyName = 'IWBSRadioButton1'
               SubmitOnAsyncEvent = True
-              TabOrder = 22
+              TabOrder = 23
               Text = 'false'
               SaveUnchecked = False
               Group = 'group'
@@ -1650,12 +1645,12 @@ object FFishFact: TFFishFact
               Top = 83
               Width = 121
               Height = 25
-              Caption = 'Option 3'
               DataSource = dsrcMain
               DataField = 'Option'
+              Caption = 'Option 3'
               FriendlyName = 'IWBSRadioButton1'
               SubmitOnAsyncEvent = True
-              TabOrder = 23
+              TabOrder = 24
               Text = 'false'
               SaveUnchecked = False
               Group = 'group'
@@ -1667,10 +1662,6 @@ object FFishFact: TFFishFact
               Top = 3
               Width = 278
               Height = 23
-              Font.Color = clNone
-              Font.Size = 10
-              Font.Style = []
-              FriendlyName = 'IWBSText1'
               Lines.Strings = (
                 
                   '<strong>This are independent radio buttons attached to same Tabl' +
@@ -1696,7 +1687,7 @@ object FFishFact: TFFishFact
         Css = 'pull-right'
         Caption = 'Switch to Standard Demo'
         FriendlyName = 'IWBSButton1'
-        TabOrder = 17
+        TabOrder = 18
         OnClick = IWBSButton1Click
       end
       object IWText1: TIWBSText
@@ -1705,10 +1696,6 @@ object FFishFact: TFFishFact
         Width = 381
         Height = 27
         Css = 'pull-left'
-        Font.Color = clNone
-        Font.Size = 10
-        Font.Style = []
-        FriendlyName = 'IWText1'
         Lines.Strings = (
           '<h3>This is the data aware demo</h3>')
         RawText = True

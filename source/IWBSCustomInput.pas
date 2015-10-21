@@ -3,9 +3,9 @@ unit IWBSCustomInput;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.StrUtils, Data.db, Vcl.Controls,
+  System.Classes, System.SysUtils, System.StrUtils, Vcl.Controls, Data.db,
   IWBSCustomControl,
-  IWTypes, IWHTMLTag, IWDBCommon, IWDBStdCtrls,
+  IWTypes, IWHTMLTag,
   IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces,
   IWBSCommon;
 
@@ -16,25 +16,19 @@ const
   aIWBSInputType: array[bsitText..bsitHidden] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color', 'hidden');
 
 type
-  TIWBSCustomInput = class(TIWBSCustomControl, IIWInputControl, IIWSubmitControl, IIWInputControl40, IIWAutoEditableControl)
+  TIWBSCustomInput = class(TIWBSCustomDbControl, IIWInputControl, IIWSubmitControl, IIWInputControl40, IIWAutoEditableControl)
   private
     FAutoEditable: Boolean;
     FAutoFocus: boolean;
     FDbEditable: boolean;
     FCaption: string;
-    FDataLink: TIWDataLink;
-    FDataField: string;
-    FDataSource: TDataSource;
     FInputType: TIWBSInputType;
-    FMaxLength: Integer;
     FOnSubmit: TNotifyEvent;
     FReadOnly: Boolean;
     FRequired: Boolean;
     FSubmitParam : string;
 
     procedure EditingChanged;
-    procedure SetDataField(const AValue: string);
-    procedure SetDataSource(const Value: TDataSource);
   protected
     FInputSuffix: string;
     FInputSelector: string;
@@ -47,11 +41,9 @@ type
     FOldText: string;
 
     procedure InitControl; override;
-    procedure CheckData; virtual;
+    procedure CheckData; override;
     procedure DoSubmit;
-    procedure Notification(AComponent: TComponent; AOperation: TOperation); override;
     procedure SetCaption(const AValue: string);
-    procedure SetMaxLength(const AValue:integer);
     procedure SetReadOnly(const AValue:boolean);
     procedure SetRequired(const AValue:boolean);
     procedure SetValue(const AValue: string);
@@ -69,11 +61,9 @@ type
 
     function getText: TCaption; override;
 
-    property MaxLength: Integer read FMaxLength write SetMaxLength;
     property ReadOnly: boolean read FReadOnly write SetReadOnly;
     property BSInputType: TIWBSInputType read FInputType write FInputType;
   public
-    destructor Destroy; override;
     procedure Invalidate; override;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
@@ -84,8 +74,6 @@ type
     property AutoEditable: Boolean read FAutoEditable write FAutoEditable default True;
     property AutoFocus: boolean read FAutoFocus write FAutoFocus default False;
     property Caption: string read FCaption write SetCaption;
-    property DataSource: TDataSource read FDataSource write SetDataSource;
-    property DataField: string read FDataField write SetDataField;
     property DoSubmitValidation;
     property Editable default True;
     property Enabled default True;
@@ -160,7 +148,7 @@ type
 implementation
 
 uses
-  IWBaseForm, IWForm, IWMarkupLanguageTag, Dialogs;
+  IWBaseForm, IWDBCommon, IWDBStdCtrls, IWForm, IWMarkupLanguageTag, Dialogs;
 
 var
   LFormatSettings: TFormatSettings;
@@ -172,8 +160,6 @@ begin
   FAutoEditable := True;
   FAutoFocus := False;
   FCaption := '';
-  FDataLink := nil;
-  FDataField := '';
   FInputType := bsitText;
   FNonEditableAsLabel := False;
   FReadOnly := False;
@@ -189,12 +175,6 @@ begin
 
   Height := 25;
   Width := 121;
-end;
-
-destructor TIWBSCustomInput.Destroy;
-begin
-  FreeAndNil(FDataLink);
-  inherited;
 end;
 
 procedure TIWBSCustomInput.Invalidate;
@@ -295,49 +275,6 @@ begin
   Invalidate;
 end;
 
-procedure TIWBSCustomInput.SetDataField(const AValue: string);
-var
-  xFld: TField;
-begin
-  if not SameText(AValue, FDataField) then begin
-    FDataField := AValue;
-    MaxLength := 0;
-    if FDataField <> '' then begin
-      xFld := GetDataSourceField(FDataSource, FDataField);
-      if Assigned(xFld) and (xFld is TStringField) then
-        MaxLength := TStringField(xFld).Size;
-    end;
-    Invalidate;
-  end;
-end;
-
-procedure TIWBSCustomInput.SetDataSource(const Value: TDataSource);
-begin
-  if Value <> FDataSource then begin
-    FDataSource := Value;
-    if Value = nil then
-      begin
-        FDataField := '';
-        FreeAndNil(FDataLink);
-      end
-    else
-      begin
-        if FDataLink = nil then
-          FDataLink := TIWDataLink.Create(Self);
-        FDataLink.DataSource := FDataSource;
-      end;
-    Invalidate;
-  end;
-end;
-
-procedure TIWBSCustomInput.Notification(AComponent: TComponent; AOperation: TOperation);
-begin
-  inherited Notification(AComponent, AOperation);
-  if AOperation = opRemove then
-    if FDatasource = AComponent then
-      SetDataSource(nil);
-end;
-
 function TIWBSCustomInput.GetSubmitParam: String;
 begin
   Result := FSubmitParam;
@@ -424,15 +361,6 @@ procedure TIWBSCustomInput.SetCaption(const AValue: string);
 begin
   FCaption := AValue;
   Invalidate;
-end;
-
-procedure TIWBSCustomInput.SetMaxLength(const AValue:integer);
-begin
-  if FMaxLength <> AValue then
-  begin
-    FMaxLength := AValue;
-    Invalidate;
-  end;
 end;
 
 procedure TIWBSCustomInput.SetReadOnly(const AValue:boolean);

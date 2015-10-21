@@ -2,8 +2,8 @@ unit IWBSCustomControl;
 
 interface
 
-uses System.Classes, System.SysUtils,
-     IWControl, IWRenderContext, IWHTMLTag, IWXMLTag,
+uses System.Classes, System.SysUtils, Data.db,
+     IWControl, IWRenderContext, IWHTMLTag, IWXMLTag, IWDBCommon, IWDBStdCtrls,
      IWBSCommon;
 
 type
@@ -19,7 +19,6 @@ type
 
     procedure SetStyle(const AValue: TStrings);
   protected
-
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; virtual;
     procedure InternalRenderStyle(AStyle: TStrings); virtual;
@@ -39,8 +38,30 @@ type
     property Style: TStrings read FStyle write SetStyle;
   end;
 
+  TIWBSCustomDbControl = class(TIWBSCustomControl, IIWBSComponent)
+  private
+    FDataLink: TIWDataLink;
+    FDataField: string;
+    FDataSource: TDataSource;
+    FMaxLength: Integer;
+    procedure SetDataField(const AValue: string);
+    procedure SetDataSource(const Value: TDataSource);
+    procedure SetMaxLength(const AValue:integer);
+  protected
+    procedure CheckData; virtual;
+    property MaxLength: Integer read FMaxLength write SetMaxLength;
+    procedure Notification(AComponent: TComponent; AOperation: TOperation); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+  published
+    property DataSource: TDataSource read FDataSource write SetDataSource;
+    property DataField: string read FDataField write SetDataField;
+  end;
+
 implementation
 
+{$region 'TIWBSCustomControl'}
 constructor TIWBSCustomControl.Create(AOwner: TComponent);
 begin
   inherited;
@@ -135,5 +156,78 @@ begin
     xStyle.Free;
   end;
 end;
+{$endregion}
+
+{$region 'TIWBSCustomDbControl'}
+constructor TIWBSCustomDbControl.Create(AOwner: TComponent);
+begin
+  inherited;
+  FDataLink := nil;
+  FDataField := '';
+end;
+
+destructor TIWBSCustomDbControl.Destroy;
+begin
+  FreeAndNil(FDataLink);
+  inherited;
+end;
+
+procedure TIWBSCustomDbControl.Notification(AComponent: TComponent; AOperation: TOperation);
+begin
+  inherited Notification(AComponent, AOperation);
+  if AOperation = opRemove then
+    if FDatasource = AComponent then
+      SetDataSource(nil);
+end;
+
+procedure TIWBSCustomDbControl.SetDataField(const AValue: string);
+var
+  xFld: TField;
+begin
+  if not SameText(AValue, FDataField) then begin
+    FDataField := AValue;
+    MaxLength := 0;
+    if FDataField <> '' then begin
+      xFld := GetDataSourceField(FDataSource, FDataField);
+      if Assigned(xFld) and (xFld is TStringField) then
+        MaxLength := TStringField(xFld).Size;
+    end;
+    Invalidate;
+  end;
+end;
+
+procedure TIWBSCustomDbControl.SetDataSource(const Value: TDataSource);
+begin
+  if Value <> FDataSource then begin
+    FDataSource := Value;
+    if Value = nil then
+      begin
+        FDataField := '';
+        FreeAndNil(FDataLink);
+      end
+    else
+      begin
+        if FDataLink = nil then
+          FDataLink := TIWDataLink.Create(Self);
+        FDataLink.DataSource := FDataSource;
+      end;
+    Invalidate;
+  end;
+end;
+
+procedure TIWBSCustomDbControl.SetMaxLength(const AValue:integer);
+begin
+  if FMaxLength <> AValue then
+  begin
+    FMaxLength := AValue;
+    Invalidate;
+  end;
+end;
+
+procedure TIWBSCustomDbControl.CheckData;
+begin
+  //
+end;
+{$endregion}
 
 end.

@@ -12,7 +12,7 @@ type
     procedure SetValue(const Value: string); override;
   end;
 
-  TIWBSPaintHandlerRegion = class (TIWPaintHandlerRegion)
+  TIWBSPaintHandlerRegion = class (TIWPaintHandlerRectangle)
   public
     procedure Paint; override;
   end;
@@ -42,6 +42,11 @@ type
     procedure Paint; override;
   end;
 
+  TIWBSPaintHandlerCustomText = class (TIWPaintHandlerRectangle)
+  public
+    procedure Paint; override;
+  end;
+
 procedure Register;
 
 implementation
@@ -49,7 +54,7 @@ implementation
 uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
      IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
-     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon;
+     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon, IWBSCustomControl;
 
 const
   CNST_DEFAULTFONTNAME = 'Tahoma';
@@ -105,7 +110,11 @@ var
   s: string;
   w: integer;
 begin
-  inherited;
+  LRect := Rect(0, 0, Control.Width, Control.Height);
+  ControlCanvas.Brush.Color := clWhite;
+  ControlCanvas.Pen.Color := clGray;
+  ControlCanvas.Rectangle(LRect);
+
   if Control is TIWBSCustomRegion then begin
     ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
     ControlCanvas.Font.Color := clGray;
@@ -382,6 +391,36 @@ begin
   end;
 end;
 
+procedure TIWBSPaintHandlerCustomText.Paint;
+var
+  LRect, LIcon: TRect;
+  s, c: string;
+begin
+  LRect := Rect(0, 0, Control.Width, Control.Height);
+
+  ControlCanvas.Brush.Color := clWhite;
+  ControlCanvas.Pen.Color := clGray;
+  ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+  ControlCanvas.Font.Size := 10;
+  ControlCanvas.Font.Color := clBlack;
+  ControlCanvas.Rectangle(LRect);
+
+  if Control is TIWBSCustomDbControl then begin
+    s := TIWBSCustomDbControl(Control).DataField;
+    if s = '' then
+      if Control is TIWBSLabel then
+        s := TIWBSLabel(Control).Caption
+      else if Control is TIWBSText then
+        s := TIWBSText(Control).Lines.Text;
+
+    Inc(LRect.Top, 1);
+    Inc(LRect.Left, 8);
+    Dec(LRect.Bottom, 1);
+    Dec(LRect.Right, 8);
+    ControlCanvas.TextRect(LRect,s,[])
+  end;
+end;
+
 procedure Register;
 begin
   RegisterComponents('IW BootsTrap', [TIWBSLayoutMgr]);
@@ -442,11 +481,11 @@ initialization
 
   IWRegisterPaintHandler('TIWBSButton',TIWBSPaintHandlerButton);
 
-  IWRegisterPaintHandler('TIWBSLabel',TIWPaintHandlerLabel);
+  IWRegisterPaintHandler('TIWBSLabel',TIWBSPaintHandlerCustomText);
 
   IWRegisterPaintHandler('TIWBSGlyphicon',TIWBSPaintHandlerGlyphicon);
 
-  IWRegisterPaintHandler('TIWBSText',TIWPaintHandlerText);
+  IWRegisterPaintHandler('TIWBSText',TIWBSPaintHandlerCustomText);
 
   IWRegisterPaintHandler('TIWBSImage',TIWPaintHandlerImage);
 

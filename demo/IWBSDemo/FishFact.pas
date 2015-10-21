@@ -11,7 +11,7 @@ uses
   IWBSRegion, IWBSInput, IWVCLComponent, IWBaseLayoutComponent,
   IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr, IWBSControls,
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
-  MidasLib, IWBSCustomInput, IWBSButton;
+  MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl;
 
 type
   TFFishFact = class(TIWAppForm)
