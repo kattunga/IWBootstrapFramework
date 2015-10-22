@@ -11,6 +11,8 @@ type
   private
     FMainID: string;
     FOldCss: string;
+    FOldDisabled: boolean;
+    FOldReadOnly: boolean;
     FOldStyle: string;
     FOldVisible: boolean;
 
@@ -22,6 +24,10 @@ type
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; virtual;
     procedure InternalRenderStyle(AStyle: TStrings); virtual;
+    function IsReadOnly: boolean; virtual;
+    function IsDisabled: boolean; virtual;
+    function InputSelector: string; virtual;
+    function InputSuffix: string; virtual;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -102,13 +108,40 @@ begin
   //
 end;
 
+function TIWBSCustomControl.IsReadOnly: boolean;
+begin
+  Result := False;
+end;
+
+function TIWBSCustomControl.IsDisabled: boolean;
+begin
+  Result := not Enabled;
+end;
+
+function TIWBSCustomControl.InputSelector: string;
+begin
+  Result := '';
+end;
+
+function TIWBSCustomControl.InputSuffix: string;
+begin
+  Result := '';
+end;
+
 function TIWBSCustomControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   xHTMLName: string;
+  xInputSelector: string;
 begin
   Result := nil;
   xHTMLName := HTMLName;
+  if InputSelector <> '' then
+    xInputSelector := MainID+InputSelector
+  else
+    xInputSelector := xHTMLName+InputSuffix;
   SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
+  SetAsyncDisabled(AContext, xInputSelector, IsDisabled, FOldDisabled);
+  SetAsyncReadOnly(AContext, xInputSelector, IsReadOnly, FOldReadOnly);
   SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
   SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
   InternalRenderAsync(xHTMLName, AContext);
@@ -122,6 +155,8 @@ end;
 function TIWBSCustomControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   FOldCss := RenderCSSClass(AContext);
+  FOldDisabled := IsDisabled;
+  FOldReadOnly := IsReadOnly;
   FOldStyle := RenderStyle(AContext);
   FOldVisible := Visible;
 

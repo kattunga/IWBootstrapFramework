@@ -75,6 +75,7 @@ type
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     procedure SetChecked(AValue: boolean);
     procedure SetName(const AValue: TComponentName); override;
+    function InputSuffix: string; override;
   public
     procedure SetText(const AValue: TCaption); override;
   published
@@ -110,9 +111,10 @@ type
 
   TIWBSRadioGroup = class(TIWBSCustomSelectInput)
   protected
-    procedure InitControl; override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    function InputSelector: string; override;
+    function InputSuffix: string; override;
   end;
 
 implementation
@@ -304,7 +306,7 @@ end;
 procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
   if FText <> FOldText then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+FInputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked", '+iif(Checked,'true','false')+');');
     FOldText := FText;
   end;
 end;
@@ -340,11 +342,15 @@ begin
   inherited;
   FChecked := False;
   FGroup := 'group';
-  FInputSuffix := '_INPUT';
   FSaveUnchecked := True;
   FValueChecked := 'true';
   FValueUnchecked := 'false';
   FText := FValueUnchecked;
+end;
+
+function TIWBSRadioButton.InputSuffix: string;
+begin
+  Result := '_INPUT';
 end;
 
 procedure TIWBSRadioButton.SetName(const AValue: TComponentName);
@@ -383,7 +389,7 @@ end;
 procedure TIWBSRadioButton.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
   if FText <> FOldText then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+FInputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+InputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
     FOldText := FText;
   end;
 end;
@@ -392,7 +398,7 @@ function TIWBSRadioButton.InternalRenderHTML(const AHTMLName: string; AContext: 
 begin
   Result := TIWHTMLTag.CreateTag('input');
   try
-    Result.AddStringParam('id', AHTMLName+FInputSuffix);
+    Result.AddStringParam('id', AHTMLName+InputSuffix);
     Result.AddStringParam('name', FGroup);
     Result.AddClassParam(ActiveCss);
     Result.AddStringParam('type', 'radio');
@@ -400,7 +406,7 @@ begin
       Result.Add('disabled');
     if FChecked then
       Result.Add('checked');
-    Result.AddStringParam('onclick', 'radioButtonClick(event, '''+FGroup+''','''+AHTMLName+FInputSuffix+''');');
+    Result.AddStringParam('onclick', 'radioButtonClick(event, '''+FGroup+''','''+AHTMLName+InputSuffix+''');');
     Result.AddStringParam('value', 'on');
     Result.AddStringParam('style', ActiveStyle);
   except
@@ -521,7 +527,6 @@ var
   LSelectedIdx: string;
   i: integer;
 begin
-  inherited;
   if (FText <> FOldText) then begin
     LSelectedIdx := '';
     if FMultiSelect then
@@ -592,11 +597,14 @@ end;
 {$endregion}
 
 {$region 'TIWBSRadioGroup'}
-procedure TIWBSRadioGroup.InitControl;
+function TIWBSRadioGroup.InputSelector: string;
 begin
-  inherited;
-  FInputSelector := ' input';
-  FInputSuffix := '_INPUT';
+  Result := ' input';
+end;
+
+function TIWBSRadioGroup.InputSuffix: string;
+begin
+  Result := '_INPUT';
 end;
 
 procedure TIWBSRadioGroup.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
@@ -624,8 +632,8 @@ begin
         with Contents.AddTag('input') do begin
           AddStringParam('type', 'radio');
           Add(iif(FItemIndex = i, 'checked'));
-          AddStringParam('name', AHTMLName + FInputSuffix);
-          AddStringParam('id', AHTMLName + FInputSuffix+'_'+IntToStr(i));
+          AddStringParam('name', AHTMLName + InputSuffix);
+          AddStringParam('id', AHTMLName + InputSuffix+'_'+IntToStr(i));
           AddStringParam('value', IntToStr(i));
           if IsDisabled then
             Add('disabled');

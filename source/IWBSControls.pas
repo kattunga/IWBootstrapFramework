@@ -121,6 +121,7 @@ function TIWBSLabel.InternalRenderHTML(const AHTMLName: string; AContext: TIWCom
 var
   RawContent: string;
 begin
+  inherited;
   RawContent := RenderLabelText;
 
   if Assigned(FForControl) then
@@ -188,6 +189,7 @@ function TIWBSText.InternalRenderHTML(const AHTMLName: string; AContext: TIWComp
 var
   RawContent: string;
 begin
+  inherited;
   RawContent := RenderText;
 
   Result := TIWHTMLTag.CreateTag('div');
@@ -246,6 +248,7 @@ end;
 
 function TIWBSGlyphicon.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 begin
+  inherited;
   Result := TIWHTMLTag.CreateTag('span');
   try
     Result.AddStringParam('id', AHTMLName);

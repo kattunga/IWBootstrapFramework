@@ -126,6 +126,7 @@ var
   s: string;
   gspan: TIWHTMLTag;
 begin
+  inherited;
   FOldDisabled := not (Enabled and Editable);
 
   Result := TIWHTMLTag.CreateTag('button');
