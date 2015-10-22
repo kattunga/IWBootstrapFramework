@@ -41,6 +41,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    function TabPageCSSClass(ATabPage: TComponent): string;
   published
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
@@ -174,6 +175,9 @@ begin
     tag.Contents.AddText(TabPage.Title);
   end;
 
+  // this hidden input is for input seleted tab page
+  Result.Contents.AddHiddenField(xHTMLInput, xHTMLInput, IntToStr(tabIndex));
+
   // add script tag
   Result.Contents.AddText('<script>');
   try
@@ -183,7 +187,7 @@ begin
 {$ENDIF}
 
     // save seleted tab on change
-    Result.Contents.AddText('$("#'+xHTMLName+'").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=e.target.tabIndex; });');
+    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=e.target.tabIndex; });');
 
     // event async change
     if Assigned(OnAsyncChange) then begin
@@ -193,14 +197,20 @@ begin
   finally
     Result.Contents.AddText('</script>');
   end;
-
-  // this hidden input is for input seleted tab page
-  Result.Contents.AddHiddenField(xHTMLInput, xHTMLInput, IntToStr(tabIndex));
 end;
 
 function TIWBSTabControl.RenderStyle(AContext: TIWCompContext): string;
 begin
   Result := '';
+end;
+
+function TIWBSTabControl.TabPageCSSClass(ATabPage: TComponent): string;
+begin
+  Result := 'tab-pane';
+  if BSTabOptions.Fade then
+    Result := Result + ' fade';
+  if TIWTabPage(ATabPage).TabOrder = ActivePage then
+    Result := Result + ' active in';
 end;
 {$endregion}
 

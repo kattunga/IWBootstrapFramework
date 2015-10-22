@@ -2,7 +2,7 @@ unit IWBSRegionCommon;
 
 interface
   uses System.Classes, Vcl.Controls, Vcl.Forms,
-       IWContainer, IWBSCommon, IWCompTabControl, IWRenderContext;
+       IWContainer, IWBSCommon, IWRenderContext;
 
 type
   TIWBSFormType = (bsftInline, bsftHorizontal, bsftVertical);
@@ -27,12 +27,6 @@ const
                      'panel', 'panel-body', 'panel-heading', 'panel-title', 'panel-footer');
 
 type
-  TIWTabPage = class(IWCompTabControl.TIWTabPage)
-  public
-    function CSSClass: string;
-    property LayoutMgr;
-  end;
-
   TIWBSFormOptions = class(TPersistent)
   private
     FCaptionsSize: TIWBSGridOptions;
@@ -54,20 +48,7 @@ procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer);
 implementation
 
 uses IWBaseInterfaces, IWHTML40Interfaces,
-     IWRegion, IWBSTabControl, IWBSLayoutMgr, IWBSUtils;
-
-{$region 'TIWTabPage'}
-function TIWTabPage.CSSClass: string;
-begin
-  Result := 'tab-pane';
-  if Parent is TIWBSTabControl then begin
-    if TIWBSTabControl(Parent).BSTabOptions.Fade then
-      Result := Result + ' fade';
-    if TabOrder = TIWBSTabControl(Parent).ActivePage then
-      Result := Result + ' active in';
-  end;
-end;
-{$endregion}
+     IWRegion, IWBSLayoutMgr, IWBSUtils;
 
 {$region 'TIWBSFormOptions'}
 constructor TIWBSFormOptions.Create;
@@ -113,7 +94,6 @@ var
   LComponent: TComponent;
   LFrameRegion: TComponent;
   LRegion: TIWRegion;
-  LTabPage: IWBSRegionCommon.TIWTabPage;
   LBaseControl: IIWBaseControl;
   LHTML40Control: IIWHTML40Control;
 begin
@@ -135,13 +115,13 @@ begin
      end
 
     // tab pages of TIWBSTabControl are still TIWTabPage
-    else if LComponent is IWCompTabControl.TIWTabPage then
+    else if LComponent.ClassName = 'TIWTabPage' then
       begin
-        LTabPage := IWBSRegionCommon.TIWTabPage(LComponent);
-        if LTabPage.LayoutMgr = nil then
-          LTabPage.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
-        LTabPage.LayoutMgr.SetContainer(LTabPage);
-        IWBSPrepareChildComponentsForRender(LTabPage);
+        LRegion := TIWRegion(LComponent);
+        if LRegion.LayoutMgr = nil then
+          LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
+        LRegion.LayoutMgr.SetContainer(LRegion);
+        IWBSPrepareChildComponentsForRender(LRegion);
       end;
 
     // disable child StyleRenderOptions

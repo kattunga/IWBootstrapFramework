@@ -48,7 +48,7 @@ implementation
 uses
   IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists, IWURL,
   IWRegion, IW.Common.Strings,
-  IWBSRegionCommon, IWBSCommon;
+  IWBSRegionCommon, IWBSCommon, IWBSTabControl;
 
 var
   gIWBSLinkFiles: TStringList = nil;
@@ -265,7 +265,6 @@ end;
 procedure TIWBSLayoutMgr.ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent);
 var
   xHTMLName: string;
-  IsIWTabPage: boolean;
   LRenderInvisibleControls: Boolean;
   LComponentContext: TIWCompContext;
   LVisible: boolean;
@@ -275,8 +274,6 @@ var
   i: integer;
 begin
   xHTMLName := AControl.HTMLName;
-
-  IsIWTabPage := AControl.InterfaceInstance.ClassName = 'TIWTabPage';
 
   if SupportsInterface(Container.InterfaceInstance, IIWInvisibleControlRenderer) then
     LRenderInvisibleControls := (Container as IIWInvisibleControlRenderer).RenderInvisibleControls
@@ -293,10 +290,10 @@ begin
   LHTML := LComponentContext.HTMLTag;
   if Assigned(LHTML) then begin
 
-    // TIWTabPage hack
-    if IsIWTabPage then
+    // TIWBSTabControl pages
+    if (AControl.InterfaceInstance.ClassName = 'TIWTabPage') and (TControl(AControl.InterfaceInstance).Parent is TIWBSTabControl) then
       begin
-        LHTML.Params.Values['class'] := IWBSRegionCommon.TIWTabPage(AControl.InterfaceInstance).CSSClass;
+        LHTML.Params.Values['class'] := TIWBSTabControl(TControl(AControl.InterfaceInstance).Parent).TabPageCSSClass(AControl.InterfaceInstance);
         LHTML.Params.Values['id'] := xHTMLName;
       end
 
@@ -304,20 +301,20 @@ begin
       begin
         L40Component := HTML40ComponentInterface(AControl.InterfaceInstance);
         if L40Component <> nil then begin
-          if LHTML.Params.Values['ID'] = '' then
-            LHTML.AddStringParam('ID', xHTMLName);
-          if L40Component.SupportsInput and (AControl.HasName) and (LHTML.Params.Values['NAME'] = '') then
-            LHTML.AddStringParam('NAME', xHTMLName);
-          if LHTML.Params.Values['CLASS'] = '' then
-            LHTML.AddStringParam('CLASS', L40Component.RenderCSSClass(nil));
-          LHTML.Params.Values['STYLE'] := L40Component.RenderStyle(LComponentContext) + LHTML.Params.Values['STYLE'];
+          if LHTML.Params.Values['id'] = '' then
+            LHTML.AddStringParam('id', xHTMLName);
+          if L40Component.SupportsInput and (AControl.HasName) and (LHTML.Params.Values['name'] = '') then
+            LHTML.AddStringParam('name', xHTMLName);
+          if LHTML.Params.Values['class'] = '' then
+            LHTML.AddStringParam('class', L40Component.RenderCSSClass(nil));
+          LHTML.Params.Values['style'] := L40Component.RenderStyle(LComponentContext) + LHTML.Params.Values['style'];
         end;
       end
 
     else
       begin
         if not LVisible and LRenderInvisibleControls then
-          LHTML.Params.Values['STYLE'] := SetNotVisible(LHTML.Params.Values['STYLE']);
+          LHTML.Params.Values['style'] := SetNotVisible(LHTML.Params.Values['style']);
       end;
   end;
 
