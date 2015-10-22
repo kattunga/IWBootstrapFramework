@@ -716,10 +716,8 @@ begin
     ABuffer.WriteLine('$("#'+xHTMLName+'").on("shown.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncShow", true, null, true); });');
     AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);
   end;
-  if Assigned(FOnAsyncHide) or FDestroyOnHide then begin
-    ABuffer.WriteLine('$("#'+xHTMLName+'").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });');
-    AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
-  end;
+  ABuffer.WriteLine('$("#'+xHTMLName+'").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });');
+  AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
   if FModalVisible then
     ABuffer.WriteLine(GetShowScript);
   ABuffer.WriteLine('</script>');

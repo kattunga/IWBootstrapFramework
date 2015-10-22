@@ -169,6 +169,13 @@ type
     IWText6: TIWBSText;
     IWText11: TIWBSText;
     IWText2: TIWBSText;
+    IWBSRegion34: TIWBSRegion;
+    IWBSModal1: TIWBSModal;
+    IWBSButton40: TIWBSButton;
+    IWBSRegion35: TIWBSRegion;
+    IWBSText1: TIWBSText;
+    IWBSButton39: TIWBSButton;
+    IWBSButton38: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -184,6 +191,8 @@ type
     procedure IWAppFormCreate(Sender: TObject);
     procedure IWBSButton34AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton37AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton40AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton39AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -339,6 +348,18 @@ procedure TIWForm2.IWBSButton37AsyncClick(Sender: TObject;
 begin
   IWBSRegion32.Visible := not IWBSRegion32.Visible;
   IWBSInput25.Visible := IWBSRegion32.Visible;
+end;
+
+procedure TIWForm2.IWBSButton39AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  IWBSModal1.BSModalVisible := False;
+end;
+
+procedure TIWForm2.IWBSButton40AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  IWBSModal1.BSModalVisible := True;
 end;
 
 initialization
