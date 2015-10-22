@@ -13,7 +13,6 @@ type
   TIWBSCustomRegion = class(TIWCustomRegion, IIWBSComponent)
   private
     FTagType: string;
-    FAsyncDestroy: boolean;
     FCss: string;
     FGridOptions: TIWBSGridOptions;
     FLayoutMrg: boolean;
@@ -41,6 +40,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Release;
+    procedure AsyncRemoveComponent;
     procedure AsyncRenderComponent(ARenderContent: boolean = False);
     property Canvas;
     function GetClassString: string; virtual;
@@ -50,7 +50,6 @@ type
     property Released: boolean read FReleased;
   published
     property Align;
-    property AsyncDestroy: boolean read FAsyncDestroy write FAsyncDestroy default false;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
     property ClipRegion default False;
@@ -202,7 +201,6 @@ constructor TIWBSCustomRegion.Create(AOwner: TComponent);
 begin
   inherited;
   FReleased := False;
-  FAsyncDestroy := False;
   FCss := '';
   FGridOptions := TIWBSGridOptions.Create;
   FStyle := TStringList.Create;
@@ -218,11 +216,12 @@ destructor TIWBSCustomRegion.Destroy;
 begin
   FGridOptions.Free;
   FStyle.Free;
-
-  if FAsyncDestroy then
-    ExecuteJS('AsyncDestroyControl("'+HTMLName+'");');
-
   inherited;
+end;
+
+procedure TIWBSCustomRegion.AsyncRemoveComponent;
+begin
+  ExecuteJS('AsyncDestroyControl("'+HTMLName+'");');
 end;
 
 procedure TIWBSCustomRegion.Release;
@@ -660,7 +659,6 @@ end;
 constructor TIWBSModal.Create(AOwner: TComponent);
 begin
   inherited;
-  FAsyncDestroy := True;
   FDestroyOnHide := False;
   FDialogSize := bsszDefault;
   FFade := false;
@@ -745,7 +743,7 @@ begin
   if Assigned(FOnAsyncHide) then
     FOnAsyncHide(Self, AParams);
   if FDestroyOnHide then begin
-    AsyncDestroy := True;
+    AsyncRemoveComponent;
     Release;
   end;
 end;

@@ -11,7 +11,6 @@ object IWFrame3: TIWFrame3
     Height = 566
     RenderInvisibleControls = True
     TabOrder = 0
-    AsyncDestroy = True
     BSModalVisible = True
     DestroyOnHide = True
     object IWBSRegion1: TIWBSRegion

@@ -214,7 +214,7 @@ begin
   FAlertVisible := False;
   FAlertPosition := bsapRightTop;
   FAlertStyle := bsasSuccess;
-  AsyncDestroy := True;
+//  AsyncDestroy := True;
   FAlertText := AAlertText;
   FFade := True;
 
