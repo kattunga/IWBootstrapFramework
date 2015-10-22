@@ -56,6 +56,8 @@ type
 
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); virtual;
 
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+
     function IsReadOnly: boolean;
     function IsDisabled: boolean;
 
@@ -65,8 +67,6 @@ type
     property BSInputType: TIWBSInputType read FInputType write FInputType;
   public
     procedure Invalidate; override;
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
     function GetSubmitParam : String;
     procedure SetText(const AValue: TCaption); override;
@@ -325,26 +325,16 @@ begin
   Result := not (Enabled and Editable and (FDbEditable or FSupportReadOnly));
 end;
 
-function TIWBSCustomInput.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+procedure TIWBSCustomInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 var
-  xHTMLName, xInputSelector: string;
+  xInputSelector: string;
 begin
-  xHTMLName := HTMLName;
   if FInputSelector <> '' then
     xInputSelector := MainID+FInputSelector
   else
-    xInputSelector := xHTMLName+FInputSuffix;
-
-  CheckData;
+    xInputSelector := AHTMLName+FInputSuffix;
   SetAsyncReadOnly(AContext, xInputSelector, IsReadOnly, FOldReadOnly);
   SetAsyncDisabled(AContext, xInputSelector, IsDisabled, FOldDisabled);
-
-  Result := inherited;
-end;
-
-function TIWBSCustomInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  Result := Css;
 end;
 
 function TIWBSCustomInput.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;

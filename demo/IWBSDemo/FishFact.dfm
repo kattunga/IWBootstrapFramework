@@ -1494,8 +1494,9 @@ object FFishFact: TFFishFact
               object IWBSLabel1: TIWBSLabel
                 Left = 16
                 Top = 3
-                Width = 100
+                Width = 197
                 Height = 16
+                Css = 'text-primary'
                 DataSource = dsrcMain
                 DataField = 'Common_Name'
                 Caption = 'Common_Name'

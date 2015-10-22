@@ -54,6 +54,7 @@ type
     function get_ShouldRenderTabOrder: boolean; override;
     function get_HasName: Boolean; override;
   public
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     function get_HasTabOrder: boolean; override;
   published
@@ -130,6 +131,8 @@ begin
   else
     Result := TIWHTMLTag.CreateTag('span');
   Result.AddStringParam('id', HTMLName);
+  Result.AddClassParam(ActiveCss);
+  Result.AddStringParam('style',ActiveStyle);
   Result.Contents.AddText(RawContent);
 
   if Parent is TIWBSInputGroup then
@@ -189,6 +192,8 @@ begin
 
   Result := TIWHTMLTag.CreateTag('div');
   Result.AddStringParam('id', HTMLName);
+  Result.AddClassParam(ActiveCss);
+  Result.AddStringParam('style',ActiveStyle);
   Result.Contents.AddText(RawContent);
 
   FOldText := RawContent;
@@ -226,16 +231,28 @@ begin
   Result := False;
 end;
 
+function TIWBSGlyphicon.RenderCSSClass(AComponentContext: TIWCompContext): string;
+begin
+  if FGlyphicon <> '' then
+    Result := 'glyphicon glyphicon-'+FGlyphicon
+  else
+    Result := '';
+  if Css <> '' then begin
+    if Result <> '' then
+      Result := Result + ' ';
+    Result := Result + Css;
+  end;
+end;
+
 function TIWBSGlyphicon.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := TIWHTMLTag.CreateTag('span');
   try
     Result.AddStringParam('id', AHTMLName);
+    Result.AddClassParam(ActiveCss);
+    Result.AddStringParam('style',ActiveStyle);
     if FGlyphicon <> '' then
-      begin
-        Result.AddClassParam('glyphicon glyphicon-'+FGlyphicon);
-        Result.AddBoolParam('aria-hidden',true);
-      end
+      Result.AddBoolParam('aria-hidden',true)
     else
       Result.Contents.AddText('&times;');
   except

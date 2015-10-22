@@ -22,11 +22,7 @@ type
     FHotKey: string;
     FAsyncClickProc: TIWBSAsyncClickProc;
 
-    FMainID: string;
-    FOldVisible: boolean;
     FOldDisabled: boolean;
-    FOldCss: string;
-    FOldStyle: string;
 
     procedure DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
     procedure SetAsyncClickProc(Value: TIWBSAsyncClickProc);
@@ -34,12 +30,12 @@ type
   protected
     procedure Submit(const AValue: string); override;
     procedure HookEvents(APageContext: TIWPageContext40; AScriptEvents: TIWScriptEvents); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
   public
     constructor Create(AOwner: TComponent); override;
     function GetSubmitParam : String;
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
     function RenderStyle(AContext: TIWCompContext): string; override;
     property AsyncClickProc: TIWBSAsyncClickProc read FAsyncClickProc write SetAsyncClickProc;
   published
@@ -106,17 +102,9 @@ begin
   end;
 end;
 
-function TIWBSButton.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
+procedure TIWBSButton.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
-  xHTMLName := HTMLName;
-  Result := nil;
-
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  SetAsyncDisabled(AContext, xHTMLName, not (Enabled and Editable), FOldDisabled);
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+  SetAsyncDisabled(AContext, AHTMLName, not (Enabled and Editable), FOldDisabled);
 end;
 
 function TIWBSButton.RenderCSSClass(AComponentContext: TIWCompContext): string;
@@ -131,25 +119,19 @@ begin
     Result := Result + ' ' + Css;
 end;
 
-function TIWBSButton.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+function TIWBSButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 const
   aIWBSButtonDataDismiss: array[bsbdNone..bsbdAlert] of string = ('', 'modal', 'alert');
 var
-  xHTMLName: string;
   s: string;
   gspan: TIWHTMLTag;
 begin
-  xHTMLName := HTMLName;
-
-  FOldVisible := Visible;
   FOldDisabled := not (Enabled and Editable);
-  FOldCss := RenderCSSClass(AContext);
-  FOldStyle := RenderStyle(AContext);
 
   Result := TIWHTMLTag.CreateTag('button');
   try
-    Result.AddStringParam('id', xHTMLName);
-    Result.AddClassParam(FOldCss);
+    Result.AddStringParam('id', AHTMLName);
+    Result.AddClassParam(ActiveCss);
     if FDataDismiss <> bsbdNone then
       Result.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
     Result.AddStringParam('type', 'button');
@@ -166,7 +148,7 @@ begin
     end;
     if FButtonStyle = bsbsClose then
       Result.AddStringParam('aria-label', 'Close');
-    Result.AddStringParam('style', FOldStyle);
+    Result.AddStringParam('style', ActiveStyle);
 
     if FGlyphicon <> '' then begin
       gspan := Result.Contents.AddTag('span');
@@ -186,12 +168,9 @@ begin
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, xHTMLName, 'btn')
+    Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'btn')
   else
-    Result := IWBSCreateFormGroup(Parent, IWBSFindParentInputForm(Parent), Result, xHTMLName, True);
-
-  // save id of final container to set visibility
-  FMainID := Result.Params.Values['id'];
+    Result := IWBSCreateFormGroup(Parent, IWBSFindParentInputForm(Parent), Result, AHTMLName, True);
 end;
 
 function TIWBSButton.RenderStyle(AContext: TIWCompContext): string;

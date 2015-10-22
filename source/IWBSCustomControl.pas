@@ -26,6 +26,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
     procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
@@ -54,6 +55,8 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
     property DataSource: TDataSource read FDataSource write SetDataSource;
     property DataField: string read FDataField write SetDataField;
@@ -109,6 +112,11 @@ begin
   SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
   SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
   InternalRenderAsync(xHTMLName, AContext);
+end;
+
+function TIWBSCustomControl.RenderCSSClass(AComponentContext: TIWCompContext): string;
+begin
+  Result := Css;
 end;
 
 function TIWBSCustomControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -227,6 +235,18 @@ end;
 procedure TIWBSCustomDbControl.CheckData;
 begin
   //
+end;
+
+function TIWBSCustomDbControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+begin
+  CheckData;
+  Result := inherited;
+end;
+
+function TIWBSCustomDbControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+begin
+  CheckData;
+  Result := inherited;
 end;
 {$endregion}
 
