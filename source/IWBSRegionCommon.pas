@@ -27,6 +27,21 @@ const
                      'panel', 'panel-body', 'panel-heading', 'panel-title', 'panel-footer');
 
 type
+  TIWBSButonGroupOptions = class(TPersistent)
+  private
+    FVertical: boolean;
+    FJustified: boolean;
+    FSize: TIWBSSize;
+  public
+    constructor Create(AOwner: TComponent);
+  published
+    property Vertical: boolean read FVertical write FVertical default false;
+    property Justified: boolean read FJustified write FJustified default false;
+    property Size: TIWBSSize read FSize write FSize default bsszDefault;
+  end;
+
+  TIWBSPanelStyle = (bspsDefault, bspsPrimary, bspsSuccess, bspsInfo, bspsWarning, bspsDanger);
+
   TIWBSFormOptions = class(TPersistent)
   private
     FCaptionsSize: TIWBSGridOptions;
@@ -49,6 +64,15 @@ implementation
 
 uses IWBaseInterfaces, IWHTML40Interfaces,
      IWRegion, IWBSLayoutMgr, IWBSUtils;
+
+{$region 'TIWBSBtnGroupOptions'}
+constructor TIWBSButonGroupOptions.Create(AOwner: TComponent);
+begin
+  FVertical := false;
+  FJustified := false;
+  FSize := bsszDefault;
+end;
+{$endregion}
 
 {$region 'TIWBSFormOptions'}
 constructor TIWBSFormOptions.Create;

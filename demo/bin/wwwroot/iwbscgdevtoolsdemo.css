@@ -1,0 +1,15 @@
+.container-fluid {
+	margin-left: 10px;
+	margin-right:10px;
+}
+
+.cgjqbutton {
+	display: inline-block;
+}
+
+.cgjqbutton > input {
+	padding-left: 10px !important;
+	padding-right: 10px !important;
+	padding-top: 5px !important;
+	padding-bottom: 5px !important;
+}

@@ -14,7 +14,7 @@ type
 
   TIWBSInput = class(TIWBSCustomTextInput)
   protected
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   published
     property BSInputType default bsitText;
   end;
@@ -30,7 +30,7 @@ type
   protected
     procedure InitControl; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure InternalRenderStyle(AStyle: TStrings); override;
   public
     destructor Destroy; override;
@@ -50,7 +50,7 @@ type
   protected
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure SetChecked(AValue: boolean);
     procedure SetName(const AValue: TComponentName); override;
   public
@@ -72,7 +72,7 @@ type
   protected
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure SetChecked(AValue: boolean);
     procedure SetName(const AValue: TComponentName); override;
     function InputSuffix: string; override;
@@ -98,7 +98,7 @@ type
     procedure InitControl; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure OnItemsChange(ASender : TObject); override;
     procedure SetItemIndex(AValue: integer); override;
   public
@@ -112,7 +112,7 @@ type
   TIWBSRadioGroup = class(TIWBSCustomSelectInput)
   protected
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     function InputSelector: string; override;
     function InputSuffix: string; override;
   end;
@@ -122,55 +122,56 @@ implementation
 uses IW.Common.System, IWBSUtils, IWBSInputCommon, IWBSLayoutMgr;
 
 {$region 'TIWBSInput'}
-function TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
+  inherited;
   if FIsStatic then
     begin
-      Result := TIWHTMLTag.CreateTag('p');
+      AHTMLTag := TIWHTMLTag.CreateTag('p');
       try
-        Result.AddClassParam(ActiveCss);
-        Result.AddStringParam('id', AHTMLName);
-        Result.AddStringParam('style', ActiveStyle);
-        Result.Contents.AddText(TextToHTML(FText));
+        AHTMLTag.AddClassParam(ActiveCss);
+        AHTMLTag.AddStringParam('id', AHTMLName);
+        AHTMLTag.AddStringParam('style', ActiveStyle);
+        AHTMLTag.Contents.AddText(TextToHTML(FText));
       except
-        FreeAndNil(Result);
+        FreeAndNil(AHTMLTag);
         raise;
       end;
     end
   else
     begin
-      Result := TIWHTMLTag.CreateTag('input');
+      AHTMLTag := TIWHTMLTag.CreateTag('input');
       try
-        Result.AddClassParam(ActiveCss);
-        Result.AddStringParam('id', AHTMLName);
-        Result.AddStringParam('name', AHTMLName);
-        Result.AddStringParam('type', aIWBSInputType[BSInputType]);
+        AHTMLTag.AddClassParam(ActiveCss);
+        AHTMLTag.AddStringParam('id', AHTMLName);
+        AHTMLTag.AddStringParam('name', AHTMLName);
+        AHTMLTag.AddStringParam('type', aIWBSInputType[BSInputType]);
         if ShowHint and (Hint <> '') then begin
-          Result.AddStringParam('data-toggle', 'tooltip');
-          Result.AddStringParam('title', Hint);
+          AHTMLTag.AddStringParam('data-toggle', 'tooltip');
+          AHTMLTag.AddStringParam('title', Hint);
         end;
         if AutoFocus then
-          Result.Add('autofocus');
+          AHTMLTag.Add('autofocus');
         if IsReadOnly then
-          Result.Add('readonly');
+          AHTMLTag.Add('readonly');
         if IsDisabled then
-          Result.Add('disabled');
+          AHTMLTag.Add('disabled');
         if MaxLength > 0 then
-          Result.AddIntegerParam('maxlength', MaxLength);
-        Result.AddStringParam('value', TextToHTML(FText));
+          AHTMLTag.AddIntegerParam('maxlength', MaxLength);
+        AHTMLTag.AddStringParam('value', TextToHTML(FText));
         if Required then
-          Result.Add('required');
+          AHTMLTag.Add('required');
         if PlaceHolder <> '' then
-          Result.AddStringParam('placeholder', TextToHTML(PlaceHolder));
-        Result.AddStringParam('style', ActiveStyle);
+          AHTMLTag.AddStringParam('placeholder', TextToHTML(PlaceHolder));
+        AHTMLTag.AddStringParam('style', ActiveStyle);
       except
-        FreeAndNil(Result);
+        FreeAndNil(AHTMLTag);
         raise;
       end;
     end;
 
   if not (Parent is TIWBSInputGroup) and (BSInputType <> bsitHidden) then
-    Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
+    AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, AHTMLName);
 end;
 {$endregion}
 
@@ -218,39 +219,40 @@ begin
   ATextValue := FLines.Text;
 end;
 
-function TIWBSMemo.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSMemo.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
-  Result := TIWHTMLTag.CreateTag('textarea');
+  inherited;
+  AHTMLTag := TIWHTMLTag.CreateTag('textarea');
   try
-    Result.AddStringParam('id', AHTMLName);
-    Result.AddClassParam(ActiveCss);
-    Result.AddStringParam('name', AHTMLName);
+    AHTMLTag.AddStringParam('id', AHTMLName);
+    AHTMLTag.AddClassParam(ActiveCss);
+    AHTMLTag.AddStringParam('name', AHTMLName);
     if ShowHint and (Hint <> '') then begin
-      Result.AddStringParam('data-toggle', 'tooltip');
-      Result.AddStringParam('title', Hint);
+      AHTMLTag.AddStringParam('data-toggle', 'tooltip');
+      AHTMLTag.AddStringParam('title', Hint);
     end;
     if AutoFocus then
-      Result.Add('autofocus');
+      AHTMLTag.Add('autofocus');
     if IsReadOnly then
-      Result.Add('readonly');
+      AHTMLTag.Add('readonly');
     if IsDisabled then
-      Result.Add('disabled');
+      AHTMLTag.Add('disabled');
     if MaxLength > 0 then
-      Result.AddIntegerParam('maxlength', MaxLength);
+      AHTMLTag.AddIntegerParam('maxlength', MaxLength);
     if Required then
-      Result.Add('required');
+      AHTMLTag.Add('required');
     if PlaceHolder <> '' then
-      Result.AddStringParam('placeholder', TextToHTML(PlaceHolder));
-    Result.AddIntegerParam('rows', FRows);
-    Result.AddStringParam('style', ActiveStyle);
-    Result.Contents.AddText(TextToHTML(FText,false,false));
+      AHTMLTag.AddStringParam('placeholder', TextToHTML(PlaceHolder));
+    AHTMLTag.AddIntegerParam('rows', FRows);
+    AHTMLTag.AddStringParam('style', ActiveStyle);
+    AHTMLTag.Contents.AddText(TextToHTML(FText,false,false));
   except
-    FreeAndNil(Result);
+    FreeAndNil(AHTMLTag);
     raise;
   end;
 
   if not (Parent is TIWBSInputGroup) then
-    Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, HTMLName);
+    AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, HTMLName);
 end;
 
 procedure TIWBSMemo.InternalRenderStyle(AStyle: TStrings);
@@ -311,28 +313,29 @@ begin
   end;
 end;
 
-function TIWBSCheckBox.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSCheckBox.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
-  Result := TIWHTMLTag.CreateTag('input');
+  inherited;
+  AHTMLTag := TIWHTMLTag.CreateTag('input');
   try
-    Result.AddStringParam('id', AHTMLName);
-    Result.AddStringParam('name', AHTMLName);
-    Result.AddClassParam(ActiveCss);
-    Result.AddStringParam('type', 'checkbox');
+    AHTMLTag.AddStringParam('id', AHTMLName);
+    AHTMLTag.AddStringParam('name', AHTMLName);
+    AHTMLTag.AddClassParam(ActiveCss);
+    AHTMLTag.AddStringParam('type', 'checkbox');
     if IsDisabled then
-      Result.Add('disabled');
+      AHTMLTag.Add('disabled');
     if Checked then
-      Result.Add('checked');
-    Result.AddStringParam('style', ActiveStyle);
+      AHTMLTag.Add('checked');
+    AHTMLTag.AddStringParam('style', ActiveStyle);
   except
-    FreeAndNil(Result);
+    FreeAndNil(AHTMLTag);
     raise;
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'addon')
+    AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'addon')
   else
-    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, 'checkbox', Caption, Hint, AHTMLName, ShowHint);
+    AHTMLTag := IWBSCreateCheckBoxFormGroup(Parent, AHTMLTag, 'checkbox', Caption, Hint, AHTMLName, ShowHint);
 end;
 {$endregion}
 
@@ -394,30 +397,31 @@ begin
   end;
 end;
 
-function TIWBSRadioButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSRadioButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
-  Result := TIWHTMLTag.CreateTag('input');
+  inherited;
+  AHTMLTag := TIWHTMLTag.CreateTag('input');
   try
-    Result.AddStringParam('id', AHTMLName+InputSuffix);
-    Result.AddStringParam('name', FGroup);
-    Result.AddClassParam(ActiveCss);
-    Result.AddStringParam('type', 'radio');
+    AHTMLTag.AddStringParam('id', AHTMLName+InputSuffix);
+    AHTMLTag.AddStringParam('name', FGroup);
+    AHTMLTag.AddClassParam(ActiveCss);
+    AHTMLTag.AddStringParam('type', 'radio');
     if IsDisabled then
-      Result.Add('disabled');
+      AHTMLTag.Add('disabled');
     if FChecked then
-      Result.Add('checked');
-    Result.AddStringParam('onclick', 'radioButtonClick(event, '''+FGroup+''','''+AHTMLName+InputSuffix+''');');
-    Result.AddStringParam('value', 'on');
-    Result.AddStringParam('style', ActiveStyle);
+      AHTMLTag.Add('checked');
+    AHTMLTag.AddStringParam('onclick', 'radioButtonClick(event, '''+FGroup+''','''+AHTMLName+InputSuffix+''');');
+    AHTMLTag.AddStringParam('value', 'on');
+    AHTMLTag.AddStringParam('style', ActiveStyle);
   except
-    FreeAndNil(Result);
+    FreeAndNil(AHTMLTag);
     raise;
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'addon')
+    AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'addon')
   else
-    Result := IWBSCreateCheckBoxFormGroup(Parent, Result, 'radio', Caption, Hint, AHTMLName, ShowHint);
+    AHTMLTag := IWBSCreateCheckBoxFormGroup(Parent, AHTMLTag, 'radio', Caption, Hint, AHTMLName, ShowHint);
 end;
 {$endregion}
 
@@ -559,27 +563,28 @@ begin
     Result := Result + ' ' + Css;
 end;
 
-function TIWBSSelect.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSSelect.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 var
   i: Integer;
 begin
-  Result := TIWHTMLTag.CreateTag('select');
+  inherited;
+  AHTMLTag := TIWHTMLTag.CreateTag('select');
   try
-    Result.AddStringParam('id', AHTMLName);
-    Result.AddClassParam(ActiveCss);
-    Result.AddStringParam('name', AHTMLName);
+    AHTMLTag.AddStringParam('id', AHTMLName);
+    AHTMLTag.AddClassParam(ActiveCss);
+    AHTMLTag.AddStringParam('name', AHTMLName);
     if FSize > 0 then
-      Result.AddIntegerParam('size', FSize)
+      AHTMLTag.AddIntegerParam('size', FSize)
     else
-      Result.AddIntegerParam('size', Items.Count);
+      AHTMLTag.AddIntegerParam('size', Items.Count);
     if FMultiSelect then
-      Result.Add('multiple');
+      AHTMLTag.Add('multiple');
     if IsDisabled then
-      Result.Add('disabled');
+      AHTMLTag.Add('disabled');
     if AutoFocus then
-      Result.Add('autofocus');
+      AHTMLTag.Add('autofocus');
     for i := 0 to Items.Count - 1 do begin
-      with Result.Contents.AddTag('option') do begin
+      with AHTMLTag.Contents.AddTag('option') do begin
         AddStringParam('value', IntToStr(i));
         if FItemsSelected[i] then
           Add('selected');
@@ -587,12 +592,12 @@ begin
       end;
     end;
   except
-    FreeAndNil(Result);
+    FreeAndNil(AHTMLTag);
     raise;
   end;
 
   if not (Parent is TIWBSInputGroup) then
-    Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
+    AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, AHTMLName);
 end;
 {$endregion}
 
@@ -618,17 +623,18 @@ begin
   end;
 end;
 
-function TIWBSRadioGroup.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSRadioGroup.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 var
   i: Integer;
 begin
-  Result := TIWHTMLTag.CreateTag('div');
+  inherited;
+  AHTMLTag := TIWHTMLTag.CreateTag('div');
   try
-    Result.AddStringParam('id', AHTMLName);
-    Result.AddClassParam('radio');
-    Result.AddStringParam('style', ActiveStyle);
+    AHTMLTag.AddStringParam('id', AHTMLName);
+    AHTMLTag.AddClassParam('radio');
+    AHTMLTag.AddStringParam('style', ActiveStyle);
     for i := 0 to Items.Count - 1 do begin
-      with Result.Contents.AddTag('label') do begin
+      with AHTMLTag.Contents.AddTag('label') do begin
         with Contents.AddTag('input') do begin
           AddStringParam('type', 'radio');
           Add(iif(FItemIndex = i, 'checked'));
@@ -640,17 +646,17 @@ begin
         end;
         Contents.AddText(TextToHTML(iif(ItemsHaveValues, Items.Names[i], Items[i])));
       end;
-      Result.Contents.AddText('<br>');
+      AHTMLTag.Contents.AddText('<br>');
     end;
   except
-    FreeAndNil(Result);
+    FreeAndNil(AHTMLTag);
     raise;
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'addon')
+    AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'addon')
   else
-    Result := IWBSCreateInputFormGroup(Self, Parent, Result, Caption, AHTMLName);
+    AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, AHTMLName);
 end;
 {$endregion}
 

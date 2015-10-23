@@ -102,21 +102,6 @@ type
     property Caption: string read FCaption write FCaption;
   end;
 
-  TIWBSButonGroupOptions = class(TPersistent)
-  private
-    FVertical: boolean;
-    FJustified: boolean;
-    FSize: TIWBSSize;
-  public
-    constructor Create(AOwner: TComponent);
-  published
-    property Vertical: boolean read FVertical write FVertical default false;
-    property Justified: boolean read FJustified write FJustified default false;
-    property Size: TIWBSSize read FSize write FSize default bsszDefault;
-  end;
-
-  TIWBSPanelStyle = (bspsDefault, bspsPrimary, bspsSuccess, bspsInfo, bspsWarning, bspsDanger);
-
   TIWBSRegion = class(TIWBSCustomRegion)
   private
     FButtonGroupOptions: TIWBSButonGroupOptions;
@@ -621,9 +606,9 @@ begin
     begin
       if FButtonGroupOptions.Vertical then
         Result := Result + '-vertical';
-      if FButtonGroupOptions.FSize <> bsszDefault then
-        Result := Result + ' btn-group-'+aIWBSSize[FButtonGroupOptions.FSize];
-      if FButtonGroupOptions.FJustified then
+      if FButtonGroupOptions.Size <> bsszDefault then
+        Result := Result + ' btn-group-'+aIWBSSize[FButtonGroupOptions.Size];
+      if FButtonGroupOptions.Justified then
         Result := Result + ' btn-group-justified';
     end;
 
@@ -664,15 +649,6 @@ procedure TIWBSRegion.SetRelativeSize(AValue: TIWBSRelativeSize);
 begin
   FRelativeSize := AValue;
   Invalidate;
-end;
-{$endregion}
-
-{$region 'TIWBSBtnGroupOptions'}
-constructor TIWBSButonGroupOptions.Create(AOwner: TComponent);
-begin
-  FVertical := false;
-  FJustified := false;
-  FSize := bsszDefault;
 end;
 {$endregion}
 

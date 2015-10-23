@@ -16,11 +16,11 @@ type
     function  RenderLabelText: string;
   protected
     procedure CheckData; override;
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure SetForControl(const Value: TIWCustomControl);
   public
     constructor Create(AOwner: TComponent); override;
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
   published
     property Caption;
     property ForControl: TIWCustomControl read FForControl write SetForControl;
@@ -37,10 +37,10 @@ type
     procedure SetLines(const AValue: TStringList);
   protected
     procedure CheckData; override;
+    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
   published
     property Lines: TStringList read FLines write SetLines;
     property RawText: boolean read FRawText write FRawText default False;
@@ -53,9 +53,9 @@ type
     procedure InitControl; override;
     function get_ShouldRenderTabOrder: boolean; override;
     function get_HasName: Boolean; override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
     function get_HasTabOrder: boolean; override;
   published
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
@@ -118,29 +118,25 @@ begin
   SetAsyncHtml(AContext, AHTMLName, RenderLabelText, FOldText);
 end;
 
-function TIWBSLabel.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
-var
-  RawContent: string;
+procedure TIWBSLabel.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
   inherited;
-  RawContent := RenderLabelText;
+  FOldText := RenderLabelText;
 
   if Assigned(FForControl) then
     begin
-      Result := TIWHTMLTag.CreateTag('label');
-      Result.AddStringParam('for', ForControl.HTMLName);
+      AHTMLTag := TIWHTMLTag.CreateTag('label');
+      AHTMLTag.AddStringParam('for', ForControl.HTMLName);
     end
   else
-    Result := TIWHTMLTag.CreateTag('span');
-  Result.AddStringParam('id', HTMLName);
-  Result.AddClassParam(ActiveCss);
-  Result.AddStringParam('style',ActiveStyle);
-  Result.Contents.AddText(RawContent);
+    AHTMLTag := TIWHTMLTag.CreateTag('span');
+  AHTMLTag.AddStringParam('id', HTMLName);
+  AHTMLTag.AddClassParam(ActiveCss);
+  AHTMLTag.AddStringParam('style',ActiveStyle);
+  AHTMLTag.Contents.AddText(FOldText);
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, HTMLName, 'addon');
-
-  FOldText := RawContent;
+    AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, HTMLName, 'addon');
 end;
 
 procedure TIWBSLabel.CheckData;
@@ -186,20 +182,16 @@ begin
   SetAsyncHtml(AContext, AHTMLName, RenderText, FOldText);
 end;
 
-function TIWBSText.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
-var
-  RawContent: string;
+procedure TIWBSText.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
   inherited;
-  RawContent := RenderText;
+  FOldText := RenderText;
 
-  Result := TIWHTMLTag.CreateTag('div');
-  Result.AddStringParam('id', HTMLName);
-  Result.AddClassParam(ActiveCss);
-  Result.AddStringParam('style',ActiveStyle);
-  Result.Contents.AddText(RawContent);
-
-  FOldText := RawContent;
+  AHTMLTag := TIWHTMLTag.CreateTag('div');
+  AHTMLTag.AddStringParam('id', HTMLName);
+  AHTMLTag.AddClassParam(ActiveCss);
+  AHTMLTag.AddStringParam('style',ActiveStyle);
+  AHTMLTag.Contents.AddText(FOldText);
 end;
 
 procedure TIWBSText.CheckData;
@@ -247,24 +239,24 @@ begin
   end;
 end;
 
-function TIWBSGlyphicon.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSGlyphicon.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
   inherited;
-  Result := TIWHTMLTag.CreateTag('span');
+  AHTMLTag := TIWHTMLTag.CreateTag('span');
   try
-    Result.AddStringParam('id', AHTMLName);
-    Result.AddClassParam(ActiveCss);
-    Result.AddStringParam('style',ActiveStyle);
+    AHTMLTag.AddStringParam('id', AHTMLName);
+    AHTMLTag.AddClassParam(ActiveCss);
+    AHTMLTag.AddStringParam('style',ActiveStyle);
     if FGlyphicon <> '' then
-      Result.AddBoolParam('aria-hidden',true)
+      AHTMLTag.AddBoolParam('aria-hidden',true)
     else
-      Result.Contents.AddText('&times;');
+      AHTMLTag.Contents.AddText('&times;');
   except
-    FreeAndNil(Result);
+    FreeAndNil(AHTMLTag);
     raise;
   end;
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'addon');
+    AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'addon');
 end;
 {$endregion}
 

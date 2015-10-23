@@ -49,9 +49,8 @@ type
     procedure GetInputControlNames(ANames: TStringList); override;
     function IsForThisControl(AName: string): boolean; override;
 
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); virtual;
-
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
 
     function IsReadOnly: boolean; override;
     function IsDisabled: boolean; override;
@@ -316,10 +315,10 @@ begin
   Result := not (Enabled and Editable and (FDbEditable or FSupportReadOnly));
 end;
 
-function TIWBSCustomInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSCustomInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
+  inherited;
   FOldText := FText;
-  Result := inherited;
 end;
 
 procedure TIWBSCustomInput.SetCaption(const AValue: string);

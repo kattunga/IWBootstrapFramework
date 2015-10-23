@@ -31,7 +31,7 @@ type
     procedure Submit(const AValue: string); override;
     procedure HookEvents(APageContext: TIWPageContext40; AScriptEvents: TIWScriptEvents); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
     constructor Create(AOwner: TComponent); override;
     function GetSubmitParam : String;
@@ -119,7 +119,7 @@ begin
     Result := Result + ' ' + Css;
 end;
 
-function TIWBSButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 const
   aIWBSButtonDataDismiss: array[bsbdNone..bsbdAlert] of string = ('', 'modal', 'alert');
 var
@@ -129,30 +129,30 @@ begin
   inherited;
   FOldDisabled := not (Enabled and Editable);
 
-  Result := TIWHTMLTag.CreateTag('button');
+  AHTMLTag := TIWHTMLTag.CreateTag('button');
   try
-    Result.AddStringParam('id', AHTMLName);
-    Result.AddClassParam(ActiveCss);
+    AHTMLTag.AddStringParam('id', AHTMLName);
+    AHTMLTag.AddClassParam(ActiveCss);
     if FDataDismiss <> bsbdNone then
-      Result.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
-    Result.AddStringParam('type', 'button');
+      AHTMLTag.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
+    AHTMLTag.AddStringParam('type', 'button');
     if ShowHint and (Hint <> '') then begin
-      Result.AddStringParam('data-toggle', 'tooltip');
-      Result.AddStringParam('title', Hint);
+      AHTMLTag.AddStringParam('data-toggle', 'tooltip');
+      AHTMLTag.AddStringParam('title', Hint);
     end;
     if FOldDisabled then
-      Result.Add('disabled');
+      AHTMLTag.Add('disabled');
     s := TextToHTML(Caption);
     if FHotKey <> '' then begin
-      Result.AddStringParam('accesskey', FHotKey);
+      AHTMLTag.AddStringParam('accesskey', FHotKey);
       s := StringReplace(s, FHotKey, '<u>' + FHotKey + '</u>', [rfIgnoreCase]);
     end;
     if FButtonStyle = bsbsClose then
-      Result.AddStringParam('aria-label', 'Close');
-    Result.AddStringParam('style', ActiveStyle);
+      AHTMLTag.AddStringParam('aria-label', 'Close');
+    AHTMLTag.AddStringParam('style', ActiveStyle);
 
     if FGlyphicon <> '' then begin
-      gspan := Result.Contents.AddTag('span');
+      gspan := AHTMLTag.Contents.AddTag('span');
       gspan.AddClassParam('glyphicon glyphicon-'+FGlyphicon);
       gspan.AddBoolParam('aria-hidden',true);
       s := ' '+s;
@@ -160,18 +160,18 @@ begin
 
     // caption after glyphicon
     if (FButtonStyle = bsbsClose) and (s = '') and (FGlyphicon = '') then
-      Result.Contents.AddText('&times;')
+      AHTMLTag.Contents.AddText('&times;')
     else
-      Result.Contents.AddText(s);
+      AHTMLTag.Contents.AddText(s);
   except
-    FreeAndNil(Result);
+    FreeAndNil(AHTMLTag);
     raise;
   end;
 
   if Parent is TIWBSInputGroup then
-    Result := IWBSCreateInputGroupAddOn(Result, AHTMLName, 'btn')
+    AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'btn')
   else
-    Result := IWBSCreateFormGroup(Parent, IWBSFindParentInputForm(Parent), Result, AHTMLName, True);
+    AHTMLTag := IWBSCreateFormGroup(Parent, IWBSFindParentInputForm(Parent), AHTMLTag, AHTMLName, True);
 end;
 
 function TIWBSButton.RenderStyle(AContext: TIWCompContext): string;

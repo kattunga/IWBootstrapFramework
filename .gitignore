@@ -64,3 +64,6 @@ glyphicons/
 .git
 
 temp
+/demo/bin/wwwroot/css
+/demo/bin/wwwroot/jq
+/demo/bin/wwwroot/ui-themes

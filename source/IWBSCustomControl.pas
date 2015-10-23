@@ -21,7 +21,7 @@ type
     procedure SetStyle(const AValue: TStrings);
   protected
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
-    function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; virtual;
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); virtual;
     function InternalRenderScript: string;
     procedure InternalRenderStyle(AStyle: TStrings); virtual;
     function IsReadOnly: boolean; virtual;
@@ -100,9 +100,13 @@ begin
   //
 end;
 
-function TIWBSCustomControl.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
+procedure TIWBSCustomControl.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
-  Result := nil;
+  FOldCss := RenderCSSClass(AContext);
+  FOldDisabled := IsDisabled;
+  FOldReadOnly := IsReadOnly;
+  FOldStyle := RenderStyle(AContext);
+  FOldVisible := Visible;
 end;
 
 function TIWBSCustomControl.InternalRenderScript: string;
@@ -161,17 +165,15 @@ end;
 
 function TIWBSCustomControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
-  FOldCss := RenderCSSClass(AContext);
-  FOldDisabled := IsDisabled;
-  FOldReadOnly := IsReadOnly;
-  FOldStyle := RenderStyle(AContext);
-  FOldVisible := Visible;
-
-  Result := InternalRenderHTML(HTMLName, AContext);
-
-  FMainID := Result.Params.Values['id'];
-
-  IWBSRenderScript(Self, AContext, Result);
+  Result := nil;
+  InternalRenderHTML(HTMLName, AContext, Result);
+  if Result <> nil then
+    begin
+      FMainID := Result.Params.Values['id'];
+      IWBSRenderScript(Self, AContext, Result);
+    end
+  else
+    raise Exception.Create('HTML tag not created');
 end;
 
 procedure TIWBSCustomControl.RenderScripts(AComponentContext: TIWCompContext);

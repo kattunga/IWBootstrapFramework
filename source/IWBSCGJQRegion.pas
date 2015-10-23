@@ -11,21 +11,31 @@ uses
 type
   TIWBSCGJQRegion = class(TIWCGJQCustomRegion)
   private
+    FButtonGroupOptions: TIWBSButonGroupOptions;
     FGridOptions: TIWBSGridOptions;
-    FLayoutMrg: boolean;
+    FPanelStyle: TIWBSPanelStyle;
     FRegionType: TIWBSRegionType;
+    FRelativeSize: TIWBSRelativeSize;
   protected
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure SetButtonGroupOptions(AValue: TIWBSButonGroupOptions);
     procedure SetGridOptions(const Value: TIWBSGridOptions);
+    procedure SetRegionType(AValue: TIWBSRegionType);
+    procedure SetPanelStyle(AValue: TIWBSPanelStyle);
+    procedure SetRelativeSize(AValue: TIWBSRelativeSize);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    function GetClassString: string;
+    function GetRoleString: string;
   published
+    property BSButtonGroupOptions: TIWBSButonGroupOptions read FButtonGroupOptions write SetButtonGroupOptions;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
-    property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
-    property BSRegionType: TIWBSRegionType read FRegionType write FRegionType default bsrtIWBSRegion;
+    property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
+    property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtIWBSRegion;
+    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write SetRelativeSize default bsrzDefault;
   end;
 
 implementation
@@ -57,15 +67,24 @@ begin
   Css := '';
 
   // bootstrap settings
-  FRegionType := bsrtIWBSRegion;
   FGridOptions := TIWBSGridOptions.Create;
-  FLayoutMrg := True;
+  FButtonGroupOptions := TIWBSButonGroupOptions.Create(Self);
+  FPanelStyle := bspsDefault;
+  FRegionType := bsrtIWBSRegion;
+  FRelativeSize := bsrzDefault;
 end;
 
 destructor TIWBSCGJQRegion.Destroy;
 begin
+  FButtonGroupOptions.Free;
   FGridOptions.Free;
   inherited;
+end;
+
+procedure TIWBSCGJQRegion.SetButtonGroupOptions(AValue: TIWBSButonGroupOptions);
+begin
+  FButtonGroupOptions.Assign(AValue);
+  Invalidate;
 end;
 
 procedure TIWBSCGJQRegion.SetGridOptions(const Value: TIWBSGridOptions);
@@ -73,19 +92,77 @@ begin
   FGridOptions.Assign(Value);
 end;
 
+procedure TIWBSCGJQRegion.SetRegionType(AValue: TIWBSRegionType);
+begin
+  FRegionType := AValue;
+  Invalidate;
+end;
+
+procedure TIWBSCGJQRegion.SetPanelStyle(AValue: TIWBSPanelStyle);
+begin
+  FPanelStyle := AValue;
+  Invalidate;
+end;
+
+procedure TIWBSCGJQRegion.SetRelativeSize(AValue: TIWBSRelativeSize);
+begin
+  FRelativeSize := AValue;
+  Invalidate;
+end;
+
 function TIWBSCGJQRegion.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  if FLayoutMrg then
-    if not (Self.LayoutMgr is TIWBSLayoutMgr) then
-      Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
+  if not (Self.LayoutMgr is TIWBSLayoutMgr) then
+    Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
   Result := inherited;
 end;
 
 procedure TIWBSCGJQRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 begin
-  if FLayoutMrg then
-    IWBSPrepareChildComponentsForRender(Self);
+  IWBSPrepareChildComponentsForRender(Self);
   inherited;
+end;
+
+function TIWBSCGJQRegion.GetClassString: string;
+const
+  aIWBSPanelStyle: array[bspsDefault..bspsDanger] of string = ('panel-default', 'panel-primary', 'panel-success', 'panel-info', 'panel-warning', 'panel-danger');
+var
+  s: string;
+begin
+  Result := aIWBSRegionType[FRegionType];
+
+  if FRegionType = bsrtPanel then
+    Result := Result + ' ' + aIWBSPanelStyle[FPanelStyle]
+
+  else if (FRegionType = bsrtWell) and (FRelativeSize <> bsrzDefault) then
+    Result := Result + ' well-' + aIWBSRelativeSize[FRelativeSize]
+
+  else if FRegionType = bsrtButtonGroup then
+    begin
+      if FButtonGroupOptions.Vertical then
+        Result := Result + '-vertical';
+      if FButtonGroupOptions.Size <> bsszDefault then
+        Result := Result + ' btn-group-'+aIWBSSize[FButtonGroupOptions.Size];
+      if FButtonGroupOptions.Justified then
+        Result := Result + ' btn-group-justified';
+    end;
+
+  s := FGridOptions.GetClassString;
+  if s <> '' then
+    Result := Result + ' ' + s;
+
+  if Css <> '' then
+    Result := Result + ' ' + Css;
+end;
+
+function TIWBSCGJQRegion.GetRoleString: string;
+begin
+  if FRegionType = bsrtButtonToolbar then
+    Result := 'toolbar'
+  else if FRegionType = bsrtButtonGroup then
+    Result := 'group'
+  else
+    Result := '';
 end;
 
 function TIWBSCGJQRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -114,11 +191,10 @@ begin
   Result.Params.Values['style'] := LStyle;
 
   // css
-  Result.Params.Values['class'] := aIWBSRegionType[FRegionType];
+  Result.Params.Values['class'] := GetClassString;
 
-  Result.AddClassParam(FGridOptions.GetClassString);
-
-  Result.AddClassParam(Css);
+  // role
+  Result.Params.Values['role'] := GetRoleString;
 end;
 
 end.
