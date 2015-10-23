@@ -7,7 +7,7 @@ uses
   IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
   IWBaseContainerLayout, IWContainer, IWControl, IWHTMLContainer, IWHTML40Container, IWRegion, IW.Common.Strings,
   IWRenderContext, IWHTMLTag, IWBaseInterfaces, IWXMLTag, IWMarkupLanguageTag, IW.Common.RenderStream,
-  IWBSCommon, IWBSRegionCommon, IWBSLayoutMgr;
+  IWBSCommon, IWBSRegionCommon, IWBSLayoutMgr, IWScriptEvents;
 
 type
   TIWBSCustomRegion = class(TIWCustomRegion, IIWBSComponent)
@@ -15,8 +15,8 @@ type
     FTagType: string;
     FCss: string;
     FGridOptions: TIWBSGridOptions;
-    FLayoutMrg: boolean;
     FRegionDiv: TIWHTMLTag;
+    FScript: TStrings;
     FStyle: TStrings;
     FReleased: boolean;
 
@@ -25,14 +25,17 @@ type
     FOldVisible: boolean;
 
     function GetWebApplication: TIWApplication;
+    function IsScriptEventsStored: Boolean; virtual;
   protected
     function ContainerPrefix: string; override;
+    function HTMLControlImplementation: TIWHTMLControlImplementation;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); virtual;
-    procedure InitControl; override;
+    function InternalRenderScript: string;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
     procedure SetGridOptions(const AValue: TIWBSGridOptions);
     procedure SetStyle(const AValue: TStrings);
@@ -42,7 +45,6 @@ type
     procedure Release;
     procedure AsyncRemoveComponent;
     procedure AsyncRenderComponent(ARenderContent: boolean = False);
-    property Canvas;
     function GetClassString: string; virtual;
     function GetRoleString: string; virtual;
     procedure ExecuteJS(const AScript: string; AsCDATA: boolean = False);
@@ -51,10 +53,12 @@ type
   published
     property Align;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
-    property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
     property ClipRegion default False;
     property Css: string read FCss write FCss;
+    property ExtraTagParams;
     property RenderInvisibleControls default False;
+    property ScriptEvents: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;
+    property Script: TStrings read FScript write FScript;
     property Style: TStrings read FStyle write SetStyle;
     property ZIndex default 0;
   end;
@@ -169,7 +173,7 @@ function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
 
 implementation
 
-uses IWForm, IWUtils, IWContainerLayout, IWBaseHTMLControl, IWBSUtils, IWBSInputCommon;
+uses IWForm, IWUtils, IWContainerLayout, IWBaseHTMLControl, IWBSUtils, IWBSInputCommon, IWBSScriptEvents;
 
 {$region 'help functions'}
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -203,18 +207,22 @@ begin
   FReleased := False;
   FCss := '';
   FGridOptions := TIWBSGridOptions.Create;
+  FScript := TStringList.Create;
   FStyle := TStringList.Create;
   FStyle.NameValueSeparator := ':';
-  FLayoutMrg := True;
   FTagType := 'div';
   ClipRegion := False;
   RenderInvisibleControls := False;
   ZIndex := 0;
+
+  if name = '' then
+    name := IWBSGetUniqueComponentName(Owner, Copy(ClassName,2,MaxInt));
 end;
 
 destructor TIWBSCustomRegion.Destroy;
 begin
   FGridOptions.Free;
+  FScript.Free;
   FStyle.Free;
   inherited;
 end;
@@ -249,6 +257,11 @@ begin
     Result := ParentContainer.ContainerContext.WebApplication
   else
     Result := nil;
+end;
+
+function TIWBSCustomRegion.IsScriptEventsStored: Boolean;
+begin
+  Result := ScriptEvents.Count > 0;
 end;
 
 procedure TIWBSCustomRegion.ExecuteJS(const AScript: string; AsCDATA: boolean = False);
@@ -366,13 +379,6 @@ begin
   end;
 end;
 
-procedure TIWBSCustomRegion.InitControl;
-begin
-  inherited;
-  if name = '' then
-    name := IWBSGetUniqueComponentName(Owner, Copy(ClassName,2,MaxInt));
-end;
-
 procedure TIWBSCustomRegion.SetGridOptions(const AValue: TIWBSGridOptions);
 begin
   FGridOptions.Assign(AValue);
@@ -395,11 +401,15 @@ begin
     Result := UpperCase(Name);
 end;
 
+function TIWBSCustomRegion.HTMLControlImplementation: TIWHTMLControlImplementation;
+begin
+  Result := ControlImplementation;
+end;
+
 function TIWBSCustomRegion.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  if FLayoutMrg then
-    if not (Self.LayoutMgr is TIWBSLayoutMgr) then
-      Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
+  if not (Self.LayoutMgr is TIWBSLayoutMgr) then
+    Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
   Result := inherited;
 end;
 
@@ -416,8 +426,7 @@ end;
 
 procedure TIWBSCustomRegion.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
 begin
-  if FLayoutMrg then
-    IWBSPrepareChildComponentsForRender(Self);
+  IWBSPrepareChildComponentsForRender(Self);
   try
     THackTIWHTML40Container(Self).CallInheritedRenderComponents(AContainerContext, APageContext);
     LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
@@ -439,6 +448,16 @@ begin
   finally
     FreeAndNil(LBuffer);
   end;
+end;
+
+function TIWBSCustomRegion.InternalRenderScript: string;
+begin
+  Result := FScript.Text;
+end;
+
+procedure TIWBSCustomRegion.RenderScripts(AComponentContext: TIWCompContext);
+begin
+  //
 end;
 
 function TIWBSCustomRegion.RenderStyle(AContext: TIWCompContext): string;
@@ -478,6 +497,8 @@ begin
   FRegionDiv.AddStringParam('role',GetRoleString);
   FRegionDiv.AddStringParam('style',RenderStyle(AContext));
   Result := FRegionDiv;
+
+  IWBSRenderScript(Self, AContext, Result);
 end;
 {$endregion}
 

@@ -25,6 +25,8 @@ type
     IWBSInput1: TIWBSInput;
     IWBSButton199: TIWBSButton;
     IWBSSelect1: TIWBSSelect;
+    IWBSButton1: TIWBSButton;
+    procedure IWBSButton1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -34,5 +36,10 @@ type
 implementation
 
 {$R *.dfm}
+
+procedure TIWFrame3.IWBSButton1Click(Sender: TObject);
+begin
+//
+end;
 
 end.

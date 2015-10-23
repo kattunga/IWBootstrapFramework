@@ -77,6 +77,16 @@ object IWFrame3: TIWFrame3
             'item 4')
           MultiSelect = True
         end
+        object IWBSButton1: TIWBSButton
+          Left = 28
+          Top = 160
+          Width = 265
+          Height = 25
+          Caption = 'IWBSButton1'
+          FriendlyName = 'IWBSButton1'
+          TabOrder = 3
+          OnClick = IWBSButton1Click
+        end
       end
       object IWBSRegion3: TIWBSRegion
         Left = 40

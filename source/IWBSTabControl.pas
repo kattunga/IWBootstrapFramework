@@ -6,9 +6,9 @@ interface
 
 uses
   System.SysUtils, System.Classes, System.StrUtils, Vcl.Controls, Vcl.Forms, Vcl.Graphics,
-  IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
-  IWContainer, IWHTMLContainer, IWHTML40Container, IWRegion, IWCompTabControl, IWBaseContainerLayout,
-  IWRenderContext, IWHTMLTag, IWBSCommon, IWBSRegionCommon;
+  IWVCLBaseContainer, IWApplication, IWBaseRenderContext, IWControl,
+  IWContainer, IWHTMLContainer, IWHTML40Container, IWHTML40Interfaces, IWRegion, IWCompTabControl, IWBaseContainerLayout,
+  IWRenderContext, IWHTMLTag, IWBSCommon, IWBSRegionCommon, IWXMLTag, IW.Common.RenderStream;
 
 type
   TIWBSTabOptions = class(TPersistent)
@@ -28,43 +28,56 @@ type
 
   TIWBSTabControl = class(TIWTabControl, IIWBSComponent)
   private
+    FOldStyle: string;
+    FOldVisible: boolean;
+    FOldActivePage: integer;
+
     FGridOptions: TIWBSGridOptions;
-    FLayoutMrg: boolean;
+    FRegionDiv: TIWHTMLTag;
+    FScript: TStrings;
+    FStyle: TStrings;
     FTabOptions: TIWBSTabOptions;
-  protected
     procedure SetGridOptions(const Value: TIWBSGridOptions);
     procedure SetTabOptions(const Value: TIWBSTabOptions);
+    procedure SetStyle(const AValue: TStrings);
+    procedure CheckActiveVisible;
+    procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
+  protected
+    function HTMLControlImplementation: TIWHTMLControlImplementation;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
+    function InternalRenderScript: string;
+    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function TabPageCSSClass(ATabPage: TComponent): string;
+    function GetTabPageCSSClass(ATabPage: TComponent): string;
+    procedure SetTabPageVisibility(ATabIndex: integer; Visible: boolean); overload;
+    procedure SetTabPageVisibility(ATabPage: TIWTabPage; Visible: boolean); overload;
   published
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
-    property BSLayoutMgr: boolean read FLayoutMrg write FLayoutMrg default True;
     property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
-
-    property ClipRegion default false;
-    property Color default clNone;
+    property Script: TStrings read FScript write FScript;
+    property Style: TStrings read FStyle write SetStyle;
   end;
 
 implementation
 
-uses IWLists, IWBSutils, IWBSLayoutMgr;
+uses IWLists, IW.Common.System, IWBSutils, IWBSLayoutMgr, IWBSScriptEvents, IWBaseInterfaces;
 
 {$region 'THackCustomRegion'}
 type
-  THackCustomRegion = class(TIWCustomRegion)
+  THackTIWHTML40Container = class(TIWHTML40Container)
   private
-    function CallInheritedRenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+    procedure CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
   end;
 
-function THackCustomRegion.CallInheritedRenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+procedure THackTIWHTML40Container.CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 begin
-  Result := inherited RenderHtml(AContext);
+  inherited RenderComponents(AContainerContext, APageContext);
 end;
 {$endregion}
 
@@ -83,14 +96,17 @@ constructor TIWBSTabControl.Create(AOwner: TComponent);
 begin
   inherited;
   FGridOptions := TIWBSGridOptions.Create;
-  FLayoutMrg := True;
+  FScript := TStringList.Create;
+  FStyle := TStringList.Create;
   FTabOptions := TIWBSTabOptions.Create(Self);
 end;
 
 destructor TIWBSTabControl.Destroy;
 begin
-  FTabOptions.Free;
   FGridOptions.Free;
+  FScript.Free;
+  FStyle.Free;
+  FTabOptions.Free;
   inherited;
 end;
 
@@ -106,19 +122,82 @@ begin
   invalidate;
 end;
 
+procedure TIWBSTabControl.SetStyle(const AValue: TStrings);
+begin
+  FStyle.Assign(AValue);
+  Invalidate;
+end;
+
+function TIWBSTabControl.HTMLControlImplementation: TIWHTMLControlImplementation;
+begin
+  Result := ControlImplementation;
+end;
+
 function TIWBSTabControl.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
 begin
-  if FLayoutMrg then
-    if not (Self.LayoutMgr is TIWBSLayoutMgr) then
-      Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
+  if not (Self.LayoutMgr is TIWBSLayoutMgr) then
+    Self.LayoutMgr := TIWBSLayoutMgr.Create(Self);
   Result := inherited;
 end;
 
-procedure TIWBSTabControl.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+function TIWBSTabControl.InternalRenderScript: string;
 begin
-  if FLayoutMrg then
-    IWBSPrepareChildComponentsForRender(Self);
-  inherited;
+  Result := '';
+end;
+
+function TIWBSTabControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
+var
+  xHTMLName: string;
+begin
+  Result := nil;
+  xHTMLName := HTMLName;
+  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
+  if FOldActivePage <> ActivePage then begin
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ActivePage)+']").tab("show");');
+    FOldActivePage := ActivePage;
+  end;
+end;
+
+procedure TIWBSTabControl.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
+begin
+  IWBSPrepareChildComponentsForRender(Self);
+  try
+    THackTIWHTML40Container(Self).CallInheritedRenderComponents(AContainerContext, APageContext);
+    LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
+    LayoutMgr.Process(ABuffer, AContainerContext, APageContext);
+  finally
+    LayoutMgr.SetContainer(nil);
+  end;
+end;
+
+procedure TIWBSTabControl.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+var
+  LBuffer: TIWRenderStream;
+begin
+  ContainerContext := AContainerContext;
+  LBuffer := TIWRenderStream.Create(True, True);
+  try
+    InternalRenderComponents(AContainerContext, APageContext, LBuffer);
+    FRegionDiv.Contents.AddBuffer(LBuffer);
+  finally
+    FreeAndNil(LBuffer);
+  end;
+end;
+
+procedure TIWBSTabControl.CheckActiveVisible;
+var
+  i, tabIndex: integer;
+begin
+  if (ActivePage >= 0) and (ActivePage < Pages.Count) and not TIWTabPage(FPages.Items[ActivePage]).Visible then begin
+    tabIndex := -1;
+    for i := 0 to Pages.Count-1 do
+      if TIWTabPage(FPages[i]).Visible then begin
+        tabIndex := i;
+        break;
+      end;
+    ActivePage := tabIndex;
+  end;
 end;
 
 function TIWBSTabControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -129,18 +208,23 @@ var
   tagTabs, tag: TIWHTMLTag;
   TabPage: TIWTabPage;
 begin
-  IWBSDisableRenderOptions(StyleRenderOptions);
-  result := THackCustomRegion(Self).CallInheritedRenderHTML(AContext);
+  MergeSortList(Pages, TabOrderCompare);
+  CheckActiveVisible;
+
+  FOldStyle := RenderStyle(AContext);
+  FOldVisible := Visible;
+  FOldActivePage := ActivePage;
 
   // read only one time
   xHTMLName := HTMLName;
   xHTMLInput := xHTMLName + '_input';
 
-  // default class
-  Result.AddClassParam('iwbs-tabs');
-
-  // render bsgrid settings
-  Result.AddClassParam(FGridOptions.GetClassString);
+  // main div
+  FRegionDiv := TIWHTMLTag.CreateTag('div');
+  FRegionDiv.AddStringParam('id', xHTMLName);
+  FRegionDiv.AddClassParam('iwbs-tabs');
+  FRegionDiv.AddClassParam(FGridOptions.GetClassString);
+  Result := FRegionDiv;
 
   // tabs region
   tagTabs := result.Contents.AddTag('ul');
@@ -159,19 +243,23 @@ begin
   tagTabs.AddStringParam('role', 'tablist');
 
   // build the tabs
-  tabIndex := 0;
-  MergeSortList(Pages, TabOrderCompare);
+  tabIndex := -1;
   for i := 0 to Pages.Count-1 do begin
     TabPage := TIWTabPage(FPages.Items[i]);
+    TabPage.TabOrder := i;
+    if not TabPage.Visible and not RenderInvisibleControls then
+      Continue;
     tag := tagTabs.Contents.AddTag('li');
-    if ActivePage = TabPage.TabOrder then begin
+    if (ActivePage = i) and TabPage.Visible then begin
       tag.AddClassParam('active');
       tabIndex := i;
     end;
     tag := tag.Contents.AddTag('a');
     tag.AddStringParam('data-toggle', IfThen(FTabOptions.Pills,'pill','tab'));
     tag.AddStringParam('href', '#'+TabPage.HTMLName);
-    tag.AddIntegerParam('tabIndex', i);
+    tag.AddIntegerParam('tabindex', i);
+    if not TabPage.Visible then
+      tag.AddStringParam('style','display: none');
     tag.Contents.AddText(TabPage.Title);
   end;
 
@@ -191,12 +279,19 @@ begin
 
     // event async change
     if Assigned(OnAsyncChange) then begin
-      Result.Contents.AddText('$("#'+xHTMLName+'").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncChange", true, null, true); });');
+      Result.Contents.AddText('$("#'+xHTMLName+'_tabs").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+e.target.tabIndex, null, "'+xHTMLName+'.DoOnAsyncChange", true, null, true); });');
       AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
     end;
   finally
     Result.Contents.AddText('</script>');
   end;
+
+  IWBSRenderScript(Self, AContext, Result);
+end;
+
+procedure TIWBSTabControl.RenderScripts(AComponentContext: TIWCompContext);
+begin
+  //
 end;
 
 function TIWBSTabControl.RenderStyle(AContext: TIWCompContext): string;
@@ -204,13 +299,27 @@ begin
   Result := '';
 end;
 
-function TIWBSTabControl.TabPageCSSClass(ATabPage: TComponent): string;
+function TIWBSTabControl.GetTabPageCSSClass(ATabPage: TComponent): string;
 begin
   Result := 'tab-pane';
   if BSTabOptions.Fade then
     Result := Result + ' fade';
-  if TIWTabPage(ATabPage).TabOrder = ActivePage then
+  if (ActivePage >= 0) and (ActivePage < Pages.Count) and (Pages[ActivePage] = ATabPage) then
     Result := Result + ' active in';
+end;
+
+procedure TIWBSTabControl.SetTabPageVisibility(ATabIndex: integer; Visible: boolean);
+begin
+  if (ATabIndex >= 0) and (ATabIndex < Pages.Count) then begin
+    TIWTabPage(FPages.Items[ATabIndex]).Visible := Visible;
+    CheckActiveVisible;
+    ExecuteAsyncJScript('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ATabIndex)+']").css("display", "'+iif(Visible,'','none')+'");');
+  end;
+end;
+
+procedure TIWBSTabControl.SetTabPageVisibility(ATabPage: TIWTabPage; Visible: boolean);
+begin
+  SetTabPageVisibility(Pages.IndexOf(ATabPage), Visible);
 end;
 {$endregion}
 

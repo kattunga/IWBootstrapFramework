@@ -293,7 +293,7 @@ begin
     // TIWBSTabControl pages
     if (AControl.InterfaceInstance.ClassName = 'TIWTabPage') and (TControl(AControl.InterfaceInstance).Parent is TIWBSTabControl) then
       begin
-        LHTML.Params.Values['class'] := TIWBSTabControl(TControl(AControl.InterfaceInstance).Parent).TabPageCSSClass(AControl.InterfaceInstance);
+        LHTML.Params.Values['class'] := TIWBSTabControl(TControl(AControl.InterfaceInstance).Parent).GetTabPageCSSClass(AControl.InterfaceInstance);
         LHTML.Params.Values['id'] := xHTMLName;
       end
 

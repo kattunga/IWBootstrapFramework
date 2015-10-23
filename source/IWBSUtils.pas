@@ -10,6 +10,7 @@ procedure IWBSDisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
 function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
 
 procedure ExecuteJScript(const Script: string);
+procedure ExecuteAsyncJScript(const Script: string);
 
 implementation
 
@@ -55,6 +56,20 @@ begin
     LWebApplication.CallBackResponse.AddJavaScriptToExecute(Script)
   else
     HTML40FormInterface(LWebApplication.ActiveForm).PageContext.AddToInitProc(Script);
+end;
+
+procedure ExecuteAsyncJScript(const Script: string);
+var
+  LWebApplication: TIWApplication;
+begin
+  if Length(Script) <= 0 then Exit;
+
+  LWebApplication := GGetWebApplicationThreadVar;
+  if LWebApplication = nil then
+    raise Exception.Create('User session not found');
+
+  if LWebApplication.IsCallBack and LWebApplication.CallBackProcessing then
+    LWebApplication.CallBackResponse.AddJavaScriptToExecute(Script);
 end;
 
 end.

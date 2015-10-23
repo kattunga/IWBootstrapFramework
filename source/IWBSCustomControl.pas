@@ -18,11 +18,11 @@ type
 
     FScript: TStrings;
     FStyle: TStrings;
-
     procedure SetStyle(const AValue: TStrings);
   protected
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     function InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag; virtual;
+    function InternalRenderScript: string;
     procedure InternalRenderStyle(AStyle: TStrings); virtual;
     function IsReadOnly: boolean; virtual;
     function IsDisabled: boolean; virtual;
@@ -70,6 +70,8 @@ type
 
 implementation
 
+uses IWBSScriptEvents;
+
 {$region 'TIWBSCustomControl'}
 constructor TIWBSCustomControl.Create(AOwner: TComponent);
 begin
@@ -82,8 +84,8 @@ end;
 
 destructor TIWBSCustomControl.Destroy;
 begin
-  FreeAndNil(FScript);
-  FreeAndNil(FStyle);
+  FScript.Free;
+  FStyle.Free;
   inherited;
 end;
 
@@ -101,6 +103,11 @@ end;
 function TIWBSCustomControl.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := nil;
+end;
+
+function TIWBSCustomControl.InternalRenderScript: string;
+begin
+  Result := FScript.Text;
 end;
 
 procedure TIWBSCustomControl.InternalRenderStyle(AStyle: TStrings);
@@ -164,14 +171,12 @@ begin
 
   FMainID := Result.Params.Values['id'];
 
-  // add user scripts (it's more easy to create and destroy dinamically when they are embedded in the tag)
-  if FScript.Count > 0 then
-    Result.Contents.AddTag('script').Contents.AddText(FScript.Text);
+  IWBSRenderScript(Self, AContext, Result);
 end;
 
 procedure TIWBSCustomControl.RenderScripts(AComponentContext: TIWCompContext);
 begin
-  inherited;
+  //
 end;
 
 function TIWBSCustomControl.RenderStyle(AContext: TIWCompContext): string;

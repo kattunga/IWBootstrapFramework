@@ -111,14 +111,6 @@ type
     IWBSButton36: TIWBSButton;
     IWText3: TIWBSText;
     IWBSRegion6: TIWBSRegion;
-    IWBSRegion7: TIWBSRegion;
-    IWBSInputForm1: TIWBSInputForm;
-    IWBSButton30: TIWBSButton;
-    chkContFluid: TIWBSCheckBox;
-    chkTabsJust: TIWBSCheckBox;
-    chkTabsStacked: TIWBSCheckBox;
-    chkTabsPills: TIWBSCheckBox;
-    chkTabsFade: TIWBSCheckBox;
     IWBSRegion30: TIWBSRegion;
     IWBSRegion9: TIWBSRegion;
     IWBSRegion14: TIWBSRegion;
@@ -176,6 +168,18 @@ type
     IWBSText1: TIWBSText;
     IWBSButton39: TIWBSButton;
     IWBSButton38: TIWBSButton;
+    IWBSButton41: TIWBSButton;
+    IWBSRegion37: TIWBSRegion;
+    IWBSRegion7: TIWBSRegion;
+    IWBSInputForm1: TIWBSInputForm;
+    IWBSButton30: TIWBSButton;
+    chkContFluid: TIWBSCheckBox;
+    chkTabsJust: TIWBSCheckBox;
+    chkTabsStacked: TIWBSCheckBox;
+    chkTabsPills: TIWBSCheckBox;
+    chkTabsFade: TIWBSCheckBox;
+    IWBSRegion36: TIWBSRegion;
+    IWBSButton42: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -193,6 +197,7 @@ type
     procedure IWBSButton37AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton40AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton39AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton42AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -360,6 +365,12 @@ procedure TIWForm2.IWBSButton40AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   IWBSModal1.BSModalVisible := True;
+end;
+
+procedure TIWForm2.IWBSButton42AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  IWTabControl21.SetTabPageVisibility(IWTabControl21Page5, not IWTabControl21Page5.Visible);
 end;
 
 initialization

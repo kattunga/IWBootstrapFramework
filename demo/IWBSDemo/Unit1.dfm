@@ -62,7 +62,9 @@ object IWFrame1: TIWFrame1
       ScriptEvents = <
         item
           EventCode.Strings = (
-            'console.log('#39'paso'#39');')
+            
+              '$("#IWBSINPUT1FRAME").val("this text was setted with ScriptEvent' +
+              's");')
           Event = 'onClick'
         end>
       TabOrder = 3

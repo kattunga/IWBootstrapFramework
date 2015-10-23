@@ -3,7 +3,7 @@ unit IWBSCommon;
 interface
 
 uses System.Classes, System.SysUtils, System.SyncObjs,
-     IWRenderContext;
+     IWRenderContext, IWControl, IWHTML40Interfaces;
 
 type
   TIWBSTextAlignment = (bstaDefault, bstaLeft, bstaCenter, bstaRight, bstaJustify, bstaNowrap);
@@ -46,8 +46,10 @@ type
     property GridLGSpan: integer read FGridLGSpan write FGridLGSpan default 0;
   end;
 
-  IIWBSComponent = interface
+  IIWBSComponent = interface(IIWHTML40Control)
     ['{12925CB3-58EC-4B56-B032-478892548906}']
+    function InternalRenderScript: string;
+    function HTMLControlImplementation: TIWHTMLControlImplementation;
   end;
 
 procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);

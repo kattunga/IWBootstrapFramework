@@ -66,6 +66,7 @@ type
     FOldVisible: boolean;
   protected
     procedure CheckData; override;
+    function InternalRenderScript: string;
   public
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
@@ -272,6 +273,11 @@ procedure TIWBSImage.CheckData;
 begin
   if DataSource <> nil then
     inherited;
+end;
+
+function TIWBSImage.InternalRenderScript: string;
+begin
+  Result := '';
 end;
 
 function TIWBSImage.RenderCSSClass(AComponentContext: TIWCompContext): string;

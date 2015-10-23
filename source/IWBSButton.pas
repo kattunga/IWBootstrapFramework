@@ -80,7 +80,7 @@ begin
   FCanReceiveFocus := True;
   FNeedsFormTag := True;
   Height := 25;
-  Width := 75;
+  Width := 200;
 end;
 
 function TIWBSButton.GetSubmitParam: String;
