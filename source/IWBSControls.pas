@@ -61,17 +61,12 @@ type
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
   end;
 
-  TIWBSImage = class(TIWDBImage, IIWBSComponent)
-  private
-    FOldVisible: boolean;
+  TIWBSImage = class(TIWDBImage)
   protected
     procedure CheckData; override;
-    function InternalRenderScript: string;
   public
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AComponentContext: TIWCompContext): string; override;
   published
     property OnAsyncClick;
     property OnAsyncDoubleClick;
@@ -267,36 +262,20 @@ begin
     inherited;
 end;
 
-function TIWBSImage.InternalRenderScript: string;
-begin
-  Result := '';
-end;
-
 function TIWBSImage.RenderCSSClass(AComponentContext: TIWCompContext): string;
 begin
   Result := 'img-responsive';
-end;
-
-function TIWBSImage.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
-var
-  xHTMLName: string;
-begin
-  Result := nil;
-  xHTMLName := HTMLName;
-  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
+  if Css <> '' then begin
+    if Result <> '' then
+      Result := Result + ' ';
+    Result := Result + Css;
+  end;
 end;
 
 function TIWBSImage.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result.AddClassParam(RenderCSSClass(AContext));
-
-  FOldVisible := Visible;
-end;
-
-function TIWBSImage.RenderStyle(AComponentContext: TIWCompContext): string;
-begin
-  Result := '';
 end;
 {$endregion}
 
