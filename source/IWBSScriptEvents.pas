@@ -60,7 +60,6 @@ end;
 procedure IWBSRenderScript(AComponent: IIWBSComponent; AComponentContext: TIWCompContext; AHTMLTag: TIWHTMLTag);
 var
   LHTMLName: string;
-  LParentName: string;
   LPageContext: TIWPageContext40;
   LSubmitOnAsync: boolean;
   LInputInterface: IIWInputControl40;

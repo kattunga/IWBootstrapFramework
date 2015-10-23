@@ -142,7 +142,7 @@ end;
 
 function TIWBSTabControl.InternalRenderScript: string;
 begin
-  Result := '';
+  Result := FScript.Text;
 end;
 
 function TIWBSTabControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
