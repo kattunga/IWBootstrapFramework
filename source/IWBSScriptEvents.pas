@@ -18,10 +18,11 @@ type
 function RenderScriptEvents(const AHTMLName: string; AScriptEvents: TIWScriptEvents; APageContext: TIWPageContext40): string;
 var
   LScriptEvents: TIWBSScriptEvents;
-  i, j: Integer;
+  i: Integer;
   LEventName, LFuncCode: string;
   LInitProc: string;
-  LJavaScript: string;
+//  j: integer;
+//  LJavaScript: string;
 begin
   LScriptEvents := TIWBSScriptEvents(AScriptEvents);
 
@@ -35,25 +36,25 @@ begin
       LFuncCode := Trim(LScriptEvents.Items[i].EventCode.Text);
       Result := Result+'$("#'+AHtmlName+'").on("'+LEventName+'", function(event) {'+LFuncCode+'});'#13#10;
 
-      for j := 0 to LScriptEvents.HookedCount[i] - 1 do begin
-        LFuncCode := LScriptEvents.HookedCode[i, j];  // don't need to "fix" Hooked code
- //       LJavaScript := 'function ' + LFuncName + IntToStr(j) + LFuncParams + ' {' + EOL + LFuncCode + '}' + EOL;
+// I don't know if this is necesary
+//      for j := 0 to LScriptEvents.HookedCount[i] - 1 do begin
+//        LFuncCode := LScriptEvents.HookedCode[i, j];  // don't need to "fix" Hooked code
+//        LJavaScript := 'function ' + LFuncName + IntToStr(j) + LFuncParams + ' {' + EOL + LFuncCode + '}' + EOL;
 //        APageContext.AddToJavaScriptOnce(LJavaScript);
 //        LInitProc := LInitProc + '  ' + LHtmlName + 'IWCL.HookEvent("' + LEventName + '",' + LFuncName + IntToStr(j) + ');' + EOL;
-      end;
+//      end;
     end;
 
     if LScriptEvents.FDefaultHandlers <> '' then begin
       RemoveTrailingChars(LScriptEvents.FDefaultHandlers, ';');
-      LInitProc := LInitProc + AHtmlName + 'IWCL.HookDefaultHandlers("' + LScriptEvents.FDefaultHandlers + '");'#13#10;
+      LInitProc := LInitProc + AHtmlName + 'IWCL.HookDefaultHandlers("' + LScriptEvents.FDefaultHandlers + '");' + EOL;
     end;
 
-    if not LScriptEvents.FProperties.IsEmpty then begin
-//      LInitProc := LInitProc + '  ' + LHtmlName + 'IWCL.SetProps(' + LScriptEvents.Properties.Data + ');' + EOL;
-    end;
+    if not LScriptEvents.FProperties.IsEmpty then
+      LInitProc := LInitProc + '  ' + AHtmlName + 'IWCL.SetProps(' + LScriptEvents.FProperties.Data+');' + EOL;
 
     if LInitProc <> '' then
-      APageContext.AddToIWCLInitProc('  if (' + AHtmlName + 'IWCL) {' + #13#10 + '    ' + LInitProc + '  }');
+      APageContext.AddToIWCLInitProc('  if (' + AHtmlName+'IWCL) {' + EOL + '    ' + LInitProc + '  }');
   end;
 end;
 

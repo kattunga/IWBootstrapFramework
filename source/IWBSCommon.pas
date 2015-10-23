@@ -5,6 +5,9 @@ interface
 uses System.Classes, System.SysUtils, System.SyncObjs,
      IWRenderContext, IWControl, IWHTML40Interfaces;
 
+const
+  EOL = #13#10;
+
 type
   TIWBSTextAlignment = (bstaDefault, bstaLeft, bstaCenter, bstaRight, bstaJustify, bstaNowrap);
   TIWBSTextCase = (bstcDefault, bstcLowercase, bstcUppercase, bstcCapitalize);
