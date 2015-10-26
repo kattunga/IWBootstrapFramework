@@ -275,7 +275,7 @@ begin
 {$ENDIF}
 
     // save seleted tab on change
-    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=e.target.tabIndex; });');
+    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=$(e.target).attr("tab-id"); });');
 
     // event async change
     if Assigned(OnAsyncChange) then begin
