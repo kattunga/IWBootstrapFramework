@@ -140,6 +140,8 @@
         <DCCReference Include="IWBSScriptEvents.pas"/>
         <DCCReference Include="IWBSImage.pas"/>
         <DCCReference Include="IWBSRestServer.pas"/>
+        <DCCReference Include="IWBSCustomEvents.pas"/>
+        <DCCReference Include="IWBSCustomComponent.pas"/>
         <None Include="IWBSConfig.inc"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>

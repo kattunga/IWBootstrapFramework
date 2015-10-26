@@ -134,7 +134,10 @@ begin
   // add global linkfiles
   if gIWBSLinkFiles <> nil then
     for i := 0 to gIWBSLinkFiles.Count-1 do
-      ABuffer.WriteLine(ParseLinkFile(TURL.Concat(gSC.URLBase,ReplaceStr(gIWBSLinkFiles[i],'/<iwbspath>/',gIWBSLibraryPath))));
+      if AnsiStartsStr('//', gIWBSLinkFiles[i]) then
+        ABuffer.WriteLine(ParseLinkFile(gIWBSLinkFiles[i], False))
+      else
+        ABuffer.WriteLine(ParseLinkFile(TURL.Concat(gSC.URLBase,ReplaceStr(gIWBSLinkFiles[i],'/<iwbspath>/',gIWBSLibraryPath))));
 
   ABuffer.WriteLine(ScriptSection(LPageContext));
   ABuffer.WriteLine(HeadContent);

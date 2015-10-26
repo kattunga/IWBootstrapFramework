@@ -47,6 +47,11 @@ type
     procedure Paint; override;
   end;
 
+  TIWBSPaintHandlerCustomComponent = class (TIWPaintHandlerRectangle)
+  public
+    procedure Paint; override;
+  end;
+
 procedure Register;
 
 implementation
@@ -54,7 +59,7 @@ implementation
 uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
      IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
-     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage;
+     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage, IWBSCustomComponent;
 
 const
   CNST_DEFAULTFONTNAME = 'Tahoma';
@@ -421,6 +426,30 @@ begin
   end;
 end;
 
+procedure TIWBSPaintHandlerCustomComponent.Paint;
+var
+  LRect: TRect;
+  s: string;
+begin
+  LRect := Rect(0, 0, Control.Width, Control.Height);
+
+  ControlCanvas.Brush.Color := clWhite;
+  ControlCanvas.Pen.Color := clGray;
+  ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+  ControlCanvas.Font.Size := 10;
+  ControlCanvas.Font.Color := clBlack;
+  ControlCanvas.Rectangle(LRect);
+
+  if Control is TIWBSCustomComponent then begin
+    Inc(LRect.Top, 1);
+    Inc(LRect.Left, 8);
+    Dec(LRect.Bottom, 1);
+    Dec(LRect.Right, 8);
+    s := TIWBSCustomComponent(Control).Lines.Text;
+    ControlCanvas.TextRect(LRect,s,[])
+  end;
+end;
+
 procedure Register;
 begin
   RegisterComponents('IW BootsTrap', [TIWBSLayoutMgr]);
@@ -452,6 +481,8 @@ begin
 
   RegisterComponents('IW BootsTrap', [TIWBSGlyphicon]);
   RegisterPropertyEditor(TypeInfo(string), TIWBSGlyphicon,'BSGlyphicon', TGlyphiconEditor);
+
+  RegisterComponents('IW BootsTrap', [TIWBSCustomComponent]);
 
   RegisterComponents('IW BootsTrap', [TIWBSImage]);
 
@@ -487,6 +518,8 @@ initialization
 
   IWRegisterPaintHandler('TIWBSText',TIWBSPaintHandlerCustomText);
 
+  IWRegisterPaintHandler('TIWBSCustomComponent',TIWBSPaintHandlerCustomComponent);
+
   IWRegisterPaintHandler('TIWBSImage',TIWPaintHandlerImage);
 
   IWRegisterPaintHandler('TIWBSTabControl',TIWPaintHandlerTabControl);
@@ -514,6 +547,8 @@ finalization
   IWUnRegisterPaintHandler('TIWBSGlyphicon');
 
   IWUnRegisterPaintHandler('TIWBSText');
+
+  IWUnRegisterPaintHandler('TIWBSCustomComponent');
 
   IWUnRegisterPaintHandler('TIWBSImage');
 

@@ -3,7 +3,7 @@ unit FishFact;
 interface
 
 uses
-  IWAppForm, Classes, Controls, 
+  IWAppForm, Classes, Controls, System.StrUtils, System.SysUtils, Math,
   IWCompExtCtrls, IWDBExtCtrls, IWDBStdCtrls, IWDBGrids, IWCompGrids,
   IWCompEdit, IWCompLabel, IWControl, IWCompMemo, IWBaseControl, DBClient,
   DB, Forms, IWContainer, IWRegion, IWVCLBaseControl, IWVCLBaseContainer,
@@ -11,7 +11,9 @@ uses
   IWBSRegion, IWBSInput, IWVCLComponent, IWBaseLayoutComponent,
   IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr, IWBSControls,
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
-  MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSImage;
+  MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSImage,
+  IWCompTabControl, IWBSTabControl,
+  IW.HTTP.Request, IW.HTTP.Reply, IWBSCustomComponent;
 
 type
   TFFishFact = class(TIWAppForm)
@@ -29,20 +31,15 @@ type
     IWBSInputForm1: TIWBSInputForm;
     IWBSRegion2: TIWBSRegion;
     IWBSRegion3: TIWBSRegion;
-    IWBSInput1: TIWBSInput;
-    IWBSInput2: TIWBSInput;
-    IWBSInput3: TIWBSInput;
-    IWBSInput4: TIWBSInput;
-    IWBSInput5: TIWBSInput;
-    IWBSInput6: TIWBSInput;
     IWBSLayoutMgr1: TIWBSLayoutMgr;
-    IWBSRegion6: TIWBSRegion;
-    IWBSImage1: TIWBSImage;
-    IWBSMemo1: TIWBSMemo;
     ClientDataSet1FoundDate: TDateTimeField;
-    IWBSInput7: TIWBSInput;
     ClientDataSet1Option: TStringField;
     ClientDataSet1Check: TStringField;
+    IWBSRegion8: TIWBSRegion;
+    IWBSButton1: TIWBSButton;
+    IWText1: TIWBSText;
+    IWBSRegion6: TIWBSRegion;
+    IWBSImage1: TIWBSImage;
     IWBSRegion4: TIWBSRegion;
     IWBSLabel1: TIWBSLabel;
     IWBSRegion7: TIWBSRegion;
@@ -54,21 +51,29 @@ type
     btnPrior: TIWBSButton;
     btnNext: TIWBSButton;
     btnLast: TIWBSButton;
-    IWBSRadioGroup1: TIWBSRadioGroup;
-    IWBSRegion8: TIWBSRegion;
-    IWBSButton1: TIWBSButton;
-    IWText1: TIWBSText;
     IWBSInput8: TIWBSInput;
-    IWBSListbox1: TIWBSSelect;
+    IWBSInput1: TIWBSInput;
+    IWBSInput2: TIWBSInput;
+    IWBSInput3: TIWBSInput;
+    IWBSInput4: TIWBSInput;
+    IWBSInput5: TIWBSInput;
+    IWBSInput6: TIWBSInput;
+    IWBSInput7: TIWBSInput;
     IWBSListbox2: TIWBSSelect;
+    IWBSListbox1: TIWBSSelect;
     IWBSCheckBox1: TIWBSCheckBox;
+    IWBSMemo1: TIWBSMemo;
+    IWBSRadioGroup1: TIWBSRadioGroup;
     IWBSRegion9: TIWBSRegion;
     IWBSRadioButton1: TIWBSRadioButton;
     IWBSRadioButton2: TIWBSRadioButton;
     IWBSRadioButton3: TIWBSRadioButton;
     IWBSText1: TIWBSText;
+    IWBSTabControl1: TIWBSTabControl;
+    IWBSTabControl1Page0: TIWTabPage;
+    IWBSTabControl1Page1: TIWTabPage;
+    DBTABLE: TIWBSCustomComponent;
     procedure IWFormModuleBaseCreate(Sender: TObject);
-    procedure IWAppFormDestroy(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure btnPostAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure btnCancelAsyncClick(Sender: TObject; EventParams: TStringList);
@@ -78,28 +83,79 @@ type
     procedure btnLastAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure dsrcMainStateChange(Sender: TObject);
     procedure IWBSButton1Click(Sender: TObject);
-  public
+    procedure IWBSCustomComponent1CustomRestEvents0RestEvent(
+      aRequest: THttpRequest; aReply: THttpReply);
   end;
 
 implementation
 {$R *.dfm}
 
-uses ServerController;
+uses IWBSRestServer, IW.Common.Strings;
+
+var
+  fs: TFormatSettings;
 
 procedure TFFishFact.IWFormModuleBaseCreate(Sender: TObject);
+var
+  columns: string;
+  i: integer;
 begin
   //ClientDataSet1.LoadFromFile('biolife2.cds');
-  ExtraHeader.Add('<link href="'+IWServerController.URLBase+'/iwbsdemo.css" rel="stylesheet">');
-end;
 
-procedure TFFishFact.IWAppFormDestroy(Sender: TObject);
-begin
-  //ClientDataSet1.Close;
+  columns := '[';
+  for i := 0 to ClientDataSet1.FieldCount-1 do begin
+    if i > 0 then
+      columns := columns+',';
+    columns := columns+'{"field":'+'"field'+IntToStr(i)+'","title":"'+ClientDataSet1.Fields[i].DisplayLabel+'"}';
+  end;
+  columns := columns+']';
+  DBTABLE.Script.Text := ReplaceStr(DBTABLE.Script.Text,'%columns%',columns);
 end;
 
 procedure TFFishFact.IWBSButton1Click(Sender: TObject);
 begin
   Release;
+end;
+
+procedure TFFishFact.IWBSCustomComponent1CustomRestEvents0RestEvent(
+  aRequest: THttpRequest; aReply: THttpReply);
+var
+  data: string;
+  line: string;
+  bmrk: TBookmark;
+  r, i, f, t: integer;
+begin
+  f := StrToIntDef(aRequest.QueryFields.Values['offset'],0);
+  t := Min(f+StrToIntDef(aRequest.QueryFields.Values['limit'],10), ClientDataSet1.RecordCount);
+
+  ClientDataSet1.DisableControls;
+  bmrk := ClientDataSet1.Bookmark;
+  try
+    data := '';
+    for r := f+1 to t do begin
+      ClientDataSet1.RecNo := r;
+
+      line := '';
+      for i := 0 to ClientDataSet1.FieldCount-1 do begin
+        if i > 0 then
+          line := line+',';
+        if ClientDataSet1.Fields[i] is TNumericField then
+          line := line+'"field'+IntToStr(i)+'":'+FloatToStr(ClientDataSet1.Fields[i].AsFloat,fs)
+        else if (ClientDataSet1.Fields[i] is TStringField) or (ClientDataSet1.Fields[i] is TMemoField) then
+          line := line+'"field'+IntToStr(i)+'":"'+EscapeJsonString(ClientDataSet1.Fields[i].AsString)+'"'
+        else
+          line := line+'"field'+IntToStr(i)+'":""';
+
+      end;
+      if data <> '' then
+        data := data+',';
+      data := data+'{'+line+'}';
+    end;
+    aReply.WriteString('{"total": '+IntToStr(ClientDataSet1.RecordCount)+', "rows": ['+data+']}');
+  finally
+    ClientDataSet1.GotoBookmark(bmrk);
+    ClientDataSet1.EnableControls;
+  end;
 end;
 
 procedure TFFishFact.btnEditAsyncClick(Sender: TObject;
@@ -158,5 +214,15 @@ end;
 
 initialization
   TFFishFact.SetAsMainForm;
+
+  fs := TFormatSettings.Create('en-US');
+
+  // include third party grid
+  TIWBSLayoutMgr.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css');
+  TIWBSLayoutMgr.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js');
+  TIWBSLayoutMgr.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/locale/bootstrap-table-es-AR.min.js');
+
+  // this enable the rest event server
+  IWBSRegisterRestServerHandler;
 
 end.

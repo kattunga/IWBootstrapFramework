@@ -19,10 +19,11 @@ type
     FScript: TStrings;
     FStyle: TStrings;
     procedure SetStyle(const AValue: TStrings);
+    procedure SetScript(const AValue: TStrings);
   protected
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); virtual;
-    function InternalRenderScript: string;
+    function InternalRenderScript: string; virtual;
     procedure InternalRenderStyle(AStyle: TStrings); virtual;
     function IsReadOnly: boolean; virtual;
     function IsDisabled: boolean; virtual;
@@ -41,7 +42,7 @@ type
     property ActiveCss: string read FOldCss;
     property ActiveStyle: string read FOldStyle;
   published
-    property Script: TStrings read FScript write FScript;
+    property Script: TStrings read FScript write SetScript;
     property Style: TStrings read FStyle write SetStyle;
   end;
 
@@ -87,6 +88,12 @@ begin
   FScript.Free;
   FStyle.Free;
   inherited;
+end;
+
+procedure TIWBSCustomControl.SetScript(const AValue: TStrings);
+begin
+  FScript.Assign(AValue);
+  Invalidate;
 end;
 
 procedure TIWBSCustomControl.SetStyle(const AValue: TStrings);

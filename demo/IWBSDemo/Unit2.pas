@@ -192,7 +192,6 @@ type
     procedure IWBSButton33AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton35Click(Sender: TObject);
     procedure IWBSButton36Click(Sender: TObject);
-    procedure IWAppFormCreate(Sender: TObject);
     procedure IWBSButton34AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton37AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton40AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -207,11 +206,6 @@ implementation
 
 uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact,
   ServerController;
-
-procedure TIWForm2.IWAppFormCreate(Sender: TObject);
-begin
-  ExtraHeader.Add('<link href="'+IWServerController.URLBase+'/iwbsdemo.css" rel="stylesheet">');
-end;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);
@@ -375,5 +369,7 @@ end;
 
 initialization
   TIWForm2.SetAsMainForm;
+
+  TIWBSLayoutMgr.AddLinkFile('/iwbsdemo.css');
 
 end.
