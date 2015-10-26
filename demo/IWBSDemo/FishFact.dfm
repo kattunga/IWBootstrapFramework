@@ -86,7 +86,7 @@ object FFishFact: TFFishFact
           InactiveTabFont.Style = []
           ActiveTabColor = clWebDARKGRAY
           InactiveTabColor = clWebLIGHTGRAY
-          ActivePage = 1
+          ActivePage = 0
           Align = alClient
           BorderOptions.NumericWidth = 0
           BorderOptions.BorderWidth = cbwNumeric
@@ -97,6 +97,39 @@ object FFishFact: TFFishFact
           DesignSize = (
             746
             1113)
+          object IWBSTabControl1Page1: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 746
+            Height = 1093
+            RenderInvisibleControls = True
+            TabOrder = 1
+            Title = 'Bootstrap Table'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object DBTABLE: TIWBSCustomComponent
+              Left = 39
+              Top = 19
+              Width = 630
+              Height = 374
+              Script.Strings = (
+                
+                  '$('#39'#DBTABLE > table'#39').bootstrapTable({"url": "%dataurl%", "colum' +
+                  'ns": %columns%, "pagination": true, "sidePagination": "server"})' +
+                  ';')
+              CustomAjaxEvents = <>
+              CustomRestEvents = <
+                item
+                  EventName = 'dataurl'
+                  RestEvent = IWBSCustomComponent1CustomRestEvents0RestEvent
+                end>
+              Lines.Strings = (
+                '<table></table>')
+            end
+          end
           object IWBSTabControl1Page0: TIWTabPage
             Left = 0
             Top = 20
@@ -111,8 +144,8 @@ object FFishFact: TFFishFact
             BorderOptions.Color = clNone
             Color = clWebWHITE
             object IWBSInputForm1: TIWBSInputForm
-              Left = 19
-              Top = 19
+              Left = 14
+              Top = 11
               Width = 695
               Height = 1059
               BSGridOptions.GridMDSpan = 8
@@ -1738,39 +1771,6 @@ object FFishFact: TFFishFact
                   RawText = True
                 end
               end
-            end
-          end
-          object IWBSTabControl1Page1: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 746
-            Height = 1093
-            RenderInvisibleControls = True
-            TabOrder = 1
-            Title = 'Bootstrap Table'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object DBTABLE: TIWBSCustomComponent
-              Left = 39
-              Top = 19
-              Width = 630
-              Height = 374
-              Script.Strings = (
-                
-                  '$('#39'#DBTABLE > table'#39').bootstrapTable({"url": "%dataurl%", "colum' +
-                  'ns": %columns%, "pagination": true, "sidePagination": "server"})' +
-                  ';')
-              CustomAjaxEvents = <>
-              CustomRestEvents = <
-                item
-                  EventName = 'dataurl'
-                  RestEvent = IWBSCustomComponent1CustomRestEvents0RestEvent
-                end>
-              Lines.Strings = (
-                '<table></table>')
             end
           end
         end
