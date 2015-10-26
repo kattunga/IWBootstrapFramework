@@ -1505,7 +1505,7 @@ object FFishFact: TFFishFact
           end
           object IWBSRegion7: TIWBSRegion
             Left = 20
-            Top = 220
+            Top = 228
             Width = 449
             Height = 51
             BSRegionType = bsrtPageHeader

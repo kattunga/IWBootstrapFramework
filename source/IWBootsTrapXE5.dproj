@@ -138,6 +138,7 @@
         <DCCReference Include="IWBSButton.pas"/>
         <DCCReference Include="IWBSCustomControl.pas"/>
         <DCCReference Include="IWBSScriptEvents.pas"/>
+        <DCCReference Include="IWBSImage.pas"/>
         <None Include="IWBSConfig.inc"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>

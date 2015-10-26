@@ -52,7 +52,8 @@ contains
   IWBSInputCommon in 'IWBSInputCommon.pas',
   IWBSButton in 'IWBSButton.pas',
   IWBSCustomControl in 'IWBSCustomControl.pas',
-  IWBSScriptEvents in 'IWBSScriptEvents.pas';
+  IWBSScriptEvents in 'IWBSScriptEvents.pas',
+  IWBSImage in 'IWBSImage.pas';
 
 end.
 

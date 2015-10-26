@@ -54,7 +54,7 @@ implementation
 uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
      IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
-     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon, IWBSCustomControl;
+     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage;
 
 const
   CNST_DEFAULTFONTNAME = 'Tahoma';
@@ -393,8 +393,8 @@ end;
 
 procedure TIWBSPaintHandlerCustomText.Paint;
 var
-  LRect, LIcon: TRect;
-  s, c: string;
+  LRect: TRect;
+  s: string;
 begin
   LRect := Rect(0, 0, Control.Width, Control.Height);
 
