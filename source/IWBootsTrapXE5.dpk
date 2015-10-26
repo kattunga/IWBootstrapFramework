@@ -53,7 +53,8 @@ contains
   IWBSButton in 'IWBSButton.pas',
   IWBSCustomControl in 'IWBSCustomControl.pas',
   IWBSScriptEvents in 'IWBSScriptEvents.pas',
-  IWBSImage in 'IWBSImage.pas';
+  IWBSImage in 'IWBSImage.pas',
+  IWBSRestServer in 'IWBSRestServer.pas';
 
 end.
 
