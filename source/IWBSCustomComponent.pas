@@ -31,7 +31,7 @@ type
 
 implementation
 
-uses IWBSCustomEvents;
+uses IWBSCustomEvents, IWBSCommon;
 
 {$region 'TIWBSCustomComponent'}
 constructor TIWBSCustomComponent.Create(AOwner: TComponent);
@@ -72,7 +72,8 @@ var
 begin
   inherited;
 
-  LHtml := FLines.Text;
+  // get html
+  LHtml := TIWBSCommon.ReplaceParams(HTMLName, LHtml, ScriptParams);
 
   // register ajax callbacks
   for i := 0 to FCustomAjaxEvents.Count-1 do begin

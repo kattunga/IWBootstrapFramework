@@ -2,7 +2,7 @@ unit IWBSCommon;
 
 interface
 
-uses System.Classes, System.SysUtils, System.SyncObjs,
+uses System.Classes, System.SysUtils, System.StrUtils,
      IWRenderContext, IWControl, IWHTML40Interfaces;
 
 const
@@ -55,6 +55,11 @@ type
     function HTMLControlImplementation: TIWHTMLControlImplementation;
   end;
 
+  TIWBSCommon = class
+  public
+    class function ReplaceParams(const AHTMLName, AScript: string; AParams: TStrings): string;
+  end;
+
 procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
 procedure SetAsyncReadOnly(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
 procedure SetAsyncVisible(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
@@ -63,6 +68,7 @@ procedure SetAsyncStyle(AContext: TIWCompContext; const HTMLName: string; const 
 procedure SetAsyncChecked(AContext: TIWCompContext; const HTMLName: string; const Value: boolean; var OldValue: boolean);
 procedure SetAsyncText(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
 procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+
 
 implementation
 
@@ -181,5 +187,14 @@ begin
   end;
 end;
 {$endregion}
+
+class function TIWBSCommon.ReplaceParams(const AHTMLName, AScript: string; AParams: TStrings): string;
+var
+  i: integer;
+begin
+  Result := ReplaceText(Result,'%HTMLNAME%',AHTMLName);
+  for i := 0 to AParams.Count-1 do
+    Result := ReplaceText(Result,'%'+AParams.Names[i]+'%',AParams.ValueFromIndex[i]);
+end;
 
 end.

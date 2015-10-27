@@ -128,13 +128,8 @@ begin
 end;
 
 function TIWBSCustomControl.InternalRenderScript: string;
-var
-  i: integer;
 begin
-  Result := FScript.Text;
-  Result := ReplaceText(Result,'%HTMLNAME%',HtmlName);
-  for i := 0 to FScriptParams.Count-1 do
-    Result := ReplaceText(Result,'%'+FScriptParams.Names[i]+'%',FScriptParams.ValueFromIndex[i]);
+  Result := TIWBSCommon.ReplaceParams(HTMLName, FScript.Text, FScriptParams);
 end;
 
 procedure TIWBSCustomControl.InternalRenderStyle(AStyle: TStringList);

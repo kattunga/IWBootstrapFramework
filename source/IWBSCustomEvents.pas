@@ -70,4 +70,9 @@ begin
   Result := ReplaceStr(AText,'%'+FEventName+'%',FRestEventPath);
 end;
 
+function IWBSReplaceParams(const AScript: string): string;
+begin
+
+end;
+
 end.
