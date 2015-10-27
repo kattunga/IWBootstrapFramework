@@ -78,13 +78,13 @@ object FBootstrapTable: TFBootstrapTable
           Script.Strings = (
             '$('#39'#%htmlname%_table'#39').bootstrapTable(%options%);'
             
-              '$('#39'#%htmlname%_table'#39').on("click-cell.bs.table", function(field,' +
-              ' value, row) {%onClickCell%} );'
+              '$('#39'#%htmlname%_table'#39').on("click-cell.bs.table", function(elem, ' +
+              'field, value, row) {%onClickCell%} );'
             '')
           CustomAsyncEvents = <
             item
               EventName = 'onClickCell'
-              Params = '&field=fields&value=value&row=row'
+              Params = 'field, value, row.field0'
               OnAsyncEvent = DbTableCustomAjaxEvents0AsyncEvent
             end>
           CustomRestEvents = <

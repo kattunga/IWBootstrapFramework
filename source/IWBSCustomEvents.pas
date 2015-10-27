@@ -42,6 +42,8 @@ type
 
 implementation
 
+uses IWBSCommon;
+
 function TIWBSCustomAsyncEvent.GetDisplayName: string;
 begin
   Result := FEventName;
@@ -55,9 +57,31 @@ begin
 end;
 
 procedure TIWBSCustomAsyncEvent.RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
+var
+  sl: TstringList;
+  LParams: string;
+  i: integer;
 begin
   AApplication.RegisterCallBack(AComponentName+'.'+FEventName, FAsyncEvent);
-  FAsyncEventFunc := 'executeAjaxEvent("'+FParams+'", null, "'+AComponentName+'.'+FEventName+'", true, null, true);';
+  LParams := '';
+  if FParams <> '' then begin
+    sl := TstringList.Create;
+    try
+      sl.CommaText := FParams;
+      LParams := '';
+      for i := 0 to sl.Count-1 do begin
+        TIWBSCommon.ValidateParamName(sl[i]);
+        if i > 0 then
+          LParams := LParams+'+';
+        LParams := LParams+'"&'+sl[i]+'="+'+sl[i];
+      end;
+    finally
+      sl.Free;
+    end;
+  end;
+  if LParams = '' then
+    LParams := '""';
+  FAsyncEventFunc := 'executeAjaxEvent('+LParams+', null, "'+AComponentName+'.'+FEventName+'", true, null, true);';
 end;
 
 function TIWBSCustomAsyncEvent.ParseParamEvent(const AText: string): string;

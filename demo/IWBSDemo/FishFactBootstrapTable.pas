@@ -48,7 +48,7 @@ type
 implementation
 {$R *.dfm}
 
-uses IWBSRestServer, IW.Common.Strings, IWUtils;
+uses IWBSRestServer, IW.Common.Strings, IWBSDialogs;
 
 var
   fs: TFormatSettings;
@@ -98,7 +98,7 @@ end;
 procedure TFBootstrapTable.DbTableCustomAjaxEvents0AsyncEvent(
   aParams: TStringList);
 begin
-//
+  TIWBSAlert.Create('You clicked field '+aParams.Values['field']+' row '+aParams.Values['row.field0']).Show;
 end;
 
 procedure TFBootstrapTable.IWBSButton1Click(Sender: TObject);

@@ -58,6 +58,7 @@ type
   TIWBSCommon = class
   public
     class function ReplaceParams(const AHTMLName, AScript: string; AParams: TStrings): string;
+    class procedure ValidateParamName(const AName: string);
   end;
 
 procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
@@ -195,6 +196,15 @@ begin
   Result := ReplaceText(AScript,'%HTMLNAME%',AHTMLName);
   for i := 0 to AParams.Count-1 do
     Result := ReplaceText(Result,'%'+AParams.Names[i]+'%',AParams.ValueFromIndex[i]);
+end;
+
+class procedure TIWBSCommon.ValidateParamName(const AName: string);
+var
+  i: integer;
+begin
+  for i := 1 to Length(AName) do
+    if not CharInSet(AName[i], ['.','0'..'9','A'..'Z','a'..'z']) then
+      raise Exception.Create('Invalid character in param name '+AName);
 end;
 
 end.
