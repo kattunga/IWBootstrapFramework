@@ -18,7 +18,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = 8
+  DesignTop = -246
   object IWBSRegion40: TIWBSRegion
     Left = 0
     Top = 0
@@ -374,7 +374,7 @@ object IWForm2: TIWForm2
                       BSGlyphicon = 'align-left'
                       Caption = 'Left'
                       FriendlyName = 'IWBSButton1'
-                      TabOrder = 4
+                      TabOrder = 3
                     end
                     object IWBSButton2: TIWBSButton
                       Left = 91

@@ -196,14 +196,13 @@ end;
 
 procedure TIWBSMemo.OnLinesChange(ASender : TObject);
 begin
+  FText := FLines.Text;
   Invalidate;
 end;
 
 procedure TIWBSMemo.SetLines(const AValue: TStringList);
 begin
   FLines.Assign(AValue);
-  FText := FLines.Text;
-  Invalidate;
 end;
 
 procedure TIWBSMemo.SetText(const AValue: TCaption);
