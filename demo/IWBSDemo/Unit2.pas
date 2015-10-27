@@ -108,7 +108,6 @@ type
     IWBSRegion29: TIWBSRegion;
     IWTabControl21Page2: TIWTabPage;
     IWBSRegion4: TIWBSRegion;
-    IWBSButton36: TIWBSButton;
     IWText3: TIWBSText;
     IWBSRegion6: TIWBSRegion;
     IWBSRegion30: TIWBSRegion;
@@ -180,6 +179,10 @@ type
     chkTabsFade: TIWBSCheckBox;
     IWBSRegion36: TIWBSRegion;
     IWBSButton42: TIWBSButton;
+    IWBSRegion38: TIWBSRegion;
+    IWBSButton36: TIWBSButton;
+    IWBSRegion39: TIWBSRegion;
+    IWBSButton43: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -197,6 +200,7 @@ type
     procedure IWBSButton40AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton39AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton42AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton43Click(Sender: TObject);
   public
   end;
 
@@ -204,7 +208,7 @@ implementation
 
 {$R *.dfm}
 
-uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact,
+uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact, FishFactBootstrapTable,
   ServerController;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
@@ -365,6 +369,14 @@ procedure TIWForm2.IWBSButton42AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   IWTabControl21.SetTabPageVisibility(IWTabControl21Page5, not IWTabControl21Page5.Visible);
+end;
+
+procedure TIWForm2.IWBSButton43Click(Sender: TObject);
+begin
+  with TFBootstrapTable.Create(WebApplication) do begin
+    IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
+    Show;
+  end;
 end;
 
 initialization

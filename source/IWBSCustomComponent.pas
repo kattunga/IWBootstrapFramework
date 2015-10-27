@@ -10,7 +10,7 @@ type
 
   TIWBSCustomComponent = class(TIWBSCustomControl)
   private
-    FCustomAjaxEvents: TOwnedCollection;
+    FCustomAsyncEvents: TOwnedCollection;
     FCustomRestEvents: TOwnedCollection;
     FHtml: TStringList;
     FTagType: TIWBSTagType;
@@ -23,7 +23,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property CustomAjaxEvents: TOwnedCollection read FCustomAjaxEvents write FCustomAjaxEvents;
+    property CustomAsyncEvents: TOwnedCollection read FCustomAsyncEvents write FCustomAsyncEvents;
     property CustomRestEvents: TOwnedCollection read FCustomRestEvents write FCustomRestEvents;
     property Html: TStringList read FHtml write SetHtml;
     property TagType: TIWBSTagType read FTagType write FTagType default bsttDiv;
@@ -37,7 +37,7 @@ uses IWBSCustomEvents, IWBSCommon;
 constructor TIWBSCustomComponent.Create(AOwner: TComponent);
 begin
   inherited;
-  FCustomAjaxEvents := TOwnedCollection.Create(Self, TIWBSCustomAjaxEvent);
+  FCustomAsyncEvents := TOwnedCollection.Create(Self, TIWBSCustomAsyncEvent);
   FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
   FHtml := TStringList.Create;
   FHtml.OnChange := OnItemsChange;
@@ -46,7 +46,7 @@ end;
 
 destructor TIWBSCustomComponent.Destroy;
 begin
-  FreeAndNil(FCustomAjaxEvents);
+  FreeAndNil(FCustomAsyncEvents);
   FreeAndNil(FCustomRestEvents);
   inherited;
 end;
@@ -76,8 +76,9 @@ begin
   LHtml := TIWBSCommon.ReplaceParams(HTMLName, FHtml.Text, ScriptParams);
 
   // register ajax callbacks
-  for i := 0 to FCustomAjaxEvents.Count-1 do begin
-
+  for i := 0 to FCustomAsyncEvents.Count-1 do begin
+    TIWBSCustomAsyncEvent(FCustomAsyncEvents.Items[i]).RegisterEvent(AContext.WebApplication, AHTMLName);
+    LHtml := TIWBSCustomAsyncEvent(FCustomAsyncEvents.Items[i]).ParseParamEvent(LHtml);
   end;
 
   // register rest callbacks
@@ -98,6 +99,8 @@ var
   i: integer;
 begin
   Result := inherited;
+  for i := 0 to FCustomAsyncEvents.Count-1 do
+    Result := TIWBSCustomAsyncEvent(FCustomAsyncEvents.Items[i]).ParseParamEvent(Result);
   for i := 0 to FCustomRestEvents.Count-1 do
     Result := TIWBSCustomRestEvent(FCustomRestEvents.Items[i]).ParseParamEvent(Result);
 end;

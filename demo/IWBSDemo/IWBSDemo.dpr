@@ -15,6 +15,7 @@ uses
   UserSessionUnit in 'UserSessionUnit.pas' {IWUserSession: TIWUserSessionBase},
   Unit1 in 'Unit1.pas' {IWFrame1: TFrame},
   Unit3 in 'Unit3.pas' {IWFrame3: TFrame},
+  FishFactBootstrapTable in 'FishFactBootstrapTable.pas' {FBootstrapTable: TIWAppForm},
   FishFact in 'FishFact.pas' {FFishFact: TIWAppForm};
 
 {$R *.res}

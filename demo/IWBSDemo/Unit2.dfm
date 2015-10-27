@@ -227,7 +227,7 @@ object IWForm2: TIWForm2
                   Height = 25
                   Caption = 'Show Modal Window'
                   FriendlyName = 'IWBSButton40'
-                  TabOrder = 87
+                  TabOrder = 86
                   OnAsyncClick = IWBSButton40AsyncClick
                 end
               end
@@ -267,7 +267,7 @@ object IWForm2: TIWForm2
                     Height = 29
                     Caption = 'AsyncClick to close modal'
                     FriendlyName = 'IWBSButton39'
-                    TabOrder = 88
+                    TabOrder = 87
                     OnAsyncClick = IWBSButton39AsyncClick
                   end
                   object IWBSButton38: TIWBSButton
@@ -278,7 +278,7 @@ object IWForm2: TIWForm2
                     BSDataDismiss = bsbdModal
                     Caption = 'Close Modal by data-dismiss'
                     FriendlyName = 'IWBSButton38'
-                    TabOrder = 89
+                    TabOrder = 88
                   end
                 end
               end
@@ -328,7 +328,7 @@ object IWForm2: TIWForm2
                     BSGlyphicon = 'align-left'
                     Caption = 'Left'
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 3
+                    TabOrder = 5
                   end
                   object IWBSButton2: TIWBSButton
                     Left = 91
@@ -342,7 +342,7 @@ object IWForm2: TIWForm2
                     BSGlyphicon = 'align-center'
                     Caption = 'Center'
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 7
+                    TabOrder = 9
                   end
                   object IWBSButton3: TIWBSButton
                     Left = 182
@@ -905,7 +905,7 @@ object IWForm2: TIWForm2
               Height = 25
               Caption = 'Toggle Visibility'
               FriendlyName = 'IWBSButton37'
-              TabOrder = 85
+              TabOrder = 84
               OnAsyncClick = IWBSButton37AsyncClick
             end
             object IWBSButton41: TIWBSButton
@@ -921,7 +921,7 @@ object IWForm2: TIWForm2
                     '$("#IWBSINPUT25").val("this text was setted with ScriptEvents");')
                   Event = 'onClick'
                 end>
-              TabOrder = 90
+              TabOrder = 89
             end
             object IWBSRegion32: TIWBSRegion
               Left = 40
@@ -956,7 +956,7 @@ object IWForm2: TIWForm2
                 Caption = 'Input Type Text'
                 FriendlyName = 'IWBSInput1'
                 SubmitOnAsyncEvent = True
-                TabOrder = 86
+                TabOrder = 85
                 Text = ''
                 BSTextAlignment = bstaCenter
                 PlaceHolder = 'Name'
@@ -1005,7 +1005,7 @@ object IWForm2: TIWForm2
                     LockOnAsyncEvents = [aeClick]
                     Caption = 'Dinamically create modal dialog from TIWFrame'
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 66
+                    TabOrder = 65
                     OnAsyncClick = IWBSButton27AsyncClick
                   end
                 end
@@ -1025,7 +1025,7 @@ object IWForm2: TIWForm2
                     LockOnAsyncEvents = [aeClick]
                     Caption = 'Dinamically create dialog from code'
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 67
+                    TabOrder = 66
                     OnAsyncClick = IWBSButton28AsyncClick
                   end
                 end
@@ -1045,7 +1045,7 @@ object IWForm2: TIWForm2
                     LockOnAsyncEvents = [aeClick]
                     Caption = 'Dinamically create advanced dialog from code'
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 68
+                    TabOrder = 67
                     OnAsyncClick = IWBSButton31AsyncClick
                   end
                   object IWBSInput23: TIWBSInput
@@ -1056,7 +1056,7 @@ object IWForm2: TIWForm2
                     Caption = ''
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 69
+                    TabOrder = 68
                     Text = ''
                     PlaceHolder = 'IWBSInput23'
                   end
@@ -1076,7 +1076,7 @@ object IWForm2: TIWForm2
                     StyleRenderOptions.RenderSize = False
                     Caption = 'Dinamically create frame with inputs'
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 70
+                    TabOrder = 69
                     OnAsyncClick = IWBSButton26AsyncClick
                   end
                 end
@@ -1095,7 +1095,7 @@ object IWForm2: TIWForm2
                     StyleRenderOptions.RenderSize = False
                     Caption = 'Dinamically create button with anonymous proc'
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 72
+                    TabOrder = 71
                     OnAsyncClick = IWBSButton21AsyncClick
                   end
                   object IWBSInput6: TIWBSInput
@@ -1106,7 +1106,7 @@ object IWForm2: TIWForm2
                     Caption = ''
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 73
+                    TabOrder = 72
                     Text = ''
                   end
                 end
@@ -1125,7 +1125,7 @@ object IWForm2: TIWForm2
                     StyleRenderOptions.RenderSize = False
                     Caption = 'Dinamically create Alert'
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 74
+                    TabOrder = 73
                     OnAsyncClick = IWBSButton32AsyncClick
                   end
                 end
@@ -1144,7 +1144,7 @@ object IWForm2: TIWForm2
                     StyleRenderOptions.RenderSize = False
                     Caption = 'Dinamically create complex Alert'
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 75
+                    TabOrder = 74
                     OnAsyncClick = IWBSButton33AsyncClick
                   end
                   object IWBSInput24: TIWBSInput
@@ -1155,7 +1155,7 @@ object IWForm2: TIWForm2
                     Caption = ''
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 78
+                    TabOrder = 77
                     Text = ''
                   end
                 end
@@ -1174,7 +1174,7 @@ object IWForm2: TIWForm2
                     StyleRenderOptions.RenderSize = False
                     Caption = 'Raise an exception'
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 80
+                    TabOrder = 79
                     OnAsyncClick = IWBSButton34AsyncClick
                   end
                 end
@@ -1222,7 +1222,7 @@ object IWForm2: TIWForm2
                     StyleRenderOptions.RenderSize = False
                     Caption = 'Apply settings'
                     FriendlyName = 'IWBSButton20aaaaaa'
-                    TabOrder = 91
+                    TabOrder = 90
                     OnClick = IWBSButton30Click
                   end
                   object chkContFluid: TIWBSCheckBox
@@ -1235,7 +1235,7 @@ object IWForm2: TIWForm2
                     Caption = 'Container Fluid'
                     FriendlyName = 'chkContFluid'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 92
+                    TabOrder = 91
                     Text = 'false'
                     ValueChecked = 'true'
                     ValueUnchecked = 'false'
@@ -1248,7 +1248,7 @@ object IWForm2: TIWForm2
                     Caption = 'Tabs Justified'
                     FriendlyName = 'chkTabsJust'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 93
+                    TabOrder = 92
                     Text = 'false'
                     ValueChecked = 'true'
                     ValueUnchecked = 'false'
@@ -1261,7 +1261,7 @@ object IWForm2: TIWForm2
                     Caption = 'Tabs Stacked'
                     FriendlyName = 'chkTabsStacked'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 94
+                    TabOrder = 93
                     Text = 'false'
                     ValueChecked = 'true'
                     ValueUnchecked = 'false'
@@ -1274,7 +1274,7 @@ object IWForm2: TIWForm2
                     Caption = 'Tabs Pills'
                     FriendlyName = 'chkTabsPills'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 95
+                    TabOrder = 94
                     Text = 'true'
                     Checked = True
                     ValueChecked = 'true'
@@ -1288,7 +1288,7 @@ object IWForm2: TIWForm2
                     Caption = 'Tabs Fade'
                     FriendlyName = 'chkTabsFade'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 96
+                    TabOrder = 95
                     Text = 'false'
                     ValueChecked = 'true'
                     ValueUnchecked = 'false'
@@ -1308,7 +1308,7 @@ object IWForm2: TIWForm2
                   Height = 25
                   Caption = 'Toggle TabPage visibility'
                   FriendlyName = 'IWBSButton42'
-                  TabOrder = 97
+                  TabOrder = 96
                   OnAsyncClick = IWBSButton42AsyncClick
                 end
               end
@@ -1392,6 +1392,40 @@ object IWForm2: TIWForm2
                         '<h3>Form Layout</h3>')
                       RawText = True
                     end
+                  end
+                end
+                object IWBSRegion38: TIWBSRegion
+                  Left = 15
+                  Top = 228
+                  Width = 243
+                  Height = 56
+                  BSRegionType = bsrtWell
+                  object IWBSButton36: TIWBSButton
+                    Left = 14
+                    Top = 12
+                    Width = 211
+                    Height = 25
+                    Caption = 'Switch to Data Aware Demo'
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 98
+                    OnClick = IWBSButton36Click
+                  end
+                end
+                object IWBSRegion39: TIWBSRegion
+                  Left = 18
+                  Top = 301
+                  Width = 239
+                  Height = 60
+                  BSRegionType = bsrtWell
+                  object IWBSButton43: TIWBSButton
+                    Left = 12
+                    Top = 18
+                    Width = 211
+                    Height = 25
+                    Caption = 'Bootstrap-Table Demo'
+                    FriendlyName = 'IWBSButton1'
+                    TabOrder = 99
+                    OnClick = IWBSButton43Click
                   end
                 end
               end
@@ -1618,7 +1652,7 @@ object IWForm2: TIWForm2
                   FriendlyName = 'IWBSInput2'
                   NonEditableAsLabel = True
                   SubmitOnAsyncEvent = True
-                  TabOrder = 82
+                  TabOrder = 81
                   Text = 'This is a static text'
                   PlaceHolder = 'Pick a Color'
                 end
@@ -1630,7 +1664,7 @@ object IWForm2: TIWForm2
                   Caption = 'This is a radio group'
                   FriendlyName = 'IWBSRadioGroup1'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 76
+                  TabOrder = 75
                   Text = 'item 1'
                   ItemIndex = 0
                   Items.Strings = (
@@ -1699,7 +1733,7 @@ object IWForm2: TIWForm2
                   Caption = 'IWBSCheckBox1'
                   FriendlyName = 'IWBSCheckBox1'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 84
+                  TabOrder = 83
                   Text = 'false'
                   ValueChecked = 'true'
                   ValueUnchecked = 'false'
@@ -1718,7 +1752,7 @@ object IWForm2: TIWForm2
                     Caption = 'Radio Button 1'
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 77
+                    TabOrder = 76
                     Text = 'true'
                     Checked = True
                     Group = 'group1'
@@ -1733,7 +1767,7 @@ object IWForm2: TIWForm2
                     Caption = 'Radio Button 2'
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 79
+                    TabOrder = 78
                     Text = 'false'
                     Group = 'group1'
                     ValueChecked = 'true'
@@ -1747,7 +1781,7 @@ object IWForm2: TIWForm2
                     Caption = 'Radio Button 3'
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 81
+                    TabOrder = 80
                     Text = 'false'
                     Group = 'group1'
                     ValueChecked = 'true'
@@ -1761,7 +1795,7 @@ object IWForm2: TIWForm2
                     Caption = 'Radio Button 4'
                     FriendlyName = 'IWBSRadioButton6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 83
+                    TabOrder = 82
                     Text = 'false'
                     Group = 'group1'
                     ValueChecked = 'true'
@@ -1788,23 +1822,11 @@ object IWForm2: TIWForm2
         Height = 59
         Align = alClient
         BSRegionType = bsrtColumn
-        object IWBSButton36: TIWBSButton
-          Left = 808
-          Top = 12
-          Width = 242
-          Height = 25
-          Css = 'pull-right'
-          Caption = 'Switch to Data Aware Demo'
-          FriendlyName = 'IWBSButton1'
-          TabOrder = 65
-          OnClick = IWBSButton36Click
-        end
         object IWText3: TIWBSText
           Left = 5
           Top = 5
           Width = 381
           Height = 41
-          Css = 'pull-left'
           Lines.Strings = (
             '<h3>This is the standard demo</h3>')
           RawText = True
