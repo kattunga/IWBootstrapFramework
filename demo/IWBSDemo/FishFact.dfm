@@ -123,7 +123,7 @@ object FFishFact: TFFishFact
                   EventName = 'dataurl'
                   OnRestEvent = IWBSCustomComponent1CustomRestEvents0RestEvent
                 end>
-              Lines.Strings = (
+              Html.Strings = (
                 '<table></table>')
             end
           end
@@ -141,8 +141,8 @@ object FFishFact: TFFishFact
             BorderOptions.Color = clNone
             Color = clWebWHITE
             object IWBSInputForm1: TIWBSInputForm
-              Left = 16
-              Top = 19
+              Left = 14
+              Top = 11
               Width = 695
               Height = 1059
               BSGridOptions.GridMDSpan = 8

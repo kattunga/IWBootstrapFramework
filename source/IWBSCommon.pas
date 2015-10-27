@@ -192,7 +192,7 @@ class function TIWBSCommon.ReplaceParams(const AHTMLName, AScript: string; APara
 var
   i: integer;
 begin
-  Result := ReplaceText(Result,'%HTMLNAME%',AHTMLName);
+  Result := ReplaceText(AScript,'%HTMLNAME%',AHTMLName);
   for i := 0 to AParams.Count-1 do
     Result := ReplaceText(Result,'%'+AParams.Names[i]+'%',AParams.ValueFromIndex[i]);
 end;

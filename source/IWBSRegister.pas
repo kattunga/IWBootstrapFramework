@@ -445,7 +445,7 @@ begin
     Inc(LRect.Left, 8);
     Dec(LRect.Bottom, 1);
     Dec(LRect.Right, 8);
-    s := TIWBSCustomComponent(Control).Lines.Text;
+    s := TIWBSCustomComponent(Control).Html.Text;
     if TIWBSCustomComponent(Control).TagType = bsttDiv then
       s := '<div>'#13#10+s+'</div>'
     else if TIWBSCustomComponent(Control).TagType = bsttSpan then

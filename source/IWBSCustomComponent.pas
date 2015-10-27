@@ -12,10 +12,10 @@ type
   private
     FCustomAjaxEvents: TOwnedCollection;
     FCustomRestEvents: TOwnedCollection;
-    FLines: TStringList;
+    FHtml: TStringList;
     FTagType: TIWBSTagType;
     procedure OnItemsChange(ASender : TObject);
-    procedure SetLines(const AValue: TStringList);
+    procedure SetHtml(const AValue: TStringList);
   protected
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     function InternalRenderScript: string; override;
@@ -25,7 +25,7 @@ type
   published
     property CustomAjaxEvents: TOwnedCollection read FCustomAjaxEvents write FCustomAjaxEvents;
     property CustomRestEvents: TOwnedCollection read FCustomRestEvents write FCustomRestEvents;
-    property Lines: TStringList read FLines write SetLines;
+    property Html: TStringList read FHtml write SetHtml;
     property TagType: TIWBSTagType read FTagType write FTagType default bsttDiv;
   end;
 
@@ -39,8 +39,8 @@ begin
   inherited;
   FCustomAjaxEvents := TOwnedCollection.Create(Self, TIWBSCustomAjaxEvent);
   FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
-  FLines := TStringList.Create;
-  FLines.OnChange := OnItemsChange;
+  FHtml := TStringList.Create;
+  FHtml.OnChange := OnItemsChange;
   FTagType := bsttDiv;
 end;
 
@@ -57,9 +57,9 @@ begin
   Invalidate;
 end;
 
-procedure TIWBSCustomComponent.SetLines(const AValue: TStringList);
+procedure TIWBSCustomComponent.SetHtml(const AValue: TStringList);
 begin
-  FLines.Assign(AValue);
+  FHtml.Assign(AValue);
   Invalidate;
 end;
 
@@ -73,7 +73,7 @@ begin
   inherited;
 
   // get html
-  LHtml := TIWBSCommon.ReplaceParams(HTMLName, LHtml, ScriptParams);
+  LHtml := TIWBSCommon.ReplaceParams(HTMLName, FHtml.Text, ScriptParams);
 
   // register ajax callbacks
   for i := 0 to FCustomAjaxEvents.Count-1 do begin
