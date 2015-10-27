@@ -29,10 +29,6 @@ object FBootstrapTable: TFBootstrapTable
     Style.Strings = (
       '')
     BSRegionType = bsrtNone
-    ExplicitLeft = 140
-    ExplicitTop = 324
-    ExplicitWidth = 60
-    ExplicitHeight = 60
     object IWBSRegion1: TIWBSRegion
       Left = 1
       Top = 78
@@ -40,10 +36,6 @@ object FBootstrapTable: TFBootstrapTable
       Height = 1101
       Align = alClient
       BSRegionType = bsrtContainer
-      ExplicitLeft = 0
-      ExplicitTop = 77
-      ExplicitWidth = 752
-      ExplicitHeight = 1103
       object IWBSRegion2: TIWBSRegion
         Left = 1
         Top = 1
@@ -51,8 +43,6 @@ object FBootstrapTable: TFBootstrapTable
         Height = 1099
         Align = alClient
         BSRegionType = bsrtRow
-        ExplicitWidth = 750
-        ExplicitHeight = 1101
         object IWBSRegion3: TIWBSRegion
           Left = 1
           Top = 1
@@ -60,11 +50,9 @@ object FBootstrapTable: TFBootstrapTable
           Height = 1097
           Align = alClient
           BSRegionType = bsrtColumn
-          ExplicitWidth = 748
-          ExplicitHeight = 1099
           object DbTable: TIWBSCustomComponent
             Left = 10
-            Top = 103
+            Top = 75
             Width = 451
             Height = 154
             Script.Strings = (
@@ -117,9 +105,6 @@ object FBootstrapTable: TFBootstrapTable
       Brand = 'BT from wenzhixin'
       BrandLink = 'http://bootstrap-table.wenzhixin.net.cn'
       BSInverse = True
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 752
       object IWBSButton1: TIWBSButton
         Left = 516
         Top = 28
