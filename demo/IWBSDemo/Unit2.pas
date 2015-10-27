@@ -370,6 +370,6 @@ end;
 initialization
   TIWForm2.SetAsMainForm;
 
-  TIWBSLayoutMgr.AddLinkFile('/iwbsdemo.css');
+  TIWBSLayoutMgr.AddGlobalLinkFile('/iwbsdemo.css');
 
 end.

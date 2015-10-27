@@ -110,21 +110,18 @@ object FFishFact: TFFishFact
             BorderOptions.Style = cbsNone
             BorderOptions.Color = clNone
             Color = clWebWHITE
-            object DBTABLE: TIWBSCustomComponent
-              Left = 39
+            object DbTable: TIWBSCustomComponent
+              Left = 23
               Top = 19
-              Width = 630
-              Height = 374
+              Width = 442
+              Height = 154
               Script.Strings = (
-                
-                  '$('#39'#DBTABLE > table'#39').bootstrapTable({"url": "%dataurl%", "colum' +
-                  'ns": %columns%, "pagination": true, "sidePagination": "server"})' +
-                  ';')
+                '$('#39'#%htmlname% > table'#39').bootstrapTable(%options%);')
               CustomAjaxEvents = <>
               CustomRestEvents = <
                 item
                   EventName = 'dataurl'
-                  RestEvent = IWBSCustomComponent1CustomRestEvents0RestEvent
+                  OnRestEvent = IWBSCustomComponent1CustomRestEvents0RestEvent
                 end>
               Lines.Strings = (
                 '<table></table>')
@@ -144,8 +141,8 @@ object FFishFact: TFFishFact
             BorderOptions.Color = clNone
             Color = clWebWHITE
             object IWBSInputForm1: TIWBSInputForm
-              Left = 14
-              Top = 11
+              Left = 16
+              Top = 19
               Width = 695
               Height = 1059
               BSGridOptions.GridMDSpan = 8
@@ -162,7 +159,7 @@ object FFishFact: TFFishFact
                 Caption = 'Common Name'
                 FriendlyName = 'IWBSInput2'
                 SubmitOnAsyncEvent = True
-                TabOrder = 9
+                TabOrder = 10
                 Text = 'Common_Name'
               end
               object IWBSInput1: TIWBSInput
@@ -176,7 +173,7 @@ object FFishFact: TFFishFact
                 Caption = 'Length (inches)'
                 FriendlyName = 'IWBSInput1'
                 SubmitOnAsyncEvent = True
-                TabOrder = 10
+                TabOrder = 11
                 Text = 'Length_In'
                 BSTextAlignment = bstaRight
                 BSInputType = bsitNumber
@@ -191,7 +188,7 @@ object FFishFact: TFFishFact
                 Caption = 'Length (cm)'
                 FriendlyName = 'IWBSInput2'
                 SubmitOnAsyncEvent = True
-                TabOrder = 11
+                TabOrder = 12
                 Text = 'Length (cm)'
                 BSInputType = bsitNumber
               end
@@ -205,7 +202,7 @@ object FFishFact: TFFishFact
                 Caption = 'Species Name'
                 FriendlyName = 'IWBSInput2'
                 SubmitOnAsyncEvent = True
-                TabOrder = 12
+                TabOrder = 13
                 Text = 'Species Name'
               end
               object IWBSInput4: TIWBSInput
@@ -218,7 +215,7 @@ object FFishFact: TFFishFact
                 Caption = 'Common Name'
                 FriendlyName = 'IWBSInput2'
                 SubmitOnAsyncEvent = True
-                TabOrder = 13
+                TabOrder = 14
                 Text = 'Common_Name'
               end
               object IWBSInput5: TIWBSInput
@@ -231,7 +228,7 @@ object FFishFact: TFFishFact
                 Caption = 'Category'
                 FriendlyName = 'IWBSInput2'
                 SubmitOnAsyncEvent = True
-                TabOrder = 14
+                TabOrder = 15
                 Text = 'Category'
               end
               object IWBSInput6: TIWBSInput
@@ -257,7 +254,7 @@ object FFishFact: TFFishFact
                 Caption = 'Found Date'
                 FriendlyName = 'IWBSInput7'
                 SubmitOnAsyncEvent = True
-                TabOrder = 17
+                TabOrder = 18
                 Text = 'FoundDate'
                 BSInputType = bsitDateTimeLocal
               end
@@ -271,7 +268,7 @@ object FFishFact: TFFishFact
                 Caption = 'Option'
                 FriendlyName = 'IWBSListbox1'
                 SubmitOnAsyncEvent = True
-                TabOrder = 18
+                TabOrder = 19
                 Text = ''
                 Items.Strings = (
                   'Option 1=1'
@@ -289,7 +286,7 @@ object FFishFact: TFFishFact
                 Caption = 'Option'
                 FriendlyName = 'IWBSListbox1'
                 SubmitOnAsyncEvent = True
-                TabOrder = 19
+                TabOrder = 20
                 Text = ''
                 Items.Strings = (
                   'Option 1=1'
@@ -308,7 +305,7 @@ object FFishFact: TFFishFact
                 Caption = 'Check'
                 FriendlyName = 'IWBSCheckBox1'
                 SubmitOnAsyncEvent = True
-                TabOrder = 20
+                TabOrder = 21
                 Text = 'false'
                 ValueChecked = 'Y'
                 ValueUnchecked = 'N'
@@ -323,7 +320,7 @@ object FFishFact: TFFishFact
                 Caption = 'Notes'
                 FriendlyName = 'IWBSMemo1'
                 SubmitOnAsyncEvent = True
-                TabOrder = 21
+                TabOrder = 22
                 Text = ''
               end
               object IWBSRadioGroup1: TIWBSRadioGroup
@@ -336,7 +333,7 @@ object FFishFact: TFFishFact
                 Caption = 'Option'
                 FriendlyName = 'IWBSRadioGroup1'
                 SubmitOnAsyncEvent = True
-                TabOrder = 22
+                TabOrder = 23
                 Text = '1'
                 ItemIndex = 0
                 Items.Strings = (
@@ -1625,7 +1622,7 @@ object FFishFact: TFFishFact
                     LockOnAsyncEvents = [aeClick]
                     BSGlyphicon = 'edit'
                     FriendlyName = 'btnEdit'
-                    TabOrder = 2
+                    TabOrder = 3
                     OnAsyncClick = btnEditAsyncClick
                   end
                   object btnPost: TIWBSButton
@@ -1637,7 +1634,7 @@ object FFishFact: TFFishFact
                     LockOnAsyncEvents = [aeClick]
                     BSGlyphicon = 'check'
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 3
+                    TabOrder = 4
                     OnAsyncClick = btnPostAsyncClick
                   end
                   object btnCancel: TIWBSButton
@@ -1649,7 +1646,7 @@ object FFishFact: TFFishFact
                     LockOnAsyncEvents = [aeClick]
                     BSGlyphicon = 'remove'
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 4
+                    TabOrder = 5
                     OnAsyncClick = btnCancelAsyncClick
                   end
                   object btnFirst: TIWBSButton
@@ -1661,7 +1658,7 @@ object FFishFact: TFFishFact
                     LockOnAsyncEvents = [aeClick]
                     BSGlyphicon = 'fast-backward'
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 5
+                    TabOrder = 6
                     OnAsyncClick = btnFirstAsyncClick
                   end
                   object btnPrior: TIWBSButton
@@ -1673,7 +1670,7 @@ object FFishFact: TFFishFact
                     LockOnAsyncEvents = [aeClick]
                     BSGlyphicon = 'backward'
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 6
+                    TabOrder = 7
                     OnAsyncClick = btnPriorAsyncClick
                   end
                   object btnNext: TIWBSButton
@@ -1685,7 +1682,7 @@ object FFishFact: TFFishFact
                     LockOnAsyncEvents = [aeClick]
                     BSGlyphicon = 'forward'
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 7
+                    TabOrder = 8
                     OnAsyncClick = btnNextAsyncClick
                   end
                   object btnLast: TIWBSButton
@@ -1697,7 +1694,7 @@ object FFishFact: TFFishFact
                     LockOnAsyncEvents = [aeClick]
                     BSGlyphicon = 'fast-forward'
                     FriendlyName = 'IWBSButton1'
-                    TabOrder = 8
+                    TabOrder = 9
                     OnAsyncClick = btnLastAsyncClick
                   end
                 end
@@ -1718,7 +1715,7 @@ object FFishFact: TFFishFact
                   Caption = 'Option 1'
                   FriendlyName = 'IWBSRadioButton1'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 23
+                  TabOrder = 24
                   Text = 'false'
                   SaveUnchecked = False
                   Group = 'group'
@@ -1735,7 +1732,7 @@ object FFishFact: TFFishFact
                   Caption = 'Option 2'
                   FriendlyName = 'IWBSRadioButton1'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 24
+                  TabOrder = 25
                   Text = 'false'
                   SaveUnchecked = False
                   Group = 'group'
@@ -1752,7 +1749,7 @@ object FFishFact: TFFishFact
                   Caption = 'Option 3'
                   FriendlyName = 'IWBSRadioButton1'
                   SubmitOnAsyncEvent = True
-                  TabOrder = 25
+                  TabOrder = 26
                   Text = 'false'
                   SaveUnchecked = False
                   Group = 'group'

@@ -9,13 +9,13 @@ type
   TIWBSCustomAjaxEvent = class (TCollectionItem)
   private
     FEventName: string;
-    FRestEvent: TIWCallbackFunction;
+    FAsyncEvent: TIWCallbackFunction;
   protected
     function GetDisplayName: string; override;
     procedure SetEventName(const AValue: string);
   published
     property EventName: string read FEventName write SetEventName;
-    property RestEvent: TIWCallbackFunction read FRestEvent write FRestEvent;
+    property OnAsyncEvent: TIWCallbackFunction read FAsyncEvent write FAsyncEvent;
   end;
 
   TIWBSCustomRestEvent = class (TCollectionItem)
@@ -31,7 +31,7 @@ type
     function ParseParamEvent(const AText: string): string;
   published
     property EventName: string read FEventName write SetEventName;
-    property RestEvent: TIWBSRestCallBackFunction read FRestEvent write FRestEvent;
+    property OnRestEvent: TIWBSRestCallBackFunction read FRestEvent write FRestEvent;
   end;
 
 implementation

@@ -1,7 +1,7 @@
 unit IWBSRegionCommon;
 
 interface
-  uses System.Classes, Vcl.Controls, Vcl.Forms,
+  uses System.Classes, System.SysUtils, Vcl.Controls, Vcl.Forms,
        IWContainer, IWBSCommon, IWRenderContext;
 
 type
@@ -83,8 +83,8 @@ end;
 
 destructor TIWBSFormOptions.Destroy;
 begin
-  FCaptionsSize.Free;
-  FInputsSize.Free;
+  FreeAndNil(FCaptionsSize);
+  FreeAndNil(FInputsSize);
   inherited;
 end;
 

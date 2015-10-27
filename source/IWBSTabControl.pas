@@ -34,12 +34,15 @@ type
 
     FGridOptions: TIWBSGridOptions;
     FRegionDiv: TIWHTMLTag;
-    FScript: TStrings;
-    FStyle: TStrings;
+    FScript: TStringList;
+    FScriptParams: TStringList;
+    FStyle: TStringList;
     FTabOptions: TIWBSTabOptions;
     procedure SetGridOptions(const Value: TIWBSGridOptions);
     procedure SetTabOptions(const Value: TIWBSTabOptions);
-    procedure SetStyle(const AValue: TStrings);
+    procedure SetScript(const AValue: TStringList);
+    procedure SetScriptParams(const AValue: TStringList);
+    procedure SetStyle(const AValue: TStringList);
     procedure CheckActiveVisible;
     procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
   protected
@@ -60,8 +63,9 @@ type
   published
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
-    property Script: TStrings read FScript write FScript;
-    property Style: TStrings read FStyle write SetStyle;
+    property Script: TStringList read FScript write SetScript;
+    property ScriptParams: TStringList read FScriptParams write SetScriptParams;
+    property Style: TStringList read FStyle write SetStyle;
   end;
 
 implementation
@@ -97,16 +101,18 @@ begin
   inherited;
   FGridOptions := TIWBSGridOptions.Create;
   FScript := TStringList.Create;
+  FScriptParams := TStringList.Create;
   FStyle := TStringList.Create;
   FTabOptions := TIWBSTabOptions.Create(Self);
 end;
 
 destructor TIWBSTabControl.Destroy;
 begin
-  FGridOptions.Free;
-  FScript.Free;
-  FStyle.Free;
-  FTabOptions.Free;
+  FreeAndNil(FGridOptions);
+  FreeAndNil(FScript);
+  FreeAndNil(FScriptParams);
+  FreeAndNil(FStyle);
+  FreeAndNil(FTabOptions);
   inherited;
 end;
 
@@ -122,7 +128,19 @@ begin
   invalidate;
 end;
 
-procedure TIWBSTabControl.SetStyle(const AValue: TStrings);
+procedure TIWBSTabControl.SetScript(const AValue: TStringList);
+begin
+  FScript.Assign(AValue);
+  Invalidate;
+end;
+
+procedure TIWBSTabControl.SetScriptParams(const AValue: TStringList);
+begin
+  FScriptParams.Assign(AValue);
+  Invalidate;
+end;
+
+procedure TIWBSTabControl.SetStyle(const AValue: TStringList);
 begin
   FStyle.Assign(AValue);
   Invalidate;
@@ -141,8 +159,13 @@ begin
 end;
 
 function TIWBSTabControl.InternalRenderScript: string;
+var
+  i: integer;
 begin
   Result := FScript.Text;
+  Result := ReplaceText(Result,'%HTMLNAME%',HtmlName);
+  for i := 0 to FScriptParams.Count-1 do
+    Result := ReplaceText(Result,'%'+FScriptParams.Names[i]+'%',FScriptParams.ValueFromIndex[i]);
 end;
 
 function TIWBSTabControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
@@ -325,8 +348,8 @@ end;
 
 {$IFDEF IWBSDYNTABS}
 initialization
-  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.css');
-  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.js');
+  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.css');
+  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.js');
 {$ENDIF}
 
 end.

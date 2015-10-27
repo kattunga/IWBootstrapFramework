@@ -72,7 +72,7 @@ type
     IWBSTabControl1: TIWBSTabControl;
     IWBSTabControl1Page0: TIWTabPage;
     IWBSTabControl1Page1: TIWTabPage;
-    DBTABLE: TIWBSCustomComponent;
+    DbTable: TIWBSCustomComponent;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure btnPostAsyncClick(Sender: TObject; EventParams: TStringList);
@@ -90,7 +90,7 @@ type
 implementation
 {$R *.dfm}
 
-uses IWBSRestServer, IW.Common.Strings;
+uses IWBSRestServer, IW.Common.Strings, IWUtils;
 
 var
   fs: TFormatSettings;
@@ -98,10 +98,19 @@ var
 procedure TFFishFact.IWFormModuleBaseCreate(Sender: TObject);
 var
   columns: string;
+  options: TStringList;
   i: integer;
 begin
   //ClientDataSet1.LoadFromFile('biolife2.cds');
 
+  // include third party grid
+  IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css');
+  IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js');
+  IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/locale/bootstrap-table-es-AR.min.js');
+
+  // configure grid options
+  // it's better to use any json object to do this
+  // but for this demo I'll do it by hand
   columns := '[';
   for i := 0 to ClientDataSet1.FieldCount-1 do begin
     if i > 0 then
@@ -109,7 +118,23 @@ begin
     columns := columns+'{"field":'+'"field'+IntToStr(i)+'","title":"'+ClientDataSet1.Fields[i].DisplayLabel+'"}';
   end;
   columns := columns+']';
-  DBTABLE.Script.Text := ReplaceStr(DBTABLE.Script.Text,'%columns%',columns);
+
+  options := TStringList.Create;
+  try
+    options.NameValueSeparator := ':';
+    options.Delimiter := ',';
+    options.QuoteChar := ' ';
+    options.StrictDelimiter := True;
+
+    options.Values['url'] := '"%dataurl%"';
+    options.Values['columns'] := columns;
+    options.Values['pagination'] := 'true';
+    options.Values['sidePagination'] := '"server"';
+
+    DbTable.ScriptParams.Values['options'] := '{'+options.DelimitedText+'}';
+  finally
+    options.Free;
+  end;
 end;
 
 procedure TFFishFact.IWBSButton1Click(Sender: TObject);
@@ -216,11 +241,6 @@ initialization
   TFFishFact.SetAsMainForm;
 
   fs := TFormatSettings.Create('en-US');
-
-  // include third party grid
-  TIWBSLayoutMgr.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css');
-  TIWBSLayoutMgr.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js');
-  TIWBSLayoutMgr.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/locale/bootstrap-table-es-AR.min.js');
 
   // this enable the rest event server
   IWBSRegisterRestServerHandler;

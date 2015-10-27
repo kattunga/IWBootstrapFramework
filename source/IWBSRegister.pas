@@ -435,7 +435,7 @@ begin
 
   ControlCanvas.Brush.Color := clWhite;
   ControlCanvas.Pen.Color := clGray;
-  ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+  ControlCanvas.Font.Name := 'Courier New';
   ControlCanvas.Font.Size := 10;
   ControlCanvas.Font.Color := clBlack;
   ControlCanvas.Rectangle(LRect);
@@ -446,6 +446,12 @@ begin
     Dec(LRect.Bottom, 1);
     Dec(LRect.Right, 8);
     s := TIWBSCustomComponent(Control).Lines.Text;
+    if TIWBSCustomComponent(Control).TagType = bsttDiv then
+      s := '<div>'#13#10+s+'</div>'
+    else if TIWBSCustomComponent(Control).TagType = bsttSpan then
+      s := '<span>'#13#10+s+'</span>';
+    if TIWBSCustomComponent(Control).Script.Count > 0 then
+      s := s+#13#10'<script>'#13#10+TIWBSCustomComponent(Control).Script.Text+'</script>';
     ControlCanvas.TextRect(LRect,s,[])
   end;
 end;

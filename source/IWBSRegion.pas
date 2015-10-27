@@ -16,8 +16,9 @@ type
     FCss: string;
     FGridOptions: TIWBSGridOptions;
     FRegionDiv: TIWHTMLTag;
-    FScript: TStrings;
-    FStyle: TStrings;
+    FScript: TStringList;
+    FScriptParams: TStringList;
+    FStyle: TStringList;
     FReleased: boolean;
 
     FOldCss: string;
@@ -26,6 +27,10 @@ type
 
     function GetWebApplication: TIWApplication;
     function IsScriptEventsStored: Boolean; virtual;
+    procedure SetGridOptions(const AValue: TIWBSGridOptions);
+    procedure SetScript(const AValue: TStringList);
+    procedure SetScriptParams(const AValue: TStringList);
+    procedure SetStyle(const AValue: TStringList);
   protected
     function ContainerPrefix: string; override;
     function HTMLControlImplementation: TIWHTMLControlImplementation;
@@ -37,8 +42,6 @@ type
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
     procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
-    procedure SetGridOptions(const AValue: TIWBSGridOptions);
-    procedure SetStyle(const AValue: TStrings);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -58,8 +61,9 @@ type
     property ExtraTagParams;
     property RenderInvisibleControls default False;
     property ScriptEvents: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;
-    property Script: TStrings read FScript write FScript;
-    property Style: TStrings read FStyle write SetStyle;
+    property Script: TStringList read FScript write SetScript;
+    property ScriptParams: TStringList read FScriptParams write SetScriptParams;
+    property Style: TStringList read FStyle write SetStyle;
     property ZIndex default 0;
   end;
 
@@ -193,6 +197,7 @@ begin
   FCss := '';
   FGridOptions := TIWBSGridOptions.Create;
   FScript := TStringList.Create;
+  FScriptParams := TStringList.Create;
   FStyle := TStringList.Create;
   FStyle.NameValueSeparator := ':';
   FTagType := 'div';
@@ -206,9 +211,10 @@ end;
 
 destructor TIWBSCustomRegion.Destroy;
 begin
-  FGridOptions.Free;
-  FScript.Free;
-  FStyle.Free;
+  FreeAndNil(FGridOptions);
+  FreeAndNil(FScript);
+  FreeAndNil(FScriptParams);
+  FreeAndNil(FStyle);
   inherited;
 end;
 
@@ -370,7 +376,19 @@ begin
   Invalidate;
 end;
 
-procedure TIWBSCustomRegion.SetStyle(const AValue: TStrings);
+procedure TIWBSCustomRegion.SetScript(const AValue: TStringList);
+begin
+  FScript.Assign(AValue);
+  Invalidate;
+end;
+
+procedure TIWBSCustomRegion.SetScriptParams(const AValue: TStringList);
+begin
+  FScriptParams.Assign(AValue);
+  Invalidate;
+end;
+
+procedure TIWBSCustomRegion.SetStyle(const AValue: TStringList);
 begin
   FStyle.Assign(AValue);
   Invalidate;
@@ -436,8 +454,13 @@ begin
 end;
 
 function TIWBSCustomRegion.InternalRenderScript: string;
+var
+  i: integer;
 begin
   Result := FScript.Text;
+  Result := ReplaceText(Result,'%HTMLNAME%',HtmlName);
+  for i := 0 to FScriptParams.Count-1 do
+    Result := ReplaceText(Result,'%'+FScriptParams.Names[i]+'%',FScriptParams.ValueFromIndex[i]);
 end;
 
 procedure TIWBSCustomRegion.RenderScripts(AComponentContext: TIWCompContext);
@@ -498,7 +521,7 @@ end;
 
 destructor TIWBSInputForm.Destroy;
 begin
-  FFormOptions.Free;
+  FreeAndNil(FFormOptions);
   inherited;
 end;
 
@@ -584,7 +607,7 @@ end;
 
 destructor TIWBSRegion.Destroy;
 begin
-  FButtonGroupOptions.Free;
+  FreeAndNil(FButtonGroupOptions);
   inherited;
 end;
 

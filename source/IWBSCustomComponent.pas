@@ -2,11 +2,11 @@ unit IWBSCustomComponent;
 
 interface
 
-uses System.Classes, System.StrUtils,
+uses System.Classes, System.StrUtils, System.SysUtils,
      IWRenderContext, IWHTMLTag, IWBSCustomControl;
 
 type
-  TIWBSTagType = (bsttDiv, bsttSpan, bttnTable);
+  TIWBSTagType = (bsttDiv, bsttSpan);
 
   TIWBSCustomComponent = class(TIWBSCustomControl)
   private
@@ -46,8 +46,8 @@ end;
 
 destructor TIWBSCustomComponent.Destroy;
 begin
-  FCustomAjaxEvents.Free;
-  FCustomRestEvents.Free;
+  FreeAndNil(FCustomAjaxEvents);
+  FreeAndNil(FCustomRestEvents);
   inherited;
 end;
 
@@ -65,7 +65,7 @@ end;
 
 procedure TIWBSCustomComponent.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 const
-  aTagType: array[bsttDiv..bttnTable] of string = ('div', 'span', 'table');
+  aTagType: array[bsttDiv..bsttSpan] of string = ('div', 'span');
 var
   i: integer;
   LHtml: string;

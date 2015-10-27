@@ -2,7 +2,7 @@ unit IWBSCustomControl;
 
 interface
 
-uses System.Classes, System.SysUtils, Data.db,
+uses System.Classes, System.SysUtils, System.StrUtils, Data.db,
      IWControl, IWRenderContext, IWHTMLTag, IWXMLTag, IWDBCommon, IWDBStdCtrls,
      IWBSCommon;
 
@@ -16,15 +16,17 @@ type
     FOldStyle: string;
     FOldVisible: boolean;
 
-    FScript: TStrings;
-    FStyle: TStrings;
-    procedure SetStyle(const AValue: TStrings);
-    procedure SetScript(const AValue: TStrings);
+    FScript: TStringList;
+    FScriptParams: TStringList;
+    FStyle: TStringList;
+    procedure SetScript(const AValue: TStringList);
+    procedure SetScriptParams(const AValue: TStringList);
+    procedure SetStyle(const AValue: TStringList);
   protected
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); virtual;
     function InternalRenderScript: string; virtual;
-    procedure InternalRenderStyle(AStyle: TStrings); virtual;
+    procedure InternalRenderStyle(AStyle: TStringList); virtual;
     function IsReadOnly: boolean; virtual;
     function IsDisabled: boolean; virtual;
     function InputSelector: string; virtual;
@@ -42,8 +44,9 @@ type
     property ActiveCss: string read FOldCss;
     property ActiveStyle: string read FOldStyle;
   published
-    property Script: TStrings read FScript write SetScript;
-    property Style: TStrings read FStyle write SetStyle;
+    property Script: TStringList read FScript write SetScript;
+    property ScriptParams: TStringList read FScriptParams write SetScriptParams;
+    property Style: TStringList read FStyle write SetStyle;
   end;
 
   TIWBSCustomDbControl = class(TIWBSCustomControl, IIWBSComponent)
@@ -79,24 +82,32 @@ begin
   inherited;
   FMainID := '';
   FScript := TStringList.Create;
+  FScriptParams := TStringList.Create;
   FStyle := TStringList.Create;
   FStyle.NameValueSeparator := ':';
 end;
 
 destructor TIWBSCustomControl.Destroy;
 begin
-  FScript.Free;
-  FStyle.Free;
+  FreeAndNil(FScript);
+  FreeAndNil(FScriptParams);
+  FreeAndNil(FStyle);
   inherited;
 end;
 
-procedure TIWBSCustomControl.SetScript(const AValue: TStrings);
+procedure TIWBSCustomControl.SetScript(const AValue: TStringList);
 begin
   FScript.Assign(AValue);
   Invalidate;
 end;
 
-procedure TIWBSCustomControl.SetStyle(const AValue: TStrings);
+procedure TIWBSCustomControl.SetScriptParams(const AValue: TStringList);
+begin
+  FScriptParams.Assign(AValue);
+  Invalidate;
+end;
+
+procedure TIWBSCustomControl.SetStyle(const AValue: TStringList);
 begin
   FStyle.Assign(AValue);
   Invalidate;
@@ -117,11 +128,16 @@ begin
 end;
 
 function TIWBSCustomControl.InternalRenderScript: string;
+var
+  i: integer;
 begin
   Result := FScript.Text;
+  Result := ReplaceText(Result,'%HTMLNAME%',HtmlName);
+  for i := 0 to FScriptParams.Count-1 do
+    Result := ReplaceText(Result,'%'+FScriptParams.Names[i]+'%',FScriptParams.ValueFromIndex[i]);
 end;
 
-procedure TIWBSCustomControl.InternalRenderStyle(AStyle: TStrings);
+procedure TIWBSCustomControl.InternalRenderStyle(AStyle: TStringList);
 begin
   //
 end;

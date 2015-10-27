@@ -19,16 +19,16 @@ type
   TIWBSLayoutMgr = class(TIWContainerLayout)
   private
     FPageOptions: TIWBSPageOptions;
+    FLinkFiles: TStringList;
     function SetNotVisible(const AStyle: string): string;
-  protected
-    procedure InitControl; override;
   public
     constructor Create(AOnwer: TComponent); override;
+    destructor Destroy; override;
+    procedure AddLinkFile(const AFile: string);
     procedure ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent); override;
     procedure ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
     procedure Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext); override;
-
-    class procedure AddLinkFile(const AFile: string);
+    class procedure AddGlobalLinkFile(const AFile: string);
     class function ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
   published
     property BSPageOptions: TIWBSPageOptions read FPageOptions write FPageOptions default [];
@@ -53,8 +53,8 @@ uses
 var
   gIWBSLinkFiles: TStringList = nil;
 
-// to add files should be done only in initialization section, it's not thread safe
-class procedure TIWBSLayoutMgr.AddLinkFile(const AFile: string);
+// to add global files should be done only in initialization section, it's not thread safe
+class procedure TIWBSLayoutMgr.AddGlobalLinkFile(const AFile: string);
 begin
   if gIWBSLinkFiles = nil then
     gIWBSLinkFiles := TStringList.Create;
@@ -77,13 +77,20 @@ constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
   inherited;
   FPageOptions := [];
-end;
-
-procedure TIWBSLayoutMgr.InitControl;
-begin
-  inherited;
   SetAllowFrames(true);
   SetLayoutType(ltFlow);
+end;
+
+destructor TIWBSLayoutMgr.Destroy;
+begin
+  FreeAndNil(FLinkFiles);
+end;
+
+procedure TIWBSLayoutMgr.AddLinkFile(const AFile: string);
+begin
+  if FLinkFiles = nil then
+    FLinkFiles := TStringList.Create;
+  FLinkFiles.Add(AFile);
 end;
 
 procedure TIWBSLayoutMgr.ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
@@ -138,6 +145,14 @@ begin
         ABuffer.WriteLine(ParseLinkFile(gIWBSLinkFiles[i], False))
       else
         ABuffer.WriteLine(ParseLinkFile(TURL.Concat(gSC.URLBase,ReplaceStr(gIWBSLinkFiles[i],'/<iwbspath>/',gIWBSLibraryPath))));
+
+  // add linkfiles
+  if FLinkFiles <> nil then
+    for i := 0 to FLinkFiles.Count-1 do
+      if AnsiStartsStr('//', FLinkFiles[i]) then
+        ABuffer.WriteLine(ParseLinkFile(FLinkFiles[i], False))
+      else
+        ABuffer.WriteLine(ParseLinkFile(TURL.Concat(gSC.URLBase,ReplaceStr(FLinkFiles[i],'/<iwbspath>/',gIWBSLibraryPath))));
 
   ABuffer.WriteLine(ScriptSection(LPageContext));
   ABuffer.WriteLine(HeadContent);
@@ -344,7 +359,7 @@ initialization
   gIWBSRefreshCacheParam := FormatDateTime('yyyymmddhhnnsszzz', now);
 
 {$IFDEF IWBSWEBSHIM}
-  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/webshim-1.15.8/js-webshim/minified/polyfiller.js');
+  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/webshim-1.15.8/js-webshim/minified/polyfiller.js');
 {$ENDIF}
 
 finalization

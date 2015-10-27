@@ -31,7 +31,7 @@ type
     procedure InitControl; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
-    procedure InternalRenderStyle(AStyle: TStrings); override;
+    procedure InternalRenderStyle(AStyle: TStringList); override;
   public
     destructor Destroy; override;
     procedure SetText(const AValue: TCaption); override;
@@ -255,7 +255,7 @@ begin
     AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, HTMLName);
 end;
 
-procedure TIWBSMemo.InternalRenderStyle(AStyle: TStrings);
+procedure TIWBSMemo.InternalRenderStyle(AStyle: TStringList);
 begin
   if not FVertScrollBar then
     AStyle.Values['overflow'] := 'hidden';
@@ -662,8 +662,8 @@ end;
 
 {$IFDEF IWBSBOOTSTRAPSELECT}
 initialization
-  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/select/dist/css/bootstrap-select.min.css');
-  TIWBSLayoutMgr.AddLinkFile('/<iwbspath>/select/dist/js/bootstrap-select.min.js');
+  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/select/dist/css/bootstrap-select.min.css');
+  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/select/dist/js/bootstrap-select.min.js');
 {$ENDIF}
 
 end.
