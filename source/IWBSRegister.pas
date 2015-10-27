@@ -464,6 +464,8 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSInputForm]);
   RegisterComponents('IW BootsTrap', [TIWBSInputGroup]);
   RegisterComponents('IW BootsTrap', [TIWBSFormControl]);
+  RegisterComponents('IW BootsTrap', [TIWBSNavBar]);
+  RegisterComponents('IW BootsTrap', [TIWBSUnorderedList]);
   RegisterComponents('IW BootsTrap', [TIWBSModal]);
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignPosition');
@@ -507,6 +509,8 @@ initialization
   IWRegisterPaintHandler('TIWBSInputForm',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSInputGroup',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSFormControl',TIWBSPaintHandlerRegion);
+  IWRegisterPaintHandler('TIWBSNavBar',TIWBSPaintHandlerRegion);
+  IWRegisterPaintHandler('TIWBSUnorderedList',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerRegion);
 
   IWRegisterPaintHandler('TIWBSInput',TIWBSPaintHandlerCustomInput);
@@ -537,6 +541,8 @@ finalization
   IWUnRegisterPaintHandler('TIWBSInputForm');
   IWUnRegisterPaintHandler('TIWBSInputGroup');
   IWUnRegisterPaintHandler('TIWBSFormControl');
+  IWUnRegisterPaintHandler('TIWBSNavBar');
+  IWUnRegisterPaintHandler('TIWBSUnorderedList');
   IWUnRegisterPaintHandler('TIWBSModal');
 
   IWUnRegisterPaintHandler('TIWBSInput');

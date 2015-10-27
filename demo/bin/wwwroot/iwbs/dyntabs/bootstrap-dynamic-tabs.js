@@ -100,7 +100,7 @@
 					TABS_OBJECT.tabsHorizontalContainer.children('li').clone().appendTo(TABS_OBJECT.tabsVerticalContainer);
 					TABS_OBJECT.tabsVerticalContainer.children('li').toggleClass("hidden");
 					TABS_OBJECT.tabsVerticalContainer.children('li').on("click", function (e) {
-						TABS_OBJECT.tabsHorizontalContainer.find("[tab-id=" + $(this).attr("tab-id") + "]").tab("show");
+						TABS_OBJECT.tabsHorizontalContainer.find("[tab-id=" + $(this).attr("tab-id") + "] a").tab("show");
 						updateTabs();
 					});
 				};

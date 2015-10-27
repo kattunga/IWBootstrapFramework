@@ -15,6 +15,7 @@ type
 
   TIWBSButton = class(TIWBSCustomControl, IIWSubmitControl)
   private
+    FAnchor: boolean;
     FDataDismiss: TIWBSButtonDataDismiss;
     FButtonSize: TIWBSSize;
     FButtonStyle: TIWBSButtonStyle;
@@ -39,6 +40,7 @@ type
     function RenderStyle(AContext: TIWCompContext): string; override;
     property AsyncClickProc: TIWBSAsyncClickProc read FAsyncClickProc write SetAsyncClickProc;
   published
+    property Anchor: boolean read FAnchor write FAnchor default False;
     property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
     property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write FButtonStyle default bsbsDefault;
     property BSDataDismiss: TIWBSButtonDataDismiss read FDataDismiss write FDataDismiss default bsbdNone;
@@ -65,13 +67,14 @@ type
 
 implementation
 
-uses Vcl.Graphics,
+uses Vcl.Graphics, IW.Common.System,
      IWColor, IWBSInputCommon;
 
 {$region 'TIWBSButton'}
 constructor TIWBSButton.Create(AOwner: TComponent);
 begin
   inherited;
+  FAnchor := False;
   FButtonSize := bsszDefault;
   FButtonStyle := bsbsDefault;
   FDataDismiss := bsbdNone;
@@ -111,12 +114,19 @@ function TIWBSButton.RenderCSSClass(AComponentContext: TIWCompContext): string;
 const
   aIWBSButtonStyle: array[bsbsDefault..bsbsClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
 begin
-  Result := 'btn';
-  if FButtonSize <> bsszDefault then
-    Result := Result + ' btn-'+aIWBSSize[FButtonSize];
-  Result := Result + ' ' + aIWBSButtonStyle[FButtonStyle];
-  if Css <> '' then
-    Result := Result + ' ' + Css;
+  if not FAnchor then
+    begin
+      Result := 'btn';
+      if FButtonSize <> bsszDefault then
+        Result := Result + ' btn-'+aIWBSSize[FButtonSize];
+      Result := Result + ' ' + aIWBSButtonStyle[FButtonStyle];
+      if Parent.ClassName = 'TIWBSNavBar' then
+        Result := Result + ' navbar-btn';
+      if Css <> '' then
+        Result := Result + ' ' + Css;
+    end
+  else
+    Result := Css;
 end;
 
 procedure TIWBSButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
@@ -124,18 +134,21 @@ const
   aIWBSButtonDataDismiss: array[bsbdNone..bsbdAlert] of string = ('', 'modal', 'alert');
 var
   s: string;
-  gspan: TIWHTMLTag;
+  xHTMLTag: TIWHTMLTag;
 begin
   inherited;
   FOldDisabled := not (Enabled and Editable);
 
-  AHTMLTag := TIWHTMLTag.CreateTag('button');
+  AHTMLTag := TIWHTMLTag.CreateTag(iif(FAnchor,'a','button'));
   try
     AHTMLTag.AddStringParam('id', AHTMLName);
     AHTMLTag.AddClassParam(ActiveCss);
     if FDataDismiss <> bsbdNone then
       AHTMLTag.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
-    AHTMLTag.AddStringParam('type', 'button');
+    if FAnchor then
+      AHTMLTag.AddStringParam('href', '#')
+    else
+      AHTMLTag.AddStringParam('type', 'button');
     if ShowHint and (Hint <> '') then begin
       AHTMLTag.AddStringParam('data-toggle', 'tooltip');
       AHTMLTag.AddStringParam('title', Hint);
@@ -152,9 +165,9 @@ begin
     AHTMLTag.AddStringParam('style', ActiveStyle);
 
     if FGlyphicon <> '' then begin
-      gspan := AHTMLTag.Contents.AddTag('span');
-      gspan.AddClassParam('glyphicon glyphicon-'+FGlyphicon);
-      gspan.AddBoolParam('aria-hidden',true);
+      xHTMLTag := AHTMLTag.Contents.AddTag('span');
+      xHTMLTag.AddClassParam('glyphicon glyphicon-'+FGlyphicon);
+      xHTMLTag.AddBoolParam('aria-hidden',true);
       s := ' '+s;
     end;
 
@@ -170,6 +183,12 @@ begin
 
   if Parent is TIWBSInputGroup then
     AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'btn')
+  else if Parent.ClassName = 'TIWBSUnorderedList' then
+    begin
+      xHTMLTag := TIWHTMLTag.CreateTag('li');
+      xHTMLTag.Contents.AddTagAsObject(AHTMLtag);
+      AHTMLtag := xHTMLTag;
+    end
   else
     AHTMLTag := IWBSCreateFormGroup(Parent, IWBSFindParentInputForm(Parent), AHTMLTag, AHTMLName, True);
 end;

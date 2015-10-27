@@ -359,7 +359,7 @@ initialization
   gIWBSRefreshCacheParam := FormatDateTime('yyyymmddhhnnsszzz', now);
 
 {$IFDEF IWBSWEBSHIM}
-  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/webshim-1.15.8/js-webshim/minified/polyfiller.js');
+//  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/webshim-1.15.8/js-webshim/minified/polyfiller.js');
 {$ENDIF}
 
 finalization

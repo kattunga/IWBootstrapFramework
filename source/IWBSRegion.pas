@@ -112,7 +112,6 @@ type
     FPanelStyle: TIWBSPanelStyle;
     FRegionType: TIWBSRegionType;
     FRelativeSize: TIWBSRelativeSize;
-  protected
     procedure SetButtonGroupOptions(AValue: TIWBSButonGroupOptions);
     procedure SetRegionType(AValue: TIWBSRegionType);
     procedure SetPanelStyle(AValue: TIWBSPanelStyle);
@@ -127,6 +126,33 @@ type
     property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
     property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtIWBSRegion;
     property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write SetRelativeSize default bsrzDefault;
+  end;
+
+  TIWBSNavBarFixed = (bsnvfxNone, bsnvfxTop, bsnvfxBottom);
+
+  TIWBSNavBar = class(TIWBSCustomRegion)
+  private
+    FBrand: string;
+    FBrandLink: string;
+    FFluid: boolean;
+    FFixed: TIWBSNavBarFixed;
+    FInverse: boolean;
+  public
+    constructor Create(AOwner: TComponent); override;
+    function GetClassString: string; override;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+  published
+    property Brand: string read FBrand write FBrand;
+    property BrandLink: string read FBrandLink write FBrandLink;
+    property BSFluid: boolean read FFluid write FFluid default False;
+    property BSInverse: boolean read FInverse write FInverse default False;
+    property BSFixed: TIWBSNavBarFixed read FFixed write FFixed default bsnvfxNone;
+  end;
+
+  TIWBSUnorderedList = class(TIWBSCustomRegion)
+  public
+    constructor Create(AOwner: TComponent); override;
+    function GetClassString: string; override;
   end;
 
   TIWBSModal = class(TIWBSCustomRegion)
@@ -162,7 +188,7 @@ function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
 
 implementation
 
-uses IWForm, IWUtils, IWContainerLayout, IWBaseHTMLControl, IWBSUtils, IWBSInputCommon, IWBSScriptEvents;
+uses IWForm, IWUtils, IW.Common.System, IWContainerLayout, IWBaseHTMLControl, IWBSUtils, IWBSInputCommon, IWBSScriptEvents;
 
 {$region 'help functions'}
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -667,6 +693,86 @@ procedure TIWBSRegion.SetRelativeSize(AValue: TIWBSRelativeSize);
 begin
   FRelativeSize := AValue;
   Invalidate;
+end;
+{$endregion}
+
+{$region 'TIWBSNavBar'}
+constructor TIWBSNavBar.Create(AOwner: TComponent);
+begin
+  inherited;
+  FFluid := False;
+  FFixed := bsnvfxNone;
+  FInverse := False;
+  FTagType := 'nav';
+end;
+
+function TIWBSNavBar.GetClassString: string;
+var
+  s: string;
+begin
+  Result := 'navbar navbar-'+iif(FInverse,'inverse', 'default');
+  if FFixed = bsnvfxTop then
+    Result := Result + ' navbar-fixed-top'
+  else if FFixed = bsnvfxBottom then
+    Result := Result + ' navbar-fixed-bottom';
+  s := inherited;
+  if s <> '' then
+    Result := Result + ' ' + s;
+end;
+
+function TIWBSNavBar.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+var
+  xHTMLName: string;
+begin
+  xHTMLName := HTMLName+'_body';
+
+  Result := Inherited;
+  with Result.Contents.AddTag('div') do begin
+    AddClassParam('container'+iif(FFluid, '-fluid'));
+    with Contents.AddTag('div') do begin
+      AddClassParam('navbar-header');
+      with Contents.AddTag('a') do begin
+        AddClassParam('navbar-brand');
+        AddStringParam('href',iif(FBrandLink <> '', FBrandLink, '#'));
+        AddStringParam('target','_blank');
+        Contents.AddText(FBrand);
+      end;
+      with Contents.AddTag('button') do begin
+        AddStringParam('type','button');
+        AddClassParam('navbar-toggle');
+        AddStringParam('data-toggle','collapse');
+        AddStringParam('data-target','#'+xHTMLName);
+        Contents.AddTag('span').AddClassParam('icon-bar');
+        Contents.AddTag('span').AddClassParam('icon-bar');
+        Contents.AddTag('span').AddClassParam('icon-bar');
+      end;
+    end;
+    FRegionDiv := Contents.AddTag('div');
+    FRegionDiv.AddClassParam('collapse');
+    FRegionDiv.AddClassParam('navbar-collapse');
+    FRegionDiv.AddStringParam('id',xHTMLName);
+  end;
+end;
+{$endregion}
+
+{$region 'TIWBSNavBar'}
+constructor TIWBSUnorderedList.Create(AOwner: TComponent);
+begin
+  inherited;
+  FTagType := 'ul';
+end;
+
+function TIWBSUnorderedList.GetClassString: string;
+var
+  s: string;
+begin
+  if Parent.ClassName = 'TIWBSNavBar' then
+    Result := 'nav navbar-nav'
+  else
+    Result := 'list-group';
+  s := inherited;
+  if s <> '' then
+    Result := Result + ' ' + s;
 end;
 {$endregion}
 

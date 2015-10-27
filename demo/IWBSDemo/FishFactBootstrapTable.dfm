@@ -20,88 +20,124 @@ object FBootstrapTable: TFBootstrapTable
   KeepAlive = True
   DesignLeft = 8
   DesignTop = 8
-  object IWBSRegion1: TIWBSRegion
+  object IWBSRegion4: TIWBSRegion
     Left = 0
     Top = 0
     Width = 752
     Height = 1180
     Align = alClient
-    BSRegionType = bsrtContainer
-    object IWBSRegion8: TIWBSRegion
+    Style.Strings = (
+      '')
+    BSRegionType = bsrtNone
+    ExplicitLeft = 140
+    ExplicitTop = 324
+    ExplicitWidth = 60
+    ExplicitHeight = 60
+    object IWBSRegion1: TIWBSRegion
       Left = 1
-      Top = 1
+      Top = 78
       Width = 750
-      Height = 61
-      Align = alTop
-      BSRegionType = bsrtRow
-      object IWBSButton1: TIWBSButton
-        Left = 495
-        Top = 16
-        Width = 218
-        Height = 25
-        Css = 'pull-right'
-        Caption = 'Switch to Standard Demo'
-        FriendlyName = 'IWBSButton1'
-        TabOrder = 0
-        OnClick = IWBSButton1Click
-      end
-      object IWText1: TIWBSText
-        Left = 16
-        Top = 16
-        Width = 381
-        Height = 27
-        Css = 'pull-left'
-        Lines.Strings = (
-          '<h3>Bootstrap-Table</h3>')
-        RawText = True
-      end
-    end
-    object IWBSRegion2: TIWBSRegion
-      Left = 1
-      Top = 62
-      Width = 750
-      Height = 1117
+      Height = 1101
       Align = alClient
-      BSRegionType = bsrtRow
-      object IWBSRegion3: TIWBSRegion
+      BSRegionType = bsrtContainer
+      ExplicitLeft = 0
+      ExplicitTop = 77
+      ExplicitWidth = 752
+      ExplicitHeight = 1103
+      object IWBSRegion2: TIWBSRegion
         Left = 1
         Top = 1
         Width = 748
-        Height = 1115
+        Height = 1099
         Align = alClient
-        BSRegionType = bsrtColumn
-        object DbTable: TIWBSCustomComponent
-          Left = 23
-          Top = 19
-          Width = 442
-          Height = 154
-          Script.Strings = (
-            '$('#39'#%htmlname%_table'#39').bootstrapTable(%options%);'
-            
-              '$('#39'#%htmlname%_table'#39').on("click-cell.bs.table", function(elem, ' +
-              'field, value, row) {%onClickCell%} );'
-            '')
-          CustomAsyncEvents = <
-            item
-              EventName = 'onClickCell'
-              Params = 'field, value, row.field0'
-              OnAsyncEvent = DbTableCustomAjaxEvents0AsyncEvent
-            end>
-          CustomRestEvents = <
-            item
-              EventName = 'dataurl'
-              OnRestEvent = IWBSCustomComponent1CustomRestEvents0RestEvent
-            end>
-          Html.Strings = (
-            '<table id="%htmlname%_table"></table>')
+        BSRegionType = bsrtRow
+        ExplicitWidth = 750
+        ExplicitHeight = 1101
+        object IWBSRegion3: TIWBSRegion
+          Left = 1
+          Top = 1
+          Width = 746
+          Height = 1097
+          Align = alClient
+          BSRegionType = bsrtColumn
+          ExplicitWidth = 748
+          ExplicitHeight = 1099
+          object DbTable: TIWBSCustomComponent
+            Left = 10
+            Top = 103
+            Width = 451
+            Height = 154
+            Script.Strings = (
+              '$('#39'#%htmlname%_table'#39').bootstrapTable(%options%);'
+              
+                '$('#39'#%htmlname%_table'#39').on("click-cell.bs.table", function(elem, ' +
+                'field, value, row) {%onClickCell%} );')
+            Style.Strings = (
+              '')
+            CustomAsyncEvents = <
+              item
+                EventName = 'onClickCell'
+                Params = 'field, value, row.field0'
+                OnAsyncEvent = DbTableCustomAjaxEvents0AsyncEvent
+              end>
+            CustomRestEvents = <
+              item
+                EventName = 'dataurl'
+                OnRestEvent = IWBSCustomComponent1CustomRestEvents0RestEvent
+              end>
+            Html.Strings = (
+              '<style>'
+              '@media only screen and (max-width: 767px) {'
+              '.pagination-detail {display: none;}'
+              '}'
+              '</style>'
+              ''
+              '<table id="%htmlname%_table"></table>')
+          end
+          object IWText1: TIWBSText
+            Left = 10
+            Top = 19
+            Width = 702
+            Height = 40
+            Lines.Strings = (
+              
+                '<h4>An extended Bootstrap table with radio, checkbox, sort, pagi' +
+                'nation, and other added features.</h4>')
+            RawText = True
+          end
         end
+      end
+    end
+    object IWBSRegion8: TIWBSNavBar
+      Left = 1
+      Top = 1
+      Width = 750
+      Height = 77
+      Align = alTop
+      Brand = 'BT from wenzhixin'
+      BrandLink = 'http://bootstrap-table.wenzhixin.net.cn'
+      BSInverse = True
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 752
+      object IWBSButton1: TIWBSButton
+        Left = 516
+        Top = 28
+        Width = 218
+        Height = 25
+        Css = 'navbar-btn navbar-right'
+        BSGlyphicon = 'arrow-left'
+        Caption = 'Switch to Standard Demo'
+        FriendlyName = 'IWBSButton1'
+        TabOrder = 2
+        OnClick = IWBSButton1Click
       end
     end
   end
   object dsrcMain: TDataSource
     DataSet = ClientDataSet1
     Left = 492
-    Top = 112
+    Top = 224
   end
   object ClientDataSet1: TClientDataSet
     Active = True
@@ -162,7 +198,7 @@ object FBootstrapTable: TFBootstrapTable
     Params = <>
     StoreDefs = True
     Left = 492
-    Top = 180
+    Top = 292
     Data = {
       96DA10009619E0BD01000000180000000B001C00000003000000AF020A537065
       63696573204E6F0800040000000000054E6F74657304004B0000000200075355
@@ -34732,6 +34768,6 @@ object FBootstrapTable: TFBootstrapTable
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
     Left = 490
-    Top = 50
+    Top = 162
   end
 end

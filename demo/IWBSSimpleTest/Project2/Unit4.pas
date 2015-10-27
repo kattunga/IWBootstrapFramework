@@ -15,11 +15,11 @@ uses
 type
   TIWForm4 = class(TIWAppForm)
     IWBSLayoutMgr1: TIWBSLayoutMgr;
-    IWBSInputForm1: TIWBSInputForm;
-    IWBSButton1: TIWBSButton;
-    IWBSButton2: TIWBSButton;
-    IWBSInput1: TIWBSInput;
-    IWBSButton3: TIWBSButton;
+    IWBSRegion1: TIWBSRegion;
+    IWBSRegion2: TIWBSRegion;
+    IWBSRegion3: TIWBSRegion;
+    IWBSRegion4: TIWBSRegion;
+    IWBSText1: TIWBSText;
     procedure IWBSButton2Click(Sender: TObject);
     procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
   public

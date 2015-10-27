@@ -34,10 +34,11 @@ type
     ClientDataSet1FoundDate: TDateTimeField;
     ClientDataSet1Option: TStringField;
     ClientDataSet1Check: TStringField;
-    IWBSRegion8: TIWBSRegion;
-    IWBSButton1: TIWBSButton;
-    IWText1: TIWBSText;
     DbTable: TIWBSCustomComponent;
+    IWText1: TIWBSText;
+    IWBSRegion8: TIWBSNavBar;
+    IWBSButton1: TIWBSButton;
+    IWBSRegion4: TIWBSRegion;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWBSButton1Click(Sender: TObject);
     procedure IWBSCustomComponent1CustomRestEvents0RestEvent(
@@ -64,7 +65,8 @@ begin
   // include third party grid
   IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css');
   IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js');
-  IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/locale/bootstrap-table-es-AR.min.js');
+//  IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/locale/bootstrap-table-es-AR.min.js');
+  IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/extensions/mobile/bootstrap-table-mobile.js');
 
   // configure grid options
   // it's better to use any json object to do this
@@ -88,6 +90,9 @@ begin
     options.Values['columns'] := columns;
     options.Values['pagination'] := 'true';
     options.Values['sidePagination'] := '"server"';
+//    options.Values['height'] := '400';
+    options.Values['mobileResponsive'] := 'true';
+    options.Values['paginationVAlign'] := '"top"';
 
     DbTable.ScriptParams.Values['options'] := '{'+options.DelimitedText+'}';
   finally

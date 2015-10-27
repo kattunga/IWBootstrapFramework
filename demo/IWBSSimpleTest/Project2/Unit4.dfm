@@ -16,56 +16,41 @@ object IWForm4: TIWForm4
   XPTheme = True
   DesignLeft = 8
   DesignTop = 8
-  object IWBSInputForm1: TIWBSInputForm
-    Left = 16
-    Top = 28
-    Width = 505
-    Height = 546
-    object IWBSButton1: TIWBSButton
-      Left = 44
-      Top = 56
-      Width = 181
-      Height = 25
-      Caption = 'IWBSButton1'
-      FriendlyName = 'IWBSButton1'
-      ScriptEvents = <
-        item
-          EventCode.Strings = (
-            '$("#IWBSINPUT1").val("pepe");')
-          Event = 'onClick'
-        end>
-      TabOrder = 0
+  object IWBSRegion1: TIWBSRegion
+    Left = 40
+    Top = 32
+    Width = 469
+    Height = 89
+    Css = 'navbar-default navbar-fixed-top'
+    BSRegionType = bsrtNavBar
+    object IWBSRegion2: TIWBSRegion
+      Left = 40
+      Top = 40
+      Width = 357
+      Height = 40
+      BSRegionType = bsrtContainer
     end
-    object IWBSButton2: TIWBSButton
-      Left = 44
-      Top = 96
-      Width = 153
-      Height = 25
-      Caption = 'IWBSButton2'
-      FriendlyName = 'IWBSButton2'
-      TabOrder = 1
-      OnClick = IWBSButton2Click
-    end
-    object IWBSInput1: TIWBSInput
-      Left = 44
-      Top = 147
-      Width = 253
-      Height = 25
-      Caption = ''
-      FriendlyName = 'IWBSInput1'
-      SubmitOnAsyncEvent = True
-      TabOrder = 2
-      Text = ''
-    end
-    object IWBSButton3: TIWBSButton
-      Left = 44
-      Top = 9
-      Width = 181
-      Height = 25
-      Caption = 'IWBSButton3'
-      FriendlyName = 'IWBSButton3'
-      TabOrder = 3
-      OnAsyncClick = IWBSButton3AsyncClick
+  end
+  object IWBSRegion3: TIWBSRegion
+    Left = 40
+    Top = 152
+    Width = 469
+    Height = 193
+    BSRegionType = bsrtContainer
+    object IWBSRegion4: TIWBSRegion
+      Left = 32
+      Top = 24
+      Width = 417
+      Height = 157
+      BSRegionType = bsrtWell
+      object IWBSText1: TIWBSText
+        Left = 24
+        Top = 32
+        Width = 369
+        Height = 109
+        Lines.Strings = (
+          'This is a text')
+      end
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr

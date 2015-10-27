@@ -105,10 +105,7 @@ type
     IWBSRadioButton7: TIWBSRadioButton;
     IWBSRadioButton8: TIWBSRadioButton;
     IWBSRadioButton9: TIWBSRadioButton;
-    IWBSRegion29: TIWBSRegion;
     IWTabControl21Page2: TIWTabPage;
-    IWBSRegion4: TIWBSRegion;
-    IWText3: TIWBSText;
     IWBSRegion6: TIWBSRegion;
     IWBSRegion30: TIWBSRegion;
     IWBSRegion9: TIWBSRegion;
@@ -179,9 +176,10 @@ type
     chkTabsFade: TIWBSCheckBox;
     IWBSRegion36: TIWBSRegion;
     IWBSButton42: TIWBSButton;
-    IWBSRegion38: TIWBSRegion;
+    IWBSRegion40: TIWBSRegion;
+    IWBSNavBar1: TIWBSNavBar;
+    IWBSUnorderedList1: TIWBSUnorderedList;
     IWBSButton36: TIWBSButton;
-    IWBSRegion39: TIWBSRegion;
     IWBSButton43: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
