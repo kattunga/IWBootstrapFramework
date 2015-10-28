@@ -1,12 +1,18 @@
 # IW Bootstrap 3 Framework
 
-This framework let you create Boostrap 3 desktop and mobile responsive applications with IntraWeb.
+This framework let you create responsive desktop and mobile applications with IntraWeb using Tweeter Bootstrap 3 library.
+
+Using the ide in the same way you use for create traditional Intraweb Aplications, with very little effort you can create a single applications that look awsome in mobile devices and desktop at the same time.
+
+It's light and fast so it provides a great experience for the final user on practically any modern device.
 
 ## Online Demo
 
 http://iwbs.sig2k.com/iwbootstrap
 
-## Some of the implemented features are
+## Features
+
+It implement most bootstrap Css, Components and Js. 
 
 Bootstrap CSS
 * Grid System
@@ -34,9 +40,11 @@ HTML 5 Elements
 * radio
 * select
 
-Other
+Other Features
 * Dinamically create and destroy components at runtime using ajax.
 * Classes for dinamically create Dialogs a Alerts
+* CustomComponent that can handle practically any third party component like DbGrid Tables. Using an embeded REST server you can browse tables with millions of records with no overhead.
+* It is compatible with many standard IW components.
 
 ## Requirements:
 
