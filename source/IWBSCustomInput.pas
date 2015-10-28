@@ -123,6 +123,7 @@ type
     FItemIndex: integer;
 
     procedure InitControl; override;
+    procedure InternalRenderCss(var ACss: string); override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     function FindValue(const AValue: string): integer;
     procedure Loaded; override;
@@ -130,7 +131,6 @@ type
     procedure SetItemIndex(AValue: integer); virtual;
   public
     destructor Destroy; override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     procedure SetText(const AValue: TCaption); override;
   published
     property ItemIndex: integer read FItemIndex write SetItemIndex default -1;
@@ -356,6 +356,7 @@ end;
 
 procedure TIWBSCustomTextInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
+  inherited;
   if FIsStatic then
     SetAsyncHtml(AContext, AHTMLName, FText, FOldText)
   else
@@ -461,6 +462,12 @@ begin
   FItemIndex := FindValue(FText);
 end;
 
+procedure TIWBSCustomSelectInput.InternalRenderCss(var ACss: string);
+begin
+  AddCssClass(ACss, 'form-control');
+  inherited;
+end;
+
 procedure TIWBSCustomSelectInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);
 var
   i: integer;
@@ -478,13 +485,6 @@ begin
       ATextValue := '';
       FItemIndex := -1;
     end;
-end;
-
-function TIWBSCustomSelectInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  Result := 'form-control';
-  if Css <> '' then
-    Result := Result + ' ' + Css;
 end;
 {$endregion}
 

@@ -24,6 +24,7 @@ type
     procedure SetStyle(const AValue: TStringList);
   protected
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
+    procedure InternalRenderCss(var ACss: string); virtual;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); virtual;
     function InternalRenderScript: string; virtual;
     procedure InternalRenderStyle(AStyle: TStringList); virtual;
@@ -32,6 +33,8 @@ type
     function InputSelector: string; virtual;
     function InputSuffix: string; virtual;
   public
+    class procedure AddCssClass(var ACss: string; const AClass: string);
+
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
@@ -74,9 +77,16 @@ type
 
 implementation
 
-uses IWBSScriptEvents;
+uses IWBSScriptEvents, IWBSGlobal;
 
 {$region 'TIWBSCustomControl'}
+class procedure TIWBSCustomControl.AddCssClass(var ACss: string; const AClass: string);
+begin
+  if ACss <> '' then
+    ACss := ACss+' ';
+  ACss := ACss+AClass;
+end;
+
 constructor TIWBSCustomControl.Create(AOwner: TComponent);
 begin
   inherited;
@@ -114,6 +124,11 @@ begin
 end;
 
 procedure TIWBSCustomControl.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+begin
+  //
+end;
+
+procedure TIWBSCustomControl.InternalRenderCss(var ACss: string);
 begin
   //
 end;
@@ -174,11 +189,20 @@ begin
   SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
   SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
   InternalRenderAsync(xHTMLName, AContext);
+
+  // global hook
+  if Assigned(gIWBSOnRenderAsync) then
+    gIWBSOnRenderAsync(Self, xHTMLName, xInputSelector);
 end;
 
 function TIWBSCustomControl.RenderCSSClass(AComponentContext: TIWCompContext): string;
 begin
   Result := Css;
+  InternalRenderCss(Result);
+
+  // global hook
+  if Assigned(gIWBSOnRenderCss) then
+    gIWBSOnRenderCss(Self, Result);
 end;
 
 function TIWBSCustomControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;

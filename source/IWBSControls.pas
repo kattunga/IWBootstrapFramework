@@ -87,6 +87,7 @@ end;
 
 procedure TIWBSLabel.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
+  inherited;
   SetAsyncHtml(AContext, AHTMLName, RenderLabelText, FOldText);
 end;
 
@@ -151,6 +152,7 @@ end;
 
 procedure TIWBSText.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
+  inherited;
   SetAsyncHtml(AContext, AHTMLName, RenderText, FOldText);
 end;
 

@@ -755,7 +755,7 @@ begin
 end;
 {$endregion}
 
-{$region 'TIWBSNavBar'}
+{$region 'TIWBSUnorderedList'}
 constructor TIWBSUnorderedList.Create(AOwner: TComponent);
 begin
   inherited;

@@ -2,8 +2,6 @@ unit IWBSLayoutMgr;
 
 interface
 
-{$I IWBSConfig.inc}
-
 uses
   System.Classes, System.SysUtils, System.StrUtils, Vcl.Controls,
   IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag;
@@ -12,71 +10,30 @@ type
 
   TIWBSRenderingSortMethod = (bsrmSortYX, bsrmSortXY);
 
-  TIWBSPageOption = (bslyNoConflictButton);
-
-  TIWBSPageOptions = set of TIWBSPageOption;
-
   TIWBSLayoutMgr = class(TIWContainerLayout)
   private
-    FPageOptions: TIWBSPageOptions;
     FLinkFiles: TStringList;
     function SetNotVisible(const AStyle: string): string;
   public
     constructor Create(AOnwer: TComponent); override;
     destructor Destroy; override;
     procedure AddLinkFile(const AFile: string);
+    function ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
     procedure ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent); override;
     procedure ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
     procedure Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext); override;
-    class procedure AddGlobalLinkFile(const AFile: string);
-    class function ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
-  published
-    property BSPageOptions: TIWBSPageOptions read FPageOptions write FPageOptions default [];
   end;
-
-var
-  gIWBSLibraryPath: string = '/iwbs/';
-  gIWBSRefreshCacheParam: string;
-  gIWBSjqlibversion: string = '1.11.3';
-  gIWBSbslibversion: string = '3.3.5';
-
-  gIWBSRenderingSortMethod: TIWBSRenderingSortMethod = bsrmSortYX;
-  gIWBSRenderingGridPrecision: integer = 12;
 
 implementation
 
 uses
   IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists, IWURL,
-  IWRegion, IW.Common.Strings,
+  IWRegion, IW.Common.Strings, IWBSGlobal,
   IWBSRegionCommon, IWBSCommon, IWBSTabControl;
-
-var
-  gIWBSLinkFiles: TStringList = nil;
-
-// to add global files should be done only in initialization section, it's not thread safe
-class procedure TIWBSLayoutMgr.AddGlobalLinkFile(const AFile: string);
-begin
-  if gIWBSLinkFiles = nil then
-    gIWBSLinkFiles := TStringList.Create;
-  gIWBSLinkFiles.Add(AFile);
-end;
-
-class function TIWBSLayoutMgr.ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
-begin
-  if AnsiEndsStr('.js', AFile) then
-    Result := '<script type="text/javascript" src="'+AFile+IfThen(ADisableCache,'?v='+gIWBSRefreshCacheParam)+'"></script>'
-
-  else if AnsiEndsStr('.css', AFile) then
-    Result := '<link rel="stylesheet" type="text/css" href="'+AFile+IfThen(ADisableCache,'?v='+gIWBSRefreshCacheParam)+'">'
-
-  else
-    raise Exception.Create('Unknown file type');
-end;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
   inherited;
-  FPageOptions := [];
   SetAllowFrames(true);
   SetLayoutType(ltFlow);
 end;
@@ -88,25 +45,39 @@ end;
 
 procedure TIWBSLayoutMgr.AddLinkFile(const AFile: string);
 begin
-  if FLinkFiles = nil then
+  if FLinkFiles = nil then begin
     FLinkFiles := TStringList.Create;
-  FLinkFiles.Add(AFile);
+    FLinkFiles.Sorted := True;
+  end;
+  if FLinkFiles.IndexOf(AFile) = -1 then
+    FLinkFiles.Add(AFile);
+end;
+
+function TIWBSLayoutMgr.ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
+var
+  LFile: string;
+begin
+  if not AnsiStartsStr('//', AFile) and not AnsiStartsStr('http://', AFile) and not AnsiStartsStr('https://', AFile) then
+    LFile := ReplaceStr(TURL.Concat(gSC.URLBase,AFile), '/<iwbspath>/', gIWBSLibPath)
+  else
+    LFile := AFile;
+
+  if AnsiEndsStr('.js', LFile) then
+    Result := '<script type="text/javascript" src="'+LFile+IfThen(ADisableCache,'?v='+gIWBSRefreshCacheParam)+'"></script>'
+
+  else if AnsiEndsStr('.css', LFile) then
+    Result := '<link rel="stylesheet" type="text/css" href="'+LFile+IfThen(ADisableCache,'?v='+gIWBSRefreshCacheParam)+'">'
+
+  else
+    raise Exception.Create('Unknown file type');
 end;
 
 procedure TIWBSLayoutMgr.ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
 var
   LPageContext: TIWPageContext40;
   LTerminated: Boolean;
-  FLibPath: string;
   i: integer;
 begin
-
-  // library path must end with /
-  if not AnsiEndsStr('/', gIWBSLibraryPath) then
-    gIWBSLibraryPath := gIWBSLibraryPath+'/';
-
-  // get library path
-  FLibPath := TURL.Concat(gSC.URLBase,gIWBSLibraryPath);
 
   LPageContext := TIWPageContext40(APage);
   LTerminated := Assigned(LPageContext.WebApplication) and LPageContext.WebApplication.Terminated;
@@ -124,35 +95,35 @@ begin
   ABuffer.WriteLine(PreHeadContent);
 
   // jquery
-  ABuffer.WriteLine(ParseLinkFile(FLibPath+'jquery-'+gIWBSjqlibversion+'.min.js', False));
+  ABuffer.WriteLine(ParseLinkFile(gIWBSLibJQueryJs, False));
 
   // bootstrap
-  ABuffer.WriteLine(ParseLinkFile(FLibPath+'bootstrap-'+gIWBSbslibversion+'/css/bootstrap.min.css', False));
-  ABuffer.WriteLine(ParseLinkFile(FLibPath+'bootstrap-'+gIWBSbslibversion+'/js/bootstrap.min.js', False));
-
-  // disable bootstap button plugin for no conflict with jqButton of jQueryUI framework, required if use CGDevtools buttons
-  if bslyNoConflictButton in FPageOptions then
-    ABuffer.WriteLine('<script type="text/javascript">$.fn.button.noConflict();</script>');
+  ABuffer.WriteLine(ParseLinkFile(gIWBSLibBootstrapCss, False));
+  ABuffer.WriteLine(ParseLinkFile(gIWBSLibBootstrapJs, False));
 
   // iwbs
-  ABuffer.WriteLine(ParseLinkFile(FLibPath+'iwbs.css'));
-  ABuffer.WriteLine(ParseLinkFile(FLibPath+'iwbs.js'));
+  ABuffer.WriteLine(ParseLinkFile(gIWBSLibIWBSCss));
+  ABuffer.WriteLine(ParseLinkFile(gIWBSLibIWBSJs));
+
+  // polyfiller
+  if gIWBSlibPolyfiller then
+    ABuffer.WriteLine(ParseLinkFile(gIWBSLibPolyfillerJs));
+
+  // Dynamic Tabs
+  if gIWBSLibDynamicTabs then begin
+    ABuffer.WriteLine(ParseLinkFile(gIWBSLibDynamicTabsCss));
+    ABuffer.WriteLine(ParseLinkFile(gIWBSLibDynamicTabsJs));
+  end;
 
   // add global linkfiles
   if gIWBSLinkFiles <> nil then
     for i := 0 to gIWBSLinkFiles.Count-1 do
-      if AnsiStartsStr('//', gIWBSLinkFiles[i]) then
-        ABuffer.WriteLine(ParseLinkFile(gIWBSLinkFiles[i], False))
-      else
-        ABuffer.WriteLine(ParseLinkFile(TURL.Concat(gSC.URLBase,ReplaceStr(gIWBSLinkFiles[i],'/<iwbspath>/',gIWBSLibraryPath))));
+      ABuffer.WriteLine(ParseLinkFile(gIWBSLinkFiles[i], False));
 
-  // add linkfiles
+  // add LayoutMgr linkfiles
   if FLinkFiles <> nil then
     for i := 0 to FLinkFiles.Count-1 do
-      if AnsiStartsStr('//', FLinkFiles[i]) then
-        ABuffer.WriteLine(ParseLinkFile(FLinkFiles[i], False))
-      else
-        ABuffer.WriteLine(ParseLinkFile(TURL.Concat(gSC.URLBase,ReplaceStr(FLinkFiles[i],'/<iwbspath>/',gIWBSLibraryPath))));
+      ABuffer.WriteLine(ParseLinkFile(FLinkFiles[i], False));
 
   ABuffer.WriteLine(ScriptSection(LPageContext));
   ABuffer.WriteLine(HeadContent);
@@ -354,15 +325,5 @@ begin
 
   APageContext.AppendContext(LComponentContext);
 end;
-
-initialization
-  gIWBSRefreshCacheParam := FormatDateTime('yyyymmddhhnnsszzz', now);
-
-{$IFDEF IWBSWEBSHIM}
-  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/webshim-1.15.8/js-webshim/minified/polyfiller.js');
-{$ENDIF}
-
-finalization
-  FreeAndNil(gIWBSLinkFiles);
 
 end.

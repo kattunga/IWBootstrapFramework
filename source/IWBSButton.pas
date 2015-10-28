@@ -107,6 +107,7 @@ end;
 
 procedure TIWBSButton.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
+  inherited;
   SetAsyncDisabled(AContext, AHTMLName, not (Enabled and Editable), FOldDisabled);
 end;
 

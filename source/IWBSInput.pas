@@ -2,8 +2,6 @@ unit IWBSInput;
 
 interface
 
-{$I IWBSConfig.inc}
-
 uses
   System.SysUtils, System.Classes, data.db, System.StrUtils, Vcl.Controls,
   IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseHTMLControl, IWBaseInterfaces,
@@ -102,7 +100,6 @@ type
     procedure OnItemsChange(ASender : TObject); override;
     procedure SetItemIndex(AValue: integer); override;
   public
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     procedure SetText(const AValue: TCaption); override;
   published
     property MultiSelect: boolean read FMultiSelect write FMultiSelect default False;
@@ -119,7 +116,7 @@ type
 
 implementation
 
-uses IW.Common.System, IWBSUtils, IWBSInputCommon, IWBSLayoutMgr;
+uses IW.Common.System, IWBSInputCommon;
 
 {$region 'TIWBSInput'}
 procedure TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
@@ -306,6 +303,7 @@ end;
 
 procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
+  inherited;
   if FText <> FOldText then begin
     AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked", '+iif(Checked,'true','false')+');');
     FOldText := FText;
@@ -390,6 +388,7 @@ end;
 
 procedure TIWBSRadioButton.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
+  inherited;
   if FText <> FOldText then begin
     AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+InputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
     FOldText := FText;
@@ -530,6 +529,7 @@ var
   LSelectedIdx: string;
   i: integer;
 begin
+  inherited;
   if (FText <> FOldText) then begin
     LSelectedIdx := '';
     if FMultiSelect then
@@ -546,20 +546,6 @@ begin
     AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").val(['+LSelectedIdx+']);');
     FOldText := FText;
   end;
-{$IFDEF IWBSBOOTSTRAPSELECT}
-  AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").selectpicker("refresh");');
-{$ENDIF}
-end;
-
-function TIWBSSelect.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
-  Result := 'form-control';
-{$IFDEF IWBSBOOTSTRAPSELECT}
-  if FSize = 1 then
-    Result := Result + ' selectpicker';
-{$ENDIF}
-  if Css <> '' then
-    Result := Result + ' ' + Css;
 end;
 
 procedure TIWBSSelect.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
@@ -613,6 +599,7 @@ end;
 
 procedure TIWBSRadioGroup.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
 begin
+  inherited;
   if (FText <> FOldText) then begin
     if FItemIndex >= 0 then
       AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'_INPUT_'+IntToStr(FItemIndex)+'").prop("checked", true);')
@@ -658,11 +645,5 @@ begin
     AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, AHTMLName);
 end;
 {$endregion}
-
-{$IFDEF IWBSBOOTSTRAPSELECT}
-initialization
-  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/select/dist/css/bootstrap-select.min.css');
-  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/select/dist/js/bootstrap-select.min.js');
-{$ENDIF}
 
 end.

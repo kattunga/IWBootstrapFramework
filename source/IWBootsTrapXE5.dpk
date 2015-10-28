@@ -56,7 +56,8 @@ contains
   IWBSImage in 'IWBSImage.pas',
   IWBSRestServer in 'IWBSRestServer.pas',
   IWBSCustomEvents in 'IWBSCustomEvents.pas',
-  IWBSCustomComponent in 'IWBSCustomComponent.pas';
+  IWBSCustomComponent in 'IWBSCustomComponent.pas',
+  IWBSGlobal in 'IWBSGlobal.pas';
 
 end.
 

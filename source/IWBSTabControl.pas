@@ -2,8 +2,6 @@ unit IWBSTabControl;
 
 interface
 
-{$I IWBSConfig.inc}
-
 uses
   System.SysUtils, System.Classes, System.StrUtils, Vcl.Controls, Vcl.Forms, Vcl.Graphics,
   IWVCLBaseContainer, IWApplication, IWBaseRenderContext, IWControl,
@@ -70,7 +68,7 @@ type
 
 implementation
 
-uses IWLists, IW.Common.System, IWBSutils, IWBSLayoutMgr, IWBSScriptEvents, IWBaseInterfaces;
+uses IWLists, IW.Common.System, IWBSutils, IWBSLayoutMgr, IWBSScriptEvents, IWBaseInterfaces, IWBSGlobal;
 
 {$region 'THackCustomRegion'}
 type
@@ -287,10 +285,8 @@ begin
   // add script tag
   Result.Contents.AddText('<script>');
   try
-{$IFDEF IWBSDYNTABS}
-    if not FTabOptions.Justified and not FTabOptions.Stacked then
+    if not FTabOptions.Justified and not FTabOptions.Stacked and gIWBSLibDynamicTabs then
       Result.Contents.AddText('$("#'+xHTMLName+'_tabs'+'").bootstrapDynamicTabs();');
-{$ENDIF}
 
     // save seleted tab on change
     Result.Contents.AddText('$("#'+xHTMLName+'_tabs").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=$(e.target).attr("tabindex"); console.log(arguments) });');
@@ -340,11 +336,5 @@ begin
   SetTabPageVisibility(Pages.IndexOf(ATabPage), Visible);
 end;
 {$endregion}
-
-{$IFDEF IWBSDYNTABS}
-initialization
-  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.css');
-  TIWBSLayoutMgr.AddGlobalLinkFile('/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.js');
-{$ENDIF}
 
 end.

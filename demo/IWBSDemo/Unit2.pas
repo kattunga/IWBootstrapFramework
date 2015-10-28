@@ -380,6 +380,4 @@ end;
 initialization
   TIWForm2.SetAsMainForm;
 
-  TIWBSLayoutMgr.AddGlobalLinkFile('/iwbsdemo.css');
-
 end.
