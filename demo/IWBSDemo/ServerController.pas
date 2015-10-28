@@ -2,6 +2,9 @@ unit ServerController;
 
 interface
 
+{.$DEFINE CDNS}
+{.$DEFINE BOOTSTRAPSELECT}
+
 uses
   SysUtils, Classes, IWServerControllerBase, IWBaseForm, HTTPApp,
   // For OnNewSession Event
@@ -11,12 +14,7 @@ type
   TIWServerController = class(TIWServerControllerBase)
     procedure IWServerControllerBaseNewSession(ASession: TIWApplication);
     procedure IWServerControllerBaseConfig(Sender: TObject);
-
-  private
-    
-  public
   end;
-
 
   function UserSession: TIWUserSession;
   function IWServerController: TIWServerController;
@@ -62,7 +60,6 @@ begin
 
   // here we can change IWBootstrap library files location to for example public cdns,
   // ATTENTION!!!, this can't be done after this event because global variables are not thread safe
-{.$DEFINE CDNS}
 {$IFDEF CDNS}
 
   gIWBSLibJQueryJs := 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js';
@@ -79,8 +76,10 @@ begin
   gIWBSLibDynamicTabsJs := 'http://cdn.rawgit.com/kattunga/Bootstrap-Dynamic-Tabs/v1.0/bootstrap-dynamic-tabs.js';
 
   // we add a third party plugin to manage selects
+  {$IFDEF BOOTSTRAPSELECT}
   IWBSAddGlobalLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.css');
   IWBSAddGlobalLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.js');
+  {$ENDIF}
 
   // custom css for this demo
   IWBSAddGlobalLinkFile('https://rawgit.com/kattunga/IWBootstrapFramework/master/demo/bin/wwwroot/iwbsdemo.css');
@@ -88,8 +87,10 @@ begin
 {$ELSE}
 
   // we add a third party plugin to manage selects
+  {$IFDEF BOOTSTRAPSELECT}
   IWBSAddGlobalLinkFile('/<iwbspath>/select/dist/css/bootstrap-select.min.css');
   IWBSAddGlobalLinkFile('/<iwbspath>/select/dist/js/bootstrap-select.min.js');
+  {$ENDIF}
 
   // custom css for this demo
   IWBSAddGlobalLinkFile('/iwbsdemo.css');
@@ -110,8 +111,10 @@ initialization
   TIWServerController.SetServerControllerClass;
 
   // set global events
+{$IFDEF BOOTSTRAPSELECT}
   gIWBSOnRenderAsync := MyRenderAsync;
   gIWBSOnRenderCss := MyRenderCss;
+{$ENDIF}
 
 end.
 

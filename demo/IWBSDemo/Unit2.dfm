@@ -18,7 +18,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = 8
+  DesignTop = -459
   object IWBSRegion40: TIWBSRegion
     Left = 0
     Top = 0
@@ -374,7 +374,7 @@ object IWForm2: TIWForm2
                       BSGlyphicon = 'align-left'
                       Caption = 'Left'
                       FriendlyName = 'IWBSButton1'
-                      TabOrder = 2
+                      TabOrder = 0
                     end
                     object IWBSButton2: TIWBSButton
                       Left = 91
@@ -1686,8 +1686,8 @@ object IWForm2: TIWForm2
                       'item 4')
                   end
                   object IWBSComboBox2: TIWBSSelect
-                    Left = 14
-                    Top = 715
+                    Left = 15
+                    Top = 755
                     Width = 291
                     Height = 25
                     Caption = 'This is a Select (Size = 1)'
@@ -1703,12 +1703,10 @@ object IWForm2: TIWForm2
                   end
                   object IWBSListbox2: TIWBSSelect
                     Left = 14
-                    Top = 584
+                    Top = 575
                     Width = 291
-                    Height = 29
-                    Caption = 
-                      'This is a ListBox with multi select and plugin enabled (Size = 1' +
-                      ')'
+                    Height = 82
+                    Caption = 'This is a ListBox with multi select'
                     FriendlyName = 'IWBSListbox1'
                     SubmitOnAsyncEvent = True
                     TabOrder = 49
@@ -1719,10 +1717,11 @@ object IWForm2: TIWForm2
                       'item 3'
                       'item 4')
                     MultiSelect = True
+                    Size = 4
                   end
                   object IWBSListbox3: TIWBSSelect
-                    Left = 14
-                    Top = 626
+                    Left = 15
+                    Top = 663
                     Width = 291
                     Height = 77
                     Caption = 'This is a Select (Size <> 1)'
