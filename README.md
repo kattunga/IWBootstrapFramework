@@ -66,7 +66,7 @@ https://groups.google.com/forum/?place=forum/intraweb-bootstrap-framework
 
 ## Contribute
 
-If you found a bug or you have a proposed enhacement fill an issue in issue tracker.
+If you found a bug or you have a proposed enhacement you can fill an issue in issue tracker.
 
 If you want to contribute with documentation you can do it on the wiki. Help is needed on this area.
 
