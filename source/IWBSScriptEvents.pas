@@ -9,7 +9,7 @@ procedure IWBSRenderScript(AComponent: IIWBSComponent; AComponentContext: TIWCom
 
 implementation
 
-uses IW.Common.Strings, IWBaseInterfaces;
+uses IW.Common.Strings, IWBaseInterfaces, IWBSGlobal;
 
 type
   TIWBSScriptEvents = class(IWScriptEvents.TIWScriptEvents)
@@ -95,6 +95,10 @@ begin
         LJScript := LJScript+#13#10;
       LJScript := LJScript+LComponentScript;
     end;
+
+    // global hook
+    if Assigned(gIWBSOnRenderScript) then
+      gIWBSOnRenderScript(AComponent.InterfaceInstance, LHTMLName, LJScript);
 
     if LJScript <> '' then
       AHTMLTag.Contents.AddTag('script').Contents.AddText(LJScript);

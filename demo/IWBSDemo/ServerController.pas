@@ -41,6 +41,7 @@ begin
   if AControl.ClassNameIs('TIWBSSelect') then
     ACss := ACss+' selectpicker';
 end;
+
 // *****************************************************************************
 
 function IWServerController: TIWServerController;
@@ -61,7 +62,7 @@ begin
 
   // here we can change IWBootstrap library files location to for example public cdns,
   // ATTENTION!!!, this can't be done after this event because global variables are not thread safe
-{$DEFINE CDNS}
+{.$DEFINE CDNS}
 {$IFDEF CDNS}
 
   gIWBSLibJQueryJs := 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js';

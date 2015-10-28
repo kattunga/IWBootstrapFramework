@@ -35,11 +35,12 @@ var
   gIWBSRenderingGridPrecision: integer = 12;
 
   // server start timestamp value in format string, it is usefull to force client refresh cache browsers of included files
-  gIWBSRefreshCacheParam: string;
+  gIWBSRefreshCacheParam: string = '';
 
   // global hook events, let you customize controls in a simple way
   gIWBSOnRenderAsync: procedure(AControl: TComponent; const AHTMLName, AInputSelector: string);
   gIWBSOnRenderCss: procedure(AControl: TComponent; var ACss: string);
+  gIWBSOnRenderScript: procedure(AControl: TComponent; const AHTMLName: string; var ACss: string);
 
   // global link files to include in every page
   gIWBSLinkFiles: TStringList = nil;
