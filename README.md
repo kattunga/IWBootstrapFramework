@@ -66,6 +66,8 @@ https://groups.google.com/forum/?place=forum/intraweb-bootstrap-framework
 
 ## Contribute
 
-If you like this framework and you want to help I'll be very thankful.
+If you found a bug or you have a proposed enhacement fill an issue in issue tracker.
 
-For contribute with the project, first fork it, then fill an issue and we will discuss it, after we agree you can create a pull request so I can add your commit in the project.
+If you want to contribute with documentation you can do it on the wiki. Help is needed on this area.
+
+If you want to contribute with code, first fork it, we can discuss it in discussion group, after we agree you can create a pull request so I can add your commits in the project.
