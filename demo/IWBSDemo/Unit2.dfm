@@ -18,7 +18,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -459
+  DesignTop = 8
   object IWBSRegion40: TIWBSRegion
     Left = 0
     Top = 0

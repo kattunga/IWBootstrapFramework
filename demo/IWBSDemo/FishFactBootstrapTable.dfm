@@ -53,8 +53,8 @@ object FBootstrapTable: TFBootstrapTable
           object DbTable: TIWBSCustomComponent
             Left = 10
             Top = 75
-            Width = 451
-            Height = 154
+            Width = 702
+            Height = 258
             Script.Strings = (
               '$('#39'#%htmlname%_table'#39').bootstrapTable(%options%);'
               
@@ -121,8 +121,8 @@ object FBootstrapTable: TFBootstrapTable
   end
   object dsrcMain: TDataSource
     DataSet = ClientDataSet1
-    Left = 492
-    Top = 224
+    Left = 148
+    Top = 24
   end
   object ClientDataSet1: TClientDataSet
     Active = True
@@ -182,8 +182,8 @@ object FBootstrapTable: TFBootstrapTable
     IndexName = 'DEFAULT_ORDER'
     Params = <>
     StoreDefs = True
-    Left = 492
-    Top = 292
+    Left = 232
+    Top = 28
     Data = {
       96DA10009619E0BD01000000180000000B001C00000003000000AF020A537065
       63696573204E6F0800040000000000054E6F74657304004B0000000200075355
@@ -34752,7 +34752,7 @@ object FBootstrapTable: TFBootstrapTable
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
-    Left = 490
-    Top = 162
+    Left = 54
+    Top = 26
   end
 end
