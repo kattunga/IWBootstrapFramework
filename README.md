@@ -47,6 +47,7 @@ Other Features
 * Classes for dinamically create Dialogs a Alerts
 * CustomComponent that can handle practically any third party component like DbGrid Tables. Using an embeded REST server you can browse tables with millions of records with no overhead.
 * It is compatible with many standard IW components.
+* Global hooks that let you easily apply third party plugins to any component
 
 ## Requirements:
 
