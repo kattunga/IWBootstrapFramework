@@ -75,10 +75,9 @@ object IWFrame3: TIWFrame3
             'item 2'
             'item 3'
             'item 4')
-          MultiSelect = True
         end
         object IWBSButton1: TIWBSButton
-          Left = 28
+          Left = 24
           Top = 160
           Width = 265
           Height = 25

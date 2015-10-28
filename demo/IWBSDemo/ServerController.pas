@@ -28,6 +28,7 @@ uses
 
 // *****************************************************************************
 // with this global hooks you can apply a third party plugin to any component
+// where for example we apply the excelent https://silviomoreto.github.io/bootstrap-select/
 procedure MyRenderAsync(AControl: TComponent; const AHTMLName, AInputSelector: string);
 begin
   if AControl.ClassNameIs('TIWBSSelect') then
@@ -75,7 +76,7 @@ begin
   gIWBSLibDynamicTabsCss := 'http://cdn.rawgit.com/kattunga/Bootstrap-Dynamic-Tabs/v1.0/bootstrap-dynamic-tabs.css';
   gIWBSLibDynamicTabsJs := 'http://cdn.rawgit.com/kattunga/Bootstrap-Dynamic-Tabs/v1.0/bootstrap-dynamic-tabs.js';
 
-  // we add a third party plugin to manage selects
+  // we add a third party plugin to manage selects (https://silviomoreto.github.io/bootstrap-select)
   {$IFDEF BOOTSTRAPSELECT}
   IWBSAddGlobalLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.css');
   IWBSAddGlobalLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.js');
