@@ -181,6 +181,7 @@ type
     IWBSUnorderedList1: TIWBSUnorderedList;
     IWBSButton36: TIWBSButton;
     IWBSButton43: TIWBSButton;
+    IWBSButton44: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -199,6 +200,7 @@ type
     procedure IWBSButton39AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton42AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton43Click(Sender: TObject);
+    procedure IWBSButton44Click(Sender: TObject);
   public
   end;
 
@@ -206,7 +208,7 @@ implementation
 
 {$R *.dfm}
 
-uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact, FishFactBootstrapTable,
+uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact, FishFactBootstrapTable, FishFactJQGrid,
   ServerController;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
@@ -372,6 +374,14 @@ end;
 procedure TIWForm2.IWBSButton43Click(Sender: TObject);
 begin
   with TFBootstrapTable.Create(WebApplication) do begin
+    IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
+    Show;
+  end;
+end;
+
+procedure TIWForm2.IWBSButton44Click(Sender: TObject);
+begin
+  with TFJQGrid.Create(WebApplication) do begin
     IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
     Show;
   end;

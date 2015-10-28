@@ -1,4 +1,4 @@
-unit FishFactBootstrapTable;
+unit FishFactJQGrid;
 
 interface
 
@@ -16,7 +16,7 @@ uses
   IW.HTTP.Request, IW.HTTP.Reply, IWBSCustomComponent;
 
 type
-  TFBootstrapTable = class(TIWAppForm)
+  TFJQGrid = class(TIWAppForm)
     dsrcMain: TDataSource;
     ClientDataSet1: TClientDataSet;
     ClientDataSet1SpeciesNo: TFloatField;
@@ -54,7 +54,7 @@ uses IWBSRestServer, IW.Common.Strings, IWBSDialogs;
 var
   fs: TFormatSettings;
 
-procedure TFBootstrapTable.IWFormModuleBaseCreate(Sender: TObject);
+procedure TFJQGrid.IWFormModuleBaseCreate(Sender: TObject);
 var
   columns: string;
   options: TStringList;
@@ -63,9 +63,8 @@ begin
   //ClientDataSet1.LoadFromFile('biolife2.cds');
 
   // include third party grid https://github.com/wenzhixin/bootstrap-table
-  IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css');
-  IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js');
-  IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/extensions/mobile/bootstrap-table-mobile.js');
+  IWBSLayoutMgr1.AddLinkFile('https://cdn.rawgit.com/tonytomov/jqGrid/v5.0.1/js/jquery.jqGrid.js');
+  IWBSLayoutMgr1.AddLinkFile('https://cdn.rawgit.com/tonytomov/jqGrid/v5.0.1/css/ui.jqgrid-bootstrap.css');
 
   // configure grid options
   // it's better to use any json object to do this, but for this demo I'll do it by hand
@@ -97,18 +96,18 @@ begin
   end;
 end;
 
-procedure TFBootstrapTable.DbTableCustomAjaxEvents0AsyncEvent(
+procedure TFJQGrid.DbTableCustomAjaxEvents0AsyncEvent(
   aParams: TStringList);
 begin
   TIWBSAlert.Create('You clicked field '+aParams.Values['field']+' row '+aParams.Values['row.field0']).Show;
 end;
 
-procedure TFBootstrapTable.IWBSButton1Click(Sender: TObject);
+procedure TFJQGrid.IWBSButton1Click(Sender: TObject);
 begin
   Release;
 end;
 
-procedure TFBootstrapTable.IWBSCustomComponent1CustomRestEvents0RestEvent(
+procedure TFJQGrid.IWBSCustomComponent1CustomRestEvents0RestEvent(
   aRequest: THttpRequest; aReply: THttpReply);
 var
   data: string;

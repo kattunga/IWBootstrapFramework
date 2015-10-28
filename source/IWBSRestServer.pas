@@ -34,6 +34,9 @@ uses IW.Content.Handlers, IWURL, IWBaseForm;
 
 const IWBS_RESTURLBASE = '/$iwbs/';
 
+var
+  FIsServerRegistered: boolean = False;
+
 {$region 'TIWBSRestCallback'}
 { TIWCallback }
 
@@ -144,7 +147,9 @@ end;
 
 procedure IWBSRegisterRestServerHandler;
 begin
-  THandlers.Add(IWBS_RESTURLBASE, '', TIWBSRestServer.Create);
+  if not FIsServerRegistered then
+    THandlers.Add(IWBS_RESTURLBASE, '', TIWBSRestServer.Create);
+  FIsServerRegistered := True;
 end;
 
 end.

@@ -39,15 +39,15 @@ object IWForm2: TIWForm2
       object IWBSUnorderedList1: TIWBSUnorderedList
         Left = 51
         Top = 7
-        Width = 518
+        Width = 762
         Height = 48
         object IWBSButton36: TIWBSButton
-          Left = 227
+          Left = 277
           Top = 19
-          Width = 211
+          Width = 154
           Height = 25
           Anchor = True
-          Caption = 'Data Aware Demo'
+          Caption = 'Data Aware Form'
           FriendlyName = 'IWBSButton1'
           TabOrder = 97
           OnClick = IWBSButton36Click
@@ -55,13 +55,24 @@ object IWForm2: TIWForm2
         object IWBSButton43: TIWBSButton
           Left = 10
           Top = 19
-          Width = 211
+          Width = 141
           Height = 25
           Anchor = True
-          Caption = 'Bootstrap-Table Demo'
+          Caption = 'Bootstrap-Table'
           FriendlyName = 'IWBSButton1'
           TabOrder = 98
           OnClick = IWBSButton43Click
+        end
+        object IWBSButton44: TIWBSButton
+          Left = 162
+          Top = 19
+          Width = 109
+          Height = 25
+          Anchor = True
+          Caption = 'JQGrid'
+          FriendlyName = 'IWBSButton1'
+          TabOrder = 99
+          OnClick = IWBSButton44Click
         end
       end
     end
