@@ -1,10 +1,12 @@
-# IW Bootstrap 3 Framework
+# IW Bootstrap 3 Framework for Delphi Intraweb.
 
 This framework let you create responsive desktop and mobile applications with IntraWeb using Tweeter Bootstrap 3 library.
 
 Using the ide in the same way you use for create traditional Intraweb Aplications, with very little effort you can create a single applications that look awsome in mobile devices and desktop at the same time.
 
 It's light and fast so it provides a great experience for the final user on practically any modern device.
+
+If you need to develop applications for phones, tablets and any other device this is the best alternative for use  with Intraweb for Delphi. 
 
 ## Online Demo
 
