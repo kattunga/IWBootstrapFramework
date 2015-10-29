@@ -2,7 +2,7 @@ unit IWBSGlobal;
 
 interface
 
-uses System.Classes, System.SysUtils, IWBSLayoutMgr;
+uses System.Classes, System.SysUtils, IWHTMLTag, IWBSLayoutMgr;
 
 // ATENTION!!!!, Global files should only be modified in TIWServerController.OnConfig event, they are not Thread Safe.
 // only boolean vars (for enable/disable plugins) could be changed anytime, because boleans vars work with attomic read/write
@@ -38,9 +38,9 @@ var
   gIWBSRefreshCacheParam: string = '';
 
   // global hook events, let you customize controls in a simple way
-  gIWBSOnRenderAsync: procedure(AControl: TComponent; const AHTMLName, AInputSelector: string);
-  gIWBSOnRenderCss: procedure(AControl: TComponent; var ACss: string);
-  gIWBSOnRenderScript: procedure(AControl: TComponent; const AHTMLName: string; var ACss: string);
+  gIWBSOnRenderAsync: procedure(AControl: TComponent; const AHTMLName, xInputSelector: string);
+  gIWBSOnBeforeRender: procedure(AControl: TComponent);
+  gIWBSOnHTMLTag: procedure(AControl: TComponent; const AHTMLName: string; ATag: TIWHTMLTag);
 
   // global link files to include in every page
   gIWBSLinkFiles: TStringList = nil;

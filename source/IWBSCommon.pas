@@ -73,7 +73,7 @@ procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const V
 
 implementation
 
-uses IW.Common.System, IWBaseHTMLControl;
+uses IW.Common.System, IWBaseHTMLControl, IWBSUtils;
 
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create;
@@ -159,7 +159,7 @@ end;
 procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").html("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('$("#'+HTMLName+'").html("'+IWBSTextToJsParamText(Value)+'");');
     OldValue := Value;
   end;
 end;

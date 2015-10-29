@@ -15,19 +15,24 @@ uses
 type
   TIWForm4 = class(TIWAppForm)
     IWBSLayoutMgr1: TIWBSLayoutMgr;
-    IWBSRegion1: TIWBSRegion;
-    IWBSRegion2: TIWBSRegion;
     IWBSRegion3: TIWBSRegion;
-    IWBSRegion4: TIWBSRegion;
-    IWBSText1: TIWBSText;
+    IWBSButton1: TIWBSButton;
+    IWBSText2: TIWBSText;
     procedure IWBSButton2Click(Sender: TObject);
     procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
 implementation
 
 {$R *.dfm}
+
+procedure TIWForm4.IWBSButton1AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  IWBSText2.Lines.Insert(2, '<li>pepe</li>');
+end;
 
 procedure TIWForm4.IWBSButton2Click(Sender: TObject);
 begin

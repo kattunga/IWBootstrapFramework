@@ -2,7 +2,8 @@ unit IWBSRegionCommon;
 
 interface
   uses System.Classes, System.SysUtils, Vcl.Controls, Vcl.Forms,
-       IWContainer, IWBSCommon, IWRenderContext;
+       IWContainer, IWHTML40Container, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream,
+       IWBSCommon;
 
 type
   TIWBSFormType = (bsftInline, bsftHorizontal, bsftVertical);
@@ -59,11 +60,12 @@ type
   end;
 
 procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer);
+procedure IWBSRegionRenderComponents(ARegion: TIWHTML40Container; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
 
 implementation
 
 uses IWBaseInterfaces, IWHTML40Interfaces,
-     IWRegion, IWBSLayoutMgr, IWBSUtils;
+     IWRegion, IWBSLayoutMgr, IWBSUtils, IWBSGlobal;
 
 {$region 'TIWBSBtnGroupOptions'}
 constructor TIWBSButonGroupOptions.Create(AOwner: TComponent);
@@ -112,6 +114,19 @@ begin
 end;
 {$endregion}
 
+{$region 'THackCustomRegion'}
+type
+  THackTIWHTML40Container = class(TIWHTML40Container)
+  private
+    procedure CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+  end;
+
+procedure THackTIWHTML40Container.CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+begin
+  inherited RenderComponents(AContainerContext, APageContext);
+end;
+{$endregion}
+
 procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer);
 var
   i: integer;
@@ -154,6 +169,23 @@ begin
       LHTML40Control := HTML40ControlInterface(AContainer.Component[i]);
       IWBSDisableRenderOptions(LHTML40Control.StyleRenderOptions);
     end;
+
+    // global hook
+    if Assigned(gIWBSOnBeforeRender) then
+      gIWBSOnBeforeRender(LComponent);
+
+  end;
+end;
+
+procedure IWBSRegionRenderComponents(ARegion: TIWHTML40Container; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
+begin
+  IWBSPrepareChildComponentsForRender(ARegion);
+  try
+    THackTIWHTML40Container(ARegion).CallInheritedRenderComponents(AContainerContext, APageContext);
+    THackTIWHTML40Container(ARegion).LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
+    THackTIWHTML40Container(ARegion).LayoutMgr.Process(ABuffer, AContainerContext, APageContext);
+  finally
+    THackTIWHTML40Container(ARegion).LayoutMgr.SetContainer(nil);
   end;
 end;
 

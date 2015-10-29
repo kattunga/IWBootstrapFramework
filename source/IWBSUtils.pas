@@ -9,8 +9,10 @@ procedure IWBSDisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
 
 function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
 
-procedure ExecuteJScript(const Script: string);
-procedure ExecuteAsyncJScript(const Script: string);
+function IWBSTextToJsParamText(AText: string): string;
+
+procedure IWBSExecuteJScript(const Script: string);
+procedure IWBSExecuteAsyncJScript(const Script: string);
 
 implementation
 
@@ -42,7 +44,14 @@ begin
   end;
 end;
 
-procedure ExecuteJScript(const Script: string);
+function IWBSTextToJsParamText(AText: string): string;
+begin
+  Result := ReplaceStr(AText, '"', '\"');
+  Result := ReplaceStr(Result, #10, '\n');
+  Result := ReplaceStr(Result, #13, '');
+end;
+
+procedure IWBSExecuteJScript(const Script: string);
 var
   LWebApplication: TIWApplication;
 begin
@@ -58,7 +67,7 @@ begin
     HTML40FormInterface(LWebApplication.ActiveForm).PageContext.AddToInitProc(Script);
 end;
 
-procedure ExecuteAsyncJScript(const Script: string);
+procedure IWBSExecuteAsyncJScript(const Script: string);
 var
   LWebApplication: TIWApplication;
 begin

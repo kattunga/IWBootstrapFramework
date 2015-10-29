@@ -33,7 +33,7 @@ type
     FRawText: boolean;
     FOldText: string;
     function  RenderText: string;
-    procedure OnItemsChange(ASender : TObject);
+    procedure OnLinesChange(ASender : TObject);
     procedure SetLines(const AValue: TStringList);
   protected
     procedure CheckData; override;
@@ -126,11 +126,11 @@ constructor TIWBSText.Create(AOwner: TComponent);
 begin
   inherited;
   FLines := TStringList.Create;
-  FLines.OnChange := OnItemsChange;
+  FLines.OnChange := OnLinesChange;
   FRawText := False;
 end;
 
-procedure TIWBSText.OnItemsChange( ASender : TObject );
+procedure TIWBSText.OnLinesChange( ASender : TObject );
 begin
   DoRefreshControl := True;
   Invalidate;
@@ -139,7 +139,6 @@ end;
 procedure TIWBSText.SetLines(const AValue: TStringList);
 begin
   FLines.Assign(AValue);
-  Invalidate;
 end;
 
 function TIWBSText.RenderText: string;

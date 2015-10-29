@@ -199,10 +199,6 @@ function TIWBSCustomControl.RenderCSSClass(AComponentContext: TIWCompContext): s
 begin
   Result := Css;
   InternalRenderCss(Result);
-
-  // global hook
-  if Assigned(gIWBSOnRenderCss) then
-    gIWBSOnRenderCss(Self, Result);
 end;
 
 function TIWBSCustomControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;

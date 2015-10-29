@@ -3,7 +3,7 @@ unit ServerController;
 interface
 
 {.$DEFINE CDNS}
-{.$DEFINE BOOTSTRAPSELECT}
+{$DEFINE BOOTSTRAPSELECT}
 
 uses
   SysUtils, Classes, IWServerControllerBase, IWBaseForm, HTTPApp,
@@ -24,21 +24,21 @@ implementation
 {$R *.dfm}
 
 uses
-  IWInit, IWGlobal, IWBSGlobal;
+  IWInit, IWGlobal, IWBSGlobal, IWBSInput;
 
 // *****************************************************************************
 // with this global hooks you can apply a third party plugin to any component
 // where for example we apply the excelent https://silviomoreto.github.io/bootstrap-select/
 procedure MyRenderAsync(AControl: TComponent; const AHTMLName, AInputSelector: string);
 begin
-  if AControl.ClassNameIs('TIWBSSelect') then
+  if AControl is TIWBSSelect then
     WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").selectpicker("refresh");');
 end;
 
-procedure MyRenderCss(AControl: TComponent; var ACss: string);
+procedure MyBeforeRender(AControl: TComponent);
 begin
-  if AControl.ClassNameIs('TIWBSSelect') then
-    ACss := ACss+' selectpicker';
+  if AControl is TIWBSSelect then
+    TIWBSSelect(AControl).Css := 'selectpicker';
 end;
 
 // *****************************************************************************
@@ -114,7 +114,7 @@ initialization
   // set global events
 {$IFDEF BOOTSTRAPSELECT}
   gIWBSOnRenderAsync := MyRenderAsync;
-  gIWBSOnRenderCss := MyRenderCss;
+  gIWBSOnBeforeRender := MyBeforeRender;
 {$ENDIF}
 
 end.

@@ -96,10 +96,6 @@ begin
       LJScript := LJScript+LComponentScript;
     end;
 
-    // global hook
-    if Assigned(gIWBSOnRenderScript) then
-      gIWBSOnRenderScript(AComponent.InterfaceInstance, LHTMLName, LJScript);
-
     if LJScript <> '' then
       AHTMLTag.Contents.AddTag('script').Contents.AddText(LJScript);
   finally

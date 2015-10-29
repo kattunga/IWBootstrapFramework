@@ -399,7 +399,7 @@ object IWForm2: TIWForm2
                       BSGlyphicon = 'align-center'
                       Caption = 'Center'
                       FriendlyName = 'IWBSButton1'
-                      TabOrder = 8
+                      TabOrder = 6
                     end
                     object IWBSButton3: TIWBSButton
                       Left = 182
@@ -413,7 +413,7 @@ object IWForm2: TIWForm2
                       BSGlyphicon = 'align-right'
                       Caption = 'Rigth'
                       FriendlyName = 'IWBSButton1'
-                      TabOrder = 10
+                      TabOrder = 9
                     end
                     object IWBSButton4: TIWBSButton
                       Left = 267
@@ -655,7 +655,7 @@ object IWForm2: TIWForm2
                     BSButtonStyle = bsbsClose
                     Caption = 'Close'
                     FriendlyName = 'IWBSButton13'
-                    TabOrder = 41
+                    TabOrder = 40
                   end
                 end
               end
@@ -922,7 +922,7 @@ object IWForm2: TIWForm2
                     Caption = ''
                     FriendlyName = 'IWBSInput8'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 40
+                    TabOrder = 39
                     Text = ''
                   end
                   object IWBSLabel1: TIWBSLabel
@@ -1201,7 +1201,7 @@ object IWForm2: TIWForm2
                       StyleRenderOptions.RenderSize = False
                       Caption = 'Dinamically create complex Alert'
                       FriendlyName = 'IWBSButton26'
-                      TabOrder = 74
+                      TabOrder = 73
                       OnAsyncClick = IWBSButton33AsyncClick
                     end
                     object IWBSInput24: TIWBSInput
@@ -1511,7 +1511,7 @@ object IWForm2: TIWForm2
                     Caption = 'This is a Memo'
                     FriendlyName = 'IWBSMemo2'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 48
+                    TabOrder = 46
                     Text = ''
                     BSTextAlignment = bstaRight
                     BSTextCase = bstcUppercase
@@ -1704,7 +1704,7 @@ object IWForm2: TIWForm2
                     Caption = 'This is a Select (Size = 1)'
                     FriendlyName = 'IWBSComboBox1'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 51
+                    TabOrder = 50
                     Text = ''
                     Items.Strings = (
                       'item 1'

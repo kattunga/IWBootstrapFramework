@@ -3,9 +3,9 @@ unit IWBSTabControl;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.StrUtils, Vcl.Controls, Vcl.Forms, Vcl.Graphics,
-  IWVCLBaseContainer, IWApplication, IWBaseRenderContext, IWControl,
-  IWContainer, IWHTMLContainer, IWHTML40Container, IWHTML40Interfaces, IWRegion, IWCompTabControl, IWBaseContainerLayout,
+  System.SysUtils, System.Classes, System.StrUtils,
+  IWApplication, IWBaseRenderContext, IWControl,
+  IWCompTabControl,
   IWRenderContext, IWHTMLTag, IWBSCommon, IWBSRegionCommon, IWXMLTag, IW.Common.RenderStream;
 
 type
@@ -42,7 +42,6 @@ type
     procedure SetScriptParams(const AValue: TStringList);
     procedure SetStyle(const AValue: TStringList);
     procedure CheckActiveVisible;
-    procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
   protected
     function HTMLControlImplementation: TIWHTMLControlImplementation;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
@@ -68,20 +67,7 @@ type
 
 implementation
 
-uses IWLists, IW.Common.System, IWBSutils, IWBSLayoutMgr, IWBSScriptEvents, IWBaseInterfaces, IWBSGlobal;
-
-{$region 'THackCustomRegion'}
-type
-  THackTIWHTML40Container = class(TIWHTML40Container)
-  private
-    procedure CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
-  end;
-
-procedure THackTIWHTML40Container.CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
-begin
-  inherited RenderComponents(AContainerContext, APageContext);
-end;
-{$endregion}
+uses IWLists, IW.Common.System, IWBSutils, IWBSLayoutMgr, IWBSScriptEvents, IWBSGlobal;
 
 {$region 'TIWBSTabOptions'}
 constructor TIWBSTabOptions.Create(AOwner: TComponent);
@@ -175,18 +161,6 @@ begin
   end;
 end;
 
-procedure TIWBSTabControl.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
-begin
-  IWBSPrepareChildComponentsForRender(Self);
-  try
-    THackTIWHTML40Container(Self).CallInheritedRenderComponents(AContainerContext, APageContext);
-    LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
-    LayoutMgr.Process(ABuffer, AContainerContext, APageContext);
-  finally
-    LayoutMgr.SetContainer(nil);
-  end;
-end;
-
 procedure TIWBSTabControl.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 var
   LBuffer: TIWRenderStream;
@@ -194,7 +168,7 @@ begin
   ContainerContext := AContainerContext;
   LBuffer := TIWRenderStream.Create(True, True);
   try
-    InternalRenderComponents(AContainerContext, APageContext, LBuffer);
+    IWBSRegionRenderComponents(Self, AContainerContext, APageContext, LBuffer);
     FRegionDiv.Contents.AddBuffer(LBuffer);
   finally
     FreeAndNil(LBuffer);
@@ -289,7 +263,7 @@ begin
       Result.Contents.AddText('$("#'+xHTMLName+'_tabs'+'").bootstrapDynamicTabs();');
 
     // save seleted tab on change
-    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=$(e.target).attr("tabindex"); console.log(arguments) });');
+    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=$(e.target).attr("tabindex"); });');
 
     // event async change
     if Assigned(OnAsyncChange) then begin
@@ -327,7 +301,7 @@ begin
   if (ATabIndex >= 0) and (ATabIndex < Pages.Count) then begin
     TIWTabPage(FPages.Items[ATabIndex]).Visible := Visible;
     CheckActiveVisible;
-    ExecuteAsyncJScript('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ATabIndex)+']").css("display", "'+iif(Visible,'','none')+'");');
+    IWBSExecuteAsyncJScript('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ATabIndex)+']").css("display", "'+iif(Visible,'','none')+'");');
   end;
 end;
 

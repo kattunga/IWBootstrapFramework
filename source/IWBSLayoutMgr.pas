@@ -305,6 +305,11 @@ begin
         if not LVisible and LRenderInvisibleControls then
           LHTML.Params.Values['style'] := SetNotVisible(LHTML.Params.Values['style']);
       end;
+
+    // global hook
+    if Assigned(gIWBSOnHTMLTag) then
+      gIWBSOnHTMLTag(AControl.InterfaceInstance, xHTMLName, LHTML);
+
   end;
 
   // render hidden inputs for submit
@@ -319,9 +324,9 @@ begin
       finally
         LInputLists.Free;
       end;
-    end
-  else
-    APageContext.AppendHiddenInput(AControl.HTMLName);
+    end;
+//  else
+//    APageContext.AppendHiddenInput(AControl.HTMLName);
 
   APageContext.AppendContext(LComponentContext);
 end;

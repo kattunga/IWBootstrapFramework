@@ -20,6 +20,7 @@ type
     FScriptParams: TStringList;
     FStyle: TStringList;
     FReleased: boolean;
+    FContentSuffix: string;
 
     FOldCss: string;
     FOldStyle: string;
@@ -35,19 +36,19 @@ type
     function ContainerPrefix: string; override;
     function HTMLControlImplementation: TIWHTMLControlImplementation;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
-    procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); virtual;
     function InternalRenderScript: string;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
     procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
+    function SupportsInput: Boolean;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Release;
     procedure AsyncRemoveComponent;
-    procedure AsyncRenderComponent(ARenderContent: boolean = False);
+    procedure AsyncRenderComponent;
     function GetClassString: string; virtual;
     function GetRoleString: string; virtual;
     procedure ExecuteJS(const AScript: string; AsCDATA: boolean = False);
@@ -65,6 +66,7 @@ type
     property ScriptParams: TStringList read FScriptParams write SetScriptParams;
     property Style: TStringList read FStyle write SetStyle;
     property ZIndex default 0;
+    property OnHTMLTag;
   end;
 
   TIWBSInputForm = class(TIWBSCustomRegion)
@@ -166,7 +168,6 @@ type
   protected
     function GetShowScript: string;
     function GetHideScript: string;
-    procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); override;
     procedure SetModalVisible(AValue: boolean);
     procedure DoOnAsyncShow(AParams: TStringList); virtual;
     procedure DoOnAsyncHide(AParams: TStringList); virtual;
@@ -175,6 +176,7 @@ type
     destructor Destroy; override;
     function GetClassString: string; override;
     function GetRoleString: string; override;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
     property BSFade: boolean read FFade write FFade default false;
     property BSDialogSize: TIWBSSize read FDialogSize write FDialogSize default bsszDefault;
@@ -202,25 +204,13 @@ begin
 end;
 {$endregion}
 
-{$region 'THackCustomRegion'}
-type
-  THackTIWHTML40Container = class(TIWHTML40Container)
-  private
-    procedure CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
-  end;
-
-procedure THackTIWHTML40Container.CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
-begin
-  inherited RenderComponents(AContainerContext, APageContext);
-end;
-{$endregion}
-
 {$region 'TIWBSCustomRegion'}
 constructor TIWBSCustomRegion.Create(AOwner: TComponent);
 begin
   inherited;
   FReleased := False;
   FCss := '';
+  FContentSuffix := '';
   FGridOptions := TIWBSGridOptions.Create;
   FScript := TStringList.Create;
   FScriptParams := TStringList.Create;
@@ -313,32 +303,26 @@ begin
   result := '';
 end;
 
-procedure TIWBSCustomRegion.AsyncRenderComponent(ARenderContent: boolean = False);
-  function TextToJsText(AText: string): string;
-  begin
-    Result := ReplaceStr(AText, '"', '\"');
-    Result := ReplaceStr(Result, #10, '\n');
-    Result := ReplaceStr(Result, #13, '');
-  end;
-
+procedure TIWBSCustomRegion.AsyncRenderComponent;
 var
   LParentContainer: TIWContainer;
   LWebApplication: TIWApplication;
 
   LHTMLName: string;
-  LContName: string;
+  LParentSl: string;
   LPageContext: TIWBasePageContext;
   LComponentContext: TIWBaseComponentContext;
   LBuffer: TIWRenderStream;
 
+  LReplace: boolean;
   LTag: TIWMarkupLanguageTag;
 begin
   // get base container
   LParentContainer := TIWContainer(ParentContainer.InterfaceInstance);
   if LParentContainer is TIWCustomRegion then
-    LContName := TIWCustomRegion(LParentContainer).HTMLName
+    LParentSl := '#'+TIWCustomRegion(LParentContainer).HTMLName
   else if LParentContainer is TIWForm then
-    LContName := 'body'
+    LParentSl := 'body'
   else
     Exit;
 
@@ -362,37 +346,34 @@ begin
   else
     Exit;
 
-  // create dom element if not found
-  if FRegionDiv = nil then begin
-    // render self and add to parent container
+  try
     LComponentContext := TIWCompContext.Create(Self, ParentContainer.ContainerContext , LPageContext);
     LTag := RenderMarkupLanguageTag(LComponentContext);
     LTag := DoPostRenderProcessing(LTag, LComponentContext, Self);
     if not Visible then
       LTag.Params.Values['style'] := 'display: none; visibility: hidden;'+LTag.Params.Values['style'];
-    LComponentContext.MarkupLanguageTag := LTag;
-    ParentContainer.ContainerContext.AddComponent(LComponentContext);
-    LBuffer := TIWRenderStream.Create(True, True);
-    try
-      LTag.Render(LBuffer);
-      ExecuteJS('AsyncCreateControl("'+LHTMLName+'","'+LContName+'","'+TextToJsText(LBuffer.AsString)+'");', True);
-    finally
-      FreeAndNil(LBuffer);
-    end;
-  end;
 
-  // render child components
-  if ARenderContent then begin
+    // render child components
     LBuffer := TIWRenderStream.Create(True, True);
     try
       ContainerContext := InitContainerContext(LWebApplication);
-      FRegionDiv.Contents.Clear;
-      InternalRenderComponents(ContainerContext, LPageContext, LBuffer);
-      ExecuteJS('AsyncRenderControl("'+LHTMLName+'","'+TextToJsText(LBuffer.AsString)+'");', True);
+      IWBSRegionRenderComponents(Self, ContainerContext, LPageContext, LBuffer);
+      FRegionDiv.Contents.AddBuffer(LBuffer);
     finally
-      LayoutMgr.SetContainer(nil);
       FreeAndNil(LBuffer);
     end;
+
+    LBuffer := TIWRenderStream.Create(True, True);
+    try
+      LTag.Render(LBuffer);
+      LWebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+LHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LBuffer.AsString)+'");')
+    finally
+      FreeAndNil(LBuffer);
+    end;
+
+    ParentContainer.ContainerContext.AddComponent(LComponentContext);
+  finally
+    LayoutMgr.SetContainer(nil);
   end;
 end;
 
@@ -442,6 +423,11 @@ begin
   Result := inherited;
 end;
 
+function TIWBSCustomRegion.SupportsInput: Boolean;
+begin
+  Result := False;
+end;
+
 function TIWBSCustomRegion.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   xHTMLName: string;
@@ -453,18 +439,6 @@ begin
   SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
 end;
 
-procedure TIWBSCustomRegion.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
-begin
-  IWBSPrepareChildComponentsForRender(Self);
-  try
-    THackTIWHTML40Container(Self).CallInheritedRenderComponents(AContainerContext, APageContext);
-    LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
-    LayoutMgr.Process(ABuffer, AContainerContext, APageContext);
-  finally
-    LayoutMgr.SetContainer(nil);
-  end;
-end;
-
 procedure TIWBSCustomRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 var
   LBuffer: TIWRenderStream;
@@ -472,7 +446,7 @@ begin
   ContainerContext := AContainerContext;
   LBuffer := TIWRenderStream.Create(True, True);
   try
-    InternalRenderComponents(AContainerContext, APageContext, LBuffer);
+    IWBSRegionRenderComponents(Self, AContainerContext, APageContext, LBuffer);
     FRegionDiv.Contents.AddBuffer(LBuffer);
   finally
     FreeAndNil(LBuffer);
@@ -784,6 +758,7 @@ begin
   FDialogSize := bsszDefault;
   FFade := false;
   FModalVisible := false;
+  FContentSuffix := '_dialog'
 end;
 
 destructor TIWBSModal.Destroy;
@@ -815,31 +790,35 @@ begin
   Result := '$("#'+HTMLName+'").modal("hide");';
 end;
 
-procedure TIWBSModal.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
+function TIWBSModal.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
   LCss: string;
   xHTMLName: string;
 begin
+  xHTMLName := HTMLName;
+
+  Result := inherited;
+
+  // container
+  FRegionDiv := Result.Contents.AddTag('div');
+  FRegionDiv.AddStringParam('id',xHTMLName+FContentSuffix);
   LCss := 'modal-dialog';
   if FDialogSize in [bsszLg,bsszSm] then
     LCss := LCss + ' modal-'+aIWBSSize[FDialogSize];
-  ABuffer.WriteLine('<div class="'+LCss+'">');
-  inherited;
-  ABuffer.WriteLine('</div>');
+  FRegionDiv.AddClassParam(LCss);
 
-  // scripts area
-  xHTMLName := HTMLName;
-  ABuffer.WriteLine('<script>');
-  ABuffer.WriteLine('$("#'+HTMLName+'").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });');
-  if Assigned(FOnAsyncShow) then begin
-    ABuffer.WriteLine('$("#'+xHTMLName+'").on("shown.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncShow", true, null, true); });');
-    AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);
+  // add script (should be moved to InternalRenderScript)
+  with Result.Contents.AddTag('script').Contents do begin
+    AddText('$("#'+xHTMLName+'").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });'+LF);
+    if Assigned(FOnAsyncShow) then begin
+      AddText('$("#'+xHTMLName+'").on("shown.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncShow", true, null, true); });'+LF);
+      AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);
+    end;
+    AddText('$("#'+xHTMLName+'").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });'+LF);
+    AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
+    if FModalVisible then
+      AddText(GetShowScript+LF);
   end;
-  ABuffer.WriteLine('$("#'+xHTMLName+'").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });');
-  AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
-  if FModalVisible then
-    ABuffer.WriteLine(GetShowScript);
-  ABuffer.WriteLine('</script>');
 end;
 
 procedure TIWBSModal.SetModalVisible(AValue: boolean);

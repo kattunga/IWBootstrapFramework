@@ -54,13 +54,14 @@ type
     FAlertLabel: TIWBSLabel;
     FCloseButton: TIWBSButton;
   protected
-    procedure InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream); override;
     procedure DoOnAsyncClose(AParams: TStringList); virtual;
     function GetCloseScript: string;
     procedure SetAlertStyle(AValue: TIWBSAlertStyle);
   public
     constructor Create(const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess); reintroduce;
     destructor Destroy; override;
+
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
 
     procedure Show;
     function AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
@@ -192,7 +193,7 @@ begin
     end;
   end;
 
-  AsyncRenderComponent(true);
+  AsyncRenderComponent;
 end;
 
 function TIWBSDialog.AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
@@ -214,7 +215,6 @@ begin
   FAlertVisible := False;
   FAlertPosition := bsapRightTop;
   FAlertStyle := bsasSuccess;
-//  AsyncDestroy := True;
   FAlertText := AAlertText;
   FFade := True;
 
@@ -239,17 +239,19 @@ begin
   inherited;
 end;
 
-procedure TIWBSAlert.InternalRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
+function TIWBSAlert.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
+  LCss: string;
   xHTMLName: string;
 begin
-  inherited;
-
   xHTMLName := HTMLName;
-  ABuffer.WriteLine('<script>');
-  ABuffer.WriteLine('$("#'+xHTMLName+'").on("closed.bs.alert", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncClose", true, null, true); });');
-  AContainerContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncClose', DoOnAsyncClose);
-  ABuffer.WriteLine('</script>');
+
+  Result := inherited;
+
+  with Result.Contents.AddTag('script').Contents do begin
+    AddText('$("#'+xHTMLName+'").on("closed.bs.alert", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncClose", true, null, true); });');
+    AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncClose', DoOnAsyncClose);
+  end;
 
   FAlertVisible := True;
 end;
@@ -286,7 +288,7 @@ end;
 
 procedure TIWBSAlert.Show;
 begin
-  AsyncRenderComponent(true);
+  AsyncRenderComponent;
 end;
 
 function TIWBSAlert.AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
