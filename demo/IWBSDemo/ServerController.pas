@@ -3,7 +3,7 @@ unit ServerController;
 interface
 
 {.$DEFINE CDNS}
-{$DEFINE BOOTSTRAPSELECT}
+{.$DEFINE BOOTSTRAPSELECT}
 
 uses
   SysUtils, Classes, IWServerControllerBase, IWBaseForm, HTTPApp,
