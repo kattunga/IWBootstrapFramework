@@ -10,10 +10,10 @@ uses
   IWBSCommon;
 
 type
-  TIWBSInputType = (bsitText, bsitPassword, bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime, bsitWeek, bsitNumber, bsitEmail, bsitUrl, bsitSearch, bsitTel, bsitColor, bsitHidden);
+  TIWBSInputType = (bsitText, bsitPassword, bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime, bsitWeek, bsitNumber, bsitEmail, bsitUrl, bsitSearch, bsitTel, bsitColor, bsitHidden, bsitFile);
 
 const
-  aIWBSInputType: array[bsitText..bsitHidden] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color', 'hidden');
+  aIWBSInputType: array[bsitText..bsitFile] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color', 'hidden', 'file');
 
 type
   TIWBSCustomInput = class(TIWBSCustomDbControl, IIWInputControl, IIWSubmitControl, IIWInputControl40, IIWAutoEditableControl)
@@ -354,10 +354,11 @@ procedure TIWBSCustomTextInput.InternalRenderCss(var ACss: string);
 begin
   inherited;
   FIsStatic := not Editable and NonEditableAsLabel;
-  if FIsStatic then
-    AddCssClass(ACss, 'form-control-static')
-  else
-    AddCssClass(ACss, 'form-control');
+  if FInputType <> bsitFile then
+    if FIsStatic then
+      AddCssClass(ACss, 'form-control-static')
+    else
+      AddCssClass(ACss, 'form-control');
   if FTextAlignment <> bstaDefault then
     AddCssClass(ACss, aIWBSTextAlignment[FTextAlignment]);
   if FTextCase <> bstcDefault then
