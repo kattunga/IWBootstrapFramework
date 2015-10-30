@@ -26,11 +26,11 @@ type
     procedure OnLinesChange(ASender : TObject);
     procedure SetLines(const AValue: TStringList);
   protected
-    procedure InitControl; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure InternalRenderStyle(AStyle: TStringList); override;
   public
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure SetText(const AValue: TCaption); override;
   published
@@ -93,13 +93,13 @@ type
     procedure ResetItemsSelected;
     procedure SetSize(AValue: integer);
   protected
-    procedure InitControl; override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure OnItemsChange(ASender : TObject); override;
     procedure SetItemIndex(AValue: integer); override;
   public
+    constructor Create(AOwner: TComponent); override;
     procedure SetText(const AValue: TCaption); override;
   published
     property MultiSelect: boolean read FMultiSelect write FMultiSelect default False;
@@ -173,7 +173,7 @@ end;
 {$endregion}
 
 {$region 'TIWBSMemo'}
-procedure TIWBSMemo.InitControl;
+constructor TIWBSMemo.Create(AOwner: TComponent);
 begin
   inherited;
   FLines := TStringList.Create;
@@ -424,7 +424,7 @@ end;
 {$endregion}
 
 {$region 'TIWBSSelect'}
-procedure TIWBSSelect.InitControl;
+constructor TIWBSSelect.Create(AOwner: TComponent);
 begin
   inherited;
   FMultiSelect := False;

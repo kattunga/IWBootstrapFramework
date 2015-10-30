@@ -16,9 +16,11 @@ type
     FOldStyle: string;
     FOldVisible: boolean;
 
+    FTabStop: boolean;
     FScript: TStringList;
     FScriptParams: TStringList;
     FStyle: TStringList;
+
     procedure SetScript(const AValue: TStringList);
     procedure SetScriptParams(const AValue: TStringList);
     procedure SetStyle(const AValue: TStringList);
@@ -46,10 +48,32 @@ type
     property MainID: string read FMainID;
     property ActiveCss: string read FOldCss;
     property ActiveStyle: string read FOldStyle;
+
+    function get_HasTabOrder: Boolean; override;
   published
+    property Enabled;
+    property ExtraTagParams;
+    property FriendlyName;
     property Script: TStringList read FScript write SetScript;
+    property ScriptEvents;
     property ScriptParams: TStringList read FScriptParams write SetScriptParams;
     property Style: TStringList read FStyle write SetStyle;
+    property TabStop: boolean read FTabStop write FTabStop default False;
+    property TabOrder;
+
+    property OnAsyncClick;
+    property OnAsyncDoubleClick;
+    property OnAsyncChange;
+    property OnAsyncEnter;
+    property OnAsyncExit;
+    property OnAsyncKeyDown;
+    property OnAsyncKeyUp;
+    property OnAsyncKeyPress;
+    property OnAsyncMouseDown;
+    property OnAsyncMouseMove;
+    property OnAsyncMouseOver;
+    property OnAsyncMouseOut;
+    property OnAsyncMouseUp;
   end;
 
   TIWBSCustomDbControl = class(TIWBSCustomControl, IIWBSComponent)
@@ -62,7 +86,7 @@ type
     procedure SetDataSource(const Value: TDataSource);
     procedure SetMaxLength(const AValue:integer);
   protected
-    procedure CheckData; virtual;
+    procedure CheckData(AContext: TIWCompContext); virtual;
     property MaxLength: Integer read FMaxLength write SetMaxLength;
     procedure Notification(AComponent: TComponent; AOperation: TOperation); override;
   public
@@ -91,6 +115,7 @@ constructor TIWBSCustomControl.Create(AOwner: TComponent);
 begin
   inherited;
   FMainID := '';
+  FTabStop := False;
   FScript := TStringList.Create;
   FScriptParams := TStringList.Create;
   FStyle := TStringList.Create;
@@ -103,6 +128,11 @@ begin
   FreeAndNil(FScriptParams);
   FreeAndNil(FStyle);
   inherited;
+end;
+
+function TIWBSCustomControl.get_HasTabOrder: Boolean;
+begin
+  Result := FTabStop;
 end;
 
 procedure TIWBSCustomControl.SetScript(const AValue: TStringList);
@@ -312,20 +342,20 @@ begin
   end;
 end;
 
-procedure TIWBSCustomDbControl.CheckData;
+procedure TIWBSCustomDbControl.CheckData(AContext: TIWCompContext);
 begin
   //
 end;
 
 function TIWBSCustomDbControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 begin
-  CheckData;
+  CheckData(AContext);
   Result := inherited;
 end;
 
 function TIWBSCustomDbControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
-  CheckData;
+  CheckData(AContext);
   Result := inherited;
 end;
 {$endregion}

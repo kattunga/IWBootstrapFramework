@@ -314,7 +314,6 @@ var
   LComponentContext: TIWBaseComponentContext;
   LBuffer: TIWRenderStream;
 
-  LReplace: boolean;
   LTag: TIWMarkupLanguageTag;
 begin
   // get base container
@@ -809,12 +808,12 @@ begin
 
   // add script (should be moved to InternalRenderScript)
   with Result.Contents.AddTag('script').Contents do begin
-    AddText('$("#'+xHTMLName+'").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });'+LF);
+    AddText('$("#'+xHTMLName+'").off("shown.bs.modal").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });'+LF);
     if Assigned(FOnAsyncShow) then begin
-      AddText('$("#'+xHTMLName+'").on("shown.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncShow", true, null, true); });'+LF);
+      AddText('$("#'+xHTMLName+'").off("show.bs.modal").on("show.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncShow", true, null, true); });'+LF);
       AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);
     end;
-    AddText('$("#'+xHTMLName+'").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });'+LF);
+    AddText('$("#'+xHTMLName+'").off("hidden.bs.modal").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });'+LF);
     AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
     if FModalVisible then
       AddText(GetShowScript+LF);

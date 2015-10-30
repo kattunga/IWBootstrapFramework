@@ -313,20 +313,17 @@ begin
   end;
 
   // render hidden inputs for submit
-  if AControl.SupportsInput then
-    begin
-      LInputLists := TStringList.Create;
-      try
-        InputInterface(AControl.InterfaceInstance).GetInputControlNames(LInputLists);
-        if LVisible or LRenderInvisibleControls then
-          for i := 0 to LInputLists.Count-1 do
-            APageContext.AppendHiddenInput(LInputLists.Strings[i]);
-      finally
-        LInputLists.Free;
-      end;
+  if AControl.SupportsInput then begin
+    LInputLists := TStringList.Create;
+    try
+      InputInterface(AControl.InterfaceInstance).GetInputControlNames(LInputLists);
+      if LVisible or LRenderInvisibleControls then
+        for i := 0 to LInputLists.Count-1 do
+          APageContext.AppendHiddenInput(LInputLists.Strings[i]);
+    finally
+      LInputLists.Free;
     end;
-//  else
-//    APageContext.AppendHiddenInput(AControl.HTMLName);
+  end;
 
   APageContext.AppendContext(LComponentContext);
 end;

@@ -263,11 +263,11 @@ begin
       Result.Contents.AddText('$("#'+xHTMLName+'_tabs'+'").bootstrapDynamicTabs();');
 
     // save seleted tab on change
-    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=$(e.target).attr("tabindex"); });');
+    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").off("show.bs.tab").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=$(e.target).attr("tabindex"); });');
 
     // event async change
     if Assigned(OnAsyncChange) then begin
-      Result.Contents.AddText('$("#'+xHTMLName+'_tabs").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+$(e.target).attr("tabindex"), null, "'+xHTMLName+'.DoOnAsyncChange", true, null, true); });');
+      Result.Contents.AddText('$("#'+xHTMLName+'_tabs").off("shown.bs.tab").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+$(e.target).attr("tabindex"), null, "'+xHTMLName+'.DoOnAsyncChange", true, null, true); });');
       AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
     end;
   finally

@@ -467,14 +467,10 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSNavBar]);
   RegisterComponents('IW BootsTrap', [TIWBSUnorderedList]);
   RegisterComponents('IW BootsTrap', [TIWBSModal]);
-  UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
-  UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignPosition');
 
   RegisterComponents('IW BootsTrap', [TIWBSInput]);
   RegisterComponents('IW BootsTrap', [TIWBSMemo]);
   RegisterComponents('IW BootsTrap', [TIWBSSelect]);
-  UnlistPublishedProperty(TIWBSCustomInput, 'SkinId');
-  UnlistPublishedProperty(TIWBSCustomInput, 'StyleRenderOptions');
 
   RegisterComponents('IW BootsTrap', [TIWBSCheckBox]);
   RegisterComponents('IW BootsTrap', [TIWBSRadioButton]);
@@ -495,6 +491,13 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSImage]);
 
   RegisterComponents('IW BootsTrap', [TIWBSTabControl]);
+
+  UnlistPublishedProperty(TIWBSCustomControl, 'SkinId');
+  UnlistPublishedProperty(TIWBSCustomControl, 'StyleRenderOptions');
+
+  UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
+  UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignPosition');
+
   UnlistPublishedProperty(TIWBSTabControl, 'ActiveTabFont');
   UnlistPublishedProperty(TIWBSTabControl, 'InactiveTabFont');
   UnlistPublishedProperty(TIWBSTabControl, 'ActiveTabColor');
@@ -530,7 +533,7 @@ initialization
 
   IWRegisterPaintHandler('TIWBSCustomComponent',TIWBSPaintHandlerCustomComponent);
 
-  IWRegisterPaintHandler('TIWBSImage',TIWPaintHandlerImage);
+//  IWRegisterPaintHandler('TIWBSImage',TIWPaintHandlerRectangle);
 
   IWRegisterPaintHandler('TIWBSTabControl',TIWPaintHandlerTabControl);
 

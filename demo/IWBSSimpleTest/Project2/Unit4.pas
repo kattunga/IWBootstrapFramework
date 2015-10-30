@@ -10,7 +10,7 @@ uses
   IWContainerLayout, IWBSLayoutMgr, Vcl.Forms, IWVCLBaseContainer, IWContainer,
   IWHTMLContainer, IWHTML40Container, IWRegion, IWBSRegion, IWBSCustomInput,
   IWBSButton, IWCompRadioButton, IWCompMemo, IWCompCheckbox, IWBSCustomControl,
-  IWBSControls, IWCompTabControl, IWBSTabControl;
+  IWBSControls, IWCompTabControl, IWBSTabControl, IWBSImage, Vcl.Imaging.jpeg;
 
 type
   TIWForm4 = class(TIWAppForm)
@@ -18,6 +18,8 @@ type
     IWBSRegion3: TIWBSRegion;
     IWBSButton1: TIWBSButton;
     IWBSText2: TIWBSText;
+    IWBSImage1: TIWBSImage;
+    IWDBImage1: TIWDBImage;
     procedure IWBSButton2Click(Sender: TObject);
     procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);

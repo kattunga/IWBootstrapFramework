@@ -15,7 +15,7 @@ type
     FOldText: string;
     function  RenderLabelText: string;
   protected
-    procedure CheckData; override;
+    procedure CheckData(AContext: TIWCompContext); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure SetForControl(const Value: TIWCustomControl);
@@ -36,7 +36,7 @@ type
     procedure OnLinesChange(ASender : TObject);
     procedure SetLines(const AValue: TStringList);
   protected
-    procedure CheckData; override;
+    procedure CheckData(AContext: TIWCompContext); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
@@ -50,13 +50,10 @@ type
   private
     FGlyphicon: string;
   protected
-    procedure InitControl; override;
-    function get_ShouldRenderTabOrder: boolean; override;
-    function get_HasName: Boolean; override;
+    procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function get_HasTabOrder: boolean; override;
+    constructor Create(AOwner: TComponent); override;
   published
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
   end;
@@ -112,7 +109,7 @@ begin
     AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, HTMLName, 'addon');
 end;
 
-procedure TIWBSLabel.CheckData;
+procedure TIWBSLabel.CheckData(AContext: TIWCompContext);
 var
   LField: TField;
 begin
@@ -167,7 +164,7 @@ begin
   AHTMLTag.Contents.AddText(FOldText);
 end;
 
-procedure TIWBSText.CheckData;
+procedure TIWBSText.CheckData(AContext: TIWCompContext);
 var
   LField: TField;
 begin
@@ -177,39 +174,18 @@ end;
 {$endregion}
 
 {$region 'TIWBSGlyphicon'}
-procedure TIWBSGlyphicon.InitControl;
+constructor TIWBSGlyphicon.Create(AOwner: TComponent);
 begin
   inherited;
   Height := 21;
   Width := 21;
 end;
 
-function TIWBSGlyphicon.get_HasTabOrder: boolean;
+procedure TIWBSGlyphicon.InternalRenderCss(var ACss: string);
 begin
-  Result := False;
-end;
-
-function TIWBSGlyphicon.get_ShouldRenderTabOrder: boolean;
-begin
-  Result := False;
-end;
-
-function TIWBSGlyphicon.get_HasName: Boolean;
-begin
-  Result := False;
-end;
-
-function TIWBSGlyphicon.RenderCSSClass(AComponentContext: TIWCompContext): string;
-begin
+  inherited;
   if FGlyphicon <> '' then
-    Result := 'glyphicon glyphicon-'+FGlyphicon
-  else
-    Result := '';
-  if Css <> '' then begin
-    if Result <> '' then
-      Result := Result + ' ';
-    Result := Result + Css;
-  end;
+    AddCssClass(ACss, 'glyphicon glyphicon-'+FGlyphicon);
 end;
 
 procedure TIWBSGlyphicon.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);

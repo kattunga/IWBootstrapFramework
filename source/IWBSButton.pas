@@ -32,12 +32,11 @@ type
     procedure Submit(const AValue: string); override;
     procedure HookEvents(APageContext: TIWPageContext40; AScriptEvents: TIWScriptEvents); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
     constructor Create(AOwner: TComponent); override;
     function GetSubmitParam : String;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
     property AsyncClickProc: TIWBSAsyncClickProc read FAsyncClickProc write SetAsyncClickProc;
   published
     property Anchor: boolean read FAnchor write FAnchor default False;
@@ -48,21 +47,10 @@ type
     property Caption;
     property Confirmation;
     property DoSubmitValidation;
-    property Enabled;
-    property ExtraTagParams;
     property HotKey: string read FHotkey write FHotKey;
-    property FriendlyName;
-    property ScriptEvents;
-    property TabOrder;
+    property TabStop default True;
 
     property OnClick;
-    property OnAsyncClick;
-    property OnAsyncDoubleClick;
-    property OnAsyncEnter;
-    property OnAsyncExit;
-    property OnAsyncMouseMove;
-    property OnAsyncMouseOver;
-    property OnAsyncMouseOut;
   end;
 
 implementation
@@ -84,6 +72,7 @@ begin
   FNeedsFormTag := True;
   Height := 25;
   Width := 200;
+  TabStop := True;
 end;
 
 function TIWBSButton.GetSubmitParam: String;
@@ -111,23 +100,19 @@ begin
   SetAsyncDisabled(AContext, AHTMLName, not (Enabled and Editable), FOldDisabled);
 end;
 
-function TIWBSButton.RenderCSSClass(AComponentContext: TIWCompContext): string;
+procedure TIWBSButton.InternalRenderCss(var ACss: string);
 const
   aIWBSButtonStyle: array[bsbsDefault..bsbsClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
 begin
-  if not FAnchor then
-    begin
-      Result := 'btn';
-      if FButtonSize <> bsszDefault then
-        Result := Result + ' btn-'+aIWBSSize[FButtonSize];
-      Result := Result + ' ' + aIWBSButtonStyle[FButtonStyle];
-      if Parent.ClassName = 'TIWBSNavBar' then
-        Result := Result + ' navbar-btn';
-      if Css <> '' then
-        Result := Result + ' ' + Css;
-    end
-  else
-    Result := Css;
+  inherited;
+  if not FAnchor then begin
+    AddCssClass(ACss, 'btn');
+    if FButtonSize <> bsszDefault then
+      AddCssClass(ACss, 'btn-'+aIWBSSize[FButtonSize]);
+    AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
+    if Parent.ClassName = 'TIWBSNavBar' then
+      AddCssClass(ACss, 'navbar-btn');
+  end;
 end;
 
 procedure TIWBSButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
@@ -192,11 +177,6 @@ begin
     end
   else
     AHTMLTag := IWBSCreateFormGroup(Parent, IWBSFindParentInputForm(Parent), AHTMLTag, AHTMLName, True);
-end;
-
-function TIWBSButton.RenderStyle(AContext: TIWCompContext): string;
-begin
-  Result := '';
 end;
 
 procedure TIWBSButton.DoAsyncClickProc(Sender: TObject; EventParams: TStringList);

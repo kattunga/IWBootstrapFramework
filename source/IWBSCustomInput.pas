@@ -35,8 +35,7 @@ type
 
     FOldText: string;
 
-    procedure InitControl; override;
-    procedure CheckData; override;
+    procedure CheckData(AContext: TIWCompContext); override;
     procedure DoSubmit;
     procedure SetCaption(const AValue: string);
     procedure SetReadOnly(const AValue:boolean);
@@ -60,6 +59,7 @@ type
     property ReadOnly: boolean read FReadOnly write SetReadOnly;
     property BSInputType: TIWBSInputType read FInputType write FInputType;
   public
+    constructor Create(AOwner: TComponent); override;
     procedure Invalidate; override;
     function GetSubmitParam : String;
     procedure SetText(const AValue: TCaption); override;
@@ -75,23 +75,10 @@ type
     property NonEditableAsLabel default False;
     property Required: Boolean read FRequired write SetRequired default False;
     property ScriptEvents;
-    property SubmitOnAsyncEvent;
-    property TabOrder;
+    property SubmitOnAsyncEvent default True;
+    property TabStop default True;
     property Text: TCaption read GetText write SetText;
 
-    property OnAsyncClick;
-    property OnAsyncDoubleClick;
-    property OnAsyncChange;
-    property OnAsyncEnter;
-    property OnAsyncExit;
-    property OnAsyncKeyDown;
-    property OnAsyncKeyUp;
-    property OnAsyncKeyPress;
-    property OnAsyncMouseDown;
-    property OnAsyncMouseMove;
-    property OnAsyncMouseOver;
-    property OnAsyncMouseOut;
-    property OnAsyncMouseUp;
     property OnSubmit: TNotifyEvent read FOnSubmit write FOnSubmit;
   end;
 
@@ -101,11 +88,10 @@ type
     FTextAlignment: TIWBSTextAlignment;
     FTextCase: TIWBSTextCase;
   protected
-    procedure InitControl; override;
-  public
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
+    procedure InternalRenderCss(var ACss: string); override;
   published
+    constructor Create(AOwner: TComponent); override;
     property BSTextAlignment: TIWBSTextAlignment read FTextAlignment write FTextAlignment default bstaDefault;
     property BSTextCase: TIWBSTextCase read FTextCase write FTextCase default bstcDefault;
     property MaxLength default 0;
@@ -122,7 +108,6 @@ type
   protected
     FItemIndex: integer;
 
-    procedure InitControl; override;
     procedure InternalRenderCss(var ACss: string); override;
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     function FindValue(const AValue: string): integer;
@@ -130,6 +115,7 @@ type
     procedure OnItemsChange(ASender : TObject); virtual;
     procedure SetItemIndex(AValue: integer); virtual;
   public
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure SetText(const AValue: TCaption); override;
   published
@@ -147,7 +133,7 @@ var
   LFormatSettings: TFormatSettings;
 
 {$region 'TIWBSCustomInput'}
-procedure TIWBSCustomInput.InitControl;
+constructor TIWBSCustomInput.Create(AOwner: TComponent);
 begin
   inherited;
   FAutoEditable := True;
@@ -165,6 +151,7 @@ begin
 
   Height := 25;
   Width := 121;
+  TabStop := True;
 end;
 
 procedure TIWBSCustomInput.Invalidate;
@@ -194,7 +181,7 @@ begin
   invalidate;
 end;
 
-procedure TIWBSCustomInput.CheckData;
+procedure TIWBSCustomInput.CheckData(AContext: TIWCompContext);
 var
   LField: TField;
 begin
@@ -255,7 +242,7 @@ begin
         end
       else
         raise EIWDataSetNotEditingError.Create(DataSource);
-    CheckData;
+    CheckData(nil);
     Invalidate;
   end;
 end;
@@ -346,7 +333,7 @@ end;
 {$endregion}
 
 {$region 'TIWBSCustomTextInput'}
-procedure TIWBSCustomTextInput.InitControl;
+constructor TIWBSCustomTextInput.Create(AOwner: TComponent);
 begin
   inherited;
   FSupportReadOnly := True;
@@ -363,25 +350,23 @@ begin
     SetAsyncText(AContext, AHTMLName, FText, FOldText);
 end;
 
-function TIWBSCustomTextInput.RenderCSSClass(AComponentContext: TIWCompContext): string;
+procedure TIWBSCustomTextInput.InternalRenderCss(var ACss: string);
 begin
+  inherited;
   FIsStatic := not Editable and NonEditableAsLabel;
   if FIsStatic then
-    Result := 'form-control-static'
+    AddCssClass(ACss, 'form-control-static')
   else
-    Result := 'form-control';
+    AddCssClass(ACss, 'form-control');
   if FTextAlignment <> bstaDefault then
-    Result := Result + ' ' + aIWBSTextAlignment[FTextAlignment];
+    AddCssClass(ACss, aIWBSTextAlignment[FTextAlignment]);
   if FTextCase <> bstcDefault then
-    Result := Result + ' ' + aIWBSTextCase[FTextCase];
-
-  if Css <> '' then
-    Result := Result + ' ' + Css;
+    AddCssClass(ACss, aIWBSTextCase[FTextCase]);
 end;
 {$endregion}
 
 {$region 'TIWBSCustomSelectInput'}
-procedure TIWBSCustomSelectInput.InitControl;
+constructor TIWBSCustomSelectInput.Create(AOwner: TComponent);
 begin
   inherited;
   FItemIndex := -1;

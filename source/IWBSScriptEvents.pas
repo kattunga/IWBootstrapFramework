@@ -34,7 +34,7 @@ begin
       if Pos('on', LEventName) = 1 then
         Delete(LEventName, 1, 2);
       LFuncCode := Trim(LScriptEvents.Items[i].EventCode.Text);
-      Result := Result+'$("#'+AHtmlName+'").on("'+LEventName+'", function(event) {'+LFuncCode+'});'#13#10;
+      Result := Result+'$("#'+AHtmlName+'").off("'+LEventName+'").on("'+LEventName+'", function(event) {'+LFuncCode+'});'#13#10;
 
 // I don't know if this is necesary
 //      for j := 0 to LScriptEvents.HookedCount[i] - 1 do begin

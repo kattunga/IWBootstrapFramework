@@ -241,7 +241,6 @@ end;
 
 function TIWBSAlert.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
-  LCss: string;
   xHTMLName: string;
 begin
   xHTMLName := HTMLName;
