@@ -277,7 +277,6 @@ object FFishFact: TFFishFact
               DataSource = dsrcMain
               DataField = 'Graphic'
               EmbedBase64 = True
-              ImageOptions = [iwbsimThumbnail]
             end
             object IWBSRegion4: TIWBSRegion
               Left = 3

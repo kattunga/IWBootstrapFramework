@@ -52,6 +52,11 @@ type
     procedure Paint; override;
   end;
 
+  TIWBSPaintHandlerImage = class (TIWPaintHandlerRectangle)
+  public
+    procedure Paint; override;
+  end;
+
 procedure Register;
 
 implementation
@@ -456,6 +461,71 @@ begin
   end;
 end;
 
+procedure TIWBSPaintHandlerImage.Paint;
+var
+  LRect, LImageRect: TRect;
+  LPicture: TPicture;
+  LText: string;
+begin
+  LRect := Rect(0, 0, Control.Width, Control.Height);
+  LImageRect := LRect;
+  LText := '';
+
+  ControlCanvas.Brush.Color := clWhite;
+  ControlCanvas.Pen.Color := clGray;
+  ControlCanvas.Rectangle(LRect);
+
+  with TIWBSImage(Control) do begin
+    if Assigned(DataSource) and (DataField <> '') then
+      begin
+        LText := DataSource.Name+'.['+DataField+']';
+        Inc(LImageRect.Top,40);
+        Inc(LImageRect.Left,40);
+        Dec(LImageRect.Bottom,40);
+        Dec(LImageRect.Right,40);
+      end;
+
+    if Assigned(Picture) and Assigned(Picture.Graphic) and (not Picture.Graphic.Empty) then
+      begin
+        if LText <> '' then
+          LText := LText+#13#10'Fallback to picture';
+        ControlCanvas.StretchDraw(LImageRect, Picture.Graphic);
+      end
+    else if ImageFile <> '' then
+      begin
+        if FileExists(ImageFile) then
+          begin
+            LPicture := TPicture.Create;
+            try
+              LPicture.LoadFromFile(ImageFile);
+              ControlCanvas.StretchDraw(LImageRect, Picture.Graphic);
+            except
+            end;
+            LPicture.Free;
+          end;
+        if LText <> '' then
+          LText := LText+#13#10'Fallback to ';
+        LText := LText + 'File="'+ImageFile+'"';
+      end
+
+    else if ImageSrc <> '' then
+      begin
+        if LText <> '' then
+          LText := LText+#13#10'Fallback to ';
+        LText := LText + 'Src="'+ImageSrc+'"';
+      end;
+  end;
+  if LText <> '' then begin
+    Inc(LRect.Top,5);
+    Inc(LRect.Left,5);
+    Dec(LRect.Bottom,5);
+    Dec(LRect.Right,5);
+    ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
+    ControlCanvas.Font.Color := clGray;
+    ControlCanvas.TextRect(LRect,LText,[]);
+  end;
+end;
+
 procedure Register;
 begin
   RegisterComponents('IW BootsTrap', [TIWBSLayoutMgr]);
@@ -533,7 +603,7 @@ initialization
 
   IWRegisterPaintHandler('TIWBSCustomComponent',TIWBSPaintHandlerCustomComponent);
 
-//  IWRegisterPaintHandler('TIWBSImage',TIWPaintHandlerRectangle);
+  IWRegisterPaintHandler('TIWBSImage',TIWBSPaintHandlerImage);
 
   IWRegisterPaintHandler('TIWBSTabControl',TIWPaintHandlerTabControl);
 

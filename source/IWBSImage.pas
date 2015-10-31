@@ -46,12 +46,12 @@ type
     property ActiveSrc: string read FActiveSrc;
   published
     property AltText: string read FAltText write FAltText;
+    property BSImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [iwbsimResponsive];
     property Confirmation;
     property DoSubmitValidation;
     property EmbedBase64: boolean read FEmbedBase64 write FEmbedBase64 default False;
     property Enabled default True;
     property ImageFile: string read FImageFile write SetImageFile;
-    property BSImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [iwbsimResponsive];
     property ImageSrc: string read FImageSrc write SetImageSrc;
     property MimeType: string read FMimeType write FMimeType;
     property Picture: TPicture read GetPicture write SetPicture;
