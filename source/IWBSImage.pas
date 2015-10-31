@@ -42,8 +42,9 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function GetSubmitParam : String;
     property ActiveSrc: string read FActiveSrc;
+    function GetSubmitParam : String;
+    procedure Refresh;
   published
     property AltText: string read FAltText write FAltText;
     property BSImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [iwbsimResponsive];
@@ -175,6 +176,12 @@ begin
     FUseSize := AValue;
     Invalidate;
   end;
+end;
+
+procedure TIWBSImage.Refresh;
+begin
+  FActiveSrc := '';
+  Invalidate;
 end;
 
 procedure TIWBSImage.CheckData(AContext: TIWCompContext);

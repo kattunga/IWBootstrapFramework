@@ -497,9 +497,18 @@ begin
           begin
             LPicture := TPicture.Create;
             try
+              if LText = '' then begin
+                Inc(LImageRect.Top,20);
+                Inc(LImageRect.Left,20);
+                Dec(LImageRect.Bottom,20);
+                Dec(LImageRect.Right,20);
+              end;
               LPicture.LoadFromFile(ImageFile);
-              ControlCanvas.StretchDraw(LImageRect, Picture.Graphic);
+              if Assigned(LPicture.Graphic) and (not LPicture.Graphic.Empty) then
+                ControlCanvas.StretchDraw(LImageRect, LPicture.Graphic);
             except
+              on E: Exception do
+                LText := E.Message;
             end;
             LPicture.Free;
           end;
@@ -520,6 +529,7 @@ begin
     Inc(LRect.Left,5);
     Dec(LRect.Bottom,5);
     Dec(LRect.Right,5);
+    ControlCanvas.Brush.Style := bsClear;
     ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
     ControlCanvas.Font.Color := clGray;
     ControlCanvas.TextRect(LRect,LText,[]);

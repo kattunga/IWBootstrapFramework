@@ -11,7 +11,7 @@ uses
   IWHTMLContainer, IWHTML40Container, IWRegion, IWBSRegion, IWBSCustomInput,
   IWBSButton, IWCompRadioButton, IWCompMemo, IWCompCheckbox, IWBSCustomControl,
   IWBSControls, IWCompTabControl, IWBSTabControl, IWBSImage, Vcl.Imaging.jpeg,
-  IWCompFileUploader, IWCompFile;
+  IWCompFileUploader, IWCompFile, Vcl.Graphics;
 
 type
   TIWForm4 = class(TIWAppForm)

@@ -45,7 +45,8 @@ object IWForm4: TIWForm4
       Height = 241
       FriendlyName = 'IWBSImage1'
       TabOrder = -1
-      ImageSrc = 'http://pepe.jpeg'
+      ImageFile = 'C:\temp\Desert.jpg'
+      Picture.Data = {07544269746D617000000000}
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
