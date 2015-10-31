@@ -14,7 +14,7 @@ type
     constructor Create; override;
   end;
 
-  TIWBSRestCallBackFunction = procedure(aRequest: THttpRequest; aReply: THttpReply) of object;
+  TIWBSRestCallBackFunction = procedure(aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings) of object;
 
   TIWBSCallback = class(TIWCallBack)
   protected
@@ -30,7 +30,7 @@ procedure IWBSRegisterRestServerHandler;
 
 implementation
 
-uses IW.Content.Handlers, IWURL, IWBaseForm;
+uses IW.Content.Handlers, IWURL, IWBaseForm, IW.Common.HttpPacket;
 
 const IWBS_RESTURLBASE = '/$iwbs/';
 
@@ -92,7 +92,7 @@ begin
   Result := TURL.Concat(AApplication.SessionUrlBase,IWBS_RESTURLBASE+AName);
 end;
 
-procedure IWBSPerformRestCallback(AApplication: TIWApplication; const AName: string; aRequest: THttpRequest; aReply: THttpReply);
+procedure IWBSPerformRestCallback(AApplication: TIWApplication; const AName: string; aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
 var
   LCallBacks: TIWCallBacksHack;
   xOwnerForm: TComponent;
@@ -112,7 +112,7 @@ begin
         LCallBackProc := LCallBacks.Objects[xPos];
         if LCallBackProc is TIWBSCallback then
           if Assigned(TIWBSCallback(LCallBackProc).FRestCallBackFunction) then
-            TIWBSCallback(LCallBackProc).FRestCallBackFunction(aRequest, aReply);
+            TIWBSCallback(LCallBackProc).FRestCallBackFunction(aRequest, aReply, aParams);
       end
     else
       begin
@@ -139,7 +139,11 @@ begin
   i := Pos(IWBS_RESTURLBASE,aRequest.PathInfo);
   Doc := Copy(aRequest.PathInfo,i+Length(IWBS_RESTURLBASE), MaxInt);
   if Doc <> '' then
-    IWBSPerformRestCallback(aSession, Doc, aRequest, aReply)
+    begin
+      IWBSPerformRestCallback(aSession, Doc, aRequest, aReply, aParams);
+      if aReply.DataType = rtNone then
+        aReply.Code := 200;
+    end
   else
     aReply.Code := 404;
   Result := True;
@@ -149,6 +153,7 @@ procedure IWBSRegisterRestServerHandler;
 begin
   if not FIsServerRegistered then
     THandlers.Add(IWBS_RESTURLBASE, '', TIWBSRestServer.Create);
+
   FIsServerRegistered := True;
 end;
 

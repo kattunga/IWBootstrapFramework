@@ -13,7 +13,7 @@ uses
   IWBaseLayoutComponent, IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr,
   IWBSInput, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
   IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent,
-  IWBSCustomControl;
+  IWBSCustomControl, IW.HTTP.Request, IW.HTTP.Reply, IWCompFileUploader;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -164,7 +164,6 @@ type
     IWBSText1: TIWBSText;
     IWBSButton39: TIWBSButton;
     IWBSButton38: TIWBSButton;
-    IWBSButton41: TIWBSButton;
     IWBSRegion37: TIWBSRegion;
     IWBSRegion7: TIWBSRegion;
     IWBSInputForm1: TIWBSInputForm;
@@ -182,6 +181,13 @@ type
     IWBSButton36: TIWBSButton;
     IWBSButton43: TIWBSButton;
     IWBSButton44: TIWBSButton;
+    IWBSButton41: TIWBSButton;
+    IWBSRegion29: TIWBSRegion;
+    IWBSLabel3: TIWBSLabel;
+    IWBSInputForm5: TIWBSInputForm;
+    IWBSInput26: TIWBSInput;
+    IWBSButton45: TIWBSButton;
+    IWBSText2: TIWBSText;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -201,6 +207,7 @@ type
     procedure IWBSButton42AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton43Click(Sender: TObject);
     procedure IWBSButton44Click(Sender: TObject);
+    procedure IWBSInputForm5Submit(aRequest: THttpRequest; aParams: TStrings);
   public
   end;
 
@@ -209,7 +216,7 @@ implementation
 {$R *.dfm}
 
 uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact, FishFactBootstrapTable, FishFactJQGrid,
-  ServerController;
+  ServerController, IW.HTTP.FileItem, IWURL;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);
@@ -384,6 +391,26 @@ begin
   with TFJQGrid.Create(WebApplication) do begin
     IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
     Show;
+  end;
+end;
+
+procedure TIWForm2.IWBSInputForm5Submit(aRequest: THttpRequest;
+  aParams: TStrings);
+var
+  AStream: TStringStream;
+begin
+  // I manually set this page because this submit doen't set it
+  IWTabControl21.ActivePage := IWTabControl21.Pages.IndexOf(IWTabControl21Page6);
+
+  // get file
+  if aRequest.Files.Count > 0 then begin
+    AStream := TStringStream.Create;
+    try
+      THttpFile(aRequest.Files[0]).SaveToStream(AStream);
+      IWBSText2.Lines.Text := AStream.DataString;
+    finally
+      AStream.Free;
+    end;
   end;
 end;
 

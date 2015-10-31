@@ -213,20 +213,34 @@ begin
   if FActiveSrc = '' then
     if FImageSrc <> '' then
       FActiveSrc := FImageSrc
-    else begin
-      if Assigned(FPicture) and Assigned(FPicture.Graphic) and (not FPicture.Graphic.Empty) then
-        begin
-          LFile := TIWAppCache.NewTempFileName;
-          FPicture.SaveToFile(LFile);
-        end
-      else if FImageFile <> '' then
-        LFile := FImageFile;
-      if LFile <> '' then begin
-        LParentForm := TIWForm.FindParentForm(Self);
-        if LParentForm = nil then
-          FActiveSrc := TIWAppCache.AddFileToCache(LParentForm, LFile, LMimeType, ctForm)
-        else
-          FActiveSrc := TIWAppCache.AddFileToCache(AContext.WebApplication, LFile, LMimeType);
+    else
+      begin
+        if Assigned(FPicture) and Assigned(FPicture.Graphic) and (not FPicture.Graphic.Empty) then
+          if FEmbedBase64 then
+            begin
+              LStream := TMemoryStream.Create;
+              try
+                FPicture.Graphic.SaveToStream(LStream);
+                LStream.Position := 0;
+                FActiveSrc := 'data:image;base64, '+TIdEncoderMIME.EncodeStream(LStream)
+              finally
+                LStream.Free;
+              end;
+            end
+          else
+            begin
+              LFile := TIWAppCache.NewTempFileName;
+              FPicture.SaveToFile(LFile);
+            end
+        else if FImageFile <> '' then
+          LFile := FImageFile;
+
+        if LFile <> '' then begin
+          LParentForm := TIWForm.FindParentForm(Self);
+          if LParentForm = nil then
+            FActiveSrc := TIWAppCache.AddFileToCache(LParentForm, LFile, LMimeType, ctForm)
+          else
+            FActiveSrc := TIWAppCache.AddFileToCache(AContext.WebApplication, LFile, LMimeType);
       end;
   end;
 end;

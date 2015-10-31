@@ -132,7 +132,7 @@ end;
 
 function TIWBSCustomControl.get_HasTabOrder: Boolean;
 begin
-  Result := FTabStop;
+  Result := FTabStop and gIWBSEnableTabIndex;
 end;
 
 procedure TIWBSCustomControl.SetScript(const AValue: TStringList);

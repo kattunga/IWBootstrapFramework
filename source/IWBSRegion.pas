@@ -7,7 +7,7 @@ uses
   IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
   IWBaseContainerLayout, IWContainer, IWControl, IWHTMLContainer, IWHTML40Container, IWRegion, IW.Common.Strings,
   IWRenderContext, IWHTMLTag, IWBaseInterfaces, IWXMLTag, IWMarkupLanguageTag, IW.Common.RenderStream,
-  IWBSCommon, IWBSRegionCommon, IWBSLayoutMgr, IWScriptEvents;
+  IWBSCommon, IWBSRegionCommon, IWBSLayoutMgr, IWScriptEvents, IWBSRestServer, IW.HTTP.Request, IW.HTTP.Reply;
 
 type
   TIWBSCustomRegion = class(TIWCustomRegion, IIWBSComponent)
@@ -66,13 +66,21 @@ type
     property ScriptParams: TStringList read FScriptParams write SetScriptParams;
     property Style: TStringList read FStyle write SetStyle;
     property ZIndex default 0;
+
     property OnHTMLTag;
   end;
 
+  TIWBSFormEncType = (iwbsfeDefault, iwbsfeMultipart, iwbsfeText);
+
+  TIWBSInputFormSubmitEvent = procedure(aRequest: THttpRequest; aParams: TStrings) of object;
+
   TIWBSInputForm = class(TIWBSCustomRegion)
   private
+    FEncType: TIWBSFormEncType;
     FFormType: TIWBSFormType;
     FFormOptions: TIWBSFormOptions;
+    FOnSubmit: TIWBSInputFormSubmitEvent;
+    procedure DoSubmit(aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
   protected
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   public
@@ -83,6 +91,8 @@ type
   published
     property BSFormType: TIWBSFormType read FFormType write FFormType default bsftVertical;
     property BSFormOptions: TIWBSFormOptions read FFormOptions write FFormOptions;
+    property EncType: TIWBSFormEncType read FEncType write FEncType default iwbsfeDefault;
+    property OnSubmit: TIWBSInputFormSubmitEvent read FOnSubmit write FOnSubmit;
   end;
 
   TIWBSInputGroup = class(TIWBSCustomRegion)
@@ -508,6 +518,7 @@ end;
 constructor TIWBSInputForm.Create(AOwner: TComponent);
 begin
   inherited;
+  FEncType := iwbsfeDefault;
   FFormOptions := TIWBSFormOptions.Create;
   FFormType := bsftVertical;
   FTagType := 'form'
@@ -537,6 +548,13 @@ begin
   Result := 'form';
 end;
 
+procedure TIWBSInputForm.DoSubmit(aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
+begin
+  if Assigned(FOnSubmit) then
+    FOnSubmit(aRequest, aParams);
+  aReply.SendRedirect(GGetWebApplicationThreadVar.SessionInternalUrlBase);
+end;
+
 function TIWBSInputForm.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
   LParentForm: TIWBSInputForm;
@@ -546,7 +564,18 @@ begin
     raise Exception.Create('forms can not be nested, you try to put '+Name+' inside '+LParentForm.Name);
 
   Result := inherited;
-  Result.AddStringParam('onSubmit', 'return FormDefaultSubmit();');
+
+  if Assigned(FOnSubmit) then
+    begin
+      Result.AddStringParam('method', 'post');
+      if FEncType = iwbsfeMultipart then
+        Result.AddStringParam('enctype', 'multipart/form-data')
+      else if FEncType = iwbsfeText then
+        Result.AddStringParam('enctype', 'text/plain');
+      Result.AddStringParam('action', IWBSRegisterRestCallBack(AContext.WebApplication, HTMLName+'.FormSubmit', DoSubmit)+'?IWFileUploader=true');
+    end
+  else
+    Result.AddStringParam('onSubmit', 'return FormDefaultSubmit();');
 end;
 {$endregion}
 

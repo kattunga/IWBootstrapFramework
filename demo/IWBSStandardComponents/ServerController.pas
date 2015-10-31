@@ -26,7 +26,7 @@ implementation
 {$R *.dfm}
 
 uses
-  IWInit, IWGlobal;
+  IWInit, IWGlobal, IWBSGlobal;
 
 function IWServerController: TIWServerController;
 begin
@@ -42,6 +42,8 @@ procedure TIWServerController.IWServerControllerBaseConfig(Sender: TObject);
 begin
   JavaScriptOptions.RenderjQuery := False;
   CacheDir := ExtractFilePath(ParamStr(0))+'temp';
+
+  IWBSAddGlobalLinkFile('iwbsstandarddemo.css');
 end;
 
 procedure TIWServerController.IWServerControllerBaseNewSession(

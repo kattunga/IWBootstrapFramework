@@ -14,7 +14,7 @@ uses
   IWBSInput, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
   IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent,
   IWBSCustomControl, IWCompEdit, IWCompExtCtrls, IWCompCheckbox, IWCompMemo,
-  IWCompListbox, IWCompRadioButton;
+  IWCompListbox, IWCompRadioButton, IWCompFileUploader;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -88,6 +88,9 @@ type
     IWBSButton31: TIWButton;
     IWBSButton26: TIWButton;
     IWBSButton34: TIWButton;
+    IWFileUploader1: TIWFileUploader;
+    IWBSFormControl8: TIWBSFormControl;
+    IWMemo1: TIWMemo;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton27AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -98,6 +101,10 @@ type
     procedure IWBSButton36Click(Sender: TObject);
     procedure IWBSButton34AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWButton1AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWFileUploader1AsyncUploadCompleted(Sender: TObject; var DestPath,
+      FileName: string; var SaveFile, Overwrite: Boolean);
+    procedure IWFileUploader1AsyncUploadSuccess(Sender: TObject;
+      EventParams: TStringList);
   public
   end;
 
@@ -122,7 +129,7 @@ begin
   cmp := TIWFrame1.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := IWBSRegion17;
-  cmp.IWBSRegion1.AsyncRenderComponent(true);
+  cmp.IWBSRegion1.AsyncRenderComponent;
 end;
 
 procedure TIWForm2.IWBSButton27AsyncClick(Sender: TObject;
@@ -133,7 +140,7 @@ begin
   cmp := TIWFrame3.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := Self;
-  cmp.IWBSModal1.AsyncRenderComponent(true);
+  cmp.IWBSModal1.AsyncRenderComponent;
 end;
 
 procedure TIWForm2.IWBSButton28AsyncClick(Sender: TObject;
@@ -201,9 +208,28 @@ begin
   IWEdit1.Visible := not IWEdit1.Visible;
 end;
 
+procedure TIWForm2.IWFileUploader1AsyncUploadCompleted(Sender: TObject;
+  var DestPath, FileName: string; var SaveFile, Overwrite: Boolean);
+var
+  LStream: TStringStream;
+begin
+  LStream := TStringStream.Create;
+  try
+    IWFileUploader1.SaveToStream(FileName, LStream);
+    IWMemo1.Text := LStream.DataString;
+  finally
+    LStream.Free;
+  end;
+  SaveFile := False;
+end;
+
+procedure TIWForm2.IWFileUploader1AsyncUploadSuccess(Sender: TObject;
+  EventParams: TStringList);
+begin
+  IWBSFormControl8.AsyncRenderComponent;
+end;
+
 initialization
   TIWForm2.SetAsMainForm;
-
-  TIWBSLayoutMgr.AddLinkFile('iwbsstandarddemo.css');
 
 end.

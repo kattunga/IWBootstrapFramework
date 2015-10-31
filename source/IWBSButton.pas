@@ -12,10 +12,12 @@ type
   TIWBSButtonDataDismiss = (bsbdNone, bsbdModal, bsbdAlert);
 
   TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
+  TIWBSButtonType = (iwbsbtButton, iwbsbtSubmit, iwbsbtReset);
 
   TIWBSButton = class(TIWBSCustomControl, IIWSubmitControl)
   private
     FAnchor: boolean;
+    FButtonType: TIWBSButtonType;
     FDataDismiss: TIWBSButtonDataDismiss;
     FButtonSize: TIWBSSize;
     FButtonStyle: TIWBSButtonStyle;
@@ -40,6 +42,7 @@ type
     property AsyncClickProc: TIWBSAsyncClickProc read FAsyncClickProc write SetAsyncClickProc;
   published
     property Anchor: boolean read FAnchor write FAnchor default False;
+    property ButtonType: TIWBSButtonType read FButtonType write FButtonType default iwbsbtButton;
     property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
     property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write FButtonStyle default bsbsDefault;
     property BSDataDismiss: TIWBSButtonDataDismiss read FDataDismiss write FDataDismiss default bsbdNone;
@@ -63,6 +66,7 @@ constructor TIWBSButton.Create(AOwner: TComponent);
 begin
   inherited;
   FAnchor := False;
+  FButtonType := iwbsbtButton;
   FButtonSize := bsszDefault;
   FButtonStyle := bsbsDefault;
   FDataDismiss := bsbdNone;
@@ -133,8 +137,12 @@ begin
       AHTMLTag.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
     if FAnchor then
       AHTMLTag.AddStringParam('href', '#')
-    else
-      AHTMLTag.AddStringParam('type', 'button');
+    else if FButtonType = iwbsbtButton then
+      AHTMLTag.AddStringParam('type', 'button')
+    else if FButtonType = iwbsbtSubmit then
+      AHTMLTag.AddStringParam('type', 'submit')
+    else if FButtonType = iwbsbtReset then
+      AHTMLTag.AddStringParam('type', 'reset');
     if ShowHint and (Hint <> '') then begin
       AHTMLTag.AddStringParam('data-toggle', 'tooltip');
       AHTMLTag.AddStringParam('title', Hint);

@@ -61,6 +61,7 @@ object IWForm2: TIWForm2
           BorderOptions.Style = cbsNone
           BorderOptions.Color = clNone
           Color = clWebSILVER
+          ClipRegion = False
           BSTabOptions.Pills = True
           DesignSize = (
             1078
@@ -106,7 +107,7 @@ object IWForm2: TIWForm2
                   Font.Style = []
                   SubmitOnAsyncEvent = True
                   Style = stNormal
-                  TabOrder = 4
+                  TabOrder = 10
                   Checked = False
                   FriendlyName = 'chkContFluid'
                 end
@@ -123,7 +124,7 @@ object IWForm2: TIWForm2
                   Font.Style = []
                   SubmitOnAsyncEvent = True
                   Style = stNormal
-                  TabOrder = 5
+                  TabOrder = 11
                   Checked = False
                   FriendlyName = 'chkTabsJust'
                 end
@@ -140,7 +141,7 @@ object IWForm2: TIWForm2
                   Font.Style = []
                   SubmitOnAsyncEvent = True
                   Style = stNormal
-                  TabOrder = 6
+                  TabOrder = 12
                   Checked = False
                   FriendlyName = 'chkTabsStacked'
                 end
@@ -157,7 +158,7 @@ object IWForm2: TIWForm2
                   Font.Style = []
                   SubmitOnAsyncEvent = True
                   Style = stNormal
-                  TabOrder = 7
+                  TabOrder = 13
                   Checked = True
                   FriendlyName = 'chkTabsPills'
                 end
@@ -174,7 +175,7 @@ object IWForm2: TIWForm2
                   Font.Style = []
                   SubmitOnAsyncEvent = True
                   Style = stNormal
-                  TabOrder = 8
+                  TabOrder = 14
                   Checked = False
                   FriendlyName = 'chkTabsFade'
                 end
@@ -192,9 +193,60 @@ object IWForm2: TIWForm2
                   Font.Size = 10
                   Font.Style = []
                   FriendlyName = 'IWBSButton20aaaaaa'
-                  TabOrder = 3
+                  TabOrder = 9
                   OnClick = IWBSButton30Click
                 end
+              end
+            end
+          end
+          object IWTabControl21Page1: TIWTabPage
+            Left = 0
+            Top = 20
+            Width = 1078
+            Height = 1513
+            RenderInvisibleControls = True
+            TabOrder = 1
+            Title = 'Functionality'
+            BorderOptions.NumericWidth = 0
+            BorderOptions.BorderWidth = cbwNumeric
+            BorderOptions.Style = cbsNone
+            BorderOptions.Color = clNone
+            Color = clWebWHITE
+            object IWBSRegion9: TIWBSRegion
+              Left = 15
+              Top = 14
+              Width = 685
+              Height = 89
+              RenderInvisibleControls = True
+              BSRegionType = bsrtWell
+              object IWButton1: TIWButton
+                Left = 16
+                Top = 14
+                Width = 149
+                Height = 25
+                Css = 'btn btn-success'
+                Caption = 'Toggle Visibility'
+                Color = clBtnFace
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWButton1'
+                TabOrder = 21
+                OnAsyncClick = IWButton1AsyncClick
+              end
+              object IWEdit1: TIWEdit
+                Left = 16
+                Top = 53
+                Width = 249
+                Height = 21
+                Css = 'form-control'
+                Font.Color = clNone
+                Font.Size = 10
+                Font.Style = []
+                FriendlyName = 'IWEdit1'
+                SubmitOnAsyncEvent = True
+                TabOrder = 22
+                Text = 'IWEdit1'
               end
             end
           end
@@ -245,7 +297,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 9
+                    TabOrder = 15
                     OnAsyncClick = IWBSButton27AsyncClick
                   end
                 end
@@ -270,7 +322,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 10
+                    TabOrder = 16
                     OnAsyncClick = IWBSButton28AsyncClick
                   end
                 end
@@ -291,7 +343,7 @@ object IWForm2: TIWForm2
                     Font.Style = []
                     FriendlyName = 'IWBSInput6'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 12
+                    TabOrder = 18
                   end
                   object IWBSButton31: TIWButton
                     Left = 12
@@ -308,7 +360,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 11
+                    TabOrder = 17
                     OnAsyncClick = IWBSButton31AsyncClick
                   end
                 end
@@ -332,7 +384,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 13
+                    TabOrder = 19
                     OnAsyncClick = IWBSButton26AsyncClick
                   end
                 end
@@ -356,7 +408,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     FriendlyName = 'IWBSButton26'
-                    TabOrder = 14
+                    TabOrder = 20
                     OnAsyncClick = IWBSButton34AsyncClick
                   end
                 end
@@ -399,56 +451,135 @@ object IWForm2: TIWForm2
                 FriendlyName = 'IWImageFile1'
                 ImageFile.URL = 'http://img.gawkerassets.com/img/198haup5wt5g9jpg/original.jpg'
               end
-            end
-          end
-          object IWTabControl21Page1: TIWTabPage
-            Left = 0
-            Top = 20
-            Width = 1078
-            Height = 1513
-            RenderInvisibleControls = True
-            TabOrder = 1
-            Title = 'Functionality'
-            BorderOptions.NumericWidth = 0
-            BorderOptions.BorderWidth = cbwNumeric
-            BorderOptions.Style = cbsNone
-            BorderOptions.Color = clNone
-            Color = clWebWHITE
-            object IWBSRegion9: TIWBSRegion
-              Left = 15
-              Top = 14
-              Width = 685
-              Height = 89
-              RenderInvisibleControls = True
-              BSRegionType = bsrtWell
-              object IWButton1: TIWButton
-                Left = 16
-                Top = 14
-                Width = 149
-                Height = 25
-                Css = 'btn btn-success'
-                Caption = 'Toggle Visibility'
-                Color = clBtnFace
+              object IWFileUploader1: TIWFileUploader
+                Left = 13
+                Top = 437
+                Width = 400
+                Height = 60
+                TabOrder = 30
+                TextStrings.DragText = 'Drop files here to upload'
+                TextStrings.UploadButtonText = 'Upload a Text file'
+                TextStrings.CancelButtonText = 'Cancel'
+                TextStrings.UploadErrorText = 'Upload failed'
+                TextStrings.MultipleFileDropNotAllowedText = 'You may only drop a single file'
+                TextStrings.OfTotalText = 'of'
+                TextStrings.RemoveButtonText = 'Remove'
+                TextStrings.TypeErrorText = 
+                  '{file} has an invalid extension. Only {extensions} files are all' +
+                  'owed.'
+                TextStrings.SizeErrorText = '{file} is too large, maximum file size is {sizeLimit}.'
+                TextStrings.MinSizeErrorText = '{file} is too small, minimum file size is {minSizeLimit}.'
+                TextStrings.EmptyErrorText = '{file} is empty, please select files again without it.'
+                TextStrings.NoFilesErrorText = 'No files to upload.'
+                TextStrings.OnLeaveWarningText = 
+                  'The files are being uploaded, if you leave now the upload will b' +
+                  'e cancelled.'
+                Style.ButtonOptions.Alignment = taCenter
+                Style.ButtonOptions.Font.Color = clWebWHITE
+                Style.ButtonOptions.Font.FontFamily = 'Arial, Sans-Serif, Verdana'
+                Style.ButtonOptions.Font.Size = 10
+                Style.ButtonOptions.Font.Style = []
+                Style.ButtonOptions.FromColor = clWebMAROON
+                Style.ButtonOptions.ToColor = clWebMAROON
+                Style.ButtonOptions.Height = 30
+                Style.ButtonOptions.Width = 200
+                Style.ButtonHoverOptions.Alignment = taCenter
+                Style.ButtonHoverOptions.Font.Color = clWebWHITE
+                Style.ButtonHoverOptions.Font.FontFamily = 'Arial, Sans-Serif, Verdana'
+                Style.ButtonHoverOptions.Font.Size = 10
+                Style.ButtonHoverOptions.Font.Style = []
+                Style.ButtonHoverOptions.FromColor = 214
+                Style.ButtonHoverOptions.ToColor = 214
+                Style.ListOptions.Alignment = taLeftJustify
+                Style.ListOptions.Font.Color = clWebBLACK
+                Style.ListOptions.Font.FontFamily = 'Arial, Sans-Serif, Verdana'
+                Style.ListOptions.Font.Size = 10
+                Style.ListOptions.Font.Style = []
+                Style.ListOptions.FromColor = clWebGOLD
+                Style.ListOptions.ToColor = clWebGOLD
+                Style.ListOptions.Height = 30
+                Style.ListOptions.Width = 0
+                Style.ListSuccessOptions.Alignment = taLeftJustify
+                Style.ListSuccessOptions.Font.Color = clWebWHITE
+                Style.ListSuccessOptions.Font.FontFamily = 'Arial, Sans-Serif, Verdana'
+                Style.ListSuccessOptions.Font.Size = 10
+                Style.ListSuccessOptions.Font.Style = []
+                Style.ListSuccessOptions.FromColor = clWebFORESTGREEN
+                Style.ListSuccessOptions.ToColor = clWebFORESTGREEN
+                Style.ListErrorOptions.Alignment = taLeftJustify
+                Style.ListErrorOptions.Font.Color = clWebWHITE
+                Style.ListErrorOptions.Font.FontFamily = 'Arial, Sans-Serif, Verdana'
+                Style.ListErrorOptions.Font.Size = 10
+                Style.ListErrorOptions.Font.Style = []
+                Style.ListErrorOptions.FromColor = clWebRED
+                Style.ListErrorOptions.ToColor = clWebRED
+                Style.DropAreaOptions.Alignment = taCenter
+                Style.DropAreaOptions.Font.Color = clWebWHITE
+                Style.DropAreaOptions.Font.FontFamily = 'Arial, Sans-Serif, Verdana'
+                Style.DropAreaOptions.Font.Size = 10
+                Style.DropAreaOptions.Font.Style = []
+                Style.DropAreaOptions.FromColor = clWebDARKORANGE
+                Style.DropAreaOptions.ToColor = clWebDARKORANGE
+                Style.DropAreaOptions.Height = 60
+                Style.DropAreaOptions.Width = 0
+                Style.DropAreaActiveOptions.Alignment = taCenter
+                Style.DropAreaActiveOptions.Font.Color = clWebWHITE
+                Style.DropAreaActiveOptions.Font.FontFamily = 'Arial, Sans-Serif, Verdana'
+                Style.DropAreaActiveOptions.Font.Size = 10
+                Style.DropAreaActiveOptions.Font.Style = []
+                Style.DropAreaActiveOptions.FromColor = clWebLIMEGREEN
+                Style.DropAreaActiveOptions.ToColor = clWebLIMEGREEN
+                Style.DropAreaActiveOptions.Height = 60
+                Style.DropAreaActiveOptions.Width = 0
+                CssClasses.Strings = (
+                  'button='
+                  'button-hover='
+                  'drop-area='
+                  'drop-area-active='
+                  'drop-area-disabled='
+                  'list='
+                  'upload-spinner='
+                  'progress-bar='
+                  'upload-file='
+                  'upload-size='
+                  'upload-listItem='
+                  'upload-cancel='
+                  'upload-success='
+                  'upload-fail='
+                  'success-icon='
+                  'fail-icon=')
+                OnAsyncUploadCompleted = IWFileUploader1AsyncUploadCompleted
+                OnAsyncUploadSuccess = IWFileUploader1AsyncUploadSuccess
+                FriendlyName = 'IWFileUploader1'
                 Font.Color = clNone
                 Font.Size = 10
                 Font.Style = []
-                FriendlyName = 'IWButton1'
-                TabOrder = 15
-                OnAsyncClick = IWButton1AsyncClick
               end
-              object IWEdit1: TIWEdit
-                Left = 16
-                Top = 53
-                Width = 249
-                Height = 21
-                Css = 'form-control'
-                Font.Color = clNone
-                Font.Size = 10
-                Font.Style = []
-                FriendlyName = 'IWEdit1'
-                SubmitOnAsyncEvent = True
-                TabOrder = 16
-                Text = 'IWEdit1'
+              object IWBSFormControl8: TIWBSFormControl
+                Left = 13
+                Top = 258
+                Width = 527
+                Height = 161
+                Caption = ''
+                object IWMemo1: TIWMemo
+                  Left = 13
+                  Top = 24
+                  Width = 485
+                  Height = 121
+                  Css = 'form-control'
+                  BGColor = clNone
+                  Editable = True
+                  Font.Color = clNone
+                  Font.Size = 10
+                  Font.Style = []
+                  InvisibleBorder = False
+                  HorizScrollBar = False
+                  VertScrollBar = True
+                  Required = False
+                  TabOrder = 31
+                  SubmitOnAsyncEvent = True
+                  FriendlyName = 'IWMemo1'
+                end
               end
             end
           end
@@ -483,8 +614,8 @@ object IWForm2: TIWForm2
                 BSGridOptions.GridMDSpan = 4
                 BSRegionType = bsrtColumn
                 object IWBSRegion18: TIWBSRegion
-                  Left = 10
-                  Top = 20
+                  Left = 12
+                  Top = 28
                   Width = 245
                   Height = 237
                   BSRegionType = bsrtWell
@@ -592,11 +723,11 @@ object IWForm2: TIWForm2
                   Height = 25
                   RenderSize = False
                   StyleRenderOptions.RenderSize = False
+                  FriendlyName = 'IWBSButton20'
+                  TabOrder = -1
+                  OnAsyncClick = IWBSButton20AsyncClick
                   BSGlyphicon = 'check'
                   Caption = 'Ajax Click (see input values in memo)'
-                  FriendlyName = 'IWBSButton20'
-                  TabOrder = 1
-                  OnAsyncClick = IWBSButton20AsyncClick
                 end
                 object IWBSFormControl1: TIWBSFormControl
                   Left = 12
@@ -617,7 +748,7 @@ object IWForm2: TIWForm2
                     Font.Style = []
                     FriendlyName = 'IWBSInput1'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 17
+                    TabOrder = 23
                   end
                 end
                 object IWBSFormControl2: TIWBSFormControl
@@ -637,7 +768,7 @@ object IWForm2: TIWForm2
                     Font.Style = []
                     FriendlyName = 'IWBSInput3'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 18
+                    TabOrder = 24
                     PasswordPrompt = True
                   end
                 end
@@ -660,7 +791,7 @@ object IWForm2: TIWForm2
                     Font.Style = []
                     FriendlyName = 'IWBSInput2'
                     SubmitOnAsyncEvent = True
-                    TabOrder = 19
+                    TabOrder = 25
                     Text = 'This is a static text'
                   end
                 end
@@ -685,7 +816,7 @@ object IWForm2: TIWForm2
                     HorizScrollBar = False
                     VertScrollBar = True
                     Required = False
-                    TabOrder = 20
+                    TabOrder = 26
                     SubmitOnAsyncEvent = True
                     FriendlyName = 'IWBSMemo2'
                   end
@@ -706,7 +837,7 @@ object IWForm2: TIWForm2
                     Font.Size = 10
                     Font.Style = []
                     RequireSelection = False
-                    TabOrder = 21
+                    TabOrder = 27
                     ItemIndex = -1
                     Items.Strings = (
                       'item 1'
@@ -732,7 +863,7 @@ object IWForm2: TIWForm2
                     Font.Color = clNone
                     Font.Size = 10
                     Font.Style = []
-                    TabOrder = 22
+                    TabOrder = 28
                     MaxItems = 0
                     FriendlyName = 'IWBSListbox1'
                     Items.Strings = (
@@ -761,7 +892,7 @@ object IWForm2: TIWForm2
                     Font.Style = []
                     SubmitOnAsyncEvent = True
                     Style = stNormal
-                    TabOrder = 23
+                    TabOrder = 29
                     Checked = False
                     FriendlyName = 'IWBSCheckBox1'
                   end
@@ -866,7 +997,7 @@ object IWForm2: TIWForm2
           Font.Size = 10
           Font.Style = []
           FriendlyName = 'IWBSButton1'
-          TabOrder = 2
+          TabOrder = 8
           OnClick = IWBSButton36Click
         end
         object IWText3: TIWText

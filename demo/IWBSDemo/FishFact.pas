@@ -79,7 +79,6 @@ type
     procedure btnLastAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure dsrcMainStateChange(Sender: TObject);
     procedure IWBSButton1Click(Sender: TObject);
-    procedure IWBSImage1Click(Sender: TObject);
   end;
 
 implementation
@@ -96,11 +95,6 @@ end;
 procedure TFFishFact.IWBSButton1Click(Sender: TObject);
 begin
   Release;
-end;
-
-procedure TFFishFact.IWBSImage1Click(Sender: TObject);
-begin
-//
 end;
 
 procedure TFFishFact.btnEditAsyncClick(Sender: TObject;
