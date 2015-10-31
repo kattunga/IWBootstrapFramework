@@ -51,7 +51,7 @@ type
     property EmbedBase64: boolean read FEmbedBase64 write FEmbedBase64 default False;
     property Enabled default True;
     property ImageFile: string read FImageFile write SetImageFile;
-    property ImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [iwbsimResponsive];
+    property BSImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [iwbsimResponsive];
     property ImageSrc: string read FImageSrc write SetImageSrc;
     property MimeType: string read FMimeType write FMimeType;
     property Picture: TPicture read GetPicture write SetPicture;
@@ -237,7 +237,7 @@ begin
 
         if LFile <> '' then begin
           LParentForm := TIWForm.FindParentForm(Self);
-          if LParentForm = nil then
+          if LParentForm <> nil then
             FActiveSrc := TIWAppCache.AddFileToCache(LParentForm, LFile, LMimeType, ctForm)
           else
             FActiveSrc := TIWAppCache.AddFileToCache(AContext.WebApplication, LFile, LMimeType);
