@@ -420,6 +420,7 @@ begin
     begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
       SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+      SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
     end;
 end;
 

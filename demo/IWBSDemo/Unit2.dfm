@@ -445,221 +445,6 @@ object IWForm2: TIWForm2
                 end
               end
             end
-            object IWTabControl21Page5: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1076
-              Height = 1512
-              RenderInvisibleControls = True
-              TabOrder = 4
-              Title = 'Create components at runtime'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSRegion6: TIWBSRegion
-                Left = 0
-                Top = 0
-                Width = 1076
-                Height = 1512
-                Align = alClient
-                Style.Strings = (
-                  'margin: 1em')
-                object IWBSInputForm4: TIWBSInputForm
-                  Left = 15
-                  Top = 12
-                  Width = 1020
-                  Height = 1029
-                  object IWBSRegion12: TIWBSRegion
-                    Left = 27
-                    Top = 12
-                    Width = 538
-                    Height = 60
-                    BSRegionType = bsrtWell
-                    object IWBSButton27: TIWBSButton
-                      Left = 12
-                      Top = 23
-                      Width = 393
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      LockOnAsyncEvents = [aeClick]
-                      FriendlyName = 'IWBSButton26'
-                      TabOrder = -1
-                      OnAsyncClick = IWBSButton27AsyncClick
-                      Caption = 'Dinamically create modal dialog from TIWFrame'
-                    end
-                  end
-                  object IWBSRegion26: TIWBSRegion
-                    Left = 27
-                    Top = 85
-                    Width = 538
-                    Height = 60
-                    BSRegionType = bsrtWell
-                    object IWBSButton28: TIWBSButton
-                      Left = 12
-                      Top = 24
-                      Width = 393
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      LockOnAsyncEvents = [aeClick]
-                      FriendlyName = 'IWBSButton26'
-                      TabOrder = -1
-                      OnAsyncClick = IWBSButton28AsyncClick
-                      Caption = 'Dinamically create dialog from code'
-                    end
-                  end
-                  object IWBSRegion13: TIWBSRegion
-                    Left = 27
-                    Top = 163
-                    Width = 538
-                    Height = 91
-                    BSRegionType = bsrtWell
-                    object IWBSButton31: TIWBSButton
-                      Left = 12
-                      Top = 16
-                      Width = 393
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      LockOnAsyncEvents = [aeClick]
-                      FriendlyName = 'IWBSButton26'
-                      TabOrder = -1
-                      OnAsyncClick = IWBSButton31AsyncClick
-                      Caption = 'Dinamically create advanced dialog from code'
-                    end
-                    object IWBSInput23: TIWBSInput
-                      Left = 12
-                      Top = 47
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSInput6'
-                      TabOrder = -1
-                      Caption = ''
-                      Text = ''
-                      PlaceHolder = 'IWBSInput23'
-                    end
-                  end
-                  object IWBSRegion17: TIWBSRegion
-                    Left = 27
-                    Top = 260
-                    Width = 538
-                    Height = 66
-                    BSRegionType = bsrtWell
-                    object IWBSButton26: TIWBSButton
-                      Left = 12
-                      Top = 13
-                      Width = 265
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      FriendlyName = 'IWBSButton26'
-                      TabOrder = -1
-                      OnAsyncClick = IWBSButton26AsyncClick
-                      Caption = 'Dinamically create frame with inputs'
-                    end
-                  end
-                  object IWBSRegion11: TIWBSRegion
-                    Left = 27
-                    Top = 335
-                    Width = 538
-                    Height = 76
-                    BSRegionType = bsrtWell
-                    object IWBSButton21: TIWBSButton
-                      Left = 12
-                      Top = 7
-                      Width = 397
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      FriendlyName = 'IWBSButton26'
-                      TabOrder = -1
-                      OnAsyncClick = IWBSButton21AsyncClick
-                      Caption = 'Dinamically create button with anonymous proc'
-                    end
-                    object IWBSInput6: TIWBSInput
-                      Left = 12
-                      Top = 38
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSInput6'
-                      TabOrder = -1
-                      Caption = ''
-                      Text = ''
-                    end
-                  end
-                  object IWBSRegion27: TIWBSRegion
-                    Left = 27
-                    Top = 428
-                    Width = 538
-                    Height = 60
-                    BSRegionType = bsrtWell
-                    object IWBSButton32: TIWBSButton
-                      Left = 9
-                      Top = 20
-                      Width = 393
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      FriendlyName = 'IWBSButton26'
-                      TabOrder = -1
-                      OnAsyncClick = IWBSButton32AsyncClick
-                      Caption = 'Dinamically create Alert'
-                    end
-                  end
-                  object IWBSRegion28: TIWBSRegion
-                    Left = 27
-                    Top = 505
-                    Width = 538
-                    Height = 104
-                    BSRegionType = bsrtWell
-                    object IWBSButton33: TIWBSButton
-                      Left = 9
-                      Top = 9
-                      Width = 393
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      FriendlyName = 'IWBSButton26'
-                      TabOrder = -1
-                      OnAsyncClick = IWBSButton33AsyncClick
-                      Caption = 'Dinamically create complex Alert'
-                    end
-                    object IWBSInput24: TIWBSInput
-                      Left = 9
-                      Top = 49
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSInput6'
-                      TabOrder = -1
-                      Caption = ''
-                      Text = ''
-                    end
-                  end
-                  object IWBSRegion31: TIWBSRegion
-                    Left = 27
-                    Top = 616
-                    Width = 538
-                    Height = 60
-                    BSRegionType = bsrtWell
-                    object IWBSButton34: TIWBSButton
-                      Left = 9
-                      Top = 20
-                      Width = 393
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      FriendlyName = 'IWBSButton26'
-                      TabOrder = -1
-                      OnAsyncClick = IWBSButton34AsyncClick
-                      Caption = 'Raise an exception'
-                    end
-                  end
-                end
-              end
-            end
             object IWTabControl21Page2: TIWTabPage
               Left = 0
               Top = 20
@@ -1302,6 +1087,221 @@ object IWForm2: TIWForm2
                 end
               end
             end
+            object IWTabControl21Page5: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1076
+              Height = 1512
+              RenderInvisibleControls = True
+              TabOrder = 4
+              Title = 'Create components at runtime'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSRegion6: TIWBSRegion
+                Left = 0
+                Top = 0
+                Width = 1076
+                Height = 1512
+                Align = alClient
+                Style.Strings = (
+                  'margin: 1em')
+                object IWBSInputForm4: TIWBSInputForm
+                  Left = 15
+                  Top = 12
+                  Width = 1020
+                  Height = 1029
+                  object IWBSRegion12: TIWBSRegion
+                    Left = 27
+                    Top = 12
+                    Width = 538
+                    Height = 60
+                    BSRegionType = bsrtWell
+                    object IWBSButton27: TIWBSButton
+                      Left = 12
+                      Top = 23
+                      Width = 393
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      LockOnAsyncEvents = [aeClick]
+                      FriendlyName = 'IWBSButton26'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton27AsyncClick
+                      Caption = 'Dinamically create modal dialog from TIWFrame'
+                    end
+                  end
+                  object IWBSRegion26: TIWBSRegion
+                    Left = 27
+                    Top = 85
+                    Width = 538
+                    Height = 60
+                    BSRegionType = bsrtWell
+                    object IWBSButton28: TIWBSButton
+                      Left = 12
+                      Top = 24
+                      Width = 393
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      LockOnAsyncEvents = [aeClick]
+                      FriendlyName = 'IWBSButton26'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton28AsyncClick
+                      Caption = 'Dinamically create dialog from code'
+                    end
+                  end
+                  object IWBSRegion13: TIWBSRegion
+                    Left = 27
+                    Top = 163
+                    Width = 538
+                    Height = 91
+                    BSRegionType = bsrtWell
+                    object IWBSButton31: TIWBSButton
+                      Left = 12
+                      Top = 16
+                      Width = 393
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      LockOnAsyncEvents = [aeClick]
+                      FriendlyName = 'IWBSButton26'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton31AsyncClick
+                      Caption = 'Dinamically create advanced dialog from code'
+                    end
+                    object IWBSInput23: TIWBSInput
+                      Left = 12
+                      Top = 47
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSInput6'
+                      TabOrder = -1
+                      Caption = ''
+                      Text = ''
+                      PlaceHolder = 'IWBSInput23'
+                    end
+                  end
+                  object IWBSRegion17: TIWBSRegion
+                    Left = 27
+                    Top = 260
+                    Width = 538
+                    Height = 66
+                    BSRegionType = bsrtWell
+                    object IWBSButton26: TIWBSButton
+                      Left = 12
+                      Top = 13
+                      Width = 265
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      FriendlyName = 'IWBSButton26'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton26AsyncClick
+                      Caption = 'Dinamically create frame with inputs'
+                    end
+                  end
+                  object IWBSRegion11: TIWBSRegion
+                    Left = 27
+                    Top = 335
+                    Width = 538
+                    Height = 76
+                    BSRegionType = bsrtWell
+                    object IWBSButton21: TIWBSButton
+                      Left = 12
+                      Top = 7
+                      Width = 397
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      FriendlyName = 'IWBSButton26'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton21AsyncClick
+                      Caption = 'Dinamically create button with anonymous proc'
+                    end
+                    object IWBSInput6: TIWBSInput
+                      Left = 12
+                      Top = 38
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSInput6'
+                      TabOrder = -1
+                      Caption = ''
+                      Text = ''
+                    end
+                  end
+                  object IWBSRegion27: TIWBSRegion
+                    Left = 27
+                    Top = 428
+                    Width = 538
+                    Height = 60
+                    BSRegionType = bsrtWell
+                    object IWBSButton32: TIWBSButton
+                      Left = 9
+                      Top = 20
+                      Width = 393
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      FriendlyName = 'IWBSButton26'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton32AsyncClick
+                      Caption = 'Dinamically create Alert'
+                    end
+                  end
+                  object IWBSRegion28: TIWBSRegion
+                    Left = 27
+                    Top = 505
+                    Width = 538
+                    Height = 104
+                    BSRegionType = bsrtWell
+                    object IWBSButton33: TIWBSButton
+                      Left = 9
+                      Top = 9
+                      Width = 393
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      FriendlyName = 'IWBSButton26'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton33AsyncClick
+                      Caption = 'Dinamically create complex Alert'
+                    end
+                    object IWBSInput24: TIWBSInput
+                      Left = 9
+                      Top = 49
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSInput6'
+                      TabOrder = -1
+                      Caption = ''
+                      Text = ''
+                    end
+                  end
+                  object IWBSRegion31: TIWBSRegion
+                    Left = 27
+                    Top = 616
+                    Width = 538
+                    Height = 60
+                    BSRegionType = bsrtWell
+                    object IWBSButton34: TIWBSButton
+                      Left = 9
+                      Top = 20
+                      Width = 393
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      FriendlyName = 'IWBSButton26'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton34AsyncClick
+                      Caption = 'Raise an exception'
+                    end
+                  end
+                end
+              end
+            end
             object IWTabControl21Page6: TIWTabPage
               Left = 0
               Top = 20
@@ -1466,8 +1466,8 @@ object IWForm2: TIWForm2
                   BSGridOptions.GridMDSpan = 4
                   BSRegionType = bsrtColumn
                   object IWBSRegion18: TIWBSRegion
-                    Left = 12
-                    Top = 39
+                    Left = 14
+                    Top = 27
                     Width = 245
                     Height = 195
                     BSRegionType = bsrtWell

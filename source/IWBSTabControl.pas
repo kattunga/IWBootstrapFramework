@@ -157,6 +157,7 @@ begin
   xHTMLName := HTMLName;
   SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
   SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
   if FOldActivePage <> ActivePage then begin
     AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ActivePage)+']").tab("show");');
     FOldActivePage := ActivePage;
