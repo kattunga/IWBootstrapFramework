@@ -10,6 +10,9 @@ $(document).ready(function () {
 
 function AsyncRenderControl(id, parentSelector, htmlTag) {
 	var elem = document.getElementById(id);
+	if (elem === null && parentSelector === "") {
+		return false;
+	}
 	if (elem === null) {
 		$(parentSelector).append(htmlTag);
 	} else {
@@ -17,7 +20,7 @@ function AsyncRenderControl(id, parentSelector, htmlTag) {
 	}
 	var formTag = $("body > form[name='SubmitForm']");
 	var hidInpt;
-	$("#" + id).find('input, select').each(function () {
+	$("#" + id).find('input, select, textarea').each(function () {
 		hidInpt = $(formTag).find("input[name='" + this.name + "']");
 		if (hidInpt.length === 0) {
 			formTag.append('<input type="hidden" name="' + this.name + '">');

@@ -12,6 +12,11 @@ uses
 type
   TIWBSCustomRegion = class(TIWCustomRegion, IIWBSComponent)
   private
+    FOldCss: string;
+    FOldStyle: string;
+    FOldVisible: boolean;
+
+    FAsyncRefreshControl: boolean;
     FTagType: string;
     FCss: string;
     FGridOptions: TIWBSGridOptions;
@@ -22,16 +27,14 @@ type
     FReleased: boolean;
     FContentSuffix: string;
 
-    FOldCss: string;
-    FOldStyle: string;
-    FOldVisible: boolean;
-
     function GetWebApplication: TIWApplication;
     function IsScriptEventsStored: Boolean; virtual;
     procedure SetGridOptions(const AValue: TIWBSGridOptions);
     procedure SetScript(const AValue: TStringList);
     procedure SetScriptParams(const AValue: TStringList);
     procedure SetStyle(const AValue: TStringList);
+    procedure OnScriptChange(ASender : TObject);
+    procedure OnScriptParamsChange(ASender : TObject);
   protected
     function ContainerPrefix: string; override;
     function HTMLControlImplementation: TIWHTMLControlImplementation;
@@ -39,7 +42,9 @@ type
     function InternalRenderScript: string;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    function RenderHTMLTag(AContext: TIWCompContext): string; virtual;
     procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
     function SupportsInput: Boolean;
@@ -47,8 +52,8 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Release;
-    procedure AsyncRemoveComponent;
-    procedure AsyncRenderComponent;
+    procedure AsyncRemoveControl;
+    procedure AsyncRefreshControl;
     function GetClassString: string; virtual;
     function GetRoleString: string; virtual;
     procedure ExecuteJS(const AScript: string; AsCDATA: boolean = False);
@@ -103,7 +108,6 @@ type
     constructor Create(AOwner: TComponent); override;
     function GetClassString: string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
   published
     property Caption: string read FCaption write FCaption;
     property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
@@ -200,7 +204,8 @@ function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
 
 implementation
 
-uses IWForm, IWUtils, IW.Common.System, IWContainerLayout, IWBaseHTMLControl, IWBSUtils, IWBSInputCommon, IWBSScriptEvents;
+uses IWForm, IWUtils, IW.Common.System, IWContainerLayout, IWBaseHTMLControl, IWBaseHTMLInterfaces,
+     IWBSUtils, IWBSInputCommon, IWBSScriptEvents;
 
 {$region 'help functions'}
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -218,12 +223,15 @@ end;
 constructor TIWBSCustomRegion.Create(AOwner: TComponent);
 begin
   inherited;
+  FAsyncRefreshControl := True;
   FReleased := False;
   FCss := '';
   FContentSuffix := '';
   FGridOptions := TIWBSGridOptions.Create;
   FScript := TStringList.Create;
+  FScript.OnChange := OnScriptChange;
   FScriptParams := TStringList.Create;
+  FScriptParams.OnChange := OnScriptParamsChange;
   FStyle := TStringList.Create;
   FStyle.NameValueSeparator := ':';
   FTagType := 'div';
@@ -244,7 +252,7 @@ begin
   inherited;
 end;
 
-procedure TIWBSCustomRegion.AsyncRemoveComponent;
+procedure TIWBSCustomRegion.AsyncRemoveControl;
 begin
   ExecuteJS('AsyncDestroyControl("'+HTMLName+'");');
 end;
@@ -313,77 +321,10 @@ begin
   result := '';
 end;
 
-procedure TIWBSCustomRegion.AsyncRenderComponent;
-var
-  LParentContainer: TIWContainer;
-  LWebApplication: TIWApplication;
-
-  LHTMLName: string;
-  LParentSl: string;
-  LPageContext: TIWBasePageContext;
-  LComponentContext: TIWBaseComponentContext;
-  LBuffer: TIWRenderStream;
-
-  LTag: TIWMarkupLanguageTag;
+procedure TIWBSCustomRegion.AsyncRefreshControl;
 begin
-  // get base container
-  LParentContainer := TIWContainer(ParentContainer.InterfaceInstance);
-  if LParentContainer is TIWCustomRegion then
-    LParentSl := '#'+TIWCustomRegion(LParentContainer).HTMLName
-  else if LParentContainer is TIWForm then
-    LParentSl := 'body'
-  else
-    Exit;
-
-  // not render invisible control
-  if (not Visible) and (not LParentContainer.RenderInvisibleControls) then
-    Exit;
-
-  // get webapplication
-  LWebApplication := GetWebApplication;
-
-  // if not callback exit now
-  if (LWebApplication = nil) or not LWebApplication.IsCallBack or not LWebApplication.CallBackProcessing then
-    Exit;
-
-  // read only one time
-  LHTMLName := HTMLName;
-
-  // is there any other way to get the pagecontext ????
-  if LWebApplication.ActiveForm is TIWForm then
-    LPageContext := TIWForm(LWebApplication.ActiveForm).PageContext
-  else
-    Exit;
-
-  try
-    LComponentContext := TIWCompContext.Create(Self, ParentContainer.ContainerContext , LPageContext);
-    LTag := RenderMarkupLanguageTag(LComponentContext);
-    LTag := DoPostRenderProcessing(LTag, LComponentContext, Self);
-    if not Visible then
-      LTag.Params.Values['style'] := 'display: none; visibility: hidden;'+LTag.Params.Values['style'];
-
-    // render child components
-    LBuffer := TIWRenderStream.Create(True, True);
-    try
-      ContainerContext := InitContainerContext(LWebApplication);
-      IWBSRegionRenderComponents(Self, ContainerContext, LPageContext, LBuffer);
-      FRegionDiv.Contents.AddBuffer(LBuffer);
-    finally
-      FreeAndNil(LBuffer);
-    end;
-
-    LBuffer := TIWRenderStream.Create(True, True);
-    try
-      LTag.Render(LBuffer);
-      LWebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+LHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LBuffer.AsString)+'");')
-    finally
-      FreeAndNil(LBuffer);
-    end;
-
-    ParentContainer.ContainerContext.AddComponent(LComponentContext);
-  finally
-    LayoutMgr.SetContainer(nil);
-  end;
+  FAsyncRefreshControl := True;
+  Invalidate;
 end;
 
 procedure TIWBSCustomRegion.SetGridOptions(const AValue: TIWBSGridOptions);
@@ -392,9 +333,21 @@ begin
   Invalidate;
 end;
 
+procedure TIWBSCustomRegion.OnScriptChange( ASender : TObject );
+begin
+  FAsyncRefreshControl := True;
+  Invalidate;
+end;
+
 procedure TIWBSCustomRegion.SetScript(const AValue: TStringList);
 begin
   FScript.Assign(AValue);
+  Invalidate;
+end;
+
+procedure TIWBSCustomRegion.OnScriptParamsChange( ASender : TObject );
+begin
+  FAsyncRefreshControl := True;
   Invalidate;
 end;
 
@@ -440,12 +393,34 @@ end;
 function TIWBSCustomRegion.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   xHTMLName: string;
+  LParentContainer: IIWBaseHTMLComponent;
+  LParentSl: string;
+  LHtmlTag: string;
 begin
   Result := nil;
   xHTMLName := HTMLName;
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
+
+  if FAsyncRefreshControl then
+    begin
+      // get base container
+      if ParentContainer.InterfaceInstance is TIWForm then
+        LParentSl := 'body'
+      else
+        begin
+          LParentContainer := BaseHTMLComponentInterface(ParentContainer.InterfaceInstance);
+          if LParentContainer <> nil then
+            LParentSl := '#'+LParentContainer.HTMLName
+          else
+            Exit;
+        end;
+      LHtmlTag := RenderHtmlTag(AContext);
+      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+xHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");')
+    end
+  else
+    begin
+      SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
+      SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+    end;
 end;
 
 procedure TIWBSCustomRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
@@ -487,6 +462,10 @@ begin
     if ZIndex <> 0 then
       xStyle.Values['z-index'] := IntToStr(Zindex);
 
+    // render visibility
+    if not Visible then
+      TIWBSCommon.SetNotVisible(xStyle);
+
     for i := 0 to xStyle.Count-1 do begin
       if Result <> '' then
         Result := Result + ';';
@@ -495,6 +474,11 @@ begin
   finally
     xStyle.Free;
   end;
+end;
+
+function TIWBSCustomRegion.RenderCSSClass(AComponentContext: TIWCompContext): string;
+begin
+  Result := Css;
 end;
 
 function TIWBSCustomRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -511,6 +495,36 @@ begin
   Result := FRegionDiv;
 
   IWBSRenderScript(Self, AContext, Result);
+  FAsyncRefreshControl := False;
+end;
+
+function TIWBSCustomRegion.RenderHTMLTag(AContext: TIWCompContext): string;
+var
+  LBuffer: TIWRenderStream;
+  LTag: TIWHTMLTag;
+begin
+  LTag := RenderHTML(AContext);
+  try
+    // render child components
+    LBuffer := TIWRenderStream.Create(True, True);
+    try
+      ContainerContext := InitContainerContext(AContext.WebApplication);
+      IWBSRegionRenderComponents(Self, ContainerContext, AContext.PageContext, LBuffer);
+      FRegionDiv.Contents.AddBuffer(LBuffer);
+    finally
+      FreeAndNil(LBuffer);
+    end;
+
+    LBuffer := TIWRenderStream.Create(True, True);
+    try
+      LTag.Render(LBuffer);
+      Result := LBuffer.AsString;
+    finally
+      LBuffer.Free;
+    end;
+  finally
+    LTag.Free;
+  end;
 end;
 {$endregion}
 
@@ -602,11 +616,6 @@ function TIWBSInputGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result := IWBSCreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
-end;
-
-function TIWBSInputGroup.RenderStyle(AContext: TIWCompContext): string;
-begin
-  Result := '';
 end;
 {$endregion}
 
@@ -871,7 +880,7 @@ begin
   if Assigned(FOnAsyncHide) then
     FOnAsyncHide(Self, AParams);
   if FDestroyOnHide then begin
-    AsyncRemoveComponent;
+    AsyncRemoveControl;
     Release;
   end;
 end;

@@ -14,7 +14,7 @@ type
     FCustomRestEvents: TOwnedCollection;
     FHtml: TStringList;
     FTagType: TIWBSTagType;
-    procedure OnItemsChange(ASender : TObject);
+    procedure OnHtmlChange(ASender : TObject);
     procedure SetHtml(const AValue: TStringList);
   protected
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
@@ -40,7 +40,7 @@ begin
   FCustomAsyncEvents := TOwnedCollection.Create(Self, TIWBSCustomAsyncEvent);
   FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
   FHtml := TStringList.Create;
-  FHtml.OnChange := OnItemsChange;
+  FHtml.OnChange := OnHtmlChange;
   FTagType := bsttDiv;
 end;
 
@@ -51,16 +51,16 @@ begin
   inherited;
 end;
 
-procedure TIWBSCustomComponent.OnItemsChange( ASender : TObject );
+procedure TIWBSCustomComponent.OnHtmlChange( ASender : TObject );
 begin
-  DoRefreshControl := True;
   Invalidate;
+  if Script.Count > 0 then
+    AsyncRefreshControl;
 end;
 
 procedure TIWBSCustomComponent.SetHtml(const AValue: TStringList);
 begin
   FHtml.Assign(AValue);
-  Invalidate;
 end;
 
 procedure TIWBSCustomComponent.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
@@ -71,8 +71,6 @@ var
   LHtml: string;
 begin
   inherited;
-
-  // get html
   LHtml := TIWBSCommon.ReplaceParams(HTMLName, FHtml.Text, ScriptParams);
 
   // register ajax callbacks

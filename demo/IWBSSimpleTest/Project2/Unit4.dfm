@@ -29,6 +29,8 @@ object IWForm4: TIWForm4
       Width = 349
       Height = 185
       FriendlyName = 'IWBSText2'
+      Script.Strings = (
+        '// here is a script')
       TabOrder = -1
       Lines.Strings = (
         ' <ul>'
@@ -40,13 +42,29 @@ object IWForm4: TIWForm4
     end
     object IWBSImage1: TIWBSImage
       Left = 40
-      Top = 216
+      Top = 340
       Width = 349
       Height = 241
       FriendlyName = 'IWBSImage1'
       TabOrder = -1
       ImageFile = 'C:\temp\Desert.jpg'
       Picture.Data = {07544269746D617000000000}
+    end
+    object IWBSButton1: TIWBSButton
+      Left = 40
+      Top = 284
+      Width = 200
+      Height = 25
+      FriendlyName = 'IWBSButton1'
+      TabOrder = -1
+      OnAsyncClick = IWBSButton1AsyncClick
+      Caption = 'IWBSButton1'
+    end
+    object IWBSRegion1: TIWBSRegion
+      Left = 40
+      Top = 208
+      Width = 345
+      Height = 60
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr

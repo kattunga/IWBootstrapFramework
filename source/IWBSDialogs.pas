@@ -63,7 +63,6 @@ type
 
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
 
-    procedure Show;
     function AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
 
     property AlertStyle: TIWBSAlertStyle read FAlertStyle write SetAlertStyle default bsasSuccess;
@@ -100,12 +99,6 @@ begin
   FHeaderText := AHeaderText;
   FBodyText := ABodyText;
   FCloseButton := True;
-end;
-
-procedure SetTitleLabel(const AValue: string);
-begin
-  if AValue <> '' then begin
-  end;
 end;
 
 function TIWBSDialog.GetTitle: TIWBSRegion;
@@ -192,8 +185,6 @@ begin
       BSDataDismiss := bsbdModal;
     end;
   end;
-
-  AsyncRenderComponent;
 end;
 
 function TIWBSDialog.AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
@@ -283,11 +274,6 @@ begin
     FOnAsyncClose(Self, AParams);
   FAlertVisible := False;
   Free;
-end;
-
-procedure TIWBSAlert.Show;
-begin
-  AsyncRenderComponent;
 end;
 
 function TIWBSAlert.AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;

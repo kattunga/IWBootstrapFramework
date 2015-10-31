@@ -129,8 +129,9 @@ end;
 
 procedure TIWBSText.OnLinesChange( ASender : TObject );
 begin
-  DoRefreshControl := True;
   Invalidate;
+  if Script.Count > 0 then
+    AsyncRefreshControl;
 end;
 
 procedure TIWBSText.SetLines(const AValue: TStringList);

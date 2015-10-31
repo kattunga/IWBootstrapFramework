@@ -13,7 +13,6 @@ type
   TIWBSLayoutMgr = class(TIWContainerLayout)
   private
     FLinkFiles: TStringList;
-    function SetNotVisible(const AStyle: string): string;
   public
     constructor Create(AOnwer: TComponent); override;
     destructor Destroy; override;
@@ -240,17 +239,6 @@ begin
   end;
 end;
 
-function TIWBSLayoutMgr.SetNotVisible(const AStyle: string): string;
-begin
-  Result := Trim(AStyle);
-  if not AnsiEndsStr(';', Result) then
-    Result := Result+';';
-  if not AnsiContainsStr(AStyle, 'visibility:') then
-    Result := Result +  'visibility: hidden';
-  if not AnsiContainsStr(AStyle, 'display:') then
-    Result := Result +  'display: none';
-end;
-
 procedure TIWBSLayoutMgr.ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent);
 var
   xHTMLName: string;
@@ -298,12 +286,6 @@ begin
             LHTML.AddStringParam('class', L40Component.RenderCSSClass(nil));
           LHTML.Params.Values['style'] := L40Component.RenderStyle(LComponentContext) + LHTML.Params.Values['style'];
         end;
-      end
-
-    else
-      begin
-        if not LVisible and LRenderInvisibleControls then
-          LHTML.Params.Values['style'] := SetNotVisible(LHTML.Params.Values['style']);
       end;
 
     // global hook

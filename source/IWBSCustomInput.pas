@@ -156,7 +156,6 @@ end;
 
 procedure TIWBSCustomInput.Invalidate;
 begin
-  DoRefreshControl := true;
   inherited;
 end;
 

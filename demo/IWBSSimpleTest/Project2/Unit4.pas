@@ -19,6 +19,9 @@ type
     IWBSRegion3: TIWBSRegion;
     IWBSText2: TIWBSText;
     IWBSImage1: TIWBSImage;
+    IWBSButton1: TIWBSButton;
+    IWBSRegion1: TIWBSRegion;
+    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -27,6 +30,16 @@ implementation
 {$R *.dfm}
 
 uses IW.HTTP.FileItem;
+
+procedure TIWForm4.IWBSButton1AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+//  IWBSText2.Lines.Insert(2, '<li>pepe</li>');
+
+  with TIWBSButton.Create(Self) do begin
+    Parent := IWBSRegion1;
+  end;
+end;
 
 initialization
   TIWForm4.SetAsMainForm;

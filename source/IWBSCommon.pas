@@ -59,6 +59,7 @@ type
   public
     class function ReplaceParams(const AHTMLName, AScript: string; AParams: TStrings): string;
     class procedure ValidateParamName(const AName: string);
+    class procedure SetNotVisible(AParams: TStrings);
   end;
 
 procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
@@ -205,6 +206,21 @@ begin
   for i := 1 to Length(AName) do
     if not CharInSet(AName[i], ['.','0'..'9','A'..'Z','a'..'z']) then
       raise Exception.Create('Invalid character in param name '+AName);
+end;
+
+class procedure TIWBSCommon.SetNotVisible(AParams: TStrings);
+var
+  LStyle: string;
+begin
+  LStyle := AParams.Values['style'];
+  LStyle := Trim(LStyle);
+  if not AnsiEndsStr(';', LStyle) then
+    LStyle := LStyle+';';
+  if not AnsiContainsStr(LStyle, 'visibility:') then
+    LStyle := LStyle +  'visibility: hidden';
+  if not AnsiContainsStr(LStyle, 'display:') then
+    LStyle := LStyle +  'display: none';
+  AParams.Values['style'] := LStyle;
 end;
 
 end.

@@ -26,6 +26,7 @@ type
 
   TIWBSTabControl = class(TIWTabControl, IIWBSComponent)
   private
+    FOldCss: string;
     FOldStyle: string;
     FOldVisible: boolean;
     FOldActivePage: integer;
@@ -48,6 +49,7 @@ type
     function InternalRenderScript: string;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
     procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
@@ -153,8 +155,8 @@ var
 begin
   Result := nil;
   xHTMLName := HTMLName;
+  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
   SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
   if FOldActivePage <> ActivePage then begin
     AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ActivePage)+']").tab("show");');
     FOldActivePage := ActivePage;
@@ -190,6 +192,11 @@ begin
   end;
 end;
 
+function TIWBSTabControl.RenderCSSClass(AComponentContext: TIWCompContext): string;
+begin
+  Result := 'iwbs-tabs '+FGridOptions.GetClassString;
+end;
+
 function TIWBSTabControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
   xHTMLName: string;
@@ -198,12 +205,13 @@ var
   tagTabs, tag: TIWHTMLTag;
   TabPage: TIWTabPage;
 begin
-  MergeSortList(Pages, TabOrderCompare);
-  CheckActiveVisible;
-
+  FOldCss := RenderCSSClass(AContext);
   FOldStyle := RenderStyle(AContext);
   FOldVisible := Visible;
   FOldActivePage := ActivePage;
+
+  MergeSortList(Pages, TabOrderCompare);
+  CheckActiveVisible;
 
   // read only one time
   xHTMLName := HTMLName;
@@ -212,8 +220,8 @@ begin
   // main div
   FRegionDiv := TIWHTMLTag.CreateTag('div');
   FRegionDiv.AddStringParam('id', xHTMLName);
-  FRegionDiv.AddClassParam('iwbs-tabs');
-  FRegionDiv.AddClassParam(FGridOptions.GetClassString);
+  FRegionDiv.AddClassParam(FOldCss);
+  FRegionDiv.AddStringParam('style',RenderStyle(AContext));
   Result := FRegionDiv;
 
   // tabs region
@@ -283,8 +291,32 @@ begin
 end;
 
 function TIWBSTabControl.RenderStyle(AContext: TIWCompContext): string;
+var
+  xStyle: TStringList;
+  i: integer;
 begin
   Result := '';
+
+  xStyle := TStringList.Create;
+  try
+    xStyle.Assign(FStyle);
+
+    // here we render z-index
+    if ZIndex <> 0 then
+      xStyle.Values['z-index'] := IntToStr(Zindex);
+
+    // render visibility
+    if not Visible then
+      TIWBSCommon.SetNotVisible(xStyle);
+
+    for i := 0 to xStyle.Count-1 do begin
+      if Result <> '' then
+        Result := Result + ';';
+      Result := Result + xStyle[i];
+    end;
+  finally
+    xStyle.Free;
+  end;
 end;
 
 function TIWBSTabControl.GetTabPageCSSClass(ATabPage: TComponent): string;

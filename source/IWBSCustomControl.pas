@@ -16,6 +16,7 @@ type
     FOldStyle: string;
     FOldVisible: boolean;
 
+    FAsyncRefreshControl: boolean;
     FTabStop: boolean;
     FScript: TStringList;
     FScriptParams: TStringList;
@@ -24,6 +25,8 @@ type
     procedure SetScript(const AValue: TStringList);
     procedure SetScriptParams(const AValue: TStringList);
     procedure SetStyle(const AValue: TStringList);
+    procedure OnScriptChange(ASender : TObject);
+    procedure OnScriptParamsChange(ASender : TObject);
   protected
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     procedure InternalRenderCss(var ACss: string); virtual;
@@ -42,6 +45,7 @@ type
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    function RenderHTMLTag(AContext: TIWCompContext): string; virtual;
     procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
 
@@ -50,6 +54,8 @@ type
     property ActiveStyle: string read FOldStyle;
 
     function get_HasTabOrder: Boolean; override;
+
+    procedure AsyncRefreshControl;
   published
     property Enabled;
     property ExtraTagParams;
@@ -101,7 +107,7 @@ type
 
 implementation
 
-uses IWBSScriptEvents, IWBSGlobal;
+uses IW.Common.RenderStream, IWBaseHTMLInterfaces, IWForm, IWBSScriptEvents, IWBSGlobal, IWBSUtils;
 
 {$region 'TIWBSCustomControl'}
 class procedure TIWBSCustomControl.AddCssClass(var ACss: string; const AClass: string);
@@ -114,10 +120,13 @@ end;
 constructor TIWBSCustomControl.Create(AOwner: TComponent);
 begin
   inherited;
+  FAsyncRefreshControl := True;
   FMainID := '';
   FTabStop := False;
   FScript := TStringList.Create;
+  FScript.OnChange := OnScriptChange;
   FScriptParams := TStringList.Create;
+  FScriptParams.OnChange := OnScriptParamsChange;
   FStyle := TStringList.Create;
   FStyle.NameValueSeparator := ':';
 end;
@@ -130,21 +139,37 @@ begin
   inherited;
 end;
 
+procedure TIWBSCustomControl.AsyncRefreshControl;
+begin
+  FAsyncRefreshControl := True;
+  Invalidate;
+end;
+
 function TIWBSCustomControl.get_HasTabOrder: Boolean;
 begin
   Result := FTabStop and gIWBSEnableTabIndex;
 end;
 
+procedure TIWBSCustomControl.OnScriptChange( ASender : TObject );
+begin
+  FAsyncRefreshControl := True;
+  Invalidate;
+end;
+
 procedure TIWBSCustomControl.SetScript(const AValue: TStringList);
 begin
   FScript.Assign(AValue);
+end;
+
+procedure TIWBSCustomControl.OnScriptParamsChange( ASender : TObject );
+begin
+  FAsyncRefreshControl := True;
   Invalidate;
 end;
 
 procedure TIWBSCustomControl.SetScriptParams(const AValue: TStringList);
 begin
   FScriptParams.Assign(AValue);
-  Invalidate;
 end;
 
 procedure TIWBSCustomControl.SetStyle(const AValue: TStringList);
@@ -206,19 +231,42 @@ function TIWBSCustomControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   xHTMLName: string;
   xInputSelector: string;
+  LParentContainer: IIWBaseHTMLComponent;
+  LParentSl: string;
+  LHtmlTag: string;
 begin
   Result := nil;
   xHTMLName := HTMLName;
-  if InputSelector <> '' then
-    xInputSelector := MainID+InputSelector
+
+  if FAsyncRefreshControl then
+    begin
+      // get base container
+      if ParentContainer.InterfaceInstance is TIWForm then
+        LParentSl := 'body'
+      else
+        begin
+          LParentContainer := BaseHTMLComponentInterface(ParentContainer.InterfaceInstance);
+          if LParentContainer <> nil then
+            LParentSl := '#'+LParentContainer.HTMLName
+          else
+            Exit;
+        end;
+      LHtmlTag := RenderHtmlTag(AContext);
+      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+xHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");')
+    end
   else
-    xInputSelector := xHTMLName+InputSuffix;
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncDisabled(AContext, xInputSelector, IsDisabled, FOldDisabled);
-  SetAsyncReadOnly(AContext, xInputSelector, IsReadOnly, FOldReadOnly);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-  InternalRenderAsync(xHTMLName, AContext);
+    begin
+      if InputSelector <> '' then
+        xInputSelector := MainID+InputSelector
+      else
+        xInputSelector := xHTMLName+InputSuffix;
+      SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
+      SetAsyncDisabled(AContext, xInputSelector, IsDisabled, FOldDisabled);
+      SetAsyncReadOnly(AContext, xInputSelector, IsReadOnly, FOldReadOnly);
+      SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+      SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
+      InternalRenderAsync(xHTMLName, AContext);
+    end;
 
   // global hook
   if Assigned(gIWBSOnRenderAsync) then
@@ -235,13 +283,32 @@ function TIWBSCustomControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := nil;
   InternalRenderHTML(HTMLName, AContext, Result);
-  if Result <> nil then
-    begin
-      FMainID := Result.Params.Values['id'];
-      IWBSRenderScript(Self, AContext, Result);
-    end
-  else
+  if Result = nil then
     raise Exception.Create('HTML tag not created');
+  IWBSRenderScript(Self, AContext, Result);
+  if not Visible then
+    TIWBSCommon.SetNotVisible(Result.Params);
+  FMainID := Result.Params.Values['id'];
+  FAsyncRefreshControl := False;
+end;
+
+function TIWBSCustomControl.RenderHTMLTag(AContext: TIWCompContext): string;
+var
+  LBuffer: TIWRenderStream;
+  LTag: TIWHTMLTag;
+begin
+  LTag := RenderHTML(AContext);
+  try
+    LBuffer := TIWRenderStream.Create(True, True);
+    try
+      RenderHTML(AContext).Render(LBuffer);
+      Result := LBuffer.AsString;
+    finally
+      LBuffer.Free;
+    end;
+  finally
+    LTag.Free;
+  end;
 end;
 
 procedure TIWBSCustomControl.RenderScripts(AComponentContext: TIWCompContext);
@@ -264,7 +331,6 @@ begin
     if ZIndex <> 0 then
       xStyle.Values['z-index'] := IntToStr(Zindex);
 
-    InternalRenderStyle(xStyle);
     for i := 0 to xStyle.Count-1 do begin
       if Result <> '' then
         Result := Result + ';';
