@@ -32,6 +32,7 @@ object IWForm4: TIWForm4
       Script.Strings = (
         '// here is a script')
       TabOrder = -1
+      OnRenderAsync = IWBSText2RenderAsync
       Lines.Strings = (
         ' <ul>'
         '  <li>Coffee</li>'

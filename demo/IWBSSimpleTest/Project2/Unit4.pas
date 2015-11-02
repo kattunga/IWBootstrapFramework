@@ -22,6 +22,7 @@ type
     IWBSButton1: TIWBSButton;
     IWBSRegion1: TIWBSRegion;
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSText2RenderAsync(Sender: TObject);
   public
   end;
 
@@ -34,11 +35,12 @@ uses IW.HTTP.FileItem;
 procedure TIWForm4.IWBSButton1AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-//  IWBSText2.Lines.Insert(2, '<li>pepe</li>');
+  IWBSText2.Lines.Insert(2, '<li>pepe</li>');
+end;
 
-  with TIWBSButton.Create(Self) do begin
-    Parent := IWBSRegion1;
-  end;
+procedure TIWForm4.IWBSText2RenderAsync(Sender: TObject);
+begin
+  WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+IWBSText2.HTMLName+'").css("background-color","red");');
 end;
 
 initialization

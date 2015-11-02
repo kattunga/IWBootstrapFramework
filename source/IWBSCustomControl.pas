@@ -21,6 +21,7 @@ type
     FScript: TStringList;
     FScriptParams: TStringList;
     FStyle: TStringList;
+    FOnRenderAsync: TNotifyEvent;
 
     procedure SetScript(const AValue: TStringList);
     procedure SetScriptParams(const AValue: TStringList);
@@ -55,6 +56,8 @@ type
 
     function get_HasTabOrder: Boolean; override;
 
+    // Force a full refresh of the control during an Async call.
+    // Usually there is no need to use this method, only if some property change during async calls is not reflected.
     procedure AsyncRefreshControl;
   published
     property Enabled;
@@ -80,6 +83,9 @@ type
     property OnAsyncMouseOver;
     property OnAsyncMouseOut;
     property OnAsyncMouseUp;
+
+    property OnHTMLtag;
+    property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
   end;
 
   TIWBSCustomDbControl = class(TIWBSCustomControl, IIWBSComponent)
@@ -267,6 +273,9 @@ begin
       SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
       InternalRenderAsync(xHTMLName, AContext);
     end;
+
+  if Assigned(FOnRenderAsync) then
+    FOnRenderAsync(Self);
 
   // global hook
   if Assigned(gIWBSOnRenderAsync) then

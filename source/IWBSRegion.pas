@@ -26,6 +26,7 @@ type
     FStyle: TStringList;
     FReleased: boolean;
     FContentSuffix: string;
+    FOnRenderAsync: TNotifyEvent;
 
     function GetWebApplication: TIWApplication;
     function IsScriptEventsStored: Boolean; virtual;
@@ -72,6 +73,7 @@ type
     property Style: TStringList read FStyle write SetStyle;
     property ZIndex default 0;
 
+    property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
     property OnHTMLTag;
   end;
 
@@ -422,6 +424,9 @@ begin
       SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
       SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
     end;
+
+  if Assigned(FOnRenderAsync) then
+    FOnRenderAsync(Self);
 end;
 
 procedure TIWBSCustomRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
@@ -806,11 +811,16 @@ begin
 end;
 
 function TIWBSModal.GetClassString: string;
+var
+  s: string;
 begin
   Result := 'modal';
   if FFade then
     Result := Result + ' fade';
-  Result := Result + Trim(' '+inherited);
+  s := inherited;
+  if s <> '' then
+    Result := Result + ' ' + s;
+  Result := Result + s;
 end;
 
 function TIWBSModal.GetRoleString: string;
