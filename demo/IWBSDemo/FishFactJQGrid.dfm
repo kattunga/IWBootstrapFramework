@@ -55,6 +55,7 @@ object FJQGrid: TFJQGrid
             Top = 75
             Width = 702
             Height = 258
+            FriendlyName = 'DbTable'
             Script.Strings = (
               ''
               '        var mydata = ['
@@ -130,6 +131,7 @@ object FJQGrid: TFJQGrid
               '')
             Style.Strings = (
               '')
+            TabOrder = -1
             CustomAsyncEvents = <
               item
                 EventName = 'onClickCell'
@@ -139,7 +141,7 @@ object FJQGrid: TFJQGrid
             CustomRestEvents = <
               item
                 EventName = 'dataurl'
-                OnRestEvent = IWBSCustomComponent1CustomRestEvents0RestEvent
+                OnRestEvent = DbTableCustomRestEvents0RestEvent
               end>
             Html.Strings = (
               '<table id="%htmlname%Grid"></table>'
@@ -150,6 +152,8 @@ object FJQGrid: TFJQGrid
             Top = 19
             Width = 702
             Height = 40
+            FriendlyName = 'IWText1'
+            TabOrder = -1
             Lines.Strings = (
               
                 '<h4>Guriddo jqGrid JS is an Ajax-enabled JavaScript control that' +
@@ -176,10 +180,10 @@ object FJQGrid: TFJQGrid
         Width = 218
         Height = 25
         Css = 'navbar-btn navbar-right'
+        FriendlyName = 'IWBSButton1'
+        TabOrder = -1
         BSGlyphicon = 'arrow-left'
         Caption = 'Switch to Standard Demo'
-        FriendlyName = 'IWBSButton1'
-        TabOrder = 2
         OnClick = IWBSButton1Click
       end
     end

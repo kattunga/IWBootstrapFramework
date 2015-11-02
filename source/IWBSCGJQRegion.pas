@@ -40,7 +40,7 @@ type
 
 implementation
 
-uses IWBSLayoutMgr, IWBSUtils, IWCGJQControl;
+uses IWBSLayoutMgr, IWCGJQControl;
 
 procedure RemoveIWCssAttr(var AIWStyle: string; AAttr: string);
 var
@@ -119,7 +119,7 @@ end;
 
 procedure TIWBSCGJQRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 begin
-  IWBSPrepareChildComponentsForRender(Self);
+  TIWBSRegionCommon.PrepareChildComponentsForRender(Self);
   inherited;
 end;
 
@@ -170,7 +170,7 @@ var
   LStyle: string;
 begin
   // do not render Styles
-  IWBSDisableRenderOptions(StyleRenderOptions);
+  TIWBSRegionCommon.DisableRenderOptions(StyleRenderOptions);
 
   // do not render borders
   CGAppearanceSettings.BorderVisibilty := [];

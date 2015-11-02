@@ -55,6 +55,7 @@ object FBootstrapTable: TFBootstrapTable
             Top = 75
             Width = 702
             Height = 258
+            FriendlyName = 'DbTable'
             Script.Strings = (
               '$('#39'#%htmlname%_table'#39').bootstrapTable(%options%);'
               
@@ -62,6 +63,7 @@ object FBootstrapTable: TFBootstrapTable
                 'field, value, row) {%onClickCell%} );')
             Style.Strings = (
               '')
+            TabOrder = -1
             CustomAsyncEvents = <
               item
                 EventName = 'onClickCell'
@@ -71,7 +73,7 @@ object FBootstrapTable: TFBootstrapTable
             CustomRestEvents = <
               item
                 EventName = 'dataurl'
-                OnRestEvent = IWBSCustomComponent1CustomRestEvents0RestEvent
+                OnRestEvent = DbTableCustomRestEvents0RestEvent
               end>
             Html.Strings = (
               '<style>'
@@ -87,6 +89,8 @@ object FBootstrapTable: TFBootstrapTable
             Top = 19
             Width = 702
             Height = 40
+            FriendlyName = 'IWText1'
+            TabOrder = -1
             Lines.Strings = (
               
                 '<h4>An extended Bootstrap table with radio, checkbox, sort, pagi' +
@@ -111,10 +115,10 @@ object FBootstrapTable: TFBootstrapTable
         Width = 218
         Height = 25
         Css = 'navbar-btn navbar-right'
+        FriendlyName = 'IWBSButton1'
+        TabOrder = -1
         BSGlyphicon = 'arrow-left'
         Caption = 'Switch to Standard Demo'
-        FriendlyName = 'IWBSButton1'
-        TabOrder = 2
         OnClick = IWBSButton1Click
       end
     end

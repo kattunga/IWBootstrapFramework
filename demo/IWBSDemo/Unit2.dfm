@@ -74,6 +74,17 @@ object IWForm2: TIWForm2
           Caption = 'JQGrid'
           OnClick = IWBSButton44Click
         end
+        object IWBSButton46: TIWBSButton
+          Left = 437
+          Top = 20
+          Width = 155
+          Height = 25
+          FriendlyName = 'IWBSButton46'
+          TabOrder = -1
+          Anchor = True
+          Caption = 'Toggle Container'
+          OnClick = IWBSButton46Click
+        end
       end
     end
     object IWBSRegion3: TIWBSRegion
@@ -121,7 +132,7 @@ object IWForm2: TIWForm2
             BorderOptions.Style = cbsNone
             BorderOptions.Color = clNone
             Color = clWebSILVER
-            ClipRegion = False
+            ZIndex = 1000
             BSTabOptions.Pills = True
             DesignSize = (
               1076
@@ -441,134 +452,6 @@ object IWForm2: TIWForm2
                     TabOrder = -1
                     BSButtonStyle = bsbsClose
                     Caption = 'Close'
-                  end
-                end
-              end
-            end
-            object IWTabControl21Page2: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1076
-              Height = 1512
-              RenderInvisibleControls = True
-              TabOrder = 5
-              Title = 'TabControl Options'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSRegion37: TIWBSRegion
-                Left = 29
-                Top = 5
-                Width = 561
-                Height = 637
-                BSGridOptions.GridSMSpan = 6
-                Style.Strings = (
-                  'margin: 1em')
-                object IWBSRegion7: TIWBSRegion
-                  Left = 15
-                  Top = 6
-                  Width = 433
-                  Height = 303
-                  BSRegionType = bsrtWell
-                  object IWBSInputForm1: TIWBSInputForm
-                    Left = 15
-                    Top = 12
-                    Width = 293
-                    Height = 278
-                    object IWBSButton30: TIWBSButton
-                      Left = 17
-                      Top = 229
-                      Width = 184
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      FriendlyName = 'IWBSButton20aaaaaa'
-                      TabOrder = -1
-                      Caption = 'Apply settings'
-                      OnClick = IWBSButton30Click
-                    end
-                    object chkContFluid: TIWBSCheckBox
-                      Left = 15
-                      Top = 41
-                      Width = 121
-                      Height = 21
-                      ShowHint = False
-                      FriendlyName = 'chkContFluid'
-                      TabOrder = -1
-                      AutoEditable = False
-                      Caption = 'Container Fluid'
-                      Text = 'false'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object chkTabsJust: TIWBSCheckBox
-                      Left = 15
-                      Top = 76
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'chkTabsJust'
-                      TabOrder = -1
-                      Caption = 'Tabs Justified'
-                      Text = 'false'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object chkTabsStacked: TIWBSCheckBox
-                      Left = 15
-                      Top = 103
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'chkTabsStacked'
-                      TabOrder = -1
-                      Caption = 'Tabs Stacked'
-                      Text = 'false'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object chkTabsPills: TIWBSCheckBox
-                      Left = 15
-                      Top = 134
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'chkTabsPills'
-                      TabOrder = -1
-                      Caption = 'Tabs Pills'
-                      Text = 'true'
-                      Checked = True
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object chkTabsFade: TIWBSCheckBox
-                      Left = 16
-                      Top = 161
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'chkTabsFade'
-                      TabOrder = -1
-                      Caption = 'Tabs Fade'
-                      Text = 'false'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                  end
-                end
-                object IWBSRegion36: TIWBSRegion
-                  Left = 12
-                  Top = 326
-                  Width = 438
-                  Height = 60
-                  BSRegionType = bsrtWell
-                  object IWBSButton42: TIWBSButton
-                    Left = 26
-                    Top = 18
-                    Width = 329
-                    Height = 25
-                    FriendlyName = 'IWBSButton42'
-                    TabOrder = -1
-                    OnAsyncClick = IWBSButton42AsyncClick
-                    Caption = 'Toggle TabPage visibility'
                   end
                 end
               end
@@ -1435,6 +1318,120 @@ object IWForm2: TIWForm2
                 end
               end
             end
+            object IWTabControl21Page2: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1076
+              Height = 1512
+              RenderInvisibleControls = True
+              TabOrder = 5
+              Title = 'TabControl Options'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSRegion37: TIWBSRegion
+                Left = 29
+                Top = 5
+                Width = 561
+                Height = 637
+                BSGridOptions.GridSMSpan = 6
+                Style.Strings = (
+                  'margin: 1em')
+                object IWBSRegion7: TIWBSRegion
+                  Left = 15
+                  Top = 6
+                  Width = 433
+                  Height = 303
+                  BSRegionType = bsrtWell
+                  object IWBSInputForm1: TIWBSInputForm
+                    Left = 16
+                    Top = 13
+                    Width = 293
+                    Height = 206
+                    object IWBSButton30: TIWBSButton
+                      Left = 26
+                      Top = 148
+                      Width = 184
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      FriendlyName = 'IWBSButton20aaaaaa'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton30AsyncClick
+                      Caption = 'Apply settings'
+                    end
+                    object chkTabsJust: TIWBSCheckBox
+                      Left = 25
+                      Top = 30
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'chkTabsJust'
+                      TabOrder = -1
+                      Caption = 'Tabs Justified'
+                      Text = 'false'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object chkTabsStacked: TIWBSCheckBox
+                      Left = 25
+                      Top = 57
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'chkTabsStacked'
+                      TabOrder = -1
+                      Caption = 'Tabs Stacked'
+                      Text = 'false'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object chkTabsPills: TIWBSCheckBox
+                      Left = 25
+                      Top = 88
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'chkTabsPills'
+                      TabOrder = -1
+                      Caption = 'Tabs Pills'
+                      Text = 'true'
+                      Checked = True
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object chkTabsFade: TIWBSCheckBox
+                      Left = 26
+                      Top = 115
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'chkTabsFade'
+                      TabOrder = -1
+                      Caption = 'Tabs Fade'
+                      Text = 'false'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                  end
+                end
+                object IWBSRegion36: TIWBSRegion
+                  Left = 12
+                  Top = 326
+                  Width = 438
+                  Height = 60
+                  BSRegionType = bsrtWell
+                  object IWBSButton42: TIWBSButton
+                    Left = 26
+                    Top = 18
+                    Width = 329
+                    Height = 25
+                    FriendlyName = 'IWBSButton42'
+                    TabOrder = -1
+                    OnAsyncClick = IWBSButton42AsyncClick
+                    Caption = 'Toggle TabPage visibility'
+                  end
+                end
+              end
+            end
             object IWTabControl21Page0: TIWTabPage
               Left = 0
               Top = 20
@@ -1466,8 +1463,8 @@ object IWForm2: TIWForm2
                   BSGridOptions.GridMDSpan = 4
                   BSRegionType = bsrtColumn
                   object IWBSRegion18: TIWBSRegion
-                    Left = 14
-                    Top = 27
+                    Left = 12
+                    Top = 34
                     Width = 245
                     Height = 195
                     BSRegionType = bsrtWell
@@ -1500,8 +1497,8 @@ object IWForm2: TIWForm2
                         StyleRenderOptions.RenderSize = False
                         FriendlyName = 'IWBSButton20'
                         TabOrder = -1
+                        OnAsyncClick = IWBSButton35AsyncClick
                         Caption = 'Apply change'
-                        OnClick = IWBSButton35Click
                       end
                       object IWText2: TIWBSText
                         Left = 10

@@ -355,13 +355,13 @@ begin
   FIsStatic := not Editable and NonEditableAsLabel;
   if FInputType <> bsitFile then
     if FIsStatic then
-      AddCssClass(ACss, 'form-control-static')
+      TIWBSCommon.AddCssClass(ACss, 'form-control-static')
     else
-      AddCssClass(ACss, 'form-control');
+      TIWBSCommon.AddCssClass(ACss, 'form-control');
   if FTextAlignment <> bstaDefault then
-    AddCssClass(ACss, aIWBSTextAlignment[FTextAlignment]);
+    TIWBSCommon.AddCssClass(ACss, aIWBSTextAlignment[FTextAlignment]);
   if FTextCase <> bstcDefault then
-    AddCssClass(ACss, aIWBSTextCase[FTextCase]);
+    TIWBSCommon.AddCssClass(ACss, aIWBSTextCase[FTextCase]);
 end;
 {$endregion}
 
@@ -384,7 +384,7 @@ end;
 
 procedure TIWBSCustomSelectInput.OnItemsChange(ASender : TObject);
 begin
-  Invalidate;
+  AsyncRefreshControl;
 end;
 
 procedure TIWBSCustomSelectInput.Loaded;
@@ -449,7 +449,7 @@ end;
 
 procedure TIWBSCustomSelectInput.InternalRenderCss(var ACss: string);
 begin
-  AddCssClass(ACss, 'form-control');
+  TIWBSCommon.AddCssClass(ACss, 'form-control');
   inherited;
 end;
 

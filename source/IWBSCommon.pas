@@ -51,15 +51,28 @@ type
 
   IIWBSComponent = interface(IIWHTML40Control)
     ['{12925CB3-58EC-4B56-B032-478892548906}']
+    procedure AsyncRemoveControl;
+    procedure AsyncRefreshControl;
     function InternalRenderScript: string;
     function HTMLControlImplementation: TIWHTMLControlImplementation;
+
+    function GetStyle: TStringList;
+    procedure SetStyle(const AValue: TStringList);
+    function get_Visible: Boolean;
+    procedure set_Visible(Value: Boolean);
+
+    property Style: TStringList read GetStyle write SetStyle;
+    property Visible: boolean read get_Visible write set_Visible;
   end;
 
   TIWBSCommon = class
   public
+    class procedure AddCssClass(var ACss: string; const AClass: string);
+    class procedure AsyncRemoveControl(const AHTMLName: string);
+    class function RenderStyle(AComponent: IIWBSComponent): string;
     class function ReplaceParams(const AHTMLName, AScript: string; AParams: TStrings): string;
-    class procedure ValidateParamName(const AName: string);
     class procedure SetNotVisible(AParams: TStrings);
+    class procedure ValidateParamName(const AName: string);
   end;
 
 procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
@@ -70,7 +83,6 @@ procedure SetAsyncStyle(AContext: TIWCompContext; const HTMLName: string; const 
 procedure SetAsyncChecked(AContext: TIWCompContext; const HTMLName: string; const Value: boolean; var OldValue: boolean);
 procedure SetAsyncText(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
 procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
-
 
 implementation
 
@@ -190,6 +202,48 @@ begin
 end;
 {$endregion}
 
+{$region 'TIWBSCommon'}
+class procedure TIWBSCommon.AddCssClass(var ACss: string; const AClass: string);
+begin
+  if ACss <> '' then
+    ACss := ACss+' ';
+  ACss := ACss+AClass;
+end;
+
+class procedure TIWBSCommon.AsyncRemoveControl(const AHTMLName: string);
+begin
+  IWBSExecuteAsyncJScript('AsyncDestroyControl("'+AHTMLName+'");');
+end;
+
+class function TIWBSCommon.RenderStyle(AComponent: IIWBSComponent): string;
+var
+  xStyle: TStringList;
+  i: integer;
+begin
+  Result := '';
+
+  xStyle := TStringList.Create;
+  try
+    xStyle.Assign(AComponent.Style);
+
+    // here we render z-index
+    if AComponent.ZIndex <> 0 then
+      xStyle.Values['z-index'] := IntToStr(AComponent.Zindex);
+
+    // render visibility
+    if not AComponent.Visible then
+      TIWBSCommon.SetNotVisible(xStyle);
+
+    for i := 0 to xStyle.Count-1 do begin
+      if Result <> '' then
+        Result := Result + ';';
+      Result := Result + xStyle[i];
+    end;
+  finally
+    xStyle.Free;
+  end;
+end;
+
 class function TIWBSCommon.ReplaceParams(const AHTMLName, AScript: string; AParams: TStrings): string;
 var
   i: integer;
@@ -222,5 +276,6 @@ begin
     LStyle := LStyle +  'display: none';
   AParams.Values['style'] := LStyle;
 end;
+{$endregion}
 
 end.

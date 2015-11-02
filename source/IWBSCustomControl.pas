@@ -23,12 +23,26 @@ type
     FStyle: TStringList;
     FOnRenderAsync: TNotifyEvent;
 
+    function RenderHTMLTag(AContext: TIWCompContext): string;
+
     procedure SetScript(const AValue: TStringList);
     procedure SetScriptParams(const AValue: TStringList);
+    function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
-    procedure OnScriptParamsChange(ASender : TObject);
+    procedure OnStyleChange(ASender : TObject);
   protected
+    {$hints off}
+    function get_HasTabOrder: Boolean; override;
+    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
+    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
+    procedure RenderScripts(AComponentContext: TIWCompContext); override;
+    function RenderStyle(AContext: TIWCompContext): string; override;
+  protected
+    {$hints on}
+    property ActiveCss: string read FOldCss;
+    property ActiveStyle: string read FOldStyle;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     procedure InternalRenderCss(var ACss: string); virtual;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); virtual;
@@ -39,26 +53,16 @@ type
     function InputSelector: string; virtual;
     function InputSuffix: string; virtual;
   public
-    class procedure AddCssClass(var ACss: string; const AClass: string);
-
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
-    function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-    function RenderHTMLTag(AContext: TIWCompContext): string; virtual;
-    procedure RenderScripts(AComponentContext: TIWCompContext); override;
-    function RenderStyle(AContext: TIWCompContext): string; override;
-
-    property MainID: string read FMainID;
-    property ActiveCss: string read FOldCss;
-    property ActiveStyle: string read FOldStyle;
-
-    function get_HasTabOrder: Boolean; override;
 
     // Force a full refresh of the control during an Async call.
     // Usually there is no need to use this method, only if some property change during async calls is not reflected.
     procedure AsyncRefreshControl;
+
+    // Remove a control from html flow. You should execute this when destroying a control durinc async calls before Freeing
+    // if you are destroying a region is enought to execute this in that region, you don't need to execute it in each child control.
+    procedure AsyncRemoveControl;
   published
     property Enabled;
     property ExtraTagParams;
@@ -66,7 +70,7 @@ type
     property Script: TStringList read FScript write SetScript;
     property ScriptEvents;
     property ScriptParams: TStringList read FScriptParams write SetScriptParams;
-    property Style: TStringList read FStyle write SetStyle;
+    property Style: TStringList read GetStyle write SetStyle;
     property TabStop: boolean read FTabStop write FTabStop default False;
     property TabOrder;
 
@@ -84,7 +88,10 @@ type
     property OnAsyncMouseOut;
     property OnAsyncMouseUp;
 
+    // this event is fired after HTMLTag is created
     property OnHTMLtag;
+
+    // this event is fired after component is updated during async calls
     property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
   end;
 
@@ -116,13 +123,6 @@ implementation
 uses IW.Common.RenderStream, IWBaseHTMLInterfaces, IWForm, IWBSScriptEvents, IWBSGlobal, IWBSUtils;
 
 {$region 'TIWBSCustomControl'}
-class procedure TIWBSCustomControl.AddCssClass(var ACss: string; const AClass: string);
-begin
-  if ACss <> '' then
-    ACss := ACss+' ';
-  ACss := ACss+AClass;
-end;
-
 constructor TIWBSCustomControl.Create(AOwner: TComponent);
 begin
   inherited;
@@ -132,8 +132,9 @@ begin
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
   FScriptParams := TStringList.Create;
-  FScriptParams.OnChange := OnScriptParamsChange;
+  FScriptParams.OnChange := OnScriptChange;
   FStyle := TStringList.Create;
+  FStyle.OnChange := OnStyleChange;
   FStyle.NameValueSeparator := ':';
 end;
 
@@ -151,6 +152,11 @@ begin
   Invalidate;
 end;
 
+procedure TIWBSCustomControl.AsyncRemoveControl;
+begin
+  TIWBSCommon.AsyncRemoveControl(HTMLName);
+end;
+
 function TIWBSCustomControl.get_HasTabOrder: Boolean;
 begin
   Result := FTabStop and gIWBSEnableTabIndex;
@@ -158,8 +164,7 @@ end;
 
 procedure TIWBSCustomControl.OnScriptChange( ASender : TObject );
 begin
-  FAsyncRefreshControl := True;
-  Invalidate;
+  AsyncRefreshControl;
 end;
 
 procedure TIWBSCustomControl.SetScript(const AValue: TStringList);
@@ -167,9 +172,8 @@ begin
   FScript.Assign(AValue);
 end;
 
-procedure TIWBSCustomControl.OnScriptParamsChange( ASender : TObject );
+procedure TIWBSCustomControl.OnStyleChange( ASender : TObject );
 begin
-  FAsyncRefreshControl := True;
   Invalidate;
 end;
 
@@ -178,10 +182,14 @@ begin
   FScriptParams.Assign(AValue);
 end;
 
+function TIWBSCustomControl.GetStyle: TStringList;
+begin
+  Result := FStyle;
+end;
+
 procedure TIWBSCustomControl.SetStyle(const AValue: TStringList);
 begin
   FStyle.Assign(AValue);
-  Invalidate;
 end;
 
 procedure TIWBSCustomControl.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
@@ -263,7 +271,7 @@ begin
   else
     begin
       if InputSelector <> '' then
-        xInputSelector := MainID+InputSelector
+        xInputSelector := FMainID+InputSelector
       else
         xInputSelector := xHTMLName+InputSuffix;
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
@@ -277,9 +285,8 @@ begin
   if Assigned(FOnRenderAsync) then
     FOnRenderAsync(Self);
 
-  // global hook
   if Assigned(gIWBSOnRenderAsync) then
-    gIWBSOnRenderAsync(Self, xHTMLName, xInputSelector);
+    gIWBSOnRenderAsync(Self, xHTMLName);
 end;
 
 function TIWBSCustomControl.RenderCSSClass(AComponentContext: TIWCompContext): string;
@@ -326,28 +333,8 @@ begin
 end;
 
 function TIWBSCustomControl.RenderStyle(AContext: TIWCompContext): string;
-var
-  xStyle: TStringList;
-  i: integer;
 begin
-  Result := '';
-
-  xStyle := TStringList.Create;
-  try
-    xStyle.Assign(FStyle);
-
-    // here we render z-index
-    if ZIndex <> 0 then
-      xStyle.Values['z-index'] := IntToStr(Zindex);
-
-    for i := 0 to xStyle.Count-1 do begin
-      if Result <> '' then
-        Result := Result + ';';
-      Result := Result + xStyle[i];
-    end;
-  finally
-    xStyle.Free;
-  end;
+  Result := TIWBSCommon.RenderStyle(Self);
 end;
 {$endregion}
 
@@ -410,10 +397,9 @@ end;
 
 procedure TIWBSCustomDbControl.SetMaxLength(const AValue:integer);
 begin
-  if FMaxLength <> AValue then
-  begin
+  if FMaxLength <> AValue then begin
     FMaxLength := AValue;
-    Invalidate;
+    AsyncRefreshControl;
   end;
 end;
 

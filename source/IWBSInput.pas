@@ -195,6 +195,8 @@ procedure TIWBSMemo.OnLinesChange(ASender : TObject);
 begin
   FText := FLines.Text;
   Invalidate;
+  if Script.Count > 0 then
+    AsyncRefreshControl;
 end;
 
 procedure TIWBSMemo.SetLines(const AValue: TStringList);

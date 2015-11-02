@@ -110,12 +110,12 @@ const
 begin
   inherited;
   if not FAnchor then begin
-    AddCssClass(ACss, 'btn');
+    TIWBSCommon.AddCssClass(ACss, 'btn');
     if FButtonSize <> bsszDefault then
-      AddCssClass(ACss, 'btn-'+aIWBSSize[FButtonSize]);
-    AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
+      TIWBSCommon.AddCssClass(ACss, 'btn-'+aIWBSSize[FButtonSize]);
+    TIWBSCommon.AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
     if Parent.ClassName = 'TIWBSNavBar' then
-      AddCssClass(ACss, 'navbar-btn');
+      TIWBSCommon.AddCssClass(ACss, 'navbar-btn');
   end;
 end;
 

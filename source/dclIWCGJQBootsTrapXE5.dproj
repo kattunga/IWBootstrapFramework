@@ -76,7 +76,7 @@
         <DCC_K>false</DCC_K>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
-        <DCC_UsePackage>rtl;dbrtl;inet;IWBootsTrapGridXE5;IndyProtocols;IndyCore;IndySystem;IWCGJQCore_140_190;IWCGJQComps_140_190;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>rtl;dbrtl;inet;IWBootsTrapGridXE5;IndyProtocols;IndyCore;IndySystem;IWCGJQCore_140_190;IWCGJQComps_140_190;IWBootsTrapXE5;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_CBuilderOutput>None</DCC_CBuilderOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_iOSDevice)'!=''">
@@ -91,7 +91,7 @@
         <DCC_UsePackage>rtl;dbrtl;inet;IndyProtocols;IndyCore;IndySystem;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <DCC_UsePackage>rtl;vclimg;dbrtl;inet;Intraweb_14_DXE5;IWBootsTrapGridXE5;vclie;IndyProtocols;IndyCore;IndySystem;IWCGJQCore_140_190;IWCGJQComps_140_190;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>rtl;vclimg;dbrtl;inet;Intraweb_14_DXE5;IWBootsTrapGridXE5;vclie;IndyProtocols;IndyCore;IndySystem;IWCGJQCore_140_190;IWCGJQComps_140_190;IWBootsTrapXE5;$(DCC_UsePackage)</DCC_UsePackage>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>

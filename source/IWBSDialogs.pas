@@ -3,7 +3,7 @@ unit IWBSDialogs;
 interface
 
 uses System.Classes, System.SysUtils, Vcl.Controls,
-     IWControl, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag,
+     IWControl, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag, IWForm,
      IWBSRegion, IWBSInput, IWBSButton, IWBSControls;
 
 type
@@ -21,7 +21,8 @@ type
     FFooterText: string;
     FCloseButton: boolean;
   public
-    constructor Create(const AHeaderText, ABodyText: string); reintroduce;
+    constructor Create(AForm: TIWForm; const AHeaderText, ABodyText: string); reintroduce; overload;
+    constructor Create(const AHeaderText, ABodyText: string); reintroduce; overload;
 
     procedure Show;
     function AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc): TIWBSButton;
@@ -58,7 +59,8 @@ type
     function GetCloseScript: string;
     procedure SetAlertStyle(AValue: TIWBSAlertStyle);
   public
-    constructor Create(const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess); reintroduce;
+    constructor Create(AForm: TIWForm; const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess); reintroduce; overload;
+    constructor Create(const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess); reintroduce; overload;
     destructor Destroy; override;
 
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
@@ -81,13 +83,13 @@ var
 
 implementation
 
-uses IWInit, IWBSRegionCommon;
+uses IWBSRegionCommon, IWApplication, IWBSUtils;
 
 {$region 'TIWBSDialog'}
-constructor TIWBSDialog.Create(const AHeaderText, ABodyText: string);
+constructor TIWBSDialog.Create(AForm: TIWForm; const AHeaderText, ABodyText: string);
 begin
-  inherited Create(WebApplication.ActiveForm);
-  Parent := TWinControl(WebApplication.ActiveForm);
+  inherited Create(AForm);
+  Parent := AForm;
 
   DestroyOnHide := True;
   BSModalVisible := True;
@@ -99,6 +101,11 @@ begin
   FHeaderText := AHeaderText;
   FBodyText := ABodyText;
   FCloseButton := True;
+end;
+
+constructor TIWBSDialog.Create(const AHeaderText, ABodyText: string);
+begin
+  Create(TIWForm(GGetWebApplicationThreadVar.ActiveForm), AHeaderText, ABodyText);
 end;
 
 function TIWBSDialog.GetTitle: TIWBSRegion;
@@ -199,10 +206,10 @@ end;
 {$endregion}
 
 {$region 'TIWBSAlert'}
-constructor TIWBSAlert.Create(const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess);
+constructor TIWBSAlert.Create(AForm: TIWForm; const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess);
 begin
-  inherited Create(WebApplication.ActiveForm);
-  Parent := TWinControl(WebApplication.ActiveForm);
+  inherited Create(AForm);
+  Parent := AForm;
   FAlertVisible := False;
   FAlertPosition := bsapRightTop;
   FAlertStyle := bsasSuccess;
@@ -221,10 +228,15 @@ begin
   FCloseButton.BSDataDismiss := bsbdAlert;
 end;
 
+constructor TIWBSAlert.Create(const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess);
+begin
+  Create(TIWForm(GGetWebApplicationThreadVar.ActiveForm), AAlertText, AAlertStyle);
+end;
+
 destructor TIWBSAlert.Destroy;
 begin
   if FAlertVisible then begin
-    ExecuteJS(GetCloseScript);
+    IWBSExecuteAsyncJScript(GetCloseScript);
     FAlertVisible := False;
   end;
   inherited;

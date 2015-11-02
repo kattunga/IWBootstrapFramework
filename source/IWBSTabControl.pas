@@ -24,27 +24,35 @@ type
     property Stacked: boolean read FStacked write FStacked default false;
   end;
 
-  TIWBSTabControl = class(TIWTabControl, IIWBSComponent)
+  TIWBSTabControl = class(TIWTabControl, IIWBSComponent, IIWBSContainer)
   private
     FOldCss: string;
     FOldStyle: string;
     FOldVisible: boolean;
     FOldActivePage: integer;
 
+    FAsyncRefreshControl: boolean;
     FGridOptions: TIWBSGridOptions;
     FRegionDiv: TIWHTMLTag;
     FScript: TStringList;
     FScriptParams: TStringList;
     FStyle: TStringList;
     FTabOptions: TIWBSTabOptions;
+    FOnRenderAsync: TNotifyEvent;
+
+    procedure CheckActiveVisible;
+    function HTMLControlImplementation: TIWHTMLControlImplementation;
+    function RegionDiv: TIWHTMLTag;
+
     procedure SetGridOptions(const Value: TIWBSGridOptions);
     procedure SetTabOptions(const Value: TIWBSTabOptions);
     procedure SetScript(const AValue: TStringList);
     procedure SetScriptParams(const AValue: TStringList);
+    function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
-    procedure CheckActiveVisible;
+    procedure OnScriptChange(ASender : TObject);
+    procedure OnStyleChange(ASender : TObject);
   protected
-    function HTMLControlImplementation: TIWHTMLControlImplementation;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     function InternalRenderScript: string;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
@@ -56,15 +64,25 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure AsyncRefreshControl;
+    procedure AsyncRemoveControl;
     function GetTabPageCSSClass(ATabPage: TComponent): string;
     procedure SetTabPageVisibility(ATabIndex: integer; Visible: boolean); overload;
     procedure SetTabPageVisibility(ATabPage: TIWTabPage; Visible: boolean); overload;
   published
+    property Align;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
+    property ClipRegion default False;
+    property ExtraTagParams;
+    property RenderInvisibleControls default False;
     property Script: TStringList read FScript write SetScript;
     property ScriptParams: TStringList read FScriptParams write SetScriptParams;
-    property Style: TStringList read FStyle write SetStyle;
+    property Style: TStringList read GetStyle write SetStyle;
+    property ZIndex default 0;
+
+    property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
+    property OnHTMLTag;
   end;
 
 implementation
@@ -87,8 +105,12 @@ begin
   inherited;
   FGridOptions := TIWBSGridOptions.Create;
   FScript := TStringList.Create;
+  FScript.OnChange := OnScriptChange;
   FScriptParams := TStringList.Create;
+  FScriptParams.OnChange := OnScriptChange;
   FStyle := TStringList.Create;
+  FStyle.OnChange := OnStyleChange;
+  FStyle.NameValueSeparator := ':';
   FTabOptions := TIWBSTabOptions.Create(Self);
 end;
 
@@ -100,6 +122,17 @@ begin
   FreeAndNil(FStyle);
   FreeAndNil(FTabOptions);
   inherited;
+end;
+
+procedure TIWBSTabControl.AsyncRefreshControl;
+begin
+  FAsyncRefreshControl := True;
+  Invalidate;
+end;
+
+procedure TIWBSTabControl.AsyncRemoveControl;
+begin
+  TIWBSCommon.AsyncRemoveControl(HTMLName);
 end;
 
 procedure TIWBSTabControl.SetGridOptions(const Value: TIWBSGridOptions);
@@ -114,27 +147,44 @@ begin
   invalidate;
 end;
 
+procedure TIWBSTabControl.OnScriptChange( ASender : TObject );
+begin
+  AsyncRefreshControl;
+end;
+
+procedure TIWBSTabControl.OnStyleChange( ASender : TObject );
+begin
+  Invalidate;
+end;
+
 procedure TIWBSTabControl.SetScript(const AValue: TStringList);
 begin
   FScript.Assign(AValue);
-  Invalidate;
 end;
 
 procedure TIWBSTabControl.SetScriptParams(const AValue: TStringList);
 begin
   FScriptParams.Assign(AValue);
-  Invalidate;
+end;
+
+function TIWBSTabControl.GetStyle: TStringList;
+begin
+  Result := FStyle;
 end;
 
 procedure TIWBSTabControl.SetStyle(const AValue: TStringList);
 begin
   FStyle.Assign(AValue);
-  Invalidate;
 end;
 
 function TIWBSTabControl.HTMLControlImplementation: TIWHTMLControlImplementation;
 begin
   Result := ControlImplementation;
+end;
+
+function TIWBSTabControl.RegionDiv: TIWHTMLTag;
+begin
+  Result := FRegionDiv;
 end;
 
 function TIWBSTabControl.InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
@@ -155,27 +205,30 @@ var
 begin
   Result := nil;
   xHTMLName := HTMLName;
-  SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-  SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-  SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
-  if FOldActivePage <> ActivePage then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ActivePage)+']").tab("show");');
-    FOldActivePage := ActivePage;
-  end;
+
+  if FAsyncRefreshControl then
+    TIWBSRegionCommon.RenderAsync(Self, AContext)
+  else
+    begin
+      SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
+      SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
+      SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
+      if FOldActivePage <> ActivePage then begin
+        AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ActivePage)+']").tab("show");');
+        FOldActivePage := ActivePage;
+      end;
+    end;
+
+  if Assigned(FOnRenderAsync) then
+    FOnRenderAsync(Self);
+
+  if Assigned(gIWBSOnRenderAsync) then
+    gIWBSOnRenderAsync(Self, xHTMLName);
 end;
 
 procedure TIWBSTabControl.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
-var
-  LBuffer: TIWRenderStream;
 begin
-  ContainerContext := AContainerContext;
-  LBuffer := TIWRenderStream.Create(True, True);
-  try
-    IWBSRegionRenderComponents(Self, AContainerContext, APageContext, LBuffer);
-    FRegionDiv.Contents.AddBuffer(LBuffer);
-  finally
-    FreeAndNil(LBuffer);
-  end;
+  TIWBSRegionCommon.RenderComponents(Self, AContainerContext, APageContext);
 end;
 
 procedure TIWBSTabControl.CheckActiveVisible;
@@ -284,6 +337,7 @@ begin
   end;
 
   IWBSRenderScript(Self, AContext, Result);
+  FAsyncRefreshControl := False;
 end;
 
 procedure TIWBSTabControl.RenderScripts(AComponentContext: TIWCompContext);
@@ -292,32 +346,8 @@ begin
 end;
 
 function TIWBSTabControl.RenderStyle(AContext: TIWCompContext): string;
-var
-  xStyle: TStringList;
-  i: integer;
 begin
-  Result := '';
-
-  xStyle := TStringList.Create;
-  try
-    xStyle.Assign(FStyle);
-
-    // here we render z-index
-    if ZIndex <> 0 then
-      xStyle.Values['z-index'] := IntToStr(Zindex);
-
-    // render visibility
-    if not Visible then
-      TIWBSCommon.SetNotVisible(xStyle);
-
-    for i := 0 to xStyle.Count-1 do begin
-      if Result <> '' then
-        Result := Result + ';';
-      Result := Result + xStyle[i];
-    end;
-  finally
-    xStyle.Free;
-  end;
+  Result := TIWBSCommon.RenderStyle(Self);
 end;
 
 function TIWBSTabControl.GetTabPageCSSClass(ATabPage: TComponent): string;

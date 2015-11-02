@@ -14,7 +14,7 @@ type
     constructor Create; override;
   end;
 
-  TIWBSRestCallBackFunction = procedure(aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings) of object;
+  TIWBSRestCallBackFunction = procedure(aApplication: TIWApplication; aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings) of object;
 
   TIWBSCallback = class(TIWCallBack)
   protected
@@ -112,7 +112,7 @@ begin
         LCallBackProc := LCallBacks.Objects[xPos];
         if LCallBackProc is TIWBSCallback then
           if Assigned(TIWBSCallback(LCallBackProc).FRestCallBackFunction) then
-            TIWBSCallback(LCallBackProc).FRestCallBackFunction(aRequest, aReply, aParams);
+            TIWBSCallback(LCallBackProc).FRestCallBackFunction(AApplication, aRequest, aReply, aParams);
       end
     else
       begin

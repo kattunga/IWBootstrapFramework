@@ -13,7 +13,7 @@ uses
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
   MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSImage,
   IWCompTabControl, IWBSTabControl,
-  IW.HTTP.Request, IW.HTTP.Reply, IWBSCustomComponent;
+  IW.HTTP.Request, IW.HTTP.Reply, IWBSCustomComponent, IWApplication;
 
 type
   TFBootstrapTable = class(TIWAppForm)
@@ -41,9 +41,9 @@ type
     IWBSRegion4: TIWBSRegion;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWBSButton1Click(Sender: TObject);
-    procedure IWBSCustomComponent1CustomRestEvents0RestEvent(
-      aRequest: THttpRequest; aReply: THttpReply);
     procedure DbTableCustomAjaxEvents0AsyncEvent(aParams: TStringList);
+    procedure DbTableCustomRestEvents0RestEvent(aApplication: TIWApplication;
+      aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
   end;
 
 implementation
@@ -103,13 +103,9 @@ begin
   TIWBSAlert.Create('You clicked field '+aParams.Values['field']+' row '+aParams.Values['row.field0']).Show;
 end;
 
-procedure TFBootstrapTable.IWBSButton1Click(Sender: TObject);
-begin
-  Release;
-end;
-
-procedure TFBootstrapTable.IWBSCustomComponent1CustomRestEvents0RestEvent(
-  aRequest: THttpRequest; aReply: THttpReply);
+procedure TFBootstrapTable.DbTableCustomRestEvents0RestEvent(
+  aApplication: TIWApplication; aRequest: THttpRequest; aReply: THttpReply;
+  aParams: TStrings);
 var
   data: string;
   line: string;
@@ -149,6 +145,11 @@ begin
     ClientDataSet1.GotoBookmark(bmrk);
     ClientDataSet1.EnableControls;
   end;
+end;
+
+procedure TFBootstrapTable.IWBSButton1Click(Sender: TObject);
+begin
+  Release;
 end;
 
 initialization

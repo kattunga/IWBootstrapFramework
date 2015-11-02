@@ -63,7 +63,8 @@ type
 
 implementation
 
-uses IW.Common.System, IW.Common.Strings, IWTypes, IWForm, IWAppCache, IW.CacheStream, IWDbCommon, InCoderMIME;
+uses IW.Common.System, IW.Common.Strings, IWTypes, IWForm, IWAppCache, IW.CacheStream, IWDbCommon, InCoderMIME,
+     IWBSCommon;
 
 {$region 'FieldBlobStream'}
 // this comes from TBlobField.SaveToStreamPersist, is the only way to directly obtain a valid image without usen a TPicture
@@ -264,13 +265,13 @@ end;
 procedure TIWBSImage.InternalRenderCss(var ACss: string);
 begin
   if iwbsimResponsive in FImageOptions then
-    AddCssClass(ACss, 'img-responsive');
+    TIWBSCommon.AddCssClass(ACss, 'img-responsive');
   if iwbsimCircle in FImageOptions then
-    AddCssClass(ACss, 'img-circle');
+    TIWBSCommon.AddCssClass(ACss, 'img-circle');
   if iwbsimRounded in FImageOptions then
-    AddCssClass(ACss, 'img-rounded');
+    TIWBSCommon.AddCssClass(ACss, 'img-rounded');
   if iwbsimThumbnail in FImageOptions then
-    AddCssClass(ACss, 'img-thumbnail');
+    TIWBSCommon.AddCssClass(ACss, 'img-thumbnail');
 end;
 
 procedure TIWBSImage.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);

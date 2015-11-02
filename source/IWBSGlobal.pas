@@ -38,7 +38,7 @@ var
   gIWBSRefreshCacheParam: string = '';
 
   // global hook events, let you customize controls in a simple way
-  gIWBSOnRenderAsync: procedure(AControl: TComponent; const AHTMLName, xInputSelector: string);
+  gIWBSOnRenderAsync: procedure(AControl: TComponent; const AHTMLName);
   gIWBSOnBeforeRender: procedure(AControl: TComponent);
   gIWBSOnHTMLTag: procedure(AControl: TComponent; const AHTMLName: string; ATag: TIWHTMLTag);
 

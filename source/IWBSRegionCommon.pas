@@ -2,7 +2,8 @@ unit IWBSRegionCommon;
 
 interface
   uses System.Classes, System.SysUtils, Vcl.Controls, Vcl.Forms,
-       IWContainer, IWHTML40Container, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream,
+       IWContainer, IWHTML40Container, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream, IWtypes,
+       IWApplication, IWHTMLTag, IWBaseInterfaces,
        IWBSCommon;
 
 type
@@ -59,13 +60,35 @@ type
     property InputsSize: TIWBSGridOptions read FInputsSize write SetInputsSize;
   end;
 
-procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer);
-procedure IWBSRegionRenderComponents(ARegion: TIWHTML40Container; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
+  IIWBSContainer = interface(IIWBaseContainer)
+    ['{819FB21E-8204-450F-8778-3DEB56FDB062}']
+    function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
+    function ParentContainer: IIWBaseContainer;
+    function RegionDiv: TIWHTMLTag;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+
+    function get_ContainerContext: TIWContainerContext;
+    procedure set_ContainerContext(const AContainerContext: TIWContainerContext);
+    function get_HTMLName: String;
+
+    property ContainerContext: TIWContainerContext read get_ContainerContext write set_ContainerContext;
+    property HTMLName: string read get_HTMLName;
+  end;
+
+  TIWBSRegionCommon = class
+  private
+    class function RenderHTMLTag(AContainer: IIWBSContainer; AContext: TIWCompContext): string;
+  public
+    class procedure DisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
+    class procedure PrepareChildComponentsForRender(AContainer: IIWBaseContainer);
+    class procedure RenderAsync(AContainer: IIWBSContainer; AContext: TIWCompContext);
+    class procedure RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+  end;
 
 implementation
 
-uses IWBaseInterfaces, IWHTML40Interfaces,
-     IWRegion, IWBSLayoutMgr, IWBSUtils, IWBSGlobal;
+uses IWHTML40Interfaces, IWRegion, IWForm, IWBaseHTMLInterfaces,
+     IWBSLayoutMgr, IWBSUtils, IWBSGlobal;
 
 {$region 'TIWBSBtnGroupOptions'}
 constructor TIWBSButonGroupOptions.Create(AOwner: TComponent);
@@ -127,7 +150,19 @@ begin
 end;
 {$endregion}
 
-procedure IWBSPrepareChildComponentsForRender(AContainer: TIWContainer);
+{$region 'TIWBSRegionCommon'}
+class procedure TIWBSRegionCommon.DisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
+begin
+  StyleRenderOptions.RenderAbsolute := False;
+  StyleRenderOptions.RenderBorder := False;
+  StyleRenderOptions.RenderFont := False;
+  StyleRenderOptions.RenderPadding := False;
+  StyleRenderOptions.RenderPosition := False;
+  StyleRenderOptions.RenderSize := False;
+  StyleRenderOptions.RenderZIndex := False;
+end;
+
+class procedure TIWBSRegionCommon.PrepareChildComponentsForRender(AContainer: IIWBaseContainer);
 var
   i: integer;
   LComponent: TComponent;
@@ -147,9 +182,9 @@ begin
         if LFrameRegion is TIWRegion then begin
           LRegion := TIWRegion(LFrameRegion);
           if LRegion.LayoutMgr = nil then
-            LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
+            LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer.InterfaceInstance);
           LRegion.LayoutMgr.SetContainer(LRegion);
-          IWBSPrepareChildComponentsForRender(LRegion);
+          PrepareChildComponentsForRender(LRegion);
         end;
      end
 
@@ -158,16 +193,16 @@ begin
       begin
         LRegion := TIWRegion(LComponent);
         if LRegion.LayoutMgr = nil then
-          LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer);
+          LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer.InterfaceInstance);
         LRegion.LayoutMgr.SetContainer(LRegion);
-        IWBSPrepareChildComponentsForRender(LRegion);
+        PrepareChildComponentsForRender(LRegion);
       end;
 
     // disable child StyleRenderOptions
     LBaseControl := BaseControlInterface(LComponent);
     if Assigned(LBaseControl) then begin
       LHTML40Control := HTML40ControlInterface(AContainer.Component[i]);
-      IWBSDisableRenderOptions(LHTML40Control.StyleRenderOptions);
+      DisableRenderOptions(LHTML40Control.StyleRenderOptions);
     end;
 
     // global hook
@@ -177,16 +212,67 @@ begin
   end;
 end;
 
-procedure IWBSRegionRenderComponents(ARegion: TIWHTML40Container; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext; ABuffer: TIWRenderStream);
+class procedure TIWBSRegionCommon.RenderAsync(AContainer: IIWBSContainer; AContext: TIWCompContext);
+var
+  LParentContainer: IIWBaseHTMLComponent;
+  LParentSl: string;
+  LHtmlTag: string;
 begin
-  IWBSPrepareChildComponentsForRender(ARegion);
+  // get base container
+  if AContainer.ParentContainer.InterfaceInstance is TIWForm then
+    LParentSl := 'body'
+  else
+    begin
+      LParentContainer := BaseHTMLComponentInterface(AContainer.ParentContainer.InterfaceInstance);
+      if LParentContainer <> nil then
+        LParentSl := '#'+LParentContainer.HTMLName
+      else
+        Exit;
+    end;
+  LHtmlTag := RenderHtmlTag(AContainer, AContext);
+  AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+AContainer.HTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");')
+end;
+
+class procedure TIWBSRegionCommon.RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+var
+  LBuffer: TIWRenderStream;
+begin
+  PrepareChildComponentsForRender(AContainer);
+  AContainer.ContainerContext := AContainerContext;
+  LBuffer := TIWRenderStream.Create(True, True);
   try
-    THackTIWHTML40Container(ARegion).CallInheritedRenderComponents(AContainerContext, APageContext);
-    THackTIWHTML40Container(ARegion).LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
-    THackTIWHTML40Container(ARegion).LayoutMgr.Process(ABuffer, AContainerContext, APageContext);
+    THackTIWHTML40Container(AContainer.InterfaceInstance).CallInheritedRenderComponents(AContainerContext, APageContext);
+    THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
+    THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.Process(LBuffer, AContainerContext, APageContext);
+    AContainer.RegionDiv.Contents.AddBuffer(LBuffer);
   finally
-    THackTIWHTML40Container(ARegion).LayoutMgr.SetContainer(nil);
+    THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.SetContainer(nil);
+    FreeAndNil(LBuffer);
   end;
 end;
+
+class function TIWBSRegionCommon.RenderHTMLTag(AContainer: IIWBSContainer; AContext: TIWCompContext): string;
+var
+  LBuffer: TIWRenderStream;
+  LTag: TIWHTMLTag;
+begin
+  LTag := AContainer.RenderHTML(AContext);
+  try
+
+    // render child components
+    RenderComponents(AContainer, AContainer.InitContainerContext(AContext.WebApplication), AContext.PageContext);
+
+    LBuffer := TIWRenderStream.Create(True, True);
+    try
+      LTag.Render(LBuffer);
+      Result := LBuffer.AsString;
+    finally
+      LBuffer.Free;
+    end;
+  finally
+    LTag.Free;
+  end;
+end;
+{$endregion}
 
 end.

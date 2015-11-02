@@ -186,7 +186,7 @@ procedure TIWBSGlyphicon.InternalRenderCss(var ACss: string);
 begin
   inherited;
   if FGlyphicon <> '' then
-    AddCssClass(ACss, 'glyphicon glyphicon-'+FGlyphicon);
+    TIWBSCommon.AddCssClass(ACss, 'glyphicon glyphicon-'+FGlyphicon);
 end;
 
 procedure TIWBSGlyphicon.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);

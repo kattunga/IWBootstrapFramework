@@ -168,7 +168,6 @@ type
     IWBSRegion7: TIWBSRegion;
     IWBSInputForm1: TIWBSInputForm;
     IWBSButton30: TIWBSButton;
-    chkContFluid: TIWBSCheckBox;
     chkTabsJust: TIWBSCheckBox;
     chkTabsStacked: TIWBSCheckBox;
     chkTabsPills: TIWBSCheckBox;
@@ -188,17 +187,16 @@ type
     IWBSInput26: TIWBSInput;
     IWBSButton45: TIWBSButton;
     IWBSText2: TIWBSText;
+    IWBSButton46: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton27AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton30Click(Sender: TObject);
     procedure IWBSButton21AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton28AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton31AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton32AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton33AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton35Click(Sender: TObject);
     procedure IWBSButton36Click(Sender: TObject);
     procedure IWBSButton34AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton37AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -208,6 +206,9 @@ type
     procedure IWBSButton43Click(Sender: TObject);
     procedure IWBSButton44Click(Sender: TObject);
     procedure IWBSInputForm5Submit(aRequest: THttpRequest; aParams: TStrings);
+    procedure IWBSButton35AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton46Click(Sender: TObject);
+    procedure IWBSButton30AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -278,19 +279,16 @@ begin
   TIWBSDialog.Create('This is the header', 'This is the Body').Show;
 end;
 
-procedure TIWForm2.IWBSButton30Click(Sender: TObject);
+procedure TIWForm2.IWBSButton30AsyncClick(Sender: TObject;
+  EventParams: TStringList);
 begin
-  chkTabsFade.TabOrder := 0;
+//  chkTabsFade.TabOrder := 0;
 
   IWTabControl21.BSTabOptions.Fade := chkTabsFade.Checked;
   IWTabControl21.BSTabOptions.Justified := chkTabsJust.Checked;
   IWTabControl21.BSTabOptions.Pills := chkTabsPills.Checked;
   IWTabControl21.BSTabOptions.Stacked := chkTabsStacked.Checked;
-
-  if chkContFluid.Checked then
-    IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainerFluid
-  else
-    IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
+  IWTabControl21.AsyncRefreshControl;
 end;
 
 procedure TIWForm2.IWBSButton31AsyncClick(Sender: TObject;
@@ -332,7 +330,8 @@ begin
   raise Exception.Create('Error Message');
 end;
 
-procedure TIWForm2.IWBSButton35Click(Sender: TObject);
+procedure TIWForm2.IWBSButton35AsyncClick(Sender: TObject;
+  EventParams: TStringList);
 begin
   if LstFormType.ItemIndex = 0 then
     IWBSInputForm2.BSFormType := bsftVertical
@@ -340,6 +339,7 @@ begin
     IWBSInputForm2.BSFormType := bsftHorizontal
   else if LstFormType.ItemIndex = 2 then
     IWBSInputForm2.BSFormType := bsftInline;
+  IWBSInputForm2.AsyncRefreshControl;
 end;
 
 procedure TIWForm2.IWBSButton36Click(Sender: TObject);
@@ -390,6 +390,14 @@ begin
     IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
     Show;
   end;
+end;
+
+procedure TIWForm2.IWBSButton46Click(Sender: TObject);
+begin
+  if IWBSRegion3.BSRegionType = TIWBSRegionType.bsrtContainer then
+    IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainerFluid
+  else
+    IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
 end;
 
 procedure TIWForm2.IWBSInputForm5Submit(aRequest: THttpRequest;

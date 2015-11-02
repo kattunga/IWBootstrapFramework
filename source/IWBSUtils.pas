@@ -2,12 +2,10 @@ unit IWBSUtils;
 
 interface
 
-uses System.Classes, System.SysUtils, System.StrUtils, Windows,
-     IWAppForm, IWtypes, IWBSCommon, IWHTMLTag, IWApplication;
+uses System.Classes, System.SysUtils, System.StrUtils,
+     IWApplication;
 
-procedure IWBSDisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
-
-function  IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
+function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
 
 function IWBSTextToJsParamText(AText: string): string;
 
@@ -17,17 +15,6 @@ procedure IWBSExecuteAsyncJScript(const Script: string);
 implementation
 
 uses IWHTML40Interfaces;
-
-procedure IWBSDisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
-begin
-  StyleRenderOptions.RenderAbsolute := False;
-  StyleRenderOptions.RenderBorder := False;
-  StyleRenderOptions.RenderFont := False;
-  StyleRenderOptions.RenderPadding := False;
-  StyleRenderOptions.RenderPosition := False;
-  StyleRenderOptions.RenderSize := False;
-  StyleRenderOptions.RenderZIndex := False;
-end;
 
 function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
 var
