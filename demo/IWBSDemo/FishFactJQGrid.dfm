@@ -55,6 +55,11 @@ object FJQGrid: TFJQGrid
             Top = 75
             Width = 702
             Height = 258
+            CustomRestEvents = <
+              item
+                EventName = 'dataurl'
+                OnRestEvent = DbTableCustomRestEvents0RestEvent
+              end>
             FriendlyName = 'DbTable'
             Script.Strings = (
               ''
@@ -132,20 +137,10 @@ object FJQGrid: TFJQGrid
             Style.Strings = (
               '')
             TabOrder = -1
-            CustomAsyncEvents = <
-              item
-                EventName = 'onClickCell'
-                Params = 'field, value, row.field0'
-                OnAsyncEvent = DbTableCustomAjaxEvents0AsyncEvent
-              end>
-            CustomRestEvents = <
-              item
-                EventName = 'dataurl'
-                OnRestEvent = DbTableCustomRestEvents0RestEvent
-              end>
             Html.Strings = (
               '<table id="%htmlname%Grid"></table>'
               '<div id="%htmlname%GridPager"></div>')
+            TagType = 'div'
           end
           object IWText1: TIWBSText
             Left = 10

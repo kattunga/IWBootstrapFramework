@@ -32,6 +32,8 @@ type
     FOldActivePage: integer;
 
     FAsyncRefreshControl: boolean;
+    FCustomAsyncEvents: TOwnedCollection;
+    FCustomRestEvents: TOwnedCollection;
     FGridOptions: TIWBSGridOptions;
     FRegionDiv: TIWHTMLTag;
     FScript: TStringList;
@@ -52,6 +54,10 @@ type
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
     procedure OnStyleChange(ASender : TObject);
+    function ReadCustomAsyncEvents: TOwnedCollection;
+    function ReadCustomRestEvents: TOwnedCollection;
+    procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
+    procedure SetCustomRestEvents(const Value: TOwnedCollection);
   protected
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     function InternalRenderScript: string;
@@ -67,6 +73,8 @@ type
     procedure AsyncRefreshControl;
     procedure AsyncRemoveControl;
     function GetTabPageCSSClass(ATabPage: TComponent): string;
+    function IsStoredCustomAsyncEvents: Boolean;
+    function IsStoredCustomRestEvents: Boolean;
     procedure SetTabPageVisibility(ATabIndex: integer; Visible: boolean); overload;
     procedure SetTabPageVisibility(ATabPage: TIWTabPage; Visible: boolean); overload;
   published
@@ -74,6 +82,8 @@ type
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
     property ClipRegion default False;
+    property CustomAsyncEvents: TOwnedCollection read ReadCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
+    property CustomRestEvents: TOwnedCollection read ReadCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
     property ExtraTagParams;
     property RenderInvisibleControls default False;
     property Script: TStringList read FScript write SetScript;
@@ -87,7 +97,7 @@ type
 
 implementation
 
-uses IWLists, IW.Common.System, IWBSutils, IWBSLayoutMgr, IWBSScriptEvents, IWBSGlobal;
+uses IWLists, IW.Common.System, IWBSutils, IWBSLayoutMgr, IWBSScriptEvents, IWBSGlobal, IWBSCustomEvents;
 
 {$region 'TIWBSTabOptions'}
 constructor TIWBSTabOptions.Create(AOwner: TComponent);
@@ -155,6 +165,40 @@ end;
 procedure TIWBSTabControl.OnStyleChange( ASender : TObject );
 begin
   Invalidate;
+end;
+
+function TIWBSTabControl.ReadCustomAsyncEvents: TOwnedCollection;
+begin
+  if FCustomAsyncEvents = nil then
+    FCustomAsyncEvents := TOwnedCollection.Create(Self, TIWBSCustomAsyncEvent);
+  Result := FCustomAsyncEvents;
+end;
+
+function TIWBSTabControl.ReadCustomRestEvents: TOwnedCollection;
+begin
+  if FCustomRestEvents = nil then
+    FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
+  Result := FCustomRestEvents;
+end;
+
+procedure TIWBSTabControl.SetCustomAsyncEvents(const Value: TOwnedCollection);
+begin
+  FCustomAsyncEvents.Assign(Value);
+end;
+
+procedure TIWBSTabControl.SetCustomRestEvents(const Value: TOwnedCollection);
+begin
+  FCustomRestEvents.Assign(Value);
+end;
+
+function TIWBSTabControl.IsStoredCustomAsyncEvents: boolean;
+begin
+  Result := (FCustomAsyncEvents <> nil) and (FCustomAsyncEvents.Count > 0);
+end;
+
+function TIWBSTabControl.IsStoredCustomRestEvents: boolean;
+begin
+  Result := (FCustomRestEvents <> nil) and (FCustomRestEvents.Count > 0);
 end;
 
 procedure TIWBSTabControl.SetScript(const AValue: TStringList);

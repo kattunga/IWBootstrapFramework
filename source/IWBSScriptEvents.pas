@@ -9,7 +9,7 @@ procedure IWBSRenderScript(AComponent: IIWBSComponent; AComponentContext: TIWCom
 
 implementation
 
-uses IW.Common.Strings, IWBaseInterfaces, IWBSGlobal;
+uses IW.Common.Strings, IWBaseInterfaces, IWBSGlobal, IWBSCustomEvents;
 
 type
   TIWBSScriptEvents = class(IWScriptEvents.TIWScriptEvents)
@@ -67,6 +67,7 @@ var
   LInitProcCode: string;
   LJScript: string;
   LComponentScript: string;
+  I: Integer;
 begin
   LHTMLName := AComponent.HTMLName;
   LPageContext := TIWPageContext40(AComponentContext.PageContext);
@@ -95,6 +96,18 @@ begin
         LJScript := LJScript+#13#10;
       LJScript := LJScript+LComponentScript;
     end;
+
+    if AComponent.IsStoredCustomAsyncEvents then
+      for i := 0 to AComponent.CustomAsyncEvents.Count-1 do begin
+        TIWBSCustomAsyncEvent(AComponent.CustomAsyncEvents.Items[i]).RegisterEvent(AComponentContext.WebApplication, LHTMLName);
+        LJScript := TIWBSCustomAsyncEvent(AComponent.CustomAsyncEvents.Items[i]).ParseParamEvent(LJScript);
+      end;
+
+    if AComponent.IsStoredCustomRestEvents then
+      for i := 0 to AComponent.CustomRestEvents.Count-1 do begin
+        TIWBSCustomRestEvent(AComponent.CustomRestEvents.Items[i]).RegisterEvent(AComponentContext.WebApplication, LHTMLName);
+        LJScript := TIWBSCustomRestEvent(AComponent.CustomRestEvents.Items[i]).ParseParamEvent(LJScript);
+      end;
 
     if LJScript <> '' then
       AHTMLTag.Contents.AddTag('script').Contents.AddText(LJScript);

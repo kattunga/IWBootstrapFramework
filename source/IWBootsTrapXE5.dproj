@@ -141,7 +141,6 @@
         <DCCReference Include="IWBSImage.pas"/>
         <DCCReference Include="IWBSRestServer.pas"/>
         <DCCReference Include="IWBSCustomEvents.pas"/>
-        <DCCReference Include="IWBSCustomComponent.pas"/>
         <DCCReference Include="IWBSGlobal.pas"/>
         <DCCReference Include="IWBSDialogs.pas"/>
         <BuildConfiguration Include="Debug">

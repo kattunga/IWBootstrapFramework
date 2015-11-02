@@ -58,9 +58,26 @@ type
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
   end;
 
+  TIWBSCustomComponent = class(TIWBSCustomControl)
+  private
+    FHtml: TStringList;
+    FTagType: string;
+    procedure OnHtmlChange(ASender : TObject);
+    procedure SetHtml(const AValue: TStringList);
+    procedure SetTagType(const Value: string);
+  protected
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+  published
+    property Html: TStringList read FHtml write SetHtml;
+    property TagType: string read FTagType write SetTagType;
+  end;
+
 implementation
 
-uses IWBSInput, IWBSRegion, IWBSInputCommon;
+uses IWBSInput, IWBSRegion, IWBSInputCommon, IWBSCustomEvents;
 
 {$region 'TIWBSLabel'}
 constructor TIWBSLabel.Create(AOwner: TComponent);
@@ -207,6 +224,66 @@ begin
   end;
   if Parent is TIWBSInputGroup then
     AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'addon');
+end;
+{$endregion}
+
+{$region 'TIWBSCustomComponent'}
+constructor TIWBSCustomComponent.Create(AOwner: TComponent);
+begin
+  inherited;
+  FHtml := TStringList.Create;
+  FHtml.OnChange := OnHtmlChange;
+  FTagType := 'div';
+end;
+
+destructor TIWBSCustomComponent.Destroy;
+begin
+  FreeAndNil(FHtml);
+  inherited;
+end;
+
+procedure TIWBSCustomComponent.OnHtmlChange(ASender : TObject);
+begin
+  Invalidate;
+  if Script.Count > 0 then
+    AsyncRefreshControl;
+end;
+
+procedure TIWBSCustomComponent.SetHtml(const AValue: TStringList);
+begin
+  FHtml.Assign(AValue);
+end;
+
+procedure TIWBSCustomComponent.SetTagType(const Value: string);
+begin
+  TIWBSCommon.ValidateTagName(Value);
+  FTagType := Value;
+  AsyncRefreshControl;
+end;
+
+procedure TIWBSCustomComponent.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
+var
+  i: integer;
+  LHtml: string;
+begin
+  inherited;
+  LHtml := TIWBSCommon.ReplaceParams(HTMLName, FHtml.Text, ScriptParams);
+
+  // register ajax callbacks
+  if IsStoredCustomAsyncEvents then
+    for i := 0 to CustomAsyncEvents.Count-1 do
+      LHtml := TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParamEvent(LHtml);
+
+  // register rest callbacks
+  if IsStoredCustomRestEvents then
+    for i := 0 to CustomRestEvents.Count-1 do
+      LHtml := TIWBSCustomRestEvent(CustomRestEvents.Items[i]).ParseParamEvent(LHtml);
+
+  AHTMLTag := TIWHTMLTag.CreateTag(FTagType);
+  AHTMLTag.AddStringParam('id', HTMLName);
+  AHTMLTag.AddClassParam(ActiveCss);
+  AHTMLTag.AddStringParam('style',ActiveStyle);
+  AHTMLTag.Contents.AddText(LHtml);
 end;
 {$endregion}
 

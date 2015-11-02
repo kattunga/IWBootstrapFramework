@@ -17,6 +17,8 @@ type
     FOldVisible: boolean;
 
     FAsyncRefreshControl: boolean;
+    FCustomAsyncEvents: TOwnedCollection;
+    FCustomRestEvents: TOwnedCollection;
     FTabStop: boolean;
     FScript: TStringList;
     FScriptParams: TStringList;
@@ -31,6 +33,10 @@ type
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
     procedure OnStyleChange(ASender : TObject);
+    function ReadCustomAsyncEvents: TOwnedCollection;
+    function ReadCustomRestEvents: TOwnedCollection;
+    procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
+    procedure SetCustomRestEvents(const Value: TOwnedCollection);
   protected
     {$hints off}
     function get_HasTabOrder: Boolean; override;
@@ -48,10 +54,10 @@ type
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); virtual;
     function InternalRenderScript: string; virtual;
     procedure InternalRenderStyle(AStyle: TStringList); virtual;
-    function IsReadOnly: boolean; virtual;
-    function IsDisabled: boolean; virtual;
     function InputSelector: string; virtual;
     function InputSuffix: string; virtual;
+    function IsReadOnly: boolean; virtual;
+    function IsDisabled: boolean; virtual;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -63,7 +69,12 @@ type
     // Remove a control from html flow. You should execute this when destroying a control durinc async calls before Freeing
     // if you are destroying a region is enought to execute this in that region, you don't need to execute it in each child control.
     procedure AsyncRemoveControl;
+
+    function IsStoredCustomAsyncEvents: Boolean;
+    function IsStoredCustomRestEvents: Boolean;
   published
+    property CustomAsyncEvents: TOwnedCollection read ReadCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
+    property CustomRestEvents: TOwnedCollection read ReadCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
     property Enabled;
     property ExtraTagParams;
     property FriendlyName;
@@ -120,13 +131,15 @@ type
 
 implementation
 
-uses IW.Common.RenderStream, IWBaseHTMLInterfaces, IWForm, IWBSScriptEvents, IWBSGlobal, IWBSUtils;
+uses IW.Common.RenderStream, IWBaseHTMLInterfaces, IWForm, IWBSScriptEvents, IWBSGlobal, IWBSUtils, IWBSCustomEvents;
 
 {$region 'TIWBSCustomControl'}
 constructor TIWBSCustomControl.Create(AOwner: TComponent);
 begin
   inherited;
   FAsyncRefreshControl := True;
+  FCustomAsyncEvents := nil;
+  FCustomRestEvents := nil;
   FMainID := '';
   FTabStop := False;
   FScript := TStringList.Create;
@@ -140,6 +153,8 @@ end;
 
 destructor TIWBSCustomControl.Destroy;
 begin
+  FreeAndNil(FCustomAsyncEvents);
+  FreeAndNil(FCustomRestEvents);
   FreeAndNil(FScript);
   FreeAndNil(FScriptParams);
   FreeAndNil(FStyle);
@@ -160,6 +175,40 @@ end;
 function TIWBSCustomControl.get_HasTabOrder: Boolean;
 begin
   Result := FTabStop and gIWBSEnableTabIndex;
+end;
+
+function TIWBSCustomControl.ReadCustomAsyncEvents: TOwnedCollection;
+begin
+  if FCustomAsyncEvents = nil then
+    FCustomAsyncEvents := TOwnedCollection.Create(Self, TIWBSCustomAsyncEvent);
+  Result := FCustomAsyncEvents;
+end;
+
+function TIWBSCustomControl.ReadCustomRestEvents: TOwnedCollection;
+begin
+  if FCustomRestEvents = nil then
+    FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
+  Result := FCustomRestEvents;
+end;
+
+procedure TIWBSCustomControl.SetCustomAsyncEvents(const Value: TOwnedCollection);
+begin
+  FCustomAsyncEvents.Assign(Value);
+end;
+
+procedure TIWBSCustomControl.SetCustomRestEvents(const Value: TOwnedCollection);
+begin
+  FCustomRestEvents.Assign(Value);
+end;
+
+function TIWBSCustomControl.IsStoredCustomAsyncEvents: boolean;
+begin
+  Result := (FCustomAsyncEvents <> nil) and (FCustomAsyncEvents.Count > 0);
+end;
+
+function TIWBSCustomControl.IsStoredCustomRestEvents: boolean;
+begin
+  Result := (FCustomRestEvents <> nil) and (FCustomRestEvents.Count > 0);
 end;
 
 procedure TIWBSCustomControl.OnScriptChange( ASender : TObject );

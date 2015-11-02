@@ -17,6 +17,8 @@ type
     FOldVisible: boolean;
 
     FAsyncRefreshControl: boolean;
+    FCustomAsyncEvents: TOwnedCollection;
+    FCustomRestEvents: TOwnedCollection;
     FTagType: string;
     FCss: string;
     FGridOptions: TIWBSGridOptions;
@@ -39,6 +41,10 @@ type
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
     procedure OnStyleChange(ASender : TObject);
+    function ReadCustomAsyncEvents: TOwnedCollection;
+    function ReadCustomRestEvents: TOwnedCollection;
+    procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
+    procedure SetCustomRestEvents(const Value: TOwnedCollection);
   protected
     function ContainerPrefix: string; override;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
@@ -59,10 +65,14 @@ type
     procedure AsyncRemoveControl;
     function GetClassString: string; virtual;
     function GetRoleString: string; virtual;
+    function IsStoredCustomAsyncEvents: Boolean;
+    function IsStoredCustomRestEvents: Boolean;
   published
     property Align;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property ClipRegion default False;
+    property CustomAsyncEvents: TOwnedCollection read ReadCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
+    property CustomRestEvents: TOwnedCollection read ReadCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
     property Css: string read FCss write FCss;
     property ExtraTagParams;
     property RenderInvisibleControls default False;
@@ -206,7 +216,7 @@ function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
 implementation
 
 uses IWForm, IWUtils, IW.Common.System, IWContainerLayout, IWBaseHTMLControl, IWBaseHTMLInterfaces,
-     IWBSUtils, IWBSInputCommon, IWBSScriptEvents, IWBSGlobal;
+     IWBSUtils, IWBSInputCommon, IWBSScriptEvents, IWBSGlobal, IWBSCustomEvents;
 
 {$region 'help functions'}
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -316,6 +326,40 @@ end;
 procedure TIWBSCustomRegion.OnStyleChange( ASender : TObject );
 begin
   Invalidate;
+end;
+
+function TIWBSCustomRegion.ReadCustomAsyncEvents: TOwnedCollection;
+begin
+  if FCustomAsyncEvents = nil then
+    FCustomAsyncEvents := TOwnedCollection.Create(Self, TIWBSCustomAsyncEvent);
+  Result := FCustomAsyncEvents;
+end;
+
+function TIWBSCustomRegion.ReadCustomRestEvents: TOwnedCollection;
+begin
+  if FCustomRestEvents = nil then
+    FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
+  Result := FCustomRestEvents;
+end;
+
+procedure TIWBSCustomRegion.SetCustomAsyncEvents(const Value: TOwnedCollection);
+begin
+  FCustomAsyncEvents.Assign(Value);
+end;
+
+procedure TIWBSCustomRegion.SetCustomRestEvents(const Value: TOwnedCollection);
+begin
+  FCustomRestEvents.Assign(Value);
+end;
+
+function TIWBSCustomRegion.IsStoredCustomAsyncEvents: boolean;
+begin
+  Result := (FCustomAsyncEvents <> nil) and (FCustomAsyncEvents.Count > 0);
+end;
+
+function TIWBSCustomRegion.IsStoredCustomRestEvents: boolean;
+begin
+  Result := (FCustomRestEvents <> nil) and (FCustomRestEvents.Count > 0);
 end;
 
 procedure TIWBSCustomRegion.SetScript(const AValue: TStringList);

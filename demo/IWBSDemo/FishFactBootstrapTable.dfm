@@ -55,15 +55,6 @@ object FBootstrapTable: TFBootstrapTable
             Top = 75
             Width = 702
             Height = 258
-            FriendlyName = 'DbTable'
-            Script.Strings = (
-              '$('#39'#%htmlname%_table'#39').bootstrapTable(%options%);'
-              
-                '$('#39'#%htmlname%_table'#39').on("click-cell.bs.table", function(elem, ' +
-                'field, value, row) {%onClickCell%} );')
-            Style.Strings = (
-              '')
-            TabOrder = -1
             CustomAsyncEvents = <
               item
                 EventName = 'onClickCell'
@@ -75,6 +66,15 @@ object FBootstrapTable: TFBootstrapTable
                 EventName = 'dataurl'
                 OnRestEvent = DbTableCustomRestEvents0RestEvent
               end>
+            FriendlyName = 'DbTable'
+            Script.Strings = (
+              '$('#39'#%htmlname%_table'#39').bootstrapTable(%options%);'
+              
+                '$('#39'#%htmlname%_table'#39').on("click-cell.bs.table", function(elem, ' +
+                'field, value, row) {%onClickCell%} );')
+            Style.Strings = (
+              '')
+            TabOrder = -1
             Html.Strings = (
               '<style>'
               '@media only screen and (max-width: 767px) {'
@@ -83,6 +83,7 @@ object FBootstrapTable: TFBootstrapTable
               '</style>'
               ''
               '<table id="%htmlname%_table"></table>')
+            TagType = 'div'
           end
           object IWText1: TIWBSText
             Left = 10

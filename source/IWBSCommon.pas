@@ -56,11 +56,20 @@ type
     function InternalRenderScript: string;
     function HTMLControlImplementation: TIWHTMLControlImplementation;
 
+    function ReadCustomAsyncEvents: TOwnedCollection;
+    function ReadCustomRestEvents: TOwnedCollection;
+    procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
+    procedure SetCustomRestEvents(const Value: TOwnedCollection);
+    function IsStoredCustomAsyncEvents: Boolean;
+    function IsStoredCustomRestEvents: Boolean;
+
     function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
     function get_Visible: Boolean;
     procedure set_Visible(Value: Boolean);
 
+    property CustomAsyncEvents: TOwnedCollection read ReadCustomAsyncEvents write SetCustomAsyncEvents;
+    property CustomRestEvents: TOwnedCollection read ReadCustomRestEvents write SetCustomRestEvents;
     property Style: TStringList read GetStyle write SetStyle;
     property Visible: boolean read get_Visible write set_Visible;
   end;
@@ -73,6 +82,7 @@ type
     class function ReplaceParams(const AHTMLName, AScript: string; AParams: TStrings): string;
     class procedure SetNotVisible(AParams: TStrings);
     class procedure ValidateParamName(const AName: string);
+    class procedure ValidateTagName(const AName: string);
   end;
 
 procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
@@ -260,6 +270,18 @@ begin
   for i := 1 to Length(AName) do
     if not CharInSet(AName[i], ['.','0'..'9','A'..'Z','a'..'z']) then
       raise Exception.Create('Invalid character in param name '+AName);
+end;
+
+class procedure TIWBSCommon.ValidateTagName(const AName: string);
+var
+  i: integer;
+begin
+  if AName = '' then
+    Exception.Create('Tag name could not be empty');
+  for i := 1 to Length(AName) do
+    if ((i = 1) and not CharInSet(AName[i], ['A'..'Z','a'..'z'])) or
+       ((i > 1) and not CharInSet(AName[i], ['0'..'9','A'..'Z','a'..'z'])) then
+      raise Exception.Create('Invalid character in tag name '+AName);
 end;
 
 class procedure TIWBSCommon.SetNotVisible(AParams: TStrings);

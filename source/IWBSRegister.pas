@@ -64,7 +64,7 @@ implementation
 uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
      IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
-     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage, IWBSCustomComponent;
+     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage;
 
 const
   CNST_DEFAULTFONTNAME = 'Tahoma';
@@ -445,18 +445,15 @@ begin
   ControlCanvas.Font.Color := clBlack;
   ControlCanvas.Rectangle(LRect);
 
-  if Control is TIWBSCustomComponent then begin
+  with TIWBSCustomComponent(Control) do begin
     Inc(LRect.Top, 1);
     Inc(LRect.Left, 8);
     Dec(LRect.Bottom, 1);
     Dec(LRect.Right, 8);
-    s := TIWBSCustomComponent(Control).Html.Text;
-    if TIWBSCustomComponent(Control).TagType = bsttDiv then
-      s := '<div>'#13#10+s+'</div>'
-    else if TIWBSCustomComponent(Control).TagType = bsttSpan then
-      s := '<span>'#13#10+s+'</span>';
-    if TIWBSCustomComponent(Control).Script.Count > 0 then
-      s := s+#13#10'<script>'#13#10+TIWBSCustomComponent(Control).Script.Text+'</script>';
+    s := '<'+TagType+'>'#13#10+Html.Text;
+    if Script.Count > 0 then
+      s := s+#13#10'<script>'#13#10+Script.Text+'</script>';
+    s := s+#13#10'</'+TagType+'>';
     ControlCanvas.TextRect(LRect,s,[])
   end;
 end;
