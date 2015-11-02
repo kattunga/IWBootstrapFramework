@@ -567,6 +567,8 @@ begin
 
   RegisterComponents('IW BootsTrap', [TIWBSImage]);
 
+  RegisterComponents('IW BootsTrap', [TIWBSFile]);
+
   RegisterComponents('IW BootsTrap', [TIWBSTabControl]);
 
   UnlistPublishedProperty(TIWBSCustomControl, 'SkinId');

@@ -105,8 +105,8 @@
             <Form>IWFrame3</Form>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
-        <DCCReference Include="FishFactJQGrid.pas">
-            <Form>FJQGrid</Form>
+        <DCCReference Include="bootstrapFileInput.pas">
+            <Form>FBootstrapFileInput</Form>
             <DesignClass>TIWAppForm</DesignClass>
         </DCCReference>
         <DCCReference Include="FishFact.pas">
@@ -116,6 +116,11 @@
         </DCCReference>
         <DCCReference Include="FishFactBootstrapTable.pas">
             <Form>FBootstrapTable</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TIWAppForm</DesignClass>
+        </DCCReference>
+        <DCCReference Include="FishFactJQGrid.pas">
+            <Form>FJQGrid</Form>
             <FormType>dfm</FormType>
             <DesignClass>TIWAppForm</DesignClass>
         </DCCReference>

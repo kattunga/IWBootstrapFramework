@@ -30,7 +30,7 @@ procedure IWBSRegisterRestServerHandler;
 
 implementation
 
-uses IW.Content.Handlers, IWURL, IWBaseForm, IW.Common.HttpPacket;
+uses IW.Content.Handlers, IWURL, IWBaseForm, IW.Common.HttpPacket, IW.Parser.UTF8;
 
 const IWBS_RESTURLBASE = '/$iwbs/';
 
@@ -153,6 +153,8 @@ procedure IWBSRegisterRestServerHandler;
 begin
   if not FIsServerRegistered then
     THandlers.Add(IWBS_RESTURLBASE, '', TIWBSRestServer.Create);
+
+  RegisterContentType('multipart/form-data');
 
   FIsServerRegistered := True;
 end;

@@ -61,7 +61,7 @@ object IWForm2: TIWForm2
           BorderOptions.Style = cbsNone
           BorderOptions.Color = clNone
           Color = clWebSILVER
-          ClipRegion = False
+          ZIndex = 1000
           BSTabOptions.Pills = True
           DesignSize = (
             1078

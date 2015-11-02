@@ -205,7 +205,7 @@ type
   published
     property BSFade: boolean read FFade write FFade default false;
     property BSDialogSize: TIWBSSize read FDialogSize write FDialogSize default bsszDefault;
-    property BSModalVisible: boolean read FModalVisible write SetModalVisible default false;
+    property ModalVisible: boolean read FModalVisible write SetModalVisible default false;
     property DestroyOnHide: boolean read FDestroyOnHide write FDestroyOnHide default false;
     property OnAsyncShow: TIWAsyncEvent read FOnAsyncShow write FOnAsyncShow;
     property OnAsyncHide: TIWAsyncEvent read FOnAsyncHide write FOnAsyncHide;
@@ -818,10 +818,11 @@ end;
 procedure TIWBSModal.SetModalVisible(AValue: boolean);
 begin
   if AValue <> FModalVisible then begin
-    if AValue then
-      IWBSExecuteAsyncJScript(GetShowScript)
-    else
-      IWBSExecuteAsyncJScript(GetHideScript);
+    if not (csDesigning in ComponentState) and not (csLoading in ComponentState)  then
+      if AValue then
+        IWBSExecuteAsyncJScript(GetShowScript)
+      else
+        IWBSExecuteAsyncJScript(GetHideScript);
     FModalVisible := AValue;
   end;
 end;

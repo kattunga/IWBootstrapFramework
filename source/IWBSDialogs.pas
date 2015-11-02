@@ -92,7 +92,7 @@ begin
   Parent := AForm;
 
   DestroyOnHide := True;
-  BSModalVisible := True;
+  ModalVisible := True;
 
   FContent := TIWBSRegion.Create(Owner);
   FContent.BSRegionType := bsrtModalContent;

@@ -129,7 +129,6 @@ begin
   cmp := TIWFrame1.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := IWBSRegion17;
-  cmp.IWBSRegion1.AsyncRenderComponent;
 end;
 
 procedure TIWForm2.IWBSButton27AsyncClick(Sender: TObject;
@@ -140,7 +139,6 @@ begin
   cmp := TIWFrame3.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := Self;
-  cmp.IWBSModal1.AsyncRenderComponent;
 end;
 
 procedure TIWForm2.IWBSButton28AsyncClick(Sender: TObject;
@@ -226,7 +224,7 @@ end;
 procedure TIWForm2.IWFileUploader1AsyncUploadSuccess(Sender: TObject;
   EventParams: TStringList);
 begin
-  IWBSFormControl8.AsyncRenderComponent;
+  IWBSFormControl8.AsyncRefreshControl;
 end;
 
 initialization

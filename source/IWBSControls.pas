@@ -75,9 +75,21 @@ type
     property TagType: string read FTagType write SetTagType;
   end;
 
+  TIWBSFile = class(TIWBSCustomControl)
+  private
+    FMultiple: boolean;
+    procedure SetMultiple(const Value: boolean);
+  protected
+    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
+  public
+    constructor Create(AOwner: TComponent); override;
+  published
+    property Multiple: boolean read FMultiple write SetMultiple default False;
+  end;
+
 implementation
 
-uses IWBSInput, IWBSRegion, IWBSInputCommon, IWBSCustomEvents;
+uses IW.Common.System, IWBSInput, IWBSRegion, IWBSInputCommon, IWBSCustomEvents;
 
 {$region 'TIWBSLabel'}
 constructor TIWBSLabel.Create(AOwner: TComponent);
@@ -286,5 +298,57 @@ begin
   AHTMLTag.Contents.AddText(LHtml);
 end;
 {$endregion}
+
+{$region 'TIWBSFile' }
+
+constructor TIWBSFile.Create(AOwner: TComponent);
+begin
+  inherited;
+  FMultiple := False;
+end;
+
+procedure TIWBSFile.InternalRenderHTML(const AHTMLName: string;
+  AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
+begin
+  inherited;
+
+  AHTMLTag := TIWHTMLTag.CreateTag('input');
+  try
+    AHTMLTag.AddClassParam(ActiveCss);
+    AHTMLTag.AddStringParam('id', AHTMLName);
+    AHTMLTag.AddStringParam('name', AHTMLName+iif(FMultiple,'[]'));
+    AHTMLTag.AddStringParam('type', 'file');
+    if ShowHint and (Hint <> '') then begin
+      AHTMLTag.AddStringParam('data-toggle', 'tooltip');
+      AHTMLTag.AddStringParam('title', Hint);
+    end;
+    if FMultiple then
+      AHTMLTag.Add('multiple');
+
+//    if AutoFocus then
+//      AHTMLTag.Add('autofocus');
+//    if IsReadOnly then
+//      AHTMLTag.Add('readonly');
+    if IsDisabled then
+      AHTMLTag.Add('disabled');
+//    AHTMLTag.AddStringParam('value', TextToHTML(FText));
+//    if Required then
+//      AHTMLTag.Add('required');
+//    if PlaceHolder <> '' then
+//      AHTMLTag.AddStringParam('placeholder', TextToHTML(PlaceHolder));
+    AHTMLTag.AddStringParam('style', ActiveStyle);
+  except
+    FreeAndNil(AHTMLTag);
+    raise;
+  end;
+
+  AHTMLTag := IWBSCreateFormGroup(Parent, IWBSFindParentInputForm(Parent), AHTMLTag, AHTMLName, True);
+end;
+
+procedure TIWBSFile.SetMultiple(const Value: boolean);
+begin
+  FMultiple := Value;
+  AsyncRefreshControl;
+end;
 
 end.

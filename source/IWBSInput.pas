@@ -14,7 +14,7 @@ type
   protected
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   published
-    property BSInputType default bsitText;
+    property InputType default bsitText;
   end;
 
   TIWBSMemo = class(TIWBSCustomTextInput)
@@ -142,7 +142,7 @@ begin
         AHTMLTag.AddClassParam(ActiveCss);
         AHTMLTag.AddStringParam('id', AHTMLName);
         AHTMLTag.AddStringParam('name', AHTMLName);
-        AHTMLTag.AddStringParam('type', aIWBSInputType[BSInputType]);
+        AHTMLTag.AddStringParam('type', aIWBSInputType[InputType]);
         if ShowHint and (Hint <> '') then begin
           AHTMLTag.AddStringParam('data-toggle', 'tooltip');
           AHTMLTag.AddStringParam('title', Hint);
@@ -167,7 +167,7 @@ begin
       end;
     end;
 
-  if not (Parent is TIWBSInputGroup) and (BSInputType <> bsitHidden) then
+  if not (Parent is TIWBSInputGroup) and (InputType <> bsitHidden) then
     AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, AHTMLName);
 end;
 {$endregion}

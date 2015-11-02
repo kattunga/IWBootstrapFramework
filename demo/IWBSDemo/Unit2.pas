@@ -184,10 +184,11 @@ type
     IWBSRegion29: TIWBSRegion;
     IWBSLabel3: TIWBSLabel;
     IWBSInputForm5: TIWBSInputForm;
-    IWBSInput26: TIWBSInput;
     IWBSButton45: TIWBSButton;
     IWBSText2: TIWBSText;
     IWBSButton46: TIWBSButton;
+    IWBSButton47: TIWBSButton;
+    IWBSInput26: TIWBSFile;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -209,6 +210,7 @@ type
     procedure IWBSButton35AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton46Click(Sender: TObject);
     procedure IWBSButton30AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton47Click(Sender: TObject);
   public
   end;
 
@@ -216,7 +218,7 @@ implementation
 
 {$R *.dfm}
 
-uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact, FishFactBootstrapTable, FishFactJQGrid,
+uses IWBSUtils, IWBSRegionCommon, IWBSDialogs, unit1, unit3, FishFact, FishFactBootstrapTable, FishFactJQGrid, BootstrapFileInput,
   ServerController, IW.HTTP.FileItem, IWURL;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
@@ -361,13 +363,13 @@ end;
 procedure TIWForm2.IWBSButton39AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  IWBSModal1.BSModalVisible := False;
+  IWBSModal1.ModalVisible := False;
 end;
 
 procedure TIWForm2.IWBSButton40AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  IWBSModal1.BSModalVisible := True;
+  IWBSModal1.ModalVisible := True;
 end;
 
 procedure TIWForm2.IWBSButton42AsyncClick(Sender: TObject;
@@ -400,20 +402,31 @@ begin
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
 end;
 
+procedure TIWForm2.IWBSButton47Click(Sender: TObject);
+begin
+  with TFBootstrapFileInput.Create(WebApplication) do begin
+    IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
+    IWBSInputForm1.BSFormType := Self.IWBSInputForm2.BSFormType;
+    Show;
+  end;
+end;
+
 procedure TIWForm2.IWBSInputForm5Submit(aRequest: THttpRequest;
   aParams: TStrings);
 var
   AStream: TStringStream;
+  i: integer;
 begin
   // I manually set this page because this submit doen't set it
   IWTabControl21.ActivePage := IWTabControl21.Pages.IndexOf(IWTabControl21Page6);
 
-  // get file
-  if aRequest.Files.Count > 0 then begin
+  // get file s
+  for i := 0 to aRequest.Files.Count-1 do begin
     AStream := TStringStream.Create;
     try
-      THttpFile(aRequest.Files[0]).SaveToStream(AStream);
-      IWBSText2.Lines.Text := AStream.DataString;
+      THttpFile(aRequest.Files[i]).SaveToStream(AStream);
+      IWBSText2.Lines.Add('File: '+THttpFile(aRequest.Files[i]).FileName);
+      IWBSText2.Lines.Add(AStream.DataString);
     finally
       AStream.Free;
     end;

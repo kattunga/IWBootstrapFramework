@@ -10,10 +10,10 @@ uses
   IWBSCommon;
 
 type
-  TIWBSInputType = (bsitText, bsitPassword, bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime, bsitWeek, bsitNumber, bsitEmail, bsitUrl, bsitSearch, bsitTel, bsitColor, bsitHidden, bsitFile);
+  TIWBSInputType = (bsitText, bsitPassword, bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime, bsitWeek, bsitNumber, bsitEmail, bsitUrl, bsitSearch, bsitTel, bsitColor, bsitHidden);
 
 const
-  aIWBSInputType: array[bsitText..bsitFile] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color', 'hidden', 'file');
+  aIWBSInputType: array[bsitText..bsitHidden] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color', 'hidden');
 
 type
   TIWBSCustomInput = class(TIWBSCustomDbControl, IIWInputControl, IIWSubmitControl, IIWInputControl40, IIWAutoEditableControl)
@@ -57,7 +57,7 @@ type
     function getText: TCaption; override;
 
     property ReadOnly: boolean read FReadOnly write SetReadOnly;
-    property BSInputType: TIWBSInputType read FInputType write FInputType;
+    property InputType: TIWBSInputType read FInputType write FInputType;
   public
     constructor Create(AOwner: TComponent); override;
     procedure Invalidate; override;
@@ -353,11 +353,10 @@ procedure TIWBSCustomTextInput.InternalRenderCss(var ACss: string);
 begin
   inherited;
   FIsStatic := not Editable and NonEditableAsLabel;
-  if FInputType <> bsitFile then
-    if FIsStatic then
-      TIWBSCommon.AddCssClass(ACss, 'form-control-static')
-    else
-      TIWBSCommon.AddCssClass(ACss, 'form-control');
+  if FIsStatic then
+    TIWBSCommon.AddCssClass(ACss, 'form-control-static')
+  else
+    TIWBSCommon.AddCssClass(ACss, 'form-control');
   if FTextAlignment <> bstaDefault then
     TIWBSCommon.AddCssClass(ACss, aIWBSTextAlignment[FTextAlignment]);
   if FTextCase <> bstcDefault then

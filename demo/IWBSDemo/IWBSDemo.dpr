@@ -15,9 +15,10 @@ uses
   UserSessionUnit in 'UserSessionUnit.pas' {IWUserSession: TIWUserSessionBase},
   Unit1 in 'Unit1.pas' {IWFrame1: TFrame},
   Unit3 in 'Unit3.pas' {IWFrame3: TFrame},
-  FishFactJQGrid in 'FishFactJQGrid.pas' {FJQGrid: TIWAppForm},
+  bootstrapFileInput in 'bootstrapFileInput.pas' {FBootstrapFileInput: TIWAppForm},
   FishFact in 'FishFact.pas' {FFishFact: TIWAppForm},
-  FishFactBootstrapTable in 'FishFactBootstrapTable.pas' {FBootstrapTable: TIWAppForm};
+  FishFactBootstrapTable in 'FishFactBootstrapTable.pas' {FBootstrapTable: TIWAppForm},
+  FishFactJQGrid in 'FishFactJQGrid.pas' {FJQGrid: TIWAppForm};
 
 {$R *.res}
 

@@ -73,8 +73,8 @@ object FFishFact: TFFishFact
         Align = alClient
         BSRegionType = bsrtColumn
         object IWBSInputForm1: TIWBSInputForm
-          Left = 14
-          Top = 11
+          Left = 15
+          Top = 19
           Width = 695
           Height = 1059
           BSGridOptions.GridMDSpan = 8
@@ -106,7 +106,7 @@ object FFishFact: TFFishFact
             Caption = 'Length (inches)'
             Text = 'Length_In'
             BSTextAlignment = bstaRight
-            BSInputType = bsitNumber
+            InputType = bsitNumber
           end
           object IWBSInput2: TIWBSInput
             Left = 20
@@ -119,7 +119,7 @@ object FFishFact: TFFishFact
             DataField = 'Length (cm)'
             Caption = 'Length (cm)'
             Text = 'Length (cm)'
-            BSInputType = bsitNumber
+            InputType = bsitNumber
           end
           object IWBSInput3: TIWBSInput
             Left = 20
@@ -180,7 +180,7 @@ object FFishFact: TFFishFact
             DataField = 'FoundDate'
             Caption = 'Found Date'
             Text = 'FoundDate'
-            BSInputType = bsitDateTimeLocal
+            InputType = bsitDateTimeLocal
           end
           object IWBSListbox2: TIWBSSelect
             Left = 20
