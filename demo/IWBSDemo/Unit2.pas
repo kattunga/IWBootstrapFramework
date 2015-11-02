@@ -3,13 +3,13 @@ unit Unit2;
 interface
 
 uses
-  Classes, SysUtils, IWAppForm, IWApplication, IWColor, IWTypes,
-  Vcl.Controls, Vcl.Forms, IWVCLBaseContainer, IWContainer,
+  System.Classes, System.SysUtils, System.Contnrs, Vcl.Controls, Vcl.Forms,
+  IWAppForm, IWApplication, IWColor, IWTypes,
+  IWVCLBaseContainer, IWContainer,
   IWHTMLContainer, IWHTML40Container, IWRegion,
   IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl, IWControl,
   IWBSRegion,
   IWCompTabControl, IWBSTabControl,
-  IWCompButton,
   IWBaseLayoutComponent, IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr,
   IWBSInput, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
   IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent,
