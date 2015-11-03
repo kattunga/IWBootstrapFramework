@@ -21,14 +21,14 @@ type
     FCustomRestEvents: TOwnedCollection;
     FTabStop: boolean;
     FScript: TStringList;
-    FScriptParams: TStringList;
+    FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
     FOnRenderAsync: TNotifyEvent;
 
     function RenderHTMLTag(AContext: TIWCompContext): string;
 
     procedure SetScript(const AValue: TStringList);
-    procedure SetScriptParams(const AValue: TStringList);
+    procedure SetScriptParams(const AValue: TIWBSScriptParams);
     function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
@@ -80,7 +80,7 @@ type
     property FriendlyName;
     property Script: TStringList read FScript write SetScript;
     property ScriptEvents;
-    property ScriptParams: TStringList read FScriptParams write SetScriptParams;
+    property ScriptParams: TIWBSScriptParams read FScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property TabStop: boolean read FTabStop write FTabStop default False;
     property TabOrder;
@@ -144,7 +144,7 @@ begin
   FTabStop := False;
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
-  FScriptParams := TStringList.Create;
+  FScriptParams := TIWBSScriptParams.Create;
   FScriptParams.OnChange := OnScriptChange;
   FStyle := TStringList.Create;
   FStyle.OnChange := OnStyleChange;
@@ -226,7 +226,7 @@ begin
   Invalidate;
 end;
 
-procedure TIWBSCustomControl.SetScriptParams(const AValue: TStringList);
+procedure TIWBSCustomControl.SetScriptParams(const AValue: TIWBSScriptParams);
 begin
   FScriptParams.Assign(AValue);
 end;

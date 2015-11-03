@@ -24,7 +24,7 @@ type
     FGridOptions: TIWBSGridOptions;
     FRegionDiv: TIWHTMLTag;
     FScript: TStringList;
-    FScriptParams: TStringList;
+    FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
     FReleased: boolean;
     FContentSuffix: string;
@@ -36,7 +36,7 @@ type
 
     procedure SetGridOptions(const AValue: TIWBSGridOptions);
     procedure SetScript(const AValue: TStringList);
-    procedure SetScriptParams(const AValue: TStringList);
+    procedure SetScriptParams(const AValue: TIWBSScriptParams);
     function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
@@ -78,7 +78,7 @@ type
     property RenderInvisibleControls default False;
     property ScriptEvents: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;
     property Script: TStringList read FScript write SetScript;
-    property ScriptParams: TStringList read FScriptParams write SetScriptParams;
+    property ScriptParams: TIWBSScriptParams read FScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property ZIndex default 0;
 
@@ -242,7 +242,7 @@ begin
   FGridOptions := TIWBSGridOptions.Create;
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
-  FScriptParams := TStringList.Create;
+  FScriptParams := TIWBSScriptParams.Create;
   FScriptParams.OnChange := OnScriptChange;
   FStyle := TStringList.Create;
   FStyle.OnChange := OnStyleChange;
@@ -368,7 +368,7 @@ begin
   FScript.Assign(AValue);
 end;
 
-procedure TIWBSCustomRegion.SetScriptParams(const AValue: TStringList);
+procedure TIWBSCustomRegion.SetScriptParams(const AValue: TIWBSScriptParams);
 begin
   FScriptParams.Assign(AValue);
 end;

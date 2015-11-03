@@ -37,7 +37,7 @@ type
     FGridOptions: TIWBSGridOptions;
     FRegionDiv: TIWHTMLTag;
     FScript: TStringList;
-    FScriptParams: TStringList;
+    FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
     FTabOptions: TIWBSTabOptions;
     FOnRenderAsync: TNotifyEvent;
@@ -49,7 +49,7 @@ type
     procedure SetGridOptions(const Value: TIWBSGridOptions);
     procedure SetTabOptions(const Value: TIWBSTabOptions);
     procedure SetScript(const AValue: TStringList);
-    procedure SetScriptParams(const AValue: TStringList);
+    procedure SetScriptParams(const AValue: TIWBSScriptParams);
     function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
@@ -88,7 +88,7 @@ type
     property LayoutMgr;
     property RenderInvisibleControls default False;
     property Script: TStringList read FScript write SetScript;
-    property ScriptParams: TStringList read FScriptParams write SetScriptParams;
+    property ScriptParams: TIWBSScriptParams read FScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property ZIndex default 0;
 
@@ -117,7 +117,7 @@ begin
   FGridOptions := TIWBSGridOptions.Create;
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
-  FScriptParams := TStringList.Create;
+  FScriptParams := TIWBSScriptParams.Create;
   FScriptParams.OnChange := OnScriptChange;
   FStyle := TStringList.Create;
   FStyle.OnChange := OnStyleChange;
@@ -209,7 +209,7 @@ begin
   FScript.Assign(AValue);
 end;
 
-procedure TIWBSTabControl.SetScriptParams(const AValue: TStringList);
+procedure TIWBSTabControl.SetScriptParams(const AValue: TIWBSScriptParams);
 begin
   FScriptParams.Assign(AValue);
 end;

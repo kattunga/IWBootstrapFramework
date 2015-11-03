@@ -2,7 +2,11 @@ unit IWBSCommon;
 
 interface
 
-uses System.Classes, System.SysUtils, System.StrUtils,
+// if you have JsonDataObjects from https://github.com/ahausladen/JsonDataObjects
+// include in your application: define JsonDataObjects
+// don't enable here, we don't want to include in package
+
+uses System.Classes, System.SysUtils, System.StrUtils, {$IFDEF IWBS_JSONDATAOBJECTS}JsonDataObjects, {$ENDIF}
      IWRenderContext, IWControl, IWHTML40Interfaces;
 
 const
@@ -23,6 +27,19 @@ const
   aIWBSResizeDirection: array[bsrdDefault..bsrdHorizontal] of string = ('', 'none', 'both', 'vertical', 'horizontal');
 
 type
+
+  TIWBSScriptParams = class(TStringList)
+  {$IFDEF IWBS_JSONDATAOBJECTS}
+  private
+    function GetJson(const Name: string): TJsonObject;
+    procedure SetJson(const Name: string; const Value: TJsonObject);
+  public
+    constructor Create;
+    property Json[const Name: string]: TJsonObject read GetJson write SetJson;
+  {$ENDIF}
+  end;
+
+
   TIWBSGridOptions = class(TPersistent)
   private
     FGridXSOffset: integer;
@@ -256,7 +273,12 @@ var
 begin
   Result := ReplaceText(AScript,'%HTMLNAME%',AHTMLName);
   for i := 0 to AParams.Count-1 do
-    Result := ReplaceText(Result,'%'+AParams.Names[i]+'%',AParams.ValueFromIndex[i]);
+  {$IFDEF IWBS_JSONDATAOBJECTS}
+    if AParams.Objects[i] is TJsonObject then
+      Result := ReplaceText(Result,'%'+AParams[i]+'%',TJsonObject(AParams.Objects[i]).ToJSON)
+    else
+  {$ENDIF}
+      Result := ReplaceText(Result,'%'+AParams.Names[i]+'%',AParams.ValueFromIndex[i]);
 end;
 
 class procedure TIWBSCommon.ValidateParamName(const AName: string);
@@ -294,6 +316,42 @@ begin
     LStyle := LStyle +  'display: none;';
   AParams.Values['style'] := LStyle;
 end;
+{$endregion}
+
+{$region 'TIWBSScriptParams'}
+{$IFDEF IWBS_JSONDATAOBJECTS}
+constructor TIWBSScriptParams.Create;
+begin
+  inherited;
+  Duplicates := dupError;
+  OwnsObjects := True;
+  Sorted := True;
+end;
+
+function TIWBSScriptParams.GetJson(const Name: string): TJsonObject;
+var
+  i: integer;
+begin
+  i := IndexOf(Name);
+  if i < 0 then
+    begin
+      Result := TJsonObject.Create;
+      AddObject(Name, Result);
+    end
+  else if Objects[i] = nil then
+    begin
+      Result := TJsonObject.Create;
+      Objects[i] := Result;
+    end
+  else
+    Result := TJsonObject(Objects[i]);
+end;
+
+procedure TIWBSScriptParams.SetJson(const Name: string; const Value: TJsonObject);
+begin
+  Json[Name].Assign(Value);
+end;
+{$ENDIF}
 {$endregion}
 
 end.

@@ -54,11 +54,16 @@ uses IWBSRestServer, IW.Common.Strings, IWBSDialogs;
 var
   fs: TFormatSettings;
 
+// if you have JsonDataObjects from https://github.com/ahausladen/JsonDataObjects
+// in project -> options -> Delphi Compiler -> Conditional Defines : add IWBS_JSONDATAOBJECTS
+
 procedure TFBootstrapTable.IWFormModuleBaseCreate(Sender: TObject);
 var
+{$IFNDEF IWBS_JSONDATAOBJECTS}
   columns: string;
   options: TStringList;
-  i: integer;
+{$ENDIF}
+  j: integer;
 begin
   //ClientDataSet1.LoadFromFile('biolife2.cds');
 
@@ -67,13 +72,31 @@ begin
   IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js');
   IWBSLayoutMgr1.AddLinkFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/extensions/mobile/bootstrap-table-mobile.js');
 
+{$IFDEF IWBS_JSONDATAOBJECTS}
+  // json param
+  with DbTable.ScriptParams.Json['options'] do begin
+    with A['columns'] do
+      for j := 0 to ClientDataSet1.FieldCount-1 do
+        with AddObject do begin
+          S['field'] := 'field'+IntToStr(j);
+          S['title'] := ClientDataSet1.Fields[j].DisplayLabel;
+        end;
+    S['url'] := '%dataurl%';
+    B['pagination'] := true;
+    S['sidePagination'] := 'server';
+    B['mobileResponsive'] := true;
+    S['paginationVAlign'] := 'top';
+  end;
+
+{$ELSE}
+  // classic string param
+
   // configure grid options
-  // it's better to use any json object to do this, but for this demo I'll do it by hand
   columns := '[';
-  for i := 0 to ClientDataSet1.FieldCount-1 do begin
-    if i > 0 then
+  for j := 0 to ClientDataSet1.FieldCount-1 do begin
+    if j > 0 then
       columns := columns+',';
-    columns := columns+'{"field":'+'"field'+IntToStr(i)+'","title":"'+ClientDataSet1.Fields[i].DisplayLabel+'"}';
+    columns := columns+'{"field":'+'"field'+IntToStr(j)+'","title":"'+ClientDataSet1.Fields[j].DisplayLabel+'"}';
   end;
   columns := columns+']';
 
@@ -95,6 +118,8 @@ begin
   finally
     options.Free;
   end;
+
+{$ENDIF}
 end;
 
 procedure TFBootstrapTable.DbTableCustomAjaxEvents0AsyncEvent(
