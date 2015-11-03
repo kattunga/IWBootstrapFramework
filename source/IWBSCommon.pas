@@ -236,13 +236,9 @@ begin
   try
     xStyle.Assign(AComponent.Style);
 
-    // here we render z-index
+    // here render z-index
     if AComponent.ZIndex <> 0 then
       xStyle.Values['z-index'] := IntToStr(AComponent.Zindex);
-
-    // render visibility
-    if not AComponent.Visible then
-      TIWBSCommon.SetNotVisible(xStyle);
 
     for i := 0 to xStyle.Count-1 do begin
       if Result <> '' then
@@ -290,12 +286,12 @@ var
 begin
   LStyle := AParams.Values['style'];
   LStyle := Trim(LStyle);
-  if not AnsiEndsStr(';', LStyle) then
+  if (LStyle <> '') and not AnsiEndsStr(';', LStyle) then
     LStyle := LStyle+';';
   if not AnsiContainsStr(LStyle, 'visibility:') then
-    LStyle := LStyle +  'visibility: hidden';
+    LStyle := LStyle +  'visibility: hidden;';
   if not AnsiContainsStr(LStyle, 'display:') then
-    LStyle := LStyle +  'display: none';
+    LStyle := LStyle +  'display: none;';
   AParams.Values['style'] := LStyle;
 end;
 {$endregion}

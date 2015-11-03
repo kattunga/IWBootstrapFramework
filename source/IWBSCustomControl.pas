@@ -351,8 +351,6 @@ begin
   if Result = nil then
     raise Exception.Create('HTML tag not created');
   IWBSRenderScript(Self, AContext, Result);
-  if not Visible then
-    TIWBSCommon.SetNotVisible(Result.Params);
   FMainID := Result.Params.Values['id'];
   FAsyncRefreshControl := False;
 end;
@@ -364,6 +362,9 @@ var
 begin
   LTag := RenderHTML(AContext);
   try
+    if not Visible then
+      TIWBSCommon.SetNotVisible(LTag.Params);
+
     LBuffer := TIWRenderStream.Create(True, True);
     try
       RenderHTML(AContext).Render(LBuffer);

@@ -286,6 +286,12 @@ begin
             LHTML.AddStringParam('class', L40Component.RenderCSSClass(nil));
           LHTML.Params.Values['style'] := L40Component.RenderStyle(LComponentContext) + LHTML.Params.Values['style'];
         end;
+      end
+
+    else
+      begin
+        if not LVisible and LRenderInvisibleControls then
+          TIWBSCommon.SetNotVisible(LHTML.Params);
       end;
 
     // global hook

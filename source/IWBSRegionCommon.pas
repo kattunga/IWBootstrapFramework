@@ -258,6 +258,8 @@ var
 begin
   LTag := AContainer.RenderHTML(AContext);
   try
+    if not TControl(AContainer.InterfaceInstance).Visible then
+      TIWBSCommon.SetNotVisible(LTag.Params);
 
     // render child components
     RenderComponents(AContainer, AContainer.InitContainerContext(AContext.WebApplication), AContext.PageContext);
