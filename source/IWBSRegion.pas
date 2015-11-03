@@ -153,6 +153,7 @@ type
     property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
     property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtIWBSRegion;
     property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write SetRelativeSize default bsrzDefault;
+    property LayoutMgr;
   end;
 
   TIWBSNavBarFixed = (bsnvfxNone, bsnvfxTop, bsnvfxBottom);

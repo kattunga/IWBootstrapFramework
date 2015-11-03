@@ -85,6 +85,7 @@ type
     property CustomAsyncEvents: TOwnedCollection read ReadCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
     property CustomRestEvents: TOwnedCollection read ReadCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
     property ExtraTagParams;
+    property LayoutMgr;
     property RenderInvisibleControls default False;
     property Script: TStringList read FScript write SetScript;
     property ScriptParams: TStringList read FScriptParams write SetScriptParams;
@@ -368,8 +369,8 @@ begin
     if not FTabOptions.Justified and not FTabOptions.Stacked and gIWBSLibDynamicTabs then
       Result.Contents.AddText('$("#'+xHTMLName+'_tabs'+'").bootstrapDynamicTabs();');
 
-    // save seleted tab on change
-    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").off("show.bs.tab").on("show.bs.tab", function(e){ document.getElementById("'+xHTMLInput+'").value=$(e.target).attr("tabindex"); });');
+    // save seleted tab on change, manually trigger change event because val don't do it
+    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").off("show.bs.tab").on("show.bs.tab", function(e){ $("#'+xHTMLInput+'").val($(e.target).attr("tabindex")).change(); });');
 
     // event async change
     if Assigned(OnAsyncChange) then begin
@@ -381,6 +382,10 @@ begin
   end;
 
   IWBSRenderScript(Self, AContext, Result);
+
+  // initialize hidden input
+  TIWPageContext40(AContext.PageContext).AddToIWCLInitProc('  IW.initIWCL('+HTMLControlImplementation.IWCLName+',"'+xHTMLName+'_input",true);');
+
   FAsyncRefreshControl := False;
 end;
 

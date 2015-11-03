@@ -79,14 +79,14 @@ begin
       LSubmitOnAsync := LInputInterface.SubmitOnAsyncEvent;
   end;
 
+  LInitProcCode := '  IW.initIWCL('+AComponent.HTMLControlImplementation.IWCLParentName+',"'+LHTMLName+'",'+BoolToString(LSubmitOnAsync)+');';
+  LPageContext.AddToIWCLInitProc(LInitProcCode);
+
   AComponent.ScriptEvents.ClearHooked;
   AComponent.ScriptEvents.Rendering := True;
   try
     AComponent.HookEvents(LPageContext, AComponent.ScriptEvents);
     AComponent.HintEvents(AHTMLTag);
-    LInitProcCode := '  IW.initIWCL('+AComponent.HTMLControlImplementation.IWCLParentName+',"'+LHTMLName+'",'+BoolToString(LSubmitOnAsync)+')';
-    TString.ForceSuffix(LInitProcCode, ';');
-    LPageContext.AddToIWCLInitProc(LInitProcCode);
 
     LJScript := RenderScriptEvents(LHTMLName, AComponent.ScriptEvents, LPageContext);
 
