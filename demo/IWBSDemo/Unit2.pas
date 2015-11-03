@@ -272,7 +272,6 @@ begin
   cmp := TIWFrame3.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := Self;
-//  cmp.IWBSModal1.AsyncRenderComponent;
 end;
 
 procedure TIWForm2.IWBSButton28AsyncClick(Sender: TObject;
@@ -284,8 +283,6 @@ end;
 procedure TIWForm2.IWBSButton30AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-//  chkTabsFade.TabOrder := 0;
-
   IWTabControl21.BSTabOptions.Fade := chkTabsFade.Checked;
   IWTabControl21.BSTabOptions.Justified := chkTabsJust.Checked;
   IWTabControl21.BSTabOptions.Pills := chkTabsPills.Checked;
