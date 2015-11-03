@@ -127,7 +127,7 @@ type
 implementation
 
 uses
-  IWBaseForm, IWDBCommon, IWDBStdCtrls, IWForm, IWMarkupLanguageTag, Dialogs;
+  IWBaseForm, IWDBCommon, IWDBStdCtrls, IWForm, IWMarkupLanguageTag;
 
 var
   LFormatSettings: TFormatSettings;
