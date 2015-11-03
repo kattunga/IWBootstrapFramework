@@ -539,7 +539,7 @@ begin
         Result.AddStringParam('enctype', 'multipart/form-data')
       else if FEncType = iwbsfeText then
         Result.AddStringParam('enctype', 'text/plain');
-      Result.AddStringParam('action', IWBSRegisterRestCallBack(AContext.WebApplication, HTMLName+'.FormSubmit', DoSubmit)+'?IWFileUploader=true');
+      Result.AddStringParam('action', IWBSRegisterRestCallBack(AContext.WebApplication, HTMLName+'.FormSubmit', DoSubmit, (FEncType = iwbsfeMultipart)));
     end
   else
     Result.AddStringParam('onSubmit', 'return FormDefaultSubmit();');

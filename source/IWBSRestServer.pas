@@ -24,7 +24,7 @@ type
     property RestCallBackFunction: TIWBSRestCallBackFunction read FRestCallBackFunction write FRestCallBackFunction;
   end;
 
-function IWBSRegisterRestCallBack(AApplication: TIWApplication; AName: string; ARestCallbackFunction: TIWBSRestCallBackFunction): string;
+function IWBSRegisterRestCallBack(AApplication: TIWApplication; AName: string; ARestCallbackFunction: TIWBSRestCallBackFunction; AParseFileUpload: boolean = False): string;
 
 procedure IWBSRegisterRestServerHandler;
 
@@ -63,7 +63,7 @@ begin
     Result := AName;
 end;
 
-function IWBSRegisterRestCallBack(AApplication: TIWApplication; AName: string; ARestCallbackFunction: TIWBSRestCallBackFunction): string;
+function IWBSRegisterRestCallBack(AApplication: TIWApplication; AName: string; ARestCallbackFunction: TIWBSRestCallBackFunction; AParseFileUpload: boolean = False): string;
 var
   LCallBacks: TIWCallBacksHack;
   xOwnerForm: TComponent;
@@ -90,6 +90,8 @@ begin
     end;
 
   Result := TURL.Concat(AApplication.SessionUrlBase,IWBS_RESTURLBASE+AName);
+  if AParseFileUpload then
+    Result := Result+'?IWFileUploader=true';
 end;
 
 procedure IWBSPerformRestCallback(AApplication: TIWApplication; const AName: string; aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);

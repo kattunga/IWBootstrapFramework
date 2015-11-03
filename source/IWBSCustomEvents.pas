@@ -26,6 +26,7 @@ type
 
   TIWBSCustomRestEvent = class (TCollectionItem)
   private
+    FParseFileUpload: boolean;
     FEventName: string;
     FRestEvent: TIWBSRestCallBackFunction;
     FRestEventPath: string;
@@ -38,6 +39,7 @@ type
   published
     property EventName: string read FEventName write SetEventName;
     property OnRestEvent: TIWBSRestCallBackFunction read FRestEvent write FRestEvent;
+    property ParseFileUpload: boolean read FParseFileUpload write FParseFileUpload default False;
   end;
 
 implementation
@@ -103,7 +105,7 @@ end;
 
 procedure TIWBSCustomRestEvent.RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
 begin
-  FRestEventPath := IWBSRegisterRestCallBack(AApplication, AComponentName+'.'+FEventName, FRestEvent);
+  FRestEventPath := IWBSRegisterRestCallBack(AApplication, AComponentName+'.'+FEventName, FRestEvent, FParseFileUpload);
 end;
 
 function TIWBSCustomRestEvent.ParseParamEvent(const AText: string): string;

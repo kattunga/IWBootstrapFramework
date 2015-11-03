@@ -61,7 +61,7 @@ object FBootstrapFileInput: TFBootstrapFileInput
               
                 '<h4> An enhanced HTML 5 file input for Bootstrap 3.x with file p' +
                 'review, multiple selection, and more features.</h4>'
-              '<h5>Select and upload a text file to test it</h5>'
+              '<h5>Select and upload a jpeg file to test it</h5>'
               
                 'File size are limited to 48kb for security reasons, if you try t' +
                 'o post a bigger file you will be blocked.')
@@ -83,12 +83,13 @@ object FBootstrapFileInput: TFBootstrapFileInput
               item
                 EventName = 'uploadUrl'
                 OnRestEvent = IWBSInput1CustomRestEvents0RestEvent
+                ParseFileUpload = True
               end>
             FriendlyName = 'IWBSInput1'
             Script.Strings = (
               
-                '$("#%htmlname%").fileinput({uploadUrl: "%uploadUrl%?IWFileUpload' +
-                'er=true", "maxFileSize": 48});'
+                '$("#%htmlname%").fileinput({uploadUrl: "%uploadUrl%", "maxFileSi' +
+                'ze": 48, "allowedFileTypes": ["image"]});'
               
                 '$("#%htmlname%").off("fileuploaded").on("fileuploaded", function' +
                 '() {%fileuploaded%});')

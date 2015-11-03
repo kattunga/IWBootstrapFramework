@@ -39,9 +39,6 @@ implementation
 
 uses IWBSRestServer, IW.HTTP.FileItem, jpeg;
 
-var
-  fs: TFormatSettings;
-
 procedure TFBootstrapFileInput.IWBSInput1CustomAsyncEvents0AsyncEvent(
   aParams: TStringList);
 begin
@@ -56,7 +53,7 @@ var
   J: TJPEGImage;
   i: integer;
 begin
-  // get file s
+  // read de file and dinamically creates a TIWBSImage
   for i := 0 to aRequest.Files.Count-1 do begin
     AStream := TStringStream.Create;
     try
@@ -72,8 +69,6 @@ begin
           j.Free;
         end;
       end;
-//      IWBSText2.Lines.Add('File: '+THttpFile(aRequest.Files[i]).FileName);
-//      IWBSText2.Lines.Add(AStream.DataString);
     finally
       AStream.Free;
     end;
@@ -94,8 +89,6 @@ begin
 end;
 
 initialization
-  fs := TFormatSettings.Create('en-US');
-
   // this enable the rest event server
   IWBSRegisterRestServerHandler;
 
