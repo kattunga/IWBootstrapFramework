@@ -18,10 +18,14 @@ uses
   bootstrapFileInput in 'bootstrapFileInput.pas' {FBootstrapFileInput: TIWAppForm},
   FishFact in 'FishFact.pas' {FFishFact: TIWAppForm},
   FishFactBootstrapTable in 'FishFactBootstrapTable.pas' {FBootstrapTable: TIWAppForm},
-  FishFactJQGrid in 'FishFactJQGrid.pas' {FJQGrid: TIWAppForm};
+  FishFactJQGrid in 'FishFactJQGrid.pas' {FJQGrid: TIWAppForm},
+  CustomServer in 'CustomServer.pas' {FCustomServer};
 
 {$R *.res}
 
 begin
-  TIWStart.Execute(True);
+  Application.Initialize;
+  Application.Title := 'Custom StandAlone Server';
+  Application.CreateForm(TFCustomServer, FCustomServer);
+  Application.Run;
 end.

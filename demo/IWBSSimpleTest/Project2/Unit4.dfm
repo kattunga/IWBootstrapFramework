@@ -23,6 +23,24 @@ object IWForm4: TIWForm4
     Height = 593
     Align = alClient
     BSRegionType = bsrtContainer
+    object IWBSInput2: TIWBSInput
+      Left = 28
+      Top = 24
+      Width = 121
+      Height = 25
+      FriendlyName = 'IWBSInput2'
+      TabOrder = -1
+      Caption = ''
+      Text = ''
+    end
+    object IWBSFile1: TIWBSFile
+      Left = 180
+      Top = 24
+      Width = 129
+      Height = 24
+      FriendlyName = 'IWBSFile1'
+      TabOrder = -1
+    end
     object IWBSInputForm1: TIWBSInputForm
       Left = 28
       Top = 72
@@ -103,7 +121,6 @@ object IWForm4: TIWForm4
           BorderOptions.Style = cbsNone
           BorderOptions.Color = clNone
           Color = clWebWHITE
-          ExplicitHeight = 329
         end
         object IWBSTabControl1Page1: TIWTabPage
           Left = 0
@@ -118,7 +135,6 @@ object IWForm4: TIWForm4
           BorderOptions.Style = cbsNone
           BorderOptions.Color = clNone
           Color = clWebWHITE
-          ExplicitHeight = 329
         end
       end
     end

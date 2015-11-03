@@ -24,6 +24,8 @@ type
     IWBSButton2: TIWBSButton;
     IWBSInput1: TIWBSInput;
     IWBSButton1: TIWBSButton;
+    IWBSInput2: TIWBSInput;
+    IWBSFile1: TIWBSFile;
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;

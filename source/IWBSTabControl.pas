@@ -123,6 +123,8 @@ begin
   FStyle.OnChange := OnStyleChange;
   FStyle.NameValueSeparator := ':';
   FTabOptions := TIWBSTabOptions.Create(Self);
+  Height := 112;
+  Width := 112;
 end;
 
 destructor TIWBSTabControl.Destroy;

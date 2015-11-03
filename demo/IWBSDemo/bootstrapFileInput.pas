@@ -25,8 +25,8 @@ type
     IWBSRegion8: TIWBSNavBar;
     IWBSButton1: TIWBSButton;
     IWBSRegion4: TIWBSRegion;
-    IWBSText2: TIWBSText;
     IWBSInput1: TIWBSFile;
+    IWBSRegion5: TIWBSRegion;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure IWBSButton1Click(Sender: TObject);
     procedure IWBSInput1CustomRestEvents0RestEvent(aApplication: TIWApplication;
@@ -37,7 +37,7 @@ type
 implementation
 {$R *.dfm}
 
-uses IWBSRestServer, IW.HTTP.FileItem;
+uses IWBSRestServer, IW.HTTP.FileItem, jpeg;
 
 var
   fs: TFormatSettings;
@@ -45,14 +45,15 @@ var
 procedure TFBootstrapFileInput.IWBSInput1CustomAsyncEvents0AsyncEvent(
   aParams: TStringList);
 begin
-  IWBSText2.AsyncRefreshControl;
+  IWBSRegion5.AsyncRefreshControl;
 end;
 
 procedure TFBootstrapFileInput.IWBSInput1CustomRestEvents0RestEvent(
   aApplication: TIWApplication; aRequest: THttpRequest; aReply: THttpReply;
   aParams: TStrings);
 var
-  AStream: TStringStream;
+  AStream: TMemoryStream;
+  J: TJPEGImage;
   i: integer;
 begin
   // get file s
@@ -60,8 +61,19 @@ begin
     AStream := TStringStream.Create;
     try
       THttpFile(aRequest.Files[i]).SaveToStream(AStream);
-      IWBSText2.Lines.Add('File: '+THttpFile(aRequest.Files[i]).FileName);
-      IWBSText2.Lines.Add(AStream.DataString);
+      AStream.Position := 0;
+      with TIWBSImage.Create(Self) do begin
+        Parent := IWBSRegion5;
+        j := TJPEGImage.Create;
+        try
+          j.LoadFromStream(AStream);
+          Picture.Assign(j);
+        finally
+          j.Free;
+        end;
+      end;
+//      IWBSText2.Lines.Add('File: '+THttpFile(aRequest.Files[i]).FileName);
+//      IWBSText2.Lines.Add(AStream.DataString);
     finally
       AStream.Free;
     end;

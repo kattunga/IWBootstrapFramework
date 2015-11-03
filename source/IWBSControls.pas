@@ -207,8 +207,8 @@ end;
 constructor TIWBSGlyphicon.Create(AOwner: TComponent);
 begin
   inherited;
-  Height := 21;
-  Width := 21;
+  Height := 25;
+  Width := 25;
 end;
 
 procedure TIWBSGlyphicon.InternalRenderCss(var ACss: string);
@@ -305,6 +305,8 @@ constructor TIWBSFile.Create(AOwner: TComponent);
 begin
   inherited;
   FMultiple := False;
+  Height := 25;
+  Width := 121;
 end;
 
 procedure TIWBSFile.InternalRenderHTML(const AHTMLName: string;

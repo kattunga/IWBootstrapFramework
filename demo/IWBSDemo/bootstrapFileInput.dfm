@@ -54,27 +54,22 @@ object FBootstrapFileInput: TFBootstrapFileInput
             Left = 10
             Top = 19
             Width = 702
-            Height = 40
+            Height = 95
             FriendlyName = 'IWText1'
             TabOrder = -1
             Lines.Strings = (
               
                 '<h4> An enhanced HTML 5 file input for Bootstrap 3.x with file p' +
                 'review, multiple selection, and more features.</h4>'
-              '<h5>Select and upload a text file to test it</h5>')
+              '<h5>Select and upload a text file to test it</h5>'
+              
+                'File size are limited to 48kb for security reasons, if you try t' +
+                'o post a bigger file you will be blocked.')
             RawText = True
-          end
-          object IWBSText2: TIWBSText
-            Left = 10
-            Top = 65
-            Width = 635
-            Height = 123
-            FriendlyName = 'IWBSText2'
-            TabOrder = -1
           end
           object IWBSInput1: TIWBSFile
             Left = 10
-            Top = 204
+            Top = 348
             Width = 121
             Height = 25
             ExtraTagParams.Strings = (
@@ -82,20 +77,30 @@ object FBootstrapFileInput: TFBootstrapFileInput
             CustomAsyncEvents = <
               item
                 EventName = 'fileuploaded'
+                OnAsyncEvent = IWBSInput1CustomAsyncEvents0AsyncEvent
               end>
             CustomRestEvents = <
               item
                 EventName = 'uploadUrl'
+                OnRestEvent = IWBSInput1CustomRestEvents0RestEvent
               end>
             FriendlyName = 'IWBSInput1'
             Script.Strings = (
-              '$("#%htmlname%").fileinput({uploadUrl: "%uploadUrl%"});'
+              
+                '$("#%htmlname%").fileinput({uploadUrl: "%uploadUrl%?IWFileUpload' +
+                'er=true", "maxFileSize": 48});'
               
                 '$("#%htmlname%").off("fileuploaded").on("fileuploaded", function' +
                 '() {%fileuploaded%});')
             TabStop = True
             TabOrder = -1
             Multiple = True
+          end
+          object IWBSRegion5: TIWBSRegion
+            Left = 10
+            Top = 120
+            Width = 702
+            Height = 201
           end
         end
       end

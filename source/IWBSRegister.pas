@@ -32,6 +32,11 @@ type
     procedure Paint; override;
   end;
 
+  TIWBSPaintHandlerFile = class (TIWPaintHandlerRectangle)
+  public
+    procedure Paint; override;
+  end;
+
   TIWBSPaintHandlerGlyphicon = class (TIWPaintHandlerRectangle)
   public
     procedure Paint; override;
@@ -344,6 +349,28 @@ begin
   end;
 end;
 
+procedure TIWBSPaintHandlerFile.Paint;
+var
+  LRect: TRect;
+  s: string;
+begin
+  LRect := Rect(0, 0, Control.Width, Control.Height);
+
+  ControlCanvas.Brush.Color := clWhite;
+  ControlCanvas.Pen.Color := clGray;
+  ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+  ControlCanvas.Font.Size := 10;
+  ControlCanvas.Font.Color := clBlack;
+  ControlCanvas.Rectangle(LRect);
+
+  Inc(LRect.Top, 1);
+  Inc(LRect.Left, 8);
+  Dec(LRect.Bottom, 1);
+  Dec(LRect.Right, 8);
+  s := 'File Input';
+  DrawTextEx(ControlCanvas.Handle, PChar(s), Length(s), LRect, DT_SINGLELINE+DT_VCENTER, nil);
+end;
+
 procedure TIWBSPaintHandlerGlyphicon.Paint;
 var
   LRect : TRect;
@@ -613,6 +640,8 @@ initialization
   IWRegisterPaintHandler('TIWBSCustomComponent',TIWBSPaintHandlerCustomComponent);
 
   IWRegisterPaintHandler('TIWBSImage',TIWBSPaintHandlerImage);
+
+  IWRegisterPaintHandler('TIWBSFile',TIWBSPaintHandlerFile);
 
   IWRegisterPaintHandler('TIWBSTabControl',TIWPaintHandlerTabControl);
 
