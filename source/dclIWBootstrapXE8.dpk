@@ -1,5 +1,7 @@
 package dclIWBootstrapXE8;
 
+{$R 'glyphicons.res' 'glyphicons.RC'}
+
 {$R *.res}
 {$R *.dres}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}

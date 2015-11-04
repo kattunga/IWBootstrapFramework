@@ -150,6 +150,7 @@ var
   LRect, LIcon: TRect;
   s, c: string;
   LMultiLine: boolean;
+  Icon: integer;
 begin
   LRect := Rect(0, 0, Control.Width, Control.Height);
 
@@ -195,7 +196,11 @@ begin
           ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
           ControlCanvas.Brush.Color := clLtGray;
           ControlCanvas.Rectangle(LIcon);
-          c := Char(StrToInt(slGlyphicons.Values['chevron-down']));
+          Icon := StrToIntDef(slGlyphicons.Values['chevron-down'], 0);
+          if Icon > 0 then
+            c := Char(Icon)
+          else
+            c := 'V';
           DrawTextEx(ControlCanvas.Handle, PChar(c), 1, LIcon, DT_CENTER+DT_SINGLELINE+DT_VCENTER, nil);
           ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
           ControlCanvas.Brush.Color := clWhite;
