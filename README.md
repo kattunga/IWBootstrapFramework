@@ -12,6 +12,8 @@ If you need to develop applications for phones, tablets and any other device thi
 
 http://iwbs.sig2k.com/iwbootstrap
 
+Test the demo on desktop and mobile devices to see how it work.
+
 ## Features
 
 It implement most bootstrap Css, Components and Js. 
@@ -54,8 +56,6 @@ Other Features
 Intraweb version 14.0.38 or above.
 
 http://www.atozed.com/intraweb/index.en.aspx
-
-Please test the demo on desktop and mobile devices to see how it work.
 
 ## WebSite
 
