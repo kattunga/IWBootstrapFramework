@@ -253,11 +253,7 @@ end;
 
 procedure TIWBSCustomControl.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
-  FOldCss := RenderCSSClass(AContext);
-  FOldDisabled := IsDisabled;
-  FOldReadOnly := IsReadOnly;
-  FOldStyle := RenderStyle(AContext);
-  FOldVisible := Visible;
+  //
 end;
 
 function TIWBSCustomControl.InternalRenderScript: string;
@@ -347,9 +343,16 @@ end;
 function TIWBSCustomControl.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := nil;
+  FOldCss := RenderCSSClass(AContext);
+  FOldDisabled := IsDisabled;
+  FOldReadOnly := IsReadOnly;
+  FOldStyle := RenderStyle(AContext);
+  FOldVisible := Visible;
+
   InternalRenderHTML(HTMLName, AContext, Result);
   if Result = nil then
     raise Exception.Create('HTML tag not created');
+
   IWBSRenderScript(Self, AContext, Result);
   FMainID := Result.Params.Values['id'];
   FAsyncRefreshControl := False;

@@ -248,9 +248,10 @@ begin
   FStyle.OnChange := OnStyleChange;
   FStyle.NameValueSeparator := ':';
   FTagType := 'div';
+
   ClipRegion := False;
   RenderInvisibleControls := False;
-  ZIndex := 0;
+  set_ZIndex(0);
 
   if name = '' then
     name := IWBSGetUniqueComponentName(Owner, Copy(ClassName,2,MaxInt));

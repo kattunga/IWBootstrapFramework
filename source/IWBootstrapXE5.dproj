@@ -174,7 +174,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Platforms>
-                <Platform value="Android">True</Platform>
+                <Platform value="Android" ActiveMobileDevice="rsxe5_android">True</Platform>
                 <Platform value="iOSDevice">False</Platform>
                 <Platform value="iOSSimulator">False</Platform>
                 <Platform value="Win32">True</Platform>
