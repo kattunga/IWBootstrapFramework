@@ -70,23 +70,29 @@ type
     ['{12925CB3-58EC-4B56-B032-478892548906}']
     procedure AsyncRemoveControl;
     procedure AsyncRefreshControl;
-    function InternalRenderScript: string;
+    procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
     function HTMLControlImplementation: TIWHTMLControlImplementation;
 
-    function ReadCustomAsyncEvents: TOwnedCollection;
-    function ReadCustomRestEvents: TOwnedCollection;
+    function GetCustomAsyncEvents: TOwnedCollection;
     procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
-    procedure SetCustomRestEvents(const Value: TOwnedCollection);
     function IsStoredCustomAsyncEvents: Boolean;
+    function GetCustomRestEvents: TOwnedCollection;
+    procedure SetCustomRestEvents(const Value: TOwnedCollection);
     function IsStoredCustomRestEvents: Boolean;
 
+    function GetScript: TStringList;
+    procedure SetScript(const AValue: TStringList);
+    function GetScriptParams: TIWBSScriptParams;
+    procedure SetScriptParams(const AValue: TIWBSScriptParams);
     function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
     function get_Visible: Boolean;
     procedure set_Visible(Value: Boolean);
 
-    property CustomAsyncEvents: TOwnedCollection read ReadCustomAsyncEvents write SetCustomAsyncEvents;
-    property CustomRestEvents: TOwnedCollection read ReadCustomRestEvents write SetCustomRestEvents;
+    property CustomAsyncEvents: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents;
+    property CustomRestEvents: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents;
+    property Script: TStringList read GetScript write SetScript;
+    property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property Visible: boolean read get_Visible write set_Visible;
   end;
@@ -96,7 +102,7 @@ type
     class procedure AddCssClass(var ACss: string; const AClass: string);
     class procedure AsyncRemoveControl(const AHTMLName: string);
     class function RenderStyle(AComponent: IIWBSComponent): string;
-    class function ReplaceParams(const AHTMLName, AScript: string; AParams: TStrings): string;
+    class procedure ReplaceParams(const AHTMLName: string; AScript: TStrings; AParams: TStrings);
     class procedure SetNotVisible(AParams: TStrings);
     class procedure ValidateParamName(const AName: string);
     class procedure ValidateTagName(const AName: string);
@@ -267,18 +273,23 @@ begin
   end;
 end;
 
-class function TIWBSCommon.ReplaceParams(const AHTMLName, AScript: string; AParams: TStrings): string;
+class procedure TIWBSCommon.ReplaceParams(const AHTMLName: string; AScript: TStrings; AParams: TStrings);
 var
   i: integer;
+  s: string;
 begin
-  Result := ReplaceText(AScript,'%HTMLNAME%',AHTMLName);
-  for i := 0 to AParams.Count-1 do
-  {$IFDEF IWBS_JSONDATAOBJECTS}
-    if AParams.Objects[i] is TJsonObject then
-      Result := ReplaceText(Result,'%'+AParams[i]+'%',TJsonObject(AParams.Objects[i]).ToJSON)
-    else
-  {$ENDIF}
-      Result := ReplaceText(Result,'%'+AParams.Names[i]+'%',AParams.ValueFromIndex[i]);
+  if AScript.Count > 0 then begin
+    s := AScript.Text;
+    s := ReplaceText(s,'%HTMLNAME%',AHTMLName);
+    for i := 0 to AParams.Count-1 do
+    {$IFDEF IWBS_JSONDATAOBJECTS}
+      if AParams.Objects[i] is TJsonObject then
+        s := ReplaceText(s,'%'+AParams[i]+'%',TJsonObject(AParams.Objects[i]).ToJSON)
+      else
+    {$ENDIF}
+        s := ReplaceText(s,'%'+AParams.Names[i]+'%',AParams.ValueFromIndex[i]);
+    AScript.Text := s;
+  end;
 end;
 
 class procedure TIWBSCommon.ValidateParamName(const AName: string);

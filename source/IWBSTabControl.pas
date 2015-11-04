@@ -54,13 +54,15 @@ type
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
     procedure OnStyleChange(ASender : TObject);
-    function ReadCustomAsyncEvents: TOwnedCollection;
-    function ReadCustomRestEvents: TOwnedCollection;
+    function GetCustomAsyncEvents: TOwnedCollection;
+    function GetCustomRestEvents: TOwnedCollection;
     procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
     procedure SetCustomRestEvents(const Value: TOwnedCollection);
+    function GetScript: TStringList;
+    function GetScriptParams: TIWBSScriptParams;
   protected
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
-    function InternalRenderScript: string;
+    procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); virtual;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
@@ -82,13 +84,13 @@ type
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
     property ClipRegion default False;
-    property CustomAsyncEvents: TOwnedCollection read ReadCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
-    property CustomRestEvents: TOwnedCollection read ReadCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
+    property CustomAsyncEvents: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
+    property CustomRestEvents: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
     property ExtraTagParams;
     property LayoutMgr;
     property RenderInvisibleControls default False;
-    property Script: TStringList read FScript write SetScript;
-    property ScriptParams: TIWBSScriptParams read FScriptParams write SetScriptParams;
+    property Script: TStringList read GetScript write SetScript;
+    property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property ZIndex default 0;
 
@@ -170,14 +172,14 @@ begin
   Invalidate;
 end;
 
-function TIWBSTabControl.ReadCustomAsyncEvents: TOwnedCollection;
+function TIWBSTabControl.GetCustomAsyncEvents: TOwnedCollection;
 begin
   if FCustomAsyncEvents = nil then
     FCustomAsyncEvents := TOwnedCollection.Create(Self, TIWBSCustomAsyncEvent);
   Result := FCustomAsyncEvents;
 end;
 
-function TIWBSTabControl.ReadCustomRestEvents: TOwnedCollection;
+function TIWBSTabControl.GetCustomRestEvents: TOwnedCollection;
 begin
   if FCustomRestEvents = nil then
     FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
@@ -214,6 +216,16 @@ begin
   FScriptParams.Assign(AValue);
 end;
 
+function TIWBSTabControl.GetScript: TStringList;
+begin
+  Result := FScript;
+end;
+
+function TIWBSTabControl.GetScriptParams: TIWBSScriptParams;
+begin
+  Result := FScriptParams;
+end;
+
 function TIWBSTabControl.GetStyle: TStringList;
 begin
   Result := FStyle;
@@ -241,9 +253,20 @@ begin
   Result := inherited;
 end;
 
-function TIWBSTabControl.InternalRenderScript: string;
+procedure TIWBSTabControl.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
 begin
-  Result := TIWBSCommon.ReplaceParams(HTMLName, FScript.Text, FScriptParams);
+  if not FTabOptions.Justified and not FTabOptions.Stacked and gIWBSLibDynamicTabs then
+    AScript.Add('$("#'+AHTMLName+'_tabs'+'").bootstrapDynamicTabs();');
+
+  // save seleted tab on change, manually trigger change event because val don't do it
+  AScript.Add('$("#'+AHTMLName+'_tabs").off("show.bs.tab").on("show.bs.tab", function(e){ $("#'+AHTMLName+'_input").val($(e.target).attr("tabindex")).change(); });');
+
+  // event async change
+  if Assigned(OnAsyncChange) then begin
+    AScript.Add('$("#'+AHTMLName+'_tabs").off("shown.bs.tab").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+$(e.target).attr("tabindex"), null, "'+AHTMLName+'.DoOnAsyncChange", true, null, true); });');
+    AContext.WebApplication.RegisterCallBack(AHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
+  end;
+  AScript.Text := ReplaceStr(AScript.Text,#13#10,'');
 end;
 
 function TIWBSTabControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
@@ -365,27 +388,9 @@ begin
   // this hidden input is for input seleted tab page
   Result.Contents.AddHiddenField(xHTMLInput, xHTMLInput, IntToStr(tabIndex));
 
-  // add script tag
-  Result.Contents.AddText('<script>');
-  try
-    if not FTabOptions.Justified and not FTabOptions.Stacked and gIWBSLibDynamicTabs then
-      Result.Contents.AddText('$("#'+xHTMLName+'_tabs'+'").bootstrapDynamicTabs();');
-
-    // save seleted tab on change, manually trigger change event because val don't do it
-    Result.Contents.AddText('$("#'+xHTMLName+'_tabs").off("show.bs.tab").on("show.bs.tab", function(e){ $("#'+xHTMLInput+'").val($(e.target).attr("tabindex")).change(); });');
-
-    // event async change
-    if Assigned(OnAsyncChange) then begin
-      Result.Contents.AddText('$("#'+xHTMLName+'_tabs").off("shown.bs.tab").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+$(e.target).attr("tabindex"), null, "'+xHTMLName+'.DoOnAsyncChange", true, null, true); });');
-      AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
-    end;
-  finally
-    Result.Contents.AddText('</script>');
-  end;
-
   IWBSRenderScript(Self, AContext, Result);
 
-  // initialize hidden input
+  // initialize hidden input (after render scripts)
   TIWPageContext40(AContext.PageContext).AddToIWCLInitProc('  IW.initIWCL('+HTMLControlImplementation.IWCLName+',"'+xHTMLName+'_input",true);');
 
   FAsyncRefreshControl := False;

@@ -276,26 +276,25 @@ end;
 procedure TIWBSCustomComponent.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 var
   i: integer;
-  LHtml: string;
 begin
   inherited;
-  LHtml := TIWBSCommon.ReplaceParams(HTMLName, FHtml.Text, ScriptParams);
+  TIWBSCommon.ReplaceParams(HTMLName, FHtml, ScriptParams);
 
   // register ajax callbacks
   if IsStoredCustomAsyncEvents then
     for i := 0 to CustomAsyncEvents.Count-1 do
-      LHtml := TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParamEvent(LHtml);
+      TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParamEvent(FHtml);
 
   // register rest callbacks
   if IsStoredCustomRestEvents then
     for i := 0 to CustomRestEvents.Count-1 do
-      LHtml := TIWBSCustomRestEvent(CustomRestEvents.Items[i]).ParseParamEvent(LHtml);
+      TIWBSCustomRestEvent(CustomRestEvents.Items[i]).ParseParamEvent(FHtml);
 
   AHTMLTag := TIWHTMLTag.CreateTag(FTagType);
   AHTMLTag.AddStringParam('id', HTMLName);
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('style',ActiveStyle);
-  AHTMLTag.Contents.AddText(LHtml);
+  AHTMLTag.Contents.AddText(FHtml.Text);
 end;
 {$endregion}
 

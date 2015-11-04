@@ -5,7 +5,7 @@ interface
 uses System.Classes, System.SysUtils, System.StrUtils,
      IWScriptEvents, IWRenderContext, IWHTMLTag, IWHTML40Interfaces, IWBSCommon;
 
-procedure IWBSRenderScript(AComponent: IIWBSComponent; AComponentContext: TIWCompContext; AHTMLTag: TIWHTMLTag);
+procedure IWBSRenderScript(AComponent: IIWBSComponent; AContext: TIWCompContext; AHTMLTag: TIWHTMLTag);
 
 implementation
 
@@ -15,18 +15,15 @@ type
   TIWBSScriptEvents = class(IWScriptEvents.TIWScriptEvents)
   end;
 
-function RenderScriptEvents(const AHTMLName: string; AScriptEvents: TIWScriptEvents; APageContext: TIWPageContext40): string;
+procedure RenderScriptEvents(const AHTMLName: string; AScriptEvents: TIWScriptEvents; APageContext: TIWPageContext40; AScript: TStringList);
 var
   LScriptEvents: TIWBSScriptEvents;
   i: Integer;
   LEventName, LFuncCode: string;
   LInitProc: string;
-//  j: integer;
-//  LJavaScript: string;
 begin
   LScriptEvents := TIWBSScriptEvents(AScriptEvents);
 
-  Result := '';
   LInitProc := '';
   if (LScriptEvents.Count > 0) or (LScriptEvents.DefaultHandlers <> '') or (not LScriptEvents.FProperties.IsEmpty) then begin
     for i := 0 to LScriptEvents.Count - 1 do begin
@@ -34,15 +31,7 @@ begin
       if Pos('on', LEventName) = 1 then
         Delete(LEventName, 1, 2);
       LFuncCode := Trim(LScriptEvents.Items[i].EventCode.Text);
-      Result := Result+'$("#'+AHtmlName+'").off("'+LEventName+'").on("'+LEventName+'", function(event) {'+LFuncCode+'});'#13#10;
-
-// I don't know if this is necesary
-//      for j := 0 to LScriptEvents.HookedCount[i] - 1 do begin
-//        LFuncCode := LScriptEvents.HookedCode[i, j];  // don't need to "fix" Hooked code
-//        LJavaScript := 'function ' + LFuncName + IntToStr(j) + LFuncParams + ' {' + EOL + LFuncCode + '}' + EOL;
-//        APageContext.AddToJavaScriptOnce(LJavaScript);
-//        LInitProc := LInitProc + '  ' + LHtmlName + 'IWCL.HookEvent("' + LEventName + '",' + LFuncName + IntToStr(j) + ');' + EOL;
-//      end;
+      AScript.Add('$("#'+AHtmlName+'").off("'+LEventName+'").on("'+LEventName+'", function(event) {'+LFuncCode+'});');
     end;
 
     if LScriptEvents.FDefaultHandlers <> '' then begin
@@ -58,19 +47,18 @@ begin
   end;
 end;
 
-procedure IWBSRenderScript(AComponent: IIWBSComponent; AComponentContext: TIWCompContext; AHTMLTag: TIWHTMLTag);
+procedure IWBSRenderScript(AComponent: IIWBSComponent; AContext: TIWCompContext; AHTMLTag: TIWHTMLTag);
 var
   LHTMLName: string;
   LPageContext: TIWPageContext40;
   LSubmitOnAsync: boolean;
   LInputInterface: IIWInputControl40;
   LInitProcCode: string;
-  LJScript: string;
-  LComponentScript: string;
+  LJScript: TstringList;
   I: Integer;
 begin
   LHTMLName := AComponent.HTMLName;
-  LPageContext := TIWPageContext40(AComponentContext.PageContext);
+  LPageContext := TIWPageContext40(AContext.PageContext);
 
   LSubmitOnAsync := False;
   if AComponent.SupportsInput then begin
@@ -84,34 +72,35 @@ begin
 
   AComponent.ScriptEvents.ClearHooked;
   AComponent.ScriptEvents.Rendering := True;
+  LJScript := TStringList.Create;
   try
     AComponent.HookEvents(LPageContext, AComponent.ScriptEvents);
     AComponent.HintEvents(AHTMLTag);
 
-    LJScript := RenderScriptEvents(LHTMLName, AComponent.ScriptEvents, LPageContext);
+    RenderScriptEvents(LHTMLName, AComponent.ScriptEvents, LPageContext, LJScript);
 
-    LComponentScript := AComponent.InternalRenderScript;
-    if LComponentScript <> '' then begin
-      if LJScript <> '' then
-        LJScript := LJScript+#13#10;
-      LJScript := LJScript+LComponentScript;
-    end;
+    AComponent.InternalRenderScript(AContext, LHTMLName, LJScript);
+
+    LJScript.AddStrings(AComponent.Script);
+
+    TIWBSCommon.ReplaceParams(LHTMLName, LJScript, AComponent.ScriptParams);
 
     if AComponent.IsStoredCustomAsyncEvents then
       for i := 0 to AComponent.CustomAsyncEvents.Count-1 do begin
-        TIWBSCustomAsyncEvent(AComponent.CustomAsyncEvents.Items[i]).RegisterEvent(AComponentContext.WebApplication, LHTMLName);
-        LJScript := TIWBSCustomAsyncEvent(AComponent.CustomAsyncEvents.Items[i]).ParseParamEvent(LJScript);
+        TIWBSCustomAsyncEvent(AComponent.CustomAsyncEvents.Items[i]).RegisterEvent(AContext.WebApplication, LHTMLName);
+        TIWBSCustomAsyncEvent(AComponent.CustomAsyncEvents.Items[i]).ParseParamEvent(LJScript);
       end;
 
     if AComponent.IsStoredCustomRestEvents then
       for i := 0 to AComponent.CustomRestEvents.Count-1 do begin
-        TIWBSCustomRestEvent(AComponent.CustomRestEvents.Items[i]).RegisterEvent(AComponentContext.WebApplication, LHTMLName);
-        LJScript := TIWBSCustomRestEvent(AComponent.CustomRestEvents.Items[i]).ParseParamEvent(LJScript);
+        TIWBSCustomRestEvent(AComponent.CustomRestEvents.Items[i]).RegisterEvent(AContext.WebApplication, LHTMLName);
+        TIWBSCustomRestEvent(AComponent.CustomRestEvents.Items[i]).ParseParamEvent(LJScript);
       end;
 
-    if LJScript <> '' then
-      AHTMLTag.Contents.AddTag('script').Contents.AddText(LJScript);
+    if LJScript.Count > 0 then
+      AHTMLTag.Contents.AddTag('script').Contents.AddText(LJScript.Text);
   finally
+    LJScript.Free;
     AComponent.ScriptEvents.Rendering := False;
     AComponent.ScriptEvents.ClearHooked;
   end;

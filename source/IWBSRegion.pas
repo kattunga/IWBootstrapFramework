@@ -34,21 +34,23 @@ type
     function IsScriptEventsStored: Boolean; virtual;
     function RegionDiv: TIWHTMLTag;
 
+    procedure OnScriptChange(ASender : TObject);
+    procedure OnStyleChange(ASender : TObject);
+    function GetCustomAsyncEvents: TOwnedCollection;
+    procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
+    function GetCustomRestEvents: TOwnedCollection;
+    procedure SetCustomRestEvents(const Value: TOwnedCollection);
     procedure SetGridOptions(const AValue: TIWBSGridOptions);
+    function GetScript: TStringList;
     procedure SetScript(const AValue: TStringList);
+    function GetScriptParams: TIWBSScriptParams;
     procedure SetScriptParams(const AValue: TIWBSScriptParams);
     function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
-    procedure OnScriptChange(ASender : TObject);
-    procedure OnStyleChange(ASender : TObject);
-    function ReadCustomAsyncEvents: TOwnedCollection;
-    function ReadCustomRestEvents: TOwnedCollection;
-    procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
-    procedure SetCustomRestEvents(const Value: TOwnedCollection);
   protected
     function ContainerPrefix: string; override;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
-    function InternalRenderScript: string;
+    procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); virtual;
     property Released: boolean read FReleased;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
@@ -71,14 +73,14 @@ type
     property Align;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property ClipRegion default False;
-    property CustomAsyncEvents: TOwnedCollection read ReadCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
-    property CustomRestEvents: TOwnedCollection read ReadCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
+    property CustomAsyncEvents: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
+    property CustomRestEvents: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
     property Css: string read FCss write FCss;
     property ExtraTagParams;
     property RenderInvisibleControls default False;
     property ScriptEvents: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;
-    property Script: TStringList read FScript write SetScript;
-    property ScriptParams: TIWBSScriptParams read FScriptParams write SetScriptParams;
+    property Script: TStringList read GetScript write SetScript;
+    property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property ZIndex default 0;
 
@@ -197,6 +199,7 @@ type
     procedure SetModalVisible(AValue: boolean);
     procedure DoOnAsyncShow(AParams: TStringList); virtual;
     procedure DoOnAsyncHide(AParams: TStringList); virtual;
+    procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -330,14 +333,14 @@ begin
   Invalidate;
 end;
 
-function TIWBSCustomRegion.ReadCustomAsyncEvents: TOwnedCollection;
+function TIWBSCustomRegion.GetCustomAsyncEvents: TOwnedCollection;
 begin
   if FCustomAsyncEvents = nil then
     FCustomAsyncEvents := TOwnedCollection.Create(Self, TIWBSCustomAsyncEvent);
   Result := FCustomAsyncEvents;
 end;
 
-function TIWBSCustomRegion.ReadCustomRestEvents: TOwnedCollection;
+function TIWBSCustomRegion.GetCustomRestEvents: TOwnedCollection;
 begin
   if FCustomRestEvents = nil then
     FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
@@ -372,6 +375,16 @@ end;
 procedure TIWBSCustomRegion.SetScriptParams(const AValue: TIWBSScriptParams);
 begin
   FScriptParams.Assign(AValue);
+end;
+
+function TIWBSCustomRegion.GetScript: TStringList;
+begin
+  Result := FScript;
+end;
+
+function TIWBSCustomRegion.GetScriptParams: TIWBSScriptParams;
+begin
+  Result := FScriptParams;
 end;
 
 function TIWBSCustomRegion.GetStyle: TStringList;
@@ -444,9 +457,9 @@ begin
   TIWBSRegionCommon.RenderComponents(Self, AContainerContext, APageContext);
 end;
 
-function TIWBSCustomRegion.InternalRenderScript: string;
+procedure TIWBSCustomRegion.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
 begin
-  Result := TIWBSCommon.ReplaceParams(HTMLName, FScript.Text, FScriptParams);
+
 end;
 
 procedure TIWBSCustomRegion.RenderScripts(AComponentContext: TIWCompContext);
@@ -786,6 +799,20 @@ begin
   Result := '$("#'+HTMLName+'").modal("hide");';
 end;
 
+procedure TIWBSModal.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
+begin
+  inherited;
+  AScript.Add('$("#'+AHTMLName+'").off("shown.bs.modal").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });');
+  if Assigned(FOnAsyncShow) then begin
+    AScript.Add('$("#'+AHTMLName+'").off("show.bs.modal").on("show.bs.modal", function(e){ executeAjaxEvent("", null, "'+AHTMLName+'.DoOnAsyncShow", true, null, true); });');
+    AContext.WebApplication.RegisterCallBack(AHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);
+  end;
+  AScript.Add('$("#'+AHTMLName+'").off("hidden.bs.modal").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+AHTMLName+'.DoOnAsyncHide", true, null, true); });');
+  AContext.WebApplication.RegisterCallBack(AHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
+  if FModalVisible then
+    AScript.Add(GetShowScript);
+end;
+
 function TIWBSModal.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
   LCss: string;
@@ -802,19 +829,6 @@ begin
   if FDialogSize in [bsszLg,bsszSm] then
     LCss := LCss + ' modal-'+aIWBSSize[FDialogSize];
   FRegionDiv.AddClassParam(LCss);
-
-  // add script (should be moved to InternalRenderScript)
-  with Result.Contents.AddTag('script').Contents do begin
-    AddText('$("#'+xHTMLName+'").off("shown.bs.modal").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });'+LF);
-    if Assigned(FOnAsyncShow) then begin
-      AddText('$("#'+xHTMLName+'").off("show.bs.modal").on("show.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncShow", true, null, true); });'+LF);
-      AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);
-    end;
-    AddText('$("#'+xHTMLName+'").off("hidden.bs.modal").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncHide", true, null, true); });'+LF);
-    AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
-    if FModalVisible then
-      AddText(GetShowScript+LF);
-  end;
 end;
 
 procedure TIWBSModal.SetModalVisible(AValue: boolean);

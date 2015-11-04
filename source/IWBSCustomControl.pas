@@ -33,10 +33,12 @@ type
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
     procedure OnStyleChange(ASender : TObject);
-    function ReadCustomAsyncEvents: TOwnedCollection;
-    function ReadCustomRestEvents: TOwnedCollection;
+    function GetCustomAsyncEvents: TOwnedCollection;
     procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
+    function GetCustomRestEvents: TOwnedCollection;
     procedure SetCustomRestEvents(const Value: TOwnedCollection);
+    function GetScript: TStringList;
+    function GetScriptParams: TIWBSScriptParams;
   protected
     {$hints off}
     function get_HasTabOrder: Boolean; override;
@@ -52,7 +54,7 @@ type
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     procedure InternalRenderCss(var ACss: string); virtual;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); virtual;
-    function InternalRenderScript: string; virtual;
+    procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); virtual;
     procedure InternalRenderStyle(AStyle: TStringList); virtual;
     function InputSelector: string; virtual;
     function InputSuffix: string; virtual;
@@ -73,14 +75,14 @@ type
     function IsStoredCustomAsyncEvents: Boolean;
     function IsStoredCustomRestEvents: Boolean;
   published
-    property CustomAsyncEvents: TOwnedCollection read ReadCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
-    property CustomRestEvents: TOwnedCollection read ReadCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
+    property CustomAsyncEvents: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
+    property CustomRestEvents: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
     property Enabled;
     property ExtraTagParams;
     property FriendlyName;
-    property Script: TStringList read FScript write SetScript;
+    property Script: TStringList read GetScript write SetScript;
     property ScriptEvents;
-    property ScriptParams: TIWBSScriptParams read FScriptParams write SetScriptParams;
+    property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property TabStop: boolean read FTabStop write FTabStop default False;
     property TabOrder;
@@ -177,14 +179,14 @@ begin
   Result := FTabStop and gIWBSEnableTabIndex;
 end;
 
-function TIWBSCustomControl.ReadCustomAsyncEvents: TOwnedCollection;
+function TIWBSCustomControl.GetCustomAsyncEvents: TOwnedCollection;
 begin
   if FCustomAsyncEvents = nil then
     FCustomAsyncEvents := TOwnedCollection.Create(Self, TIWBSCustomAsyncEvent);
   Result := FCustomAsyncEvents;
 end;
 
-function TIWBSCustomControl.ReadCustomRestEvents: TOwnedCollection;
+function TIWBSCustomControl.GetCustomRestEvents: TOwnedCollection;
 begin
   if FCustomRestEvents = nil then
     FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
@@ -231,6 +233,16 @@ begin
   FScriptParams.Assign(AValue);
 end;
 
+function TIWBSCustomControl.GetScript: TStringList;
+begin
+  Result := FScript;
+end;
+
+function TIWBSCustomControl.GetScriptParams: TIWBSScriptParams;
+begin
+  Result := FScriptParams;
+end;
+
 function TIWBSCustomControl.GetStyle: TStringList;
 begin
   Result := FStyle;
@@ -256,9 +268,9 @@ begin
   //
 end;
 
-function TIWBSCustomControl.InternalRenderScript: string;
+procedure TIWBSCustomControl.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
 begin
-  Result := TIWBSCommon.ReplaceParams(HTMLName, FScript.Text, FScriptParams);
+  //
 end;
 
 procedure TIWBSCustomControl.InternalRenderStyle(AStyle: TStringList);

@@ -57,6 +57,7 @@ type
   protected
     procedure DoOnAsyncClose(AParams: TStringList); virtual;
     function GetCloseScript: string;
+    procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); override;
     procedure SetAlertStyle(AValue: TIWBSAlertStyle);
   public
     constructor Create(AForm: TIWForm; const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess); reintroduce; overload;
@@ -242,6 +243,13 @@ begin
   inherited;
 end;
 
+procedure TIWBSAlert.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
+begin
+  inherited;
+  AScript.Add('$("#'+AHTMLName+'").on("closed.bs.alert", function(e){ executeAjaxEvent("", null, "'+AHTMLName+'.DoOnAsyncClose", true, null, true); });');
+  AContext.WebApplication.RegisterCallBack(AHTMLName+'.DoOnAsyncClose', DoOnAsyncClose);
+end;
+
 function TIWBSAlert.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
   xHTMLName: string;
@@ -250,10 +258,6 @@ begin
 
   Result := inherited;
 
-  with Result.Contents.AddTag('script').Contents do begin
-    AddText('$("#'+xHTMLName+'").on("closed.bs.alert", function(e){ executeAjaxEvent("", null, "'+xHTMLName+'.DoOnAsyncClose", true, null, true); });');
-    AContext.WebApplication.RegisterCallBack(xHTMLName+'.DoOnAsyncClose', DoOnAsyncClose);
-  end;
 
   FAlertVisible := True;
 end;

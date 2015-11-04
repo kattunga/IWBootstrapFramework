@@ -17,7 +17,7 @@ type
     procedure SetEventName(const AValue: string);
   public
     procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
-    function ParseParamEvent(const AText: string): string;
+    procedure ParseParamEvent(AScript: TStringList);
   published
     property EventName: string read FEventName write SetEventName;
     property Params: string read FParams write FParams;
@@ -35,7 +35,7 @@ type
     procedure SetEventName(const AValue: string);
   public
     procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
-    function ParseParamEvent(const AText: string): string;
+    procedure ParseParamEvent(AScript: TStringList);
   published
     property EventName: string read FEventName write SetEventName;
     property OnRestEvent: TIWBSRestCallBackFunction read FRestEvent write FRestEvent;
@@ -86,9 +86,10 @@ begin
   FAsyncEventFunc := 'executeAjaxEvent('+LParams+', null, "'+AComponentName+'.'+FEventName+'", true, null, true);';
 end;
 
-function TIWBSCustomAsyncEvent.ParseParamEvent(const AText: string): string;
+procedure TIWBSCustomAsyncEvent.ParseParamEvent(AScript: TStringList);
 begin
-  Result := ReplaceStr(AText,'%'+FEventName+'%',FAsyncEventFunc);
+  if AScript.Count > 0 then
+    AScript.Text := ReplaceStr(AScript.Text,'%'+FEventName+'%',FAsyncEventFunc);
 end;
 
 function TIWBSCustomRestEvent.GetDisplayName: string;
@@ -108,9 +109,10 @@ begin
   FRestEventPath := IWBSRegisterRestCallBack(AApplication, AComponentName+'.'+FEventName, FRestEvent, FParseFileUpload);
 end;
 
-function TIWBSCustomRestEvent.ParseParamEvent(const AText: string): string;
+procedure TIWBSCustomRestEvent.ParseParamEvent(AScript: TStringList);
 begin
-  Result := ReplaceStr(AText,'%'+FEventName+'%',FRestEventPath);
+  if AScript.Count > 0 then
+    AScript.Text := ReplaceStr(AScript.Text,'%'+FEventName+'%',FRestEventPath);
 end;
 
 end.
