@@ -9,8 +9,8 @@ function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): 
 
 function IWBSTextToJsParamText(AText: string): string;
 
-procedure IWBSExecuteJScript(const Script: string);
-procedure IWBSExecuteAsyncJScript(const Script: string);
+procedure IWBSExecuteJScript(const AScript: string);
+procedure IWBSExecuteAsyncJScript(const AScript: string);
 
 implementation
 
@@ -38,34 +38,34 @@ begin
   Result := ReplaceStr(Result, #13, '');
 end;
 
-procedure IWBSExecuteJScript(const Script: string);
+procedure IWBSExecuteJScript(const AScript: string);
 var
   LWebApplication: TIWApplication;
 begin
-  if Length(Script) <= 0 then Exit;
+  if Length(AScript) <= 0 then Exit;
 
   LWebApplication := GGetWebApplicationThreadVar;
   if LWebApplication = nil then
     raise Exception.Create('User session not found');
 
   if LWebApplication.IsCallBack and LWebApplication.CallBackProcessing then
-    LWebApplication.CallBackResponse.AddJavaScriptToExecute(Script)
+    LWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript)
   else
-    HTML40FormInterface(LWebApplication.ActiveForm).PageContext.AddToInitProc(Script);
+    HTML40FormInterface(LWebApplication.ActiveForm).PageContext.AddToInitProc(AScript);
 end;
 
-procedure IWBSExecuteAsyncJScript(const Script: string);
+procedure IWBSExecuteAsyncJScript(const AScript: string);
 var
   LWebApplication: TIWApplication;
 begin
-  if Length(Script) <= 0 then Exit;
+  if Length(AScript) <= 0 then Exit;
 
   LWebApplication := GGetWebApplicationThreadVar;
   if LWebApplication = nil then
     raise Exception.Create('User session not found');
 
   if LWebApplication.IsCallBack and LWebApplication.CallBackProcessing then
-    LWebApplication.CallBackResponse.AddJavaScriptToExecute(Script);
+    LWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript);
 end;
 
 end.
