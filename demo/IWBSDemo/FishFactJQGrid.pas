@@ -40,10 +40,10 @@ type
     IWBSButton1: TIWBSButton;
     IWBSRegion4: TIWBSRegion;
     procedure IWFormModuleBaseCreate(Sender: TObject);
-    procedure IWBSButton1Click(Sender: TObject);
     procedure DbTableCustomAjaxEvents0AsyncEvent(aParams: TStringList);
     procedure DbTableCustomRestEvents0RestEvent(aApplication: TIWApplication;
       aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
+    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   end;
 
 implementation
@@ -146,7 +146,8 @@ begin
   end;
 end;
 
-procedure TFJQGrid.IWBSButton1Click(Sender: TObject);
+procedure TFJQGrid.IWBSButton1AsyncClick(Sender: TObject;
+  EventParams: TStringList);
 begin
   Release;
 end;

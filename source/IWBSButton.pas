@@ -14,62 +14,62 @@ type
   TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
   TIWBSButtonType = (iwbsbtButton, iwbsbtSubmit, iwbsbtReset);
 
-  TIWBSButton = class(TIWBSCustomControl, IIWSubmitControl)
+  TIWBSCustomButton = class(TIWBSCustomControl)
   private
-    FAnchor: boolean;
-    FButtonType: TIWBSButtonType;
-    FDataDismiss: TIWBSButtonDataDismiss;
     FButtonSize: TIWBSSize;
     FButtonStyle: TIWBSButtonStyle;
     FGlyphicon: string;
-    FHotKey: string;
-    FAsyncClickProc: TIWBSAsyncClickProc;
 
-    FOldDisabled: boolean;
+    procedure SetGlyphicon(const Value: string);
+    procedure SetButtonStyle(const Value: TIWBSButtonStyle);
+  public
+    constructor Create(AOwner: TComponent); override;
+  published
+    property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
+    property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write SetButtonStyle default bsbsDefault;
+    property BSGlyphicon: string read FGlyphicon write SetGlyphicon;
+    property Caption;
+    property TabStop default True;
+  end;
+
+  TIWBSButton = class(TIWBSCustomButton)
+  private
+    FAnchor: boolean;
+    FAsyncClickProc: TIWBSAsyncClickProc;
+    FButtonType: TIWBSButtonType;
+    FDataDismiss: TIWBSButtonDataDismiss;
+    FHotKey: string;
 
     procedure DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
     procedure SetAsyncClickProc(Value: TIWBSAsyncClickProc);
-    procedure SetGlyphicon(const Value: string);
   protected
-    procedure Submit(const AValue: string); override;
-    procedure HookEvents(APageContext: TIWPageContext40; AScriptEvents: TIWScriptEvents); override;
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
     procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
     constructor Create(AOwner: TComponent); override;
-    function GetSubmitParam : String;
     property AsyncClickProc: TIWBSAsyncClickProc read FAsyncClickProc write SetAsyncClickProc;
   published
     property Anchor: boolean read FAnchor write FAnchor default False;
     property ButtonType: TIWBSButtonType read FButtonType write FButtonType default iwbsbtButton;
-    property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
-    property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write FButtonStyle default bsbsDefault;
     property BSDataDismiss: TIWBSButtonDataDismiss read FDataDismiss write FDataDismiss default bsbdNone;
-    property BSGlyphicon: string read FGlyphicon write SetGlyphicon;
-    property Caption;
     property Confirmation;
     property DoSubmitValidation;
     property HotKey: string read FHotkey write FHotKey;
-    property TabStop default True;
-
-    property OnClick;
   end;
+
+  const
+  aIWBSButtonStyle: array[bsbsDefault..bsbsClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
 
 implementation
 
-uses Vcl.Graphics, IW.Common.System,
-     IWColor, IWBSInputCommon;
+uses IW.Common.System, IWBSInputCommon;
 
-{$region 'TIWBSButton'}
-constructor TIWBSButton.Create(AOwner: TComponent);
+{$region 'TIWBSCustomButton'}
+constructor TIWBSCustomButton.Create(AOwner: TComponent);
 begin
   inherited;
-  FAnchor := False;
-  FButtonType := iwbsbtButton;
   FButtonSize := bsszDefault;
   FButtonStyle := bsbsDefault;
-  FDataDismiss := bsbdNone;
   FGlyphicon := '';
 
   FCanReceiveFocus := True;
@@ -79,34 +79,29 @@ begin
   TabStop := True;
 end;
 
-function TIWBSButton.GetSubmitParam: String;
+procedure TIWBSCustomButton.SetButtonStyle(const Value: TIWBSButtonStyle);
 begin
-  Result := FSubmitParam;
+  FButtonStyle := Value;
+  Invalidate;
 end;
 
-procedure TIWBSButton.Submit(const AValue: string);
+procedure TIWBSCustomButton.SetGlyphicon(const Value: string);
 begin
-  FSubmitParam := AValue;
-  DoClick;
+  FGlyphicon := Value;
+  Invalidate;
 end;
+{$endregion}
 
-procedure TIWBSButton.HookEvents(APageContext: TIWPageContext40; AScriptEvents: TIWScriptEvents);
-begin
-  inherited HookEvents(APageContext, AScriptEvents);
-  if HasOnClick then begin
-    AScriptEvents.HookEvent('OnClick', SubmitHandler(''));
-  end;
-end;
-
-procedure TIWBSButton.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+{$region 'TIWBSButton'}
+constructor TIWBSButton.Create(AOwner: TComponent);
 begin
   inherited;
-  SetAsyncDisabled(AContext, AHTMLName, not (Enabled and Editable), FOldDisabled);
+  FAnchor := False;
+  FButtonType := iwbsbtButton;
+  FDataDismiss := bsbdNone;
 end;
 
 procedure TIWBSButton.InternalRenderCss(var ACss: string);
-const
-  aIWBSButtonStyle: array[bsbsDefault..bsbsClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
 begin
   inherited;
   if not FAnchor then begin
@@ -127,7 +122,6 @@ var
   xHTMLTag: TIWHTMLTag;
 begin
   inherited;
-  FOldDisabled := not (Enabled and Editable);
 
   AHTMLTag := TIWHTMLTag.CreateTag(iif(FAnchor,'a','button'));
   try
@@ -147,7 +141,7 @@ begin
       AHTMLTag.AddStringParam('data-toggle', 'tooltip');
       AHTMLTag.AddStringParam('title', Hint);
     end;
-    if FOldDisabled then
+    if IsDisabled then
       AHTMLTag.Add('disabled');
     s := TextToHTML(Caption);
     if FHotKey <> '' then begin
@@ -196,12 +190,6 @@ procedure TIWBSButton.SetAsyncClickProc(Value: TIWBSAsyncClickProc);
 begin
   FAsyncClickProc := Value;
   OnAsyncClick := DoAsyncClickProc
-end;
-
-procedure TIWBSButton.SetGlyphicon(const Value: string);
-begin
-  FGlyphicon := Value;
-  Invalidate;
 end;
 {$endregion}
 

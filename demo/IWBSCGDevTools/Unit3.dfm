@@ -11,7 +11,7 @@ object IWFrame3: TIWFrame3
     Height = 566
     RenderInvisibleControls = True
     TabOrder = 0
-    BSModalVisible = True
+    ModalVisible = True
     DestroyOnHide = True
     object IWBSRegion1: TIWBSRegion
       Left = 1
@@ -53,11 +53,10 @@ object IWFrame3: TIWFrame3
           StyleRenderOptions.RenderAbsolute = False
           StyleRenderOptions.RenderPadding = False
           StyleRenderOptions.RenderBorder = False
+          FriendlyName = 'IWBSInput1'
+          TabOrder = -1
           AutoFocus = True
           Caption = 'Input'
-          FriendlyName = 'IWBSInput1'
-          SubmitOnAsyncEvent = True
-          TabOrder = 0
           Text = ''
         end
         object IWBSSelect1: TIWBSSelect
@@ -65,10 +64,9 @@ object IWFrame3: TIWFrame3
           Top = 104
           Width = 121
           Height = 25
-          Caption = ''
           FriendlyName = 'IWBSSelect1'
-          SubmitOnAsyncEvent = True
-          TabOrder = 2
+          TabOrder = -1
+          Caption = ''
           Text = ''
           Items.Strings = (
             'item 1'
@@ -82,10 +80,9 @@ object IWFrame3: TIWFrame3
           Top = 160
           Width = 265
           Height = 25
-          Caption = 'IWBSButton1'
           FriendlyName = 'IWBSButton1'
-          TabOrder = 3
-          OnClick = IWBSButton1Click
+          TabOrder = -1
+          Caption = 'IWBSButton1'
         end
       end
       object IWBSRegion3: TIWBSRegion
@@ -120,10 +117,10 @@ object IWFrame3: TIWFrame3
           StyleRenderOptions.RenderAbsolute = False
           StyleRenderOptions.RenderPadding = False
           StyleRenderOptions.RenderBorder = False
+          FriendlyName = 'IWBSButton199'
+          TabOrder = -1
           BSButtonStyle = bsbsClose
           BSDataDismiss = bsbdModal
-          FriendlyName = 'IWBSButton199'
-          TabOrder = 1
         end
       end
       object IWBSRegion4: TIWBSRegion

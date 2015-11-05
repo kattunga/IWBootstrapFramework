@@ -6,7 +6,7 @@ uses
   System.Classes, System.SysUtils, System.StrUtils, Vcl.Controls, Data.db,
   IWBSCustomControl,
   IWTypes, IWHTMLTag,
-  IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces,
+  IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces, IWScriptEvents,
   IWBSCommon;
 
 type
@@ -16,17 +16,15 @@ const
   aIWBSInputType: array[bsitText..bsitHidden] of string = ('text', 'password', 'datetime-local', 'date', 'month', 'time', 'week', 'number', 'email', 'url', 'search', 'tel', 'color', 'hidden');
 
 type
-  TIWBSCustomInput = class(TIWBSCustomDbControl, IIWInputControl, IIWSubmitControl, IIWInputControl40, IIWAutoEditableControl)
+  TIWBSCustomInput = class(TIWBSCustomDbControl, IIWInputControl, IIWInputControl40, IIWAutoEditableControl)
   private
     FAutoEditable: Boolean;
     FAutoFocus: boolean;
     FDbEditable: boolean;
     FCaption: string;
     FInputType: TIWBSInputType;
-    FOnSubmit: TNotifyEvent;
     FReadOnly: Boolean;
     FRequired: Boolean;
-    FSubmitParam : string;
     procedure EditingChanged;
   protected
     FIsStatic: boolean;
@@ -36,13 +34,11 @@ type
     FOldText: string;
 
     procedure CheckData(AContext: TIWCompContext); override;
-    procedure DoSubmit;
     procedure SetCaption(const AValue: string);
     procedure SetReadOnly(const AValue:boolean);
     procedure SetRequired(const AValue:boolean);
     procedure SetValue(const AValue: string);
-    procedure Submit(const AValue: string); override;
-    function FormHasOnDefaultActionSet:boolean;
+
     function get_ShouldRenderTabOrder: boolean;override;
 
     procedure GetInputControlNames(ANames: TStringList); override;
@@ -61,25 +57,21 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     procedure Invalidate; override;
-    function GetSubmitParam : String;
     procedure SetText(const AValue: TCaption); override;
+    property Required: Boolean read FRequired write SetRequired default False;
   published
     property AutoEditable: Boolean read FAutoEditable write FAutoEditable default True;
     property AutoFocus: boolean read FAutoFocus write FAutoFocus default False;
     property Caption: string read FCaption write SetCaption;
-    property DoSubmitValidation;
     property Editable default True;
     property Enabled default True;
     property ExtraTagParams;
     property FriendlyName;
     property NonEditableAsLabel default False;
-    property Required: Boolean read FRequired write SetRequired default False;
     property ScriptEvents;
     property SubmitOnAsyncEvent default True;
     property TabStop default True;
     property Text: TCaption read GetText write SetText;
-
-    property OnSubmit: TNotifyEvent read FOnSubmit write FOnSubmit;
   end;
 
   TIWBSCustomTextInput = class(TIWBSCustomInput)
@@ -251,39 +243,9 @@ begin
   Invalidate;
 end;
 
-function TIWBSCustomInput.GetSubmitParam: String;
-begin
-  Result := FSubmitParam;
-end;
-
 function TIWBSCustomInput.get_ShouldRenderTabOrder: boolean;
 begin
   result := Editable or (NonEditableAsLabel = false);
-end;
-
-function TIWBSCustomInput.FormHasOnDefaultActionSet:boolean;
-var
-  LForm: TIWBaseForm;
-begin
-  Result := false;
-  LForm := OwnerForm;
-  if Assigned(LForm) then
-    if LForm is TIWForm then
-      result := Assigned( TIWForm(LForm).OnDefaultAction );
-end;
-
-procedure TIWBSCustomInput.DoSubmit;
-begin
-  if Assigned(OnSubmit) then
-    OnSubmit(Self)
-  else if FormHasOnDefaultActionSet then
-    TIWForm(OwnerForm).OnDefaultAction(Self);
-end;
-
-procedure TIWBSCustomInput.Submit(const AValue: string);
-begin
-  FSubmitParam := AValue;
-  DoSubmit;
 end;
 
 procedure TIWBSCustomInput.InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean);

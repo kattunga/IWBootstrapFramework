@@ -27,7 +27,7 @@ type
     procedure Paint; override;
   end;
 
-  TIWBSPaintHandlerButton = class (TIWPaintHandlerRectangle)
+  TIWBSPaintHandlerCustomButton = class (TIWPaintHandlerRectangle)
   public
     procedure Paint; override;
   end;
@@ -69,7 +69,7 @@ implementation
 uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
      IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
-     IWBSRegion, IWBSInput, IWBSButton, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage;
+     IWBSRegion, IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage;
 
 const
   CNST_DEFAULTFONTNAME = 'Tahoma';
@@ -99,6 +99,20 @@ begin
     slGlyphicons.LoadFromStream(rs);
   except
   end;
+end;
+
+function GetGlyphiconChar(const AGlyphicon: string; const AFallBackTo: string = ''): string;
+var
+  i: integer;
+begin
+  if (AGlyphicon <> '') then
+    i := StrToIntDef(slGlyphicons.Values[AGlyphicon], 0)
+  else
+    i := 0;
+  if i = 0 then
+    Result := AFallBackTo
+  else
+    Result := Char(i);
 end;
 
 function TGlyphiconEditor.GetValue: string;
@@ -150,7 +164,6 @@ var
   LRect, LIcon: TRect;
   s, c: string;
   LMultiLine: boolean;
-  Icon: integer;
 begin
   LRect := Rect(0, 0, Control.Width, Control.Height);
 
@@ -196,15 +209,13 @@ begin
           ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
           ControlCanvas.Brush.Color := clLtGray;
           ControlCanvas.Rectangle(LIcon);
-          Icon := StrToIntDef(slGlyphicons.Values['chevron-down'], 0);
-          if Icon > 0 then
-            c := Char(Icon)
-          else
-            c := 'V';
-          DrawTextEx(ControlCanvas.Handle, PChar(c), 1, LIcon, DT_CENTER+DT_SINGLELINE+DT_VCENTER, nil);
-          ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
-          ControlCanvas.Brush.Color := clWhite;
-          Dec(LRect.Right, 20);
+          c := GetGlyphiconChar('chevron-down', 'V');
+          if c <> '' then begin
+            DrawTextEx(ControlCanvas.Handle, PChar(c), 1, LIcon, DT_CENTER+DT_SINGLELINE+DT_VCENTER, nil);
+            ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+            ControlCanvas.Brush.Color := clWhite;
+            Dec(LRect.Right, 20);
+          end;
         end;
       end;
 
@@ -223,7 +234,7 @@ procedure TIWBSPaintHandlerCustomCheck.Paint;
 var
   LRect, LIcon: TRect;
   LGlyp, LCaption: string;
-  s: string;
+  c: string;
 begin
   if Control is TIWBSRadioButton then
     begin
@@ -245,8 +256,8 @@ begin
     LIcon := Rect(0, 0, 16,Control.Height);
     ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
     ControlCanvas.Font.Size := 8;
-    s := Char(StrToIntDef(slGlyphicons.Values[LGlyp],78));
-    DrawTextEx(ControlCanvas.Handle, PChar(s), 1, LIcon, DT_SINGLELINE+DT_VCENTER, nil);
+    c := GetGlyphiconChar(LGlyp,'X');
+    DrawTextEx(ControlCanvas.Handle, PChar(c), 1, LIcon, DT_SINGLELINE+DT_VCENTER, nil);
   end;
 
   if LCaption <> '' then begin
@@ -257,17 +268,38 @@ begin
   end;
 end;
 
-procedure TIWBSPaintHandlerButton.Paint;
+procedure DrawGlyphicon(ACanvas: TCanvas; var ARect: TRect; AGlyphicon, AFallBackTo: string; ARight: boolean = False);
+var
+  c: string;
+begin
+  ACanvas.Font.Name := CNST_GLYPHICONSFONT;
+  if AGlyphicon <> '' then
+    c := GetGlyphiconChar(AGlyphicon, AFallBackTo);
+  if c <> '' then
+    if ARight then
+      begin
+        DrawTextEx(ACanvas.Handle, PChar(c), Length(c), ARect, DT_SINGLELINE+DT_VCENTER+DT_RIGHT, nil);
+        Dec(ARect.Right, ACanvas.TextWidth(c)+4);
+      end
+    else
+      begin
+        DrawTextEx(ACanvas.Handle, PChar(c), Length(c), ARect, DT_SINGLELINE+DT_VCENTER, nil);
+        Inc(ARect.Left, ACanvas.TextWidth(c)+4);
+      end;
+end;
+
+procedure TIWBSPaintHandlerCustomButton.Paint;
 var
   LRect : TRect;
-  s: string;
-  th: integer;
+  c, s: string;
 begin
   GlyphiconsFontAdvice;
 
-  if Control is TIWBSButton then begin
-    LRect := Rect(0, 0, Control.Width, Control.Height);
-    case TIWBSButton(Control).BSButtonStyle of
+  if not (Control is TIWBSCustomButton) then Exit;
+
+  with TIWBSCustomButton(Control) do begin
+    LRect := Rect(0, 0, Width, Height);
+    case BSButtonStyle of
       bsbsDefault:
         begin
           ControlCanvas.Brush.Color := clWhite;
@@ -326,31 +358,29 @@ begin
 
     ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
     ControlCanvas.Font.Style := [fsBold];
-    case TIWBSButton(Control).BSButtonSize of
+    case BSButtonSize of
       bsszLg: ControlCanvas.Font.Height := -18;
       bsszMd, bsszDefault: ControlCanvas.Font.Height := -14;
       bsszSm: ControlCanvas.Font.Height := -12;
       bsszXs: ControlCanvas.Font.Height := -10;
     end;
 
-    th := ControlCanvas.TextHeight('X');
+    if not (Control is TIWBSDropDown) and (BSGlyphicon <> '') then
+      DrawGlyphicon(ControlCanvas,LRect,BSGlyphicon,'');
 
-    if TIWBSButton(Control).BSGlyphicon <> '' then
-    try
-      ControlCanvas.Font.Name := CNST_GLYPHICONSFONT;
-      s := Char(StrToInt(slGlyphicons.Values[TIWBSButton(Control).BSGlyphicon]));
-      ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Height-th) div 2, s);
-      Inc(LRect.Left, th);
-    except
-    end;
-
-    s := TIWBSButton(Control).Caption;
-    if (s = '') and (TIWBSButton(Control).BSButtonStyle = bsbsClose) then
+    s := Caption;
+    if (s = '') and (BSButtonStyle = bsbsClose) then
       s := 'X';
     if s <> '' then begin
       ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
-      ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Height-th) div 2, s);
+      DrawTextEx(ControlCanvas.Handle, PChar(s), Length(s), LRect, DT_SINGLELINE+DT_VCENTER, nil);
     end;
+
+    if Control is TIWBSDropDown then
+      if BSGlyphicon <> '' then
+        DrawGlyphicon(ControlCanvas,LRect,BSGlyphicon,'', True)
+      else
+        DrawGlyphicon(ControlCanvas,LRect,'chevron-down', 'V', True);
   end;
 end;
 
@@ -379,7 +409,7 @@ end;
 procedure TIWBSPaintHandlerGlyphicon.Paint;
 var
   LRect : TRect;
-  s: string;
+  c: string;
   th: integer;
 begin
   GlyphiconsFontAdvice;
@@ -394,9 +424,9 @@ begin
       ControlCanvas.Font.Style := [fsBold];
       ControlCanvas.Font.Height := -14;
       th := ControlCanvas.TextHeight('X');
-      s := Char(StrToInt(slGlyphicons.Values[TIWBSGlyphicon(Control).BSGlyphicon]));
-      ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Height-th) div 2, s);
-      Inc(LRect.Left, th);
+      c := GetGlyphiconChar(TIWBSGlyphicon(Control).BSGlyphicon);
+      if c <> '' then
+        ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Height-th) div 2, c);
     except
     end;
   end;
@@ -589,6 +619,9 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSButton]);
   RegisterPropertyEditor(TypeInfo(string), TIWBSButton,'BSGlyphicon', TGlyphiconEditor);
 
+  RegisterComponents('IW BootsTrap', [TIWBSDropDown]);
+  RegisterPropertyEditor(TypeInfo(string), TIWBSDropDown,'BSGlyphicon', TGlyphiconEditor);
+
   RegisterComponents('IW BootsTrap', [TIWBSLabel]);
   RegisterComponents('IW BootsTrap', [TIWBSText]);
 
@@ -634,7 +667,8 @@ initialization
   IWRegisterPaintHandler('TIWBSRadioButton',TIWBSPaintHandlerCustomCheck);
   IWRegisterPaintHandler('TIWBSRadioGroup',TIWBSPaintHandlerRadioGroup);
 
-  IWRegisterPaintHandler('TIWBSButton',TIWBSPaintHandlerButton);
+  IWRegisterPaintHandler('TIWBSButton',TIWBSPaintHandlerCustomButton);
+  IWRegisterPaintHandler('TIWBSDropDown',TIWBSPaintHandlerCustomButton);
 
   IWRegisterPaintHandler('TIWBSLabel',TIWBSPaintHandlerCustomText);
 
@@ -669,6 +703,7 @@ finalization
   IWUnRegisterPaintHandler('TIWBSRadioGroup');
 
   IWUnRegisterPaintHandler('TIWBSButton');
+  IWUnRegisterPaintHandler('TIWBSDropDown');
 
   IWUnRegisterPaintHandler('TIWBSLabel');
 

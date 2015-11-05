@@ -11,7 +11,7 @@ type
   TIWBSImageOption = (iwbsimResponsive, iwbsimCircle, iwbsimRounded, iwbsimThumbnail);
   TIWBSImageOptions = set of TIWBSImageOption;
 
-  TIWBSImage = class(TIWBSCustomDbControl, IIWSubmitControl)
+  TIWBSImage = class(TIWBSCustomDbControl)
   private
     FActiveSrc: string;
     FOldSrc: string;
@@ -37,19 +37,14 @@ type
     procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure InternalRenderStyle(AStyle: TStringList); override;
-    procedure HookEvents(APageContext: TIWPageContext40; AScriptEvents: TIWScriptEvents); override;
-    procedure Submit(const AValue: string); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property ActiveSrc: string read FActiveSrc;
-    function GetSubmitParam : String;
     procedure Refresh;
   published
     property AltText: string read FAltText write FAltText;
     property BSImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [iwbsimResponsive];
-    property Confirmation;
-    property DoSubmitValidation;
     property EmbedBase64: boolean read FEmbedBase64 write FEmbedBase64 default False;
     property Enabled default True;
     property ImageFile: string read FImageFile write SetImageFile;
@@ -57,8 +52,6 @@ type
     property MimeType: string read FMimeType write FMimeType;
     property Picture: TPicture read GetPicture write SetPicture;
     property UseSize: Boolean read FUseSize write SetUseSize default False;
-
-    property OnClick;
   end;
 
 implementation
@@ -113,25 +106,6 @@ destructor TIWBSImage.Destroy;
 begin
   FreeAndNil(FPicture);
   inherited;
-end;
-
-function TIWBSImage.GetSubmitParam: String;
-begin
-  Result := FSubmitParam;
-end;
-
-procedure TIWBSImage.Submit(const AValue: string);
-begin
-  FSubmitParam := AValue;
-  DoClick;
-end;
-
-procedure TIWBSImage.HookEvents(APageContext: TIWPageContext40; AScriptEvents: TIWScriptEvents);
-begin
-  inherited HookEvents(APageContext, AScriptEvents);
-  if HasOnClick then begin
-    AScriptEvents.HookEvent('OnClick', SubmitHandler(''));
-  end;
 end;
 
 function TIWBSImage.GetPicture: TPicture;
@@ -191,6 +165,7 @@ var
   LMimeType: string;
   LFile: string;
   LStream: TStream;
+  LFileStream: TFileStream;
   LParentForm: TIWForm;
 begin
   LFile := '';
@@ -211,7 +186,16 @@ begin
         if FEmbedBase64 then
           FActiveSrc := 'data:image;base64, '+TIdEncoderMIME.EncodeStream(LStream)
         else
-          FActiveSrc := TIWAppCache.StreamToCacheFile(AContext.WebApplication,LStream, LMimeType);
+          begin
+            LFile := TIWAppCache.NewTempFileName;
+            LFileStream := TFileStream.Create(LFile, fmCreate);
+            try
+              LFileStream.CopyFrom(LStream, LStream.Size-LStream.Position);
+            finally
+              LFileStream.Free;
+            end;
+            FActiveSrc := TIWAppCache.AddFileToCache(AContext.WebApplication, LFile, LMimeType);
+          end;
       finally
         LStream.Free;
       end;
@@ -249,8 +233,8 @@ begin
             FActiveSrc := TIWAppCache.AddFileToCache(LParentForm, LFile, LMimeType, ctForm)
           else
             FActiveSrc := TIWAppCache.AddFileToCache(AContext.WebApplication, LFile, LMimeType);
+        end;
       end;
-  end;
 end;
 
 procedure TIWBSImage.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
@@ -275,8 +259,6 @@ begin
 end;
 
 procedure TIWBSImage.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
-var
-  LTag: TIWHTMLTag;
 begin
   inherited;
   FOldSrc := FActiveSrc;
@@ -293,10 +275,6 @@ begin
   if not AutoSize then begin
     AHTMLTag.AddIntegerParam('width', Width);
     AHTMLTag.AddIntegerParam('height', Height);
-  end;
-  if HasOnClick then begin
-    LTag := SubmitLink('', '', False,  AContext.Browser);
-    LTag.Contents.AddTagAsObject(AHTMLTag, true);
   end;
   if not Enabled then
     AContext.AddToInitProc('setEnabled("' + HTMLName + '", false);');

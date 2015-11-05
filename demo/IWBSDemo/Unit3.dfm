@@ -82,7 +82,6 @@ object IWFrame3: TIWFrame3
           FriendlyName = 'IWBSButton1'
           TabOrder = -1
           Caption = 'IWBSButton1'
-          OnClick = IWBSButton1Click
         end
       end
       object IWBSRegion3: TIWBSRegion

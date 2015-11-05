@@ -23,124 +23,190 @@ object IWForm4: TIWForm4
     Height = 593
     Align = alClient
     BSRegionType = bsrtContainer
-    object IWBSInput2: TIWBSInput
-      Left = 28
-      Top = 24
-      Width = 121
+    object IWBSButton1: TIWBSButton
+      Left = 44
+      Top = 220
+      Width = 200
       Height = 25
-      FriendlyName = 'IWBSInput2'
+      FriendlyName = 'IWBSButton1'
       TabOrder = -1
-      Caption = ''
-      Text = ''
+      Caption = 'IWBSButton1'
     end
-    object IWBSFile1: TIWBSFile
-      Left = 180
-      Top = 24
-      Width = 129
-      Height = 24
-      FriendlyName = 'IWBSFile1'
-      TabOrder = -1
-    end
-    object IWBSInputForm1: TIWBSInputForm
-      Left = 28
-      Top = 72
-      Width = 493
-      Height = 473
-      object IWBSButton2: TIWBSButton
-        Left = 3
-        Top = 68
-        Width = 200
-        Height = 25
-        FriendlyName = 'IWBSButton2'
-        ScriptEvents = <
-          item
-            EventCode.Strings = (
-              '$("#IWBSINPUT1").val("pepe");'
-              '$("#IWBSINPUT1").change();')
-            Event = 'onClick'
-          end>
-        TabOrder = -1
-        Caption = 'IWBSButton2'
+    object IWBSNavBar1: TIWBSNavBar
+      Left = 20
+      Top = 16
+      Width = 485
+      Height = 77
+      object IWBSUnorderedList1: TIWBSUnorderedList
+        Left = 35
+        Top = 11
+        Width = 438
+        Height = 60
+        object IWBSDropDown1: TIWBSDropDown
+          Left = 16
+          Top = 19
+          Width = 173
+          Height = 25
+          FriendlyName = 'IWBSDropDown1'
+          TabOrder = -1
+          Caption = 'IWBSDropDown1'
+          DropDownItems = <
+            item
+              Caption = 'item 1'
+            end
+            item
+              Caption = 'pepe'
+              DropDownItems = <
+                item
+                  Caption = 'pepe1'
+                end
+                item
+                  Caption = 'pepe2'
+                end
+                item
+                  Caption = 'pepe3'
+                end>
+            end
+            item
+              Caption = 'pepe2'
+              DropDownItems = <
+                item
+                  Caption = 'item a'
+                end
+                item
+                  Caption = 'item b'
+                  DropDownItems = <
+                    item
+                      Caption = 'aa'
+                    end
+                    item
+                      Caption = 'bb'
+                    end
+                    item
+                      Caption = 'cc'
+                    end>
+                end
+                item
+                  Caption = 'item c'
+                end>
+            end>
+        end
+        object IWBSDropDown3: TIWBSDropDown
+          Left = 196
+          Top = 19
+          Width = 169
+          Height = 25
+          FriendlyName = 'IWBSDropDown1'
+          TabOrder = -1
+          Caption = 'IWBSDropDown1'
+          DropDownItems = <
+            item
+              Caption = 'item 1'
+            end
+            item
+              Caption = 'pepe'
+              DropDownItems = <
+                item
+                  Caption = 'pepe1'
+                end
+                item
+                  Caption = 'pepe2'
+                end
+                item
+                  Caption = 'pepe3'
+                end>
+            end
+            item
+              Caption = 'pepe2'
+              DropDownItems = <
+                item
+                  Caption = 'item a'
+                end
+                item
+                  Caption = 'item b'
+                end
+                item
+                  Caption = 'item c'
+                end>
+            end>
+        end
       end
-      object IWBSInput1: TIWBSInput
-        Left = 3
+    end
+    object IWBSRegion1: TIWBSRegion
+      Left = 20
+      Top = 104
+      Width = 481
+      Height = 73
+      BSRegionType = bsrtWell
+      object IWBSDropDown2: TIWBSDropDown
+        Left = 24
         Top = 24
-        Width = 229
+        Width = 169
+        Height = 25
+        Css = 'btn-default'
+        FriendlyName = 'IWBSDropDown1'
+        TabOrder = -1
+        Caption = 'IWBSDropDown1'
+        DropDownItems = <
+          item
+            Caption = 'pepe'
+            DropDownItems = <
+              item
+                Caption = 'pepe1'
+              end
+              item
+                Caption = 'pepe2'
+              end
+              item
+                Caption = 'pepe3'
+              end>
+          end>
+      end
+    end
+    object IWBSInputGroup1: TIWBSInputGroup
+      Left = 40
+      Top = 272
+      Width = 397
+      Height = 60
+      Caption = ''
+      object IWBSInput1: TIWBSInput
+        Left = 24
+        Top = 20
+        Width = 121
         Height = 25
         FriendlyName = 'IWBSInput1'
         TabOrder = -1
         Caption = ''
         Text = ''
       end
-      object IWBSButton1: TIWBSButton
-        Left = 3
-        Top = 108
-        Width = 200
+      object IWBSDropDown4: TIWBSDropDown
+        Left = 164
+        Top = 20
+        Width = 169
         Height = 25
-        FriendlyName = 'IWBSButton1'
+        Css = 'btn-default'
+        FriendlyName = 'IWBSDropDown1'
         TabOrder = -1
-        OnAsyncClick = IWBSButton1AsyncClick
-        Caption = 'IWBSButton1'
-      end
-      object IWBSTabControl1: TIWBSTabControl
-        Left = 1
-        Top = 192
-        Width = 505
-        Height = 265
-        RenderInvisibleControls = True
-        ActiveTabFont.Color = clWebWHITE
-        ActiveTabFont.FontFamily = 'Arial, Sans-Serif, Verdana'
-        ActiveTabFont.Size = 10
-        ActiveTabFont.Style = [fsBold]
-        InactiveTabFont.Color = clWebBLACK
-        InactiveTabFont.FontFamily = 'Arial, Sans-Serif, Verdana'
-        InactiveTabFont.Size = 10
-        InactiveTabFont.Style = []
-        ActiveTabColor = clWebDARKGRAY
-        InactiveTabColor = clWebLIGHTGRAY
-        ActivePage = 1
-        BorderOptions.NumericWidth = 0
-        BorderOptions.BorderWidth = cbwNumeric
-        BorderOptions.Style = cbsNone
-        BorderOptions.Color = clNone
-        Color = clWebSILVER
-        ZIndex = 1000
-        DesignSize = (
-          505
-          265)
-        object IWBSTabControl1Page0: TIWTabPage
-          Left = 0
-          Top = 20
-          Width = 505
-          Height = 245
-          RenderInvisibleControls = True
-          TabOrder = 0
-          Title = 'Page0'
-          BorderOptions.NumericWidth = 0
-          BorderOptions.BorderWidth = cbwNumeric
-          BorderOptions.Style = cbsNone
-          BorderOptions.Color = clNone
-          Color = clWebWHITE
-        end
-        object IWBSTabControl1Page1: TIWTabPage
-          Left = 0
-          Top = 20
-          Width = 505
-          Height = 245
-          RenderInvisibleControls = True
-          TabOrder = 1
-          Title = 'Page1'
-          BorderOptions.NumericWidth = 0
-          BorderOptions.BorderWidth = cbwNumeric
-          BorderOptions.Style = cbsNone
-          BorderOptions.Color = clNone
-          Color = clWebWHITE
-        end
+        Caption = 'IWBSDropDown1'
+        DropDownItems = <
+          item
+            Caption = 'pepe'
+            DropDownItems = <
+              item
+                Caption = 'pepe1'
+              end
+              item
+                Caption = 'pepe2'
+              end
+              item
+                Caption = 'pepe3'
+              end>
+          end>
       end
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
-    Left = 420
-    Top = 24
+    Left = 448
+    Top = 188
   end
 end

@@ -27,6 +27,55 @@
 	}
 }
 
+/**** dropdown-submenu ***/
+.dropdown-submenu > .dropdown-menu {
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu > .dropdown-menu-right{
+    left: -100%;
+    margin-top: -6px;
+    margin-right: 100%;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+@media (max-width: 767px) {
+	.navbar-nav .open .dropdown-submenu > .dropdown-menu {
+		padding-left: 15px;
+	}
+}
+
+.caret-right {
+    color: black;
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+    border-left: 4px solid;
+    display: inline-block;
+    height: 0;
+    vertical-align: middle;
+    width: 0;
+    margin-left: 10px;
+}
+
+.caret-left {
+    color: black;
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+    border-right: 4px solid;
+    display: inline-block;
+    height: 0;
+    vertical-align: middle;
+    width: 0;
+    margin-left: 10px;
+}
+
 /**** select plugin ***/
 .form-control.disabled > button, .form-control.disabled > button:hover {
     background-color: #eee;
@@ -55,7 +104,7 @@
 	display: inline-block;
 }
 
-.iwbs-toolbar>div {
+.iwbs-toolbar > div {
 	float: left;
 	height: 28px;
 }
@@ -81,51 +130,7 @@
 /***********************/
 
 /* align class, child divs alClient */
-.iwbs-childs-alclient>div {
+.iwbs-childs-alclient > div {
 	width: 100%;
 	height: 100%;
 }
-
-/* cgdevtools components */
-
-/* jqbutton */
-input.ui-button,
-.ui-button-text-only .ui-button-text {
-	padding-top: 0.1em;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
-	padding-bottom: 0.1em;
-}
-
-/* jqbutton div container */
-.iwbs-button {
-	min-width: 32px;
-}
-
-/* jqtab */
-.ui-tabs .ui-tabs-panel {
-	width: 100%;
-	height: calc((100%) - (42px));
-	padding: 0;
-}
-
-.ui-tabs .ui-tabs-panel>div {
-	width: 100%;
-	height: 100%;
-}
-
-/* jqgrid */
-.input.ui-pg-input {
-    width: auto;
-    padding: 0px;
-    margin: 0px;
-    line-height: normal
-}
-
-.select.ui-pg-selbox {
-    width: auto;
-    padding: 0px;
-    margin: 0px;
-    line-height: normal
-}
-/* end cgdevtools */

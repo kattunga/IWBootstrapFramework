@@ -42,8 +42,8 @@ object FFishFact: TFFishFact
         Css = 'pull-right'
         FriendlyName = 'IWBSButton1'
         TabOrder = -1
+        OnAsyncClick = IWBSButton1AsyncClick
         Caption = 'Switch to Standard Demo'
-        OnClick = IWBSButton1Click
       end
       object IWText1: TIWBSText
         Left = 16
@@ -276,7 +276,6 @@ object FFishFact: TFFishFact
               TabOrder = -1
               DataSource = dsrcMain
               DataField = 'Graphic'
-              EmbedBase64 = True
             end
             object IWBSRegion4: TIWBSRegion
               Left = 3

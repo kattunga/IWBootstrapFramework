@@ -13,7 +13,7 @@ uses
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
   MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSImage,
   IWCompTabControl, IWBSTabControl,
-  IW.HTTP.Request, IW.HTTP.Reply, Vcl.Imaging.jpeg;
+  IW.HTTP.Request, IW.HTTP.Reply;
 
 type
   TFFishFact = class(TIWAppForm)
@@ -78,7 +78,7 @@ type
     procedure btnNextAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure btnLastAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure dsrcMainStateChange(Sender: TObject);
-    procedure IWBSButton1Click(Sender: TObject);
+    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   end;
 
 implementation
@@ -92,7 +92,8 @@ begin
   //ClientDataSet1.LoadFromFile('biolife2.cds');
 end;
 
-procedure TFFishFact.IWBSButton1Click(Sender: TObject);
+procedure TFFishFact.IWBSButton1AsyncClick(Sender: TObject;
+  EventParams: TStringList);
 begin
   Release;
 end;

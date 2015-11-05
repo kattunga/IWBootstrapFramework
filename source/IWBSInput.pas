@@ -116,7 +116,7 @@ type
 
 implementation
 
-uses IW.Common.System, IWBSInputCommon;
+uses IW.Common.System, IWResourceStrings, IWBSInputCommon;
 
 {$region 'TIWBSInput'}
 procedure TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);

@@ -55,17 +55,23 @@ end;
 function TIWBSLayoutMgr.ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
 var
   LFile: string;
+  LDisableCache: boolean;
 begin
+  LDisableCache := ADisableCache;
+
   if not AnsiStartsStr('//', AFile) and not AnsiStartsStr('http://', AFile) and not AnsiStartsStr('https://', AFile) then
     LFile := ReplaceStr(TURL.Concat(gSC.URLBase,AFile), '/<iwbspath>/', gIWBSLibPath)
   else
-    LFile := AFile;
+    begin
+      LFile := AFile;
+      LDisableCache := False;
+    end;
 
   if AnsiEndsStr('.js', LFile) then
-    Result := '<script type="text/javascript" src="'+LFile+IfThen(ADisableCache,'?v='+gIWBSRefreshCacheParam)+'"></script>'
+    Result := '<script type="text/javascript" src="'+LFile+IfThen(LDisableCache,'?v='+gIWBSRefreshCacheParam)+'"></script>'
 
   else if AnsiEndsStr('.css', LFile) then
-    Result := '<link rel="stylesheet" type="text/css" href="'+LFile+IfThen(ADisableCache,'?v='+gIWBSRefreshCacheParam)+'">'
+    Result := '<link rel="stylesheet" type="text/css" href="'+LFile+IfThen(LDisableCache,'?v='+gIWBSRefreshCacheParam)+'">'
 
   else
     raise Exception.Create('Unknown file type');
@@ -106,7 +112,7 @@ begin
 
   // polyfiller
   if gIWBSlibPolyfiller then
-    ABuffer.WriteLine(ParseLinkFile(gIWBSLibPolyfillerJs));
+    ABuffer.WriteLine(ParseLinkFile(gIWBSLibPolyfillerJs, False));
 
   // Dynamic Tabs
   if gIWBSLibDynamicTabs then begin
@@ -117,12 +123,12 @@ begin
   // add global linkfiles
   if gIWBSLinkFiles <> nil then
     for i := 0 to gIWBSLinkFiles.Count-1 do
-      ABuffer.WriteLine(ParseLinkFile(gIWBSLinkFiles[i], False));
+      ABuffer.WriteLine(ParseLinkFile(gIWBSLinkFiles[i]));
 
   // add LayoutMgr linkfiles
   if FLinkFiles <> nil then
     for i := 0 to FLinkFiles.Count-1 do
-      ABuffer.WriteLine(ParseLinkFile(FLinkFiles[i], False));
+      ABuffer.WriteLine(ParseLinkFile(FLinkFiles[i]));
 
   ABuffer.WriteLine(ScriptSection(LPageContext));
   ABuffer.WriteLine(HeadContent);

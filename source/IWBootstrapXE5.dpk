@@ -54,7 +54,8 @@ contains
   IWBSRestServer in 'IWBSRestServer.pas',
   IWBSCustomEvents in 'IWBSCustomEvents.pas',
   IWBSGlobal in 'IWBSGlobal.pas',
-  IWBSDialogs in 'IWBSDialogs.pas';
+  IWBSDialogs in 'IWBSDialogs.pas',
+  IWBSDropDown in 'IWBSDropDown.pas';
 
 end.
 

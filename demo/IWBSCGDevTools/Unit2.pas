@@ -185,13 +185,11 @@ type
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton27AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton30Click(Sender: TObject);
     procedure IWBSButton21AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton28AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton31AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton32AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton33AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton36Click(Sender: TObject);
     procedure IWAppFormCreate(Sender: TObject);
     procedure IWBSButton34AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton37AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -200,6 +198,8 @@ type
     procedure IWBSButton42AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton35JQButtonOptionsClick(Sender: TObject;
       AParams: TStringList);
+    procedure IWBSButton30AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton36AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -257,7 +257,7 @@ begin
   cmp := TIWFrame1.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := IWBSRegion17;
-  cmp.IWBSRegion1.AsyncRenderComponent(true);
+  cmp.IWBSRegion1.AsyncRefreshControl;
 end;
 
 procedure TIWForm2.IWBSButton27AsyncClick(Sender: TObject;
@@ -268,7 +268,7 @@ begin
   cmp := TIWFrame3.Create(Self);
   cmp.Name := IWBSGetUniqueComponentName(Self,'frame');
   cmp.Parent := Self;
-  cmp.IWBSModal1.AsyncRenderComponent(true);
+  cmp.IWBSModal1.AsyncRefreshControl;
 end;
 
 procedure TIWForm2.IWBSButton28AsyncClick(Sender: TObject;
@@ -277,7 +277,8 @@ begin
   TIWBSDialog.Create('This is the header', 'This is the Body').Show;
 end;
 
-procedure TIWForm2.IWBSButton30Click(Sender: TObject);
+procedure TIWForm2.IWBSButton30AsyncClick(Sender: TObject;
+  EventParams: TStringList);
 begin
   chkTabsFade.TabOrder := 0;
 
@@ -290,6 +291,7 @@ begin
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainerFluid
   else
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
+  IWBSRegion3.AjaxReRender;
 end;
 
 procedure TIWForm2.IWBSButton31AsyncClick(Sender: TObject;
@@ -343,7 +345,8 @@ begin
   IWBSREgion25.AjaxReRender;
 end;
 
-procedure TIWForm2.IWBSButton36Click(Sender: TObject);
+procedure TIWForm2.IWBSButton36AsyncClick(Sender: TObject;
+  EventParams: TStringList);
 begin
   with TFFishFact.Create(WebApplication) do begin
     IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
@@ -362,13 +365,13 @@ end;
 procedure TIWForm2.IWBSButton39AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  IWBSModal1.BSModalVisible := False;
+  IWBSModal1.ModalVisible := False;
 end;
 
 procedure TIWForm2.IWBSButton40AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  IWBSModal1.BSModalVisible := True;
+  IWBSModal1.ModalVisible := True;
 end;
 
 procedure TIWForm2.IWBSButton42AsyncClick(Sender: TObject;

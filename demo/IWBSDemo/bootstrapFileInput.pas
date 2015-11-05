@@ -28,16 +28,23 @@ type
     IWBSInput1: TIWBSFile;
     IWBSRegion5: TIWBSRegion;
     procedure IWFormModuleBaseCreate(Sender: TObject);
-    procedure IWBSButton1Click(Sender: TObject);
     procedure IWBSInput1CustomRestEvents0RestEvent(aApplication: TIWApplication;
       aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
     procedure IWBSInput1CustomAsyncEvents0AsyncEvent(aParams: TStringList);
+    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   end;
 
 implementation
 {$R *.dfm}
 
 uses IWBSRestServer, IW.HTTP.FileItem, jpeg;
+
+procedure TFBootstrapFileInput.IWBSButton1AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  Release;
+//  Application.MainForm.Show;
+end;
 
 procedure TFBootstrapFileInput.IWBSInput1CustomAsyncEvents0AsyncEvent(
   aParams: TStringList);
@@ -81,11 +88,6 @@ begin
   // include third party plugin
   IWBSLayoutMgr1.AddLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.2.7/css/fileinput.min.css');
   IWBSLayoutMgr1.AddLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.2.7/js/fileinput.min.js');
-end;
-
-procedure TFBootstrapFileInput.IWBSButton1Click(Sender: TObject);
-begin
-  Release;
 end;
 
 initialization

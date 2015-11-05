@@ -10,7 +10,6 @@ uses
 type
   TIWServerController = class(TIWServerControllerBase)
     procedure IWServerControllerBaseNewSession(ASession: TIWApplication);
-    procedure IWServerControllerBaseConfig(Sender: TObject);
 
   private
     
@@ -26,25 +25,18 @@ implementation
 {$R *.dfm}
 
 uses
-  IWInit, IWGlobal, IWBSGlobal;
+  IWInit, IWGlobal;
 
 function IWServerController: TIWServerController;
 begin
   Result := TIWServerController(GServerController);
 end;
 
+
+
 function UserSession: TIWUserSession;
 begin
   Result := TIWUserSession(WebApplication.Data);
-end;
-
-procedure TIWServerController.IWServerControllerBaseConfig(Sender: TObject);
-begin
-  JavaScriptOptions.RenderjQuery := False;
-  CacheDir := ExtractFilePath(ParamStr(0))+'temp';
-
-  // custom css for this demo
-  IWBSAddGlobalLinkFile('/iwbs/iwbs-cgdevtools.css');
 end;
 
 procedure TIWServerController.IWServerControllerBaseNewSession(
@@ -52,6 +44,7 @@ procedure TIWServerController.IWServerControllerBaseNewSession(
 begin
   ASession.Data := TIWUserSession.Create(nil, ASession);
 end;
+
 
 initialization
   TIWServerController.SetServerControllerClass;

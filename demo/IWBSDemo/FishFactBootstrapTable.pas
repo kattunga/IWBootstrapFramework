@@ -40,10 +40,10 @@ type
     IWBSButton1: TIWBSButton;
     IWBSRegion4: TIWBSRegion;
     procedure IWFormModuleBaseCreate(Sender: TObject);
-    procedure IWBSButton1Click(Sender: TObject);
     procedure DbTableCustomAjaxEvents0AsyncEvent(aParams: TStringList);
     procedure DbTableCustomRestEvents0RestEvent(aApplication: TIWApplication;
       aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
+    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   end;
 
 implementation
@@ -56,6 +56,12 @@ var
 
 // if you have JsonDataObjects from https://github.com/ahausladen/JsonDataObjects
 // in project -> options -> Delphi Compiler -> Conditional Defines : add IWBS_JSONDATAOBJECTS
+
+procedure TFBootstrapTable.IWBSButton1AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  Release;
+end;
 
 procedure TFBootstrapTable.IWFormModuleBaseCreate(Sender: TObject);
 var
@@ -170,11 +176,6 @@ begin
     ClientDataSet1.GotoBookmark(bmrk);
     ClientDataSet1.EnableControls;
   end;
-end;
-
-procedure TFBootstrapTable.IWBSButton1Click(Sender: TObject);
-begin
-  Release;
 end;
 
 initialization

@@ -13,7 +13,8 @@ uses
   IWBaseLayoutComponent, IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr,
   IWBSInput, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
   IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent,
-  IWBSCustomControl, IW.HTTP.Request, IW.HTTP.Reply, IWCompFileUploader;
+  IWBSCustomControl, IW.HTTP.Request, IW.HTTP.Reply, IWCompFileUploader,
+  IWBSDropDown;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -177,9 +178,6 @@ type
     IWBSRegion40: TIWBSRegion;
     IWBSNavBar1: TIWBSNavBar;
     IWBSUnorderedList1: TIWBSUnorderedList;
-    IWBSButton36: TIWBSButton;
-    IWBSButton43: TIWBSButton;
-    IWBSButton44: TIWBSButton;
     IWBSButton41: TIWBSButton;
     IWBSRegion29: TIWBSRegion;
     IWBSLabel3: TIWBSLabel;
@@ -187,8 +185,11 @@ type
     IWBSButton45: TIWBSButton;
     IWBSText2: TIWBSText;
     IWBSButton46: TIWBSButton;
-    IWBSButton47: TIWBSButton;
     IWBSInput26: TIWBSFile;
+    IWBSInputGroup8: TIWBSInputGroup;
+    IWBSInput27: TIWBSInput;
+    IWBSDropDown1: TIWBSDropDown;
+    IWBSDropDown2: TIWBSDropDown;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -198,19 +199,23 @@ type
     procedure IWBSButton31AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton32AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton33AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton36Click(Sender: TObject);
     procedure IWBSButton34AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton37AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton40AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton39AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton42AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton43Click(Sender: TObject);
-    procedure IWBSButton44Click(Sender: TObject);
     procedure IWBSInputForm5Submit(aRequest: THttpRequest; aParams: TStrings);
     procedure IWBSButton35AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton46Click(Sender: TObject);
     procedure IWBSButton30AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton47Click(Sender: TObject);
+    procedure IWBSDropDown2DropDownItems0AsyncClick(Sender: TObject;
+      EventParams: TStringList);
+    procedure IWBSDropDown2DropDownItems1DropDownItems0AsyncClick(
+      Sender: TObject; EventParams: TStringList);
+    procedure IWBSDropDown2DropDownItems1DropDownItems1AsyncClick(
+      Sender: TObject; EventParams: TStringList);
+    procedure IWBSDropDown2DropDownItems1DropDownItems2AsyncClick(
+      Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton46AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -341,15 +346,6 @@ begin
   IWBSInputForm2.AsyncRefreshControl;
 end;
 
-procedure TIWForm2.IWBSButton36Click(Sender: TObject);
-begin
-  with TFFishFact.Create(WebApplication) do begin
-    IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
-    IWBSInputForm1.BSFormType := Self.IWBSInputForm2.BSFormType;
-    Show;
-  end;
-end;
-
 procedure TIWForm2.IWBSButton37AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
@@ -375,7 +371,29 @@ begin
   IWTabControl21.SetTabPageVisibility(IWTabControl21Page5, not IWTabControl21Page5.Visible);
 end;
 
-procedure TIWForm2.IWBSButton43Click(Sender: TObject);
+procedure TIWForm2.IWBSButton46AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  if IWBSRegion3.BSRegionType = TIWBSRegionType.bsrtContainer then
+    IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainerFluid
+  else
+    IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
+//  WebApplication.GoToURL(WebApplication.SessionInternalUrlBase);
+  IWBSRegion3.AsyncRefreshControl;
+end;
+
+procedure TIWForm2.IWBSDropDown2DropDownItems0AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  with TFFishFact.Create(WebApplication) do begin
+    IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
+    IWBSInputForm1.BSFormType := Self.IWBSInputForm2.BSFormType;
+    Show;
+  end;
+end;
+
+procedure TIWForm2.IWBSDropDown2DropDownItems1DropDownItems0AsyncClick(
+  Sender: TObject; EventParams: TStringList);
 begin
   with TFBootstrapTable.Create(WebApplication) do begin
     IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
@@ -383,7 +401,8 @@ begin
   end;
 end;
 
-procedure TIWForm2.IWBSButton44Click(Sender: TObject);
+procedure TIWForm2.IWBSDropDown2DropDownItems1DropDownItems1AsyncClick(
+  Sender: TObject; EventParams: TStringList);
 begin
   with TFJQGrid.Create(WebApplication) do begin
     IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;
@@ -391,15 +410,8 @@ begin
   end;
 end;
 
-procedure TIWForm2.IWBSButton46Click(Sender: TObject);
-begin
-  if IWBSRegion3.BSRegionType = TIWBSRegionType.bsrtContainer then
-    IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainerFluid
-  else
-    IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
-end;
-
-procedure TIWForm2.IWBSButton47Click(Sender: TObject);
+procedure TIWForm2.IWBSDropDown2DropDownItems1DropDownItems2AsyncClick(
+  Sender: TObject; EventParams: TStringList);
 begin
   with TFBootstrapFileInput.Create(WebApplication) do begin
     IWBSRegion1.BSRegionType := Self.IWBSRegion3.BSRegionType;

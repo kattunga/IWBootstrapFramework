@@ -266,7 +266,6 @@ begin
     AScript.Add('$("#'+AHTMLName+'_tabs").off("shown.bs.tab").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+$(e.target).attr("tabindex"), null, "'+AHTMLName+'.DoOnAsyncChange", true, null, true); });');
     AContext.WebApplication.RegisterCallBack(AHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
   end;
-  AScript.Text := ReplaceStr(AScript.Text,#13#10,'');
 end;
 
 function TIWBSTabControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;

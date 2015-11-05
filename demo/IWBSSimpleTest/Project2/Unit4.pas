@@ -11,22 +11,24 @@ uses
   IWHTMLContainer, IWHTML40Container, IWRegion, IWBSRegion, IWBSCustomInput,
   IWBSButton, IWCompRadioButton, IWCompMemo, IWCompCheckbox, IWBSCustomControl,
   IWBSControls, IWCompTabControl, IWBSTabControl, IWBSImage, Vcl.Imaging.jpeg,
-  IWCompFileUploader, IWCompFile, Vcl.Graphics;
+  IWCompFileUploader, Vcl.Graphics, IWBSDropDown;
 
 type
   TIWForm4 = class(TIWAppForm)
     IWBSLayoutMgr1: TIWBSLayoutMgr;
     IWBSRegion3: TIWBSRegion;
-    IWBSInputForm1: TIWBSInputForm;
-    IWBSTabControl1: TIWBSTabControl;
-    IWBSTabControl1Page0: TIWTabPage;
-    IWBSTabControl1Page1: TIWTabPage;
-    IWBSButton2: TIWBSButton;
-    IWBSInput1: TIWBSInput;
+    IWBSNavBar1: TIWBSNavBar;
+    IWBSUnorderedList1: TIWBSUnorderedList;
+    IWBSDropDown1: TIWBSDropDown;
+    IWBSRegion1: TIWBSRegion;
+    IWBSDropDown2: TIWBSDropDown;
+    IWBSDropDown3: TIWBSDropDown;
     IWBSButton1: TIWBSButton;
-    IWBSInput2: TIWBSInput;
-    IWBSFile1: TIWBSFile;
+    IWBSInputGroup1: TIWBSInputGroup;
+    IWBSInput1: TIWBSInput;
+    IWBSDropDown4: TIWBSDropDown;
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -40,6 +42,13 @@ procedure TIWForm4.IWBSButton1AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
 //
+end;
+
+procedure TIWForm4.IWBSButton3AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  IWBSDropDown1.DropDownItems.Add;
+  TForm(IWBSDropDown1).OnClick
 end;
 
 initialization

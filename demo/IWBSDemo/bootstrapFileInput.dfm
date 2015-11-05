@@ -123,9 +123,9 @@ object FBootstrapFileInput: TFBootstrapFileInput
         Css = 'navbar-btn navbar-right'
         FriendlyName = 'IWBSButton1'
         TabOrder = -1
+        OnAsyncClick = IWBSButton1AsyncClick
         BSGlyphicon = 'arrow-left'
         Caption = 'Switch to Standard Demo'
-        OnClick = IWBSButton1Click
       end
     end
   end

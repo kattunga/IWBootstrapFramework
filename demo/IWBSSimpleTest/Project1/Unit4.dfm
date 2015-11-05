@@ -1,0 +1,46 @@
+object IWForm4: TIWForm4
+  Left = 0
+  Top = 0
+  Width = 555
+  Height = 400
+  RenderInvisibleControls = True
+  AllowPageAccess = True
+  ConnectionMode = cmAny
+  Background.Fixed = False
+  HandleTabs = False
+  LeftToRight = True
+  LockUntilLoaded = True
+  LockOnSubmit = True
+  ShowHint = True
+  XPTheme = True
+  DesignLeft = 8
+  DesignTop = 8
+  object IWEdit1: TIWEdit
+    Left = 64
+    Top = 32
+    Width = 121
+    Height = 21
+    Font.Color = clNone
+    Font.Size = 10
+    Font.Style = []
+    FriendlyName = 'IWEdit1'
+    Required = True
+    SubmitOnAsyncEvent = True
+    TabOrder = 0
+    Text = 'IWEdit1'
+  end
+  object IWButton1: TIWButton
+    Left = 64
+    Top = 72
+    Width = 245
+    Height = 25
+    Caption = 'IWButton1'
+    Color = clBtnFace
+    Font.Color = clNone
+    Font.Size = 10
+    Font.Style = []
+    FriendlyName = 'IWButton1'
+    TabOrder = 1
+    OnClick = IWButton1Click
+  end
+end

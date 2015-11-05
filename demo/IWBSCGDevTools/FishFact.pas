@@ -11,7 +11,7 @@ uses
   IWBSRegion, IWBSInput, IWVCLComponent, IWBaseLayoutComponent,
   IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr, IWBSControls,
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
-  MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl;
+  MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSImage;
 
 type
   TFFishFact = class(TIWAppForm)
@@ -77,7 +77,7 @@ type
     procedure btnNextAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure btnLastAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure dsrcMainStateChange(Sender: TObject);
-    procedure IWBSButton1Click(Sender: TObject);
+    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -97,7 +97,8 @@ begin
   //ClientDataSet1.Close;
 end;
 
-procedure TFFishFact.IWBSButton1Click(Sender: TObject);
+procedure TFFishFact.IWBSButton1AsyncClick(Sender: TObject;
+  EventParams: TStringList);
 begin
   Release;
 end;
