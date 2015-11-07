@@ -7,6 +7,7 @@ uses System.Classes, System.SysUtils, System.StrUtils, Data.db,
      IWBSCommon;
 
 type
+  // Base class for IWBS controls
   TIWBSCustomControl = class(TIWCustomControl, IIWBSComponent)
   private
     FMainID: string;
@@ -108,6 +109,7 @@ type
     property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
   end;
 
+  // Base class for IWBS data aware controls
   TIWBSCustomDbControl = class(TIWBSCustomControl, IIWBSComponent)
   private
     FDataLink: TIWDataLink;

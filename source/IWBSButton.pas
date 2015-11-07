@@ -8,30 +8,52 @@ uses
   IWBSCustomControl, IWScriptEvents, IWBSRegion, IWBSCommon, IWBSRegionCommon;
 
 type
+  // TIWBSCustomButton.BSButtonStyle
   TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink, bsbsClose);
-  TIWBSButtonDataDismiss = (bsbdNone, bsbdModal, bsbdAlert);
 
-  TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
-  TIWBSButtonType = (iwbsbtButton, iwbsbtSubmit, iwbsbtReset);
-
+  // Base class for TIWBSButton and TIWBSDropDown
   TIWBSCustomButton = class(TIWBSCustomControl)
   private
     FButtonSize: TIWBSSize;
     FButtonStyle: TIWBSButtonStyle;
     FGlyphicon: string;
+    FBlockLevel: boolean;
 
     procedure SetGlyphicon(const Value: string);
     procedure SetButtonStyle(const Value: TIWBSButtonStyle);
+    procedure SetBlockLevel(const Value: boolean);
   public
     constructor Create(AOwner: TComponent); override;
   published
+    // Boostrap Block Level Button @br
+    // http://getbootstrap.com/css/#buttons-sizes
+    property BSBlockLevel: boolean read FBlockLevel write SetBlockLevel;
+    // Boostrap Button Size @br
+    // http://getbootstrap.com/css/#buttons-sizes
     property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
+    // Bootstrap Button Style @br
+    //http://getbootstrap.com/css/#buttons-options
     property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write SetButtonStyle default bsbsDefault;
+    // Bootstrap Glyphicon @br
+    // http://getbootstrap.com/components/#glyphicons
     property BSGlyphicon: string read FGlyphicon write SetGlyphicon;
+    // Button Caption
     property Caption;
+    // Rendered tabindex tag if true and gIWBSEnableTabIndex = true. @br
+    // http://www.w3schools.com/tags/att_global_tabindex.asp
     property TabStop default True;
   end;
 
+  // TIWBSButton.DataDismiss
+  TIWBSButtonDataDismiss = (bsbdNone, bsbdModal, bsbdAlert);
+  // TIWBSButton.AsyncClickProc
+  TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
+  // TIWBSButton.ButtonType
+  TIWBSButtonType = (iwbsbtButton, iwbsbtSubmit, iwbsbtReset);
+
+  // Bootstrap Button @br
+  // http://getbootstrap.com/css/#buttons @br
+  // http://www.w3schools.com/bootstrap/bootstrap_buttons.asp
   TIWBSButton = class(TIWBSCustomButton)
   private
     FAnchor: boolean;
@@ -58,19 +80,39 @@ type
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
     constructor Create(AOwner: TComponent); override;
+    // Anonymous procedure that let you execute code when button is pressed without the need of declare an event. @br
+    // Usefull when you create buttons at runtime
     property AsyncClickProc: TIWBSAsyncClickProc read FAsyncClickProc write SetAsyncClickProc;
   published
+    // If true it will render an anchor if not a button. (This property should be droped, the condition should be autodetected)
     property Anchor: boolean read FAnchor write FAnchor default False;
+    // Button type
     property ButtonType: TIWBSButtonType read FButtonType write FButtonType default iwbsbtButton;
+    // Used when button in placed on a TIWBSModal or TIWBSAlert. @br
+    // Let the button automatically close the dialog.
     property DataDismiss: TIWBSButtonDataDismiss read FDataDismiss write SetDataDismiss default bsbdNone;
+    // Specifies the parent region off collapsable regions to autoclose other regions when one is toggled. See accordion example. @br
+    // http://getbootstrap.com/javascript/#collapse-example-accordion @br
+    // http://www.w3schools.com/bootstrap/bootstrap_collapse.asp
     property DataParent: IIWBSContainer read FDataParent write SetDataParent;
+    // Specifies the target region for for toggle visiblity of TIWBSModal or TIWBSRegion.Collapse @br
+    // http://www.w3schools.com/bootstrap/bootstrap_modal.asp @br
+    // http://www.w3schools.com/bootstrap/bootstrap_collapse.asp
     property DataTarget: IIWBSContainer read FDataTarget write SetDataTarget;
+    // acceskey tag atribute @br
+    // http://www.w3schools.com/tags/att_global_accesskey.asp
     property HotKey: string read FHotkey write FHotKey;
+    // Destination address to jump when button is pressed. @br
+    // Requires following property values: Anchor = true, DataTarget = nil, OnAsyncClic = nil. @br
+    // http://www.w3schools.com/html/html_links.asp
     property Href: string read FHref write SetHref stored IsHrefStored;
+    // The target attribute specifies where to open the linked document. Apply when Href is used. @br
+    // http://www.w3schools.com/html/html_links.asp
     property Target: string read FTarget write SetTarget stored IsTargetStored;
   end;
 
-  const
+const
+  // @exclude
   aIWBSButtonStyle: array[bsbsDefault..bsbsClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
 
 implementation
@@ -90,6 +132,12 @@ begin
   Height := 25;
   Width := 200;
   TabStop := True;
+end;
+
+procedure TIWBSCustomButton.SetBlockLevel(const Value: boolean);
+begin
+  FBlockLevel := Value;
+  Invalidate;
 end;
 
 procedure TIWBSCustomButton.SetButtonStyle(const Value: TIWBSButtonStyle);
@@ -125,6 +173,8 @@ begin
     if FButtonSize <> bsszDefault then
       TIWBSCommon.AddCssClass(ACss, 'btn-'+aIWBSSize[FButtonSize]);
     TIWBSCommon.AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
+    if FBlockLevel then
+      TIWBSCommon.AddCssClass(ACss, 'btn-block');
     if Parent.ClassName = 'TIWBSNavBar' then
       TIWBSCommon.AddCssClass(ACss, 'navbar-btn');
   end;

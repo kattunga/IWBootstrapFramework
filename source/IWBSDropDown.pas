@@ -8,6 +8,9 @@ uses
   IWBSCommon, IWBSButton, IWBSRegionCommon, IWBSRegion;
 
 type
+  // Bootstrap DropDown @br
+  // http://getbootstrap.com/components/#dropdowns @br
+  // http://www.w3schools.com/bootstrap/bootstrap_dropdowns.asp
   TIWBSDropDown = class(TIWBSCustomButton)
   private
     FDropDownItems: TOwnedCollection;
