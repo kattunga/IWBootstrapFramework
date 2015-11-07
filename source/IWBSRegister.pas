@@ -144,15 +144,16 @@ begin
   ControlCanvas.Pen.Color := clGray;
   ControlCanvas.Rectangle(LRect);
 
-  if Control is TIWBSCustomRegion then begin
+  with TIWBSCustomRegion(Control) do begin
     ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
     ControlCanvas.Font.Color := clGray;
-    s := TIWBSCustomRegion(Control).GetClassString;
+    s := GetCssString;
     if Control is TIWBSFormControl then begin
       if s <> '' then
         s := ' '+s;
       s := 'form-control'+s;
     end;
+    s := Name+' ['+s+']';
     w := ControlCanvas.TextWidth(s);
     LRect := Rect(Control.ClientWidth-w-10, 2, Control.Width, Control.Height);
     ControlCanvas.TextRect(LRect,s,[]);
@@ -291,7 +292,7 @@ end;
 procedure TIWBSPaintHandlerCustomButton.Paint;
 var
   LRect : TRect;
-  c, s: string;
+  s: string;
 begin
   GlyphiconsFontAdvice;
 

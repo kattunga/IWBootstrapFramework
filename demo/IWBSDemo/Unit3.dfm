@@ -119,7 +119,7 @@ object IWFrame3: TIWFrame3
           FriendlyName = 'IWBSButton199'
           TabOrder = -1
           BSButtonStyle = bsbsClose
-          BSDataDismiss = bsbdModal
+          DataDismiss = bsbdModal
         end
       end
       object IWBSRegion4: TIWBSRegion

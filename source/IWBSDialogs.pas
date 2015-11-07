@@ -57,6 +57,7 @@ type
   protected
     procedure DoOnAsyncClose(AParams: TStringList); virtual;
     function GetCloseScript: string;
+    procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); override;
     procedure SetAlertStyle(AValue: TIWBSAlertStyle);
   public
@@ -75,7 +76,6 @@ type
 
     property AlertLabel: TIWBSLabel read FAlertLabel;
 
-    function GetClassString: string; override;
     property OnAsyncClose: TIWAsyncEvent read FOnAsyncClose write FOnAsyncClose;
   end;
 
@@ -84,7 +84,7 @@ var
 
 implementation
 
-uses IWBSRegionCommon, IWApplication, IWBSUtils;
+uses IWBSRegionCommon, IWApplication, IWBSUtils, IWBSCommon;
 
 {$region 'TIWBSDialog'}
 constructor TIWBSDialog.Create(AForm: TIWForm; const AHeaderText, ABodyText: string);
@@ -172,7 +172,7 @@ begin
     Parent := GetHeader;
     Caption := '';
     BSButtonStyle := bsbsClose;
-    BSDataDismiss := bsbdModal;
+    DataDismiss := bsbdModal;
   end;
 
   // body
@@ -190,7 +190,7 @@ begin
     with TIWBSButton.Create(Owner) do begin
       Parent := GetFooter;
       Caption := sIWBSDialogCloseCaption;
-      BSDataDismiss := bsbdModal;
+      DataDismiss := bsbdModal;
     end;
   end;
 end;
@@ -200,7 +200,7 @@ begin
   Result := TIWBSButton.Create(Owner);
   Result.Parent := AParent;
   Result.Caption := ACaption;
-  Result.BSDataDismiss := bsbdModal;
+  Result.DataDismiss := bsbdModal;
   Result.LockOnAsyncEvents := [aeClick];
   Result.AsyncClickProc := AAsyncClickProc;
 end;
@@ -226,7 +226,7 @@ begin
   FCloseButton.Name := Name+'_CLOSEBTN';
   FCloseButton.Caption := '';
   FCloseButton.BSButtonStyle := bsbsClose;
-  FCloseButton.BSDataDismiss := bsbdAlert;
+  FCloseButton.DataDismiss := bsbdAlert;
 end;
 
 constructor TIWBSAlert.Create(const AAlertText: string; AAlertStyle: TIWBSAlertStyle = bsasSuccess);
@@ -267,16 +267,16 @@ begin
   FAlertStyle := AValue;
 end;
 
-function TIWBSAlert.GetClassString: string;
+procedure TIWBSAlert.InternalRenderCss(var ACss: string);
 const
   aIWBSAlertStyle: array[bsasSuccess..bsasDanger] of string = ('success', 'info', 'warning', 'danger');
   aIWBSAlertPosition: array[bsapRightTop..bsapRightBottom] of string = ('right-top', 'right-center', 'right-bottom');
 begin
-  Result := 'alert alert-' + aIWBSAlertStyle[FAlertStyle];
+  TIWBSCommon.AddCssClass(ACss, 'alert alert-' + aIWBSAlertStyle[FAlertStyle]);
   if FFade then
-    Result := Result + ' fade in';
+    TIWBSCommon.AddCssClass(ACss, 'fade in');
   if FAlertPosition <> bsapDefault then
-    Result := Result+ ' flyover flyover-' + aIWBSAlertPosition[FAlertPosition]
+    TIWBSCommon.AddCssClass(ACss, 'flyover flyover-' + aIWBSAlertPosition[FAlertPosition])
 end;
 
 function TIWBSAlert.GetCloseScript: string;
@@ -297,7 +297,7 @@ begin
   Result := TIWBSButton.Create(Owner);
   Result.Parent := Self;
   Result.Caption := ACaption;
-  Result.BSDataDismiss := bsbdAlert;
+  Result.DataDismiss := bsbdAlert;
   Result.AsyncClickProc := AAsyncClickProc;
 end;
 {$endregion}

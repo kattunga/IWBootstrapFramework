@@ -213,7 +213,7 @@ end;
 procedure SetAsyncClass(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").toggleClass("'+Value+'");');
+    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").removeClass().addClass("'+Value+'");');
     OldValue := Value;
   end;
 end;

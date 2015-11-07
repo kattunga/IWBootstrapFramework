@@ -50,6 +50,7 @@ type
   protected
     function ContainerPrefix: string; override;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
+    procedure InternalRenderCss(var ACss: string); virtual;
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); virtual;
     property Released: boolean read FReleased;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
@@ -65,7 +66,7 @@ type
     procedure Release;
     procedure AsyncRefreshControl;
     procedure AsyncRemoveControl;
-    function GetClassString: string; virtual;
+    function GetCssString: string;
     function GetRoleString: string; virtual;
     function IsStoredCustomAsyncEvents: Boolean;
     function IsStoredCustomRestEvents: Boolean;
@@ -77,6 +78,7 @@ type
     property CustomRestEvents: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
     property Css: string read FCss write FCss;
     property ExtraTagParams;
+    property LayoutMgr;
     property RenderInvisibleControls default False;
     property ScriptEvents: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;
     property Script: TStringList read GetScript write SetScript;
@@ -100,11 +102,11 @@ type
     FOnSubmit: TIWBSInputFormSubmitEvent;
     procedure DoSubmit(aApplication: TIWApplication; aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
   protected
+    procedure InternalRenderCss(var ACss: string); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function GetClassString: string; override;
     function GetRoleString: string; override;
   published
     property BSFormType: TIWBSFormType read FFormType write FFormType default bsftVertical;
@@ -117,9 +119,10 @@ type
   private
     FCaption: string;
     FRelativeSize: TIWBSRelativeSize;
+  protected
+    procedure InternalRenderCss(var ACss: string); override;
   public
     constructor Create(AOwner: TComponent); override;
-    function GetClassString: string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
     property Caption: string read FCaption write FCaption;
@@ -141,21 +144,27 @@ type
     FPanelStyle: TIWBSPanelStyle;
     FRegionType: TIWBSRegionType;
     FRelativeSize: TIWBSRelativeSize;
+    FCollapseVisible: boolean;
+    FCollapse: boolean;
     procedure SetButtonGroupOptions(AValue: TIWBSButonGroupOptions);
     procedure SetRegionType(AValue: TIWBSRegionType);
     procedure SetPanelStyle(AValue: TIWBSPanelStyle);
     procedure SetRelativeSize(AValue: TIWBSRelativeSize);
+    procedure SetCollapse(const Value: boolean);
+    procedure SetCollapseVisible(const Value: boolean);
+  protected
+    procedure InternalRenderCss(var ACss: string); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function GetClassString: string; override;
     function GetRoleString: string; override;
   published
     property BSButtonGroupOptions: TIWBSButonGroupOptions read FButtonGroupOptions write SetButtonGroupOptions;
     property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
     property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtIWBSRegion;
     property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write SetRelativeSize default bsrzDefault;
-    property LayoutMgr;
+    property Collapse: boolean read FCollapse write SetCollapse default False;
+    property CollapseVisible: boolean read FCollapseVisible write SetCollapseVisible default False;
   end;
 
   TIWBSNavBarFixed = (bsnvfxNone, bsnvfxTop, bsnvfxBottom);
@@ -167,9 +176,10 @@ type
     FFluid: boolean;
     FFixed: TIWBSNavBarFixed;
     FInverse: boolean;
+  protected
+    procedure InternalRenderCss(var ACss: string); override;
   public
     constructor Create(AOwner: TComponent); override;
-    function GetClassString: string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
     property Brand: string read FBrand write FBrand;
@@ -180,9 +190,10 @@ type
   end;
 
   TIWBSUnorderedList = class(TIWBSCustomRegion)
+  protected
+    procedure InternalRenderCss(var ACss: string); override;
   public
     constructor Create(AOwner: TComponent); override;
-    function GetClassString: string; override;
   end;
 
   TIWBSModal = class(TIWBSCustomRegion)
@@ -199,11 +210,11 @@ type
     procedure SetModalVisible(AValue: boolean);
     procedure DoOnAsyncShow(AParams: TStringList); virtual;
     procedure DoOnAsyncHide(AParams: TStringList); virtual;
+    procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function GetClassString: string; override;
     function GetRoleString: string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
@@ -302,16 +313,6 @@ begin
   Result := ScriptEvents.Count > 0;
 end;
 
-function TIWBSCustomRegion.GetClassString: string;
-begin
-  Result := FGridOptions.GetClassString;
-  if FCss <> '' then begin
-    if Result <> '' then
-      Result := Result + ' ';
-    Result := Result + FCss;
-  end;
-end;
-
 function TIWBSCustomRegion.GetRoleString: string;
 begin
   result := '';
@@ -331,6 +332,11 @@ end;
 procedure TIWBSCustomRegion.OnStyleChange( ASender : TObject );
 begin
   Invalidate;
+end;
+
+function TIWBSCustomRegion.GetCssString: string;
+begin
+  Result := RenderCSSClass(nil);
 end;
 
 function TIWBSCustomRegion.GetCustomAsyncEvents: TOwnedCollection;
@@ -429,6 +435,16 @@ begin
   Result := False;
 end;
 
+procedure TIWBSCustomRegion.InternalRenderCss(var ACss: string);
+begin
+  //
+end;
+
+procedure TIWBSCustomRegion.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
+begin
+  //
+end;
+
 function TIWBSCustomRegion.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   xHTMLName: string;
@@ -457,24 +473,15 @@ begin
   TIWBSRegionCommon.RenderComponents(Self, AContainerContext, APageContext);
 end;
 
-procedure TIWBSCustomRegion.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
-begin
-
-end;
-
-procedure TIWBSCustomRegion.RenderScripts(AComponentContext: TIWCompContext);
-begin
-  //
-end;
-
-function TIWBSCustomRegion.RenderStyle(AContext: TIWCompContext): string;
-begin
-  Result := TIWBSCommon.RenderStyle(Self);
-end;
-
 function TIWBSCustomRegion.RenderCSSClass(AComponentContext: TIWCompContext): string;
 begin
-  Result := Css;
+  Result := FGridOptions.GetClassString;
+  if FCss <> '' then begin
+    if Result <> '' then
+      Result := Result + ' ';
+    Result := Result + FCss;
+  end;
+  InternalRenderCss(Result);
 end;
 
 function TIWBSCustomRegion.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -485,13 +492,23 @@ begin
 
   FRegionDiv := TIWHTMLTag.CreateTag(FTagType);
   FRegionDiv.AddStringParam('id',HTMLName);
-  FRegionDiv.AddClassParam(GetClassString);
+  FRegionDiv.AddClassParam(FOldCss);
   FRegionDiv.AddStringParam('role',GetRoleString);
   FRegionDiv.AddStringParam('style',RenderStyle(AContext));
   Result := FRegionDiv;
 
   IWBSRenderScript(Self, AContext, Result);
   FAsyncRefreshControl := False;
+end;
+
+procedure TIWBSCustomRegion.RenderScripts(AComponentContext: TIWCompContext);
+begin
+  //
+end;
+
+function TIWBSCustomRegion.RenderStyle(AContext: TIWCompContext): string;
+begin
+  Result := TIWBSCommon.RenderStyle(Self);
 end;
 {$endregion}
 
@@ -511,17 +528,12 @@ begin
   inherited;
 end;
 
-function TIWBSInputForm.GetClassString: string;
-var
-  s: string;
+procedure TIWBSInputForm.InternalRenderCss(var ACss: string);
 begin
   if FFormType = bsftInline then
-    Result := 'form-inline'
+    TIWBSCommon.AddCssClass(ACss, 'form-inline')
   else if FFormType = bsftHorizontal then
-    Result := 'form-horizontal';
-  s := inherited;
-  if s <> '' then
-    Result := Result + ' ' + s;
+    TIWBSCommon.AddCssClass(ACss, 'form-horizontal');
 end;
 
 function TIWBSInputForm.GetRoleString: string;
@@ -567,16 +579,11 @@ begin
   FRelativeSize := bsrzDefault;
 end;
 
-function TIWBSInputGroup.GetClassString: string;
-var
-  s: string;
+procedure TIWBSInputGroup.InternalRenderCss(var ACss: string);
 begin
-  Result := 'input-group';
+  TIWBSCommon.AddCssClass(ACss, 'input-group');
   if FRelativeSize <> bsrzDefault then
-    Result := Result + ' input-group-'+aIWBSRelativeSize[FRelativeSize];
-  s := inherited;
-  if s <> '' then
-    Result := Result + ' ' + s;
+    TIWBSCommon.AddCssClass(ACss, 'input-group-'+aIWBSRelativeSize[FRelativeSize]);
 end;
 
 function TIWBSInputGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -610,33 +617,34 @@ begin
   inherited;
 end;
 
-function TIWBSRegion.GetClassString: string;
+procedure TIWBSRegion.InternalRenderCss(var ACss: string);
 const
   aIWBSPanelStyle: array[bspsDefault..bspsDanger] of string = ('panel-default', 'panel-primary', 'panel-success', 'panel-info', 'panel-warning', 'panel-danger');
-var
-  s: string;
 begin
-  Result := aIWBSRegionType[FRegionType];
+  TIWBSCommon.AddCssClass(ACss, aIWBSRegionType[FRegionType]);
+
 
   if FRegionType = bsrtPanel then
-    Result := Result + ' ' + aIWBSPanelStyle[FPanelStyle]
+    TIWBSCommon.AddCssClass(ACss, aIWBSPanelStyle[FPanelStyle])
 
   else if (FRegionType = bsrtWell) and (FRelativeSize <> bsrzDefault) then
-    Result := Result + ' well-' + aIWBSRelativeSize[FRelativeSize]
+    TIWBSCommon.AddCssClass(ACss, ' well-' + aIWBSRelativeSize[FRelativeSize])
 
   else if FRegionType = bsrtButtonGroup then
     begin
       if FButtonGroupOptions.Vertical then
-        Result := Result + '-vertical';
+        ACss := ACss + '-vertical';
       if FButtonGroupOptions.Size <> bsszDefault then
-        Result := Result + ' btn-group-'+aIWBSSize[FButtonGroupOptions.Size];
+        ACss := ACss + ' btn-group-'+aIWBSSize[FButtonGroupOptions.Size];
       if FButtonGroupOptions.Justified then
-        Result := Result + ' btn-group-justified';
+        ACss := ACss + ' btn-group-justified';
     end;
 
-  s := inherited;
-  if s <> '' then
-    Result := Result + ' ' + s;
+  if FCollapse then begin
+    TIWBSCommon.AddCssClass(ACss, 'collapse');
+    if FCollapseVisible then
+      TIWBSCommon.AddCssClass(ACss, 'in');
+  end;
 end;
 
 function TIWBSRegion.GetRoleString: string;
@@ -652,6 +660,18 @@ end;
 procedure TIWBSRegion.SetButtonGroupOptions(AValue: TIWBSButonGroupOptions);
 begin
   FButtonGroupOptions.Assign(AValue);
+  Invalidate;
+end;
+
+procedure TIWBSRegion.SetCollapse(const Value: boolean);
+begin
+  FCollapse := Value;
+  Invalidate;
+end;
+
+procedure TIWBSRegion.SetCollapseVisible(const Value: boolean);
+begin
+  FCollapseVisible := Value;
   Invalidate;
 end;
 
@@ -684,18 +704,13 @@ begin
   FTagType := 'nav';
 end;
 
-function TIWBSNavBar.GetClassString: string;
-var
-  s: string;
+procedure TIWBSNavBar.InternalRenderCss(var ACss: string);
 begin
-  Result := 'navbar navbar-'+iif(FInverse,'inverse', 'default');
+  TIWBSCommon.AddCssClass(ACss, 'navbar navbar-'+iif(FInverse,'inverse', 'default'));
   if FFixed = bsnvfxTop then
-    Result := Result + ' navbar-fixed-top'
+    TIWBSCommon.AddCssClass(ACss, 'navbar-fixed-top')
   else if FFixed = bsnvfxBottom then
-    Result := Result + ' navbar-fixed-bottom';
-  s := inherited;
-  if s <> '' then
-    Result := Result + ' ' + s;
+    TIWBSCommon.AddCssClass(ACss, ' navbar-fixed-bottom');
 end;
 
 function TIWBSNavBar.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -740,17 +755,12 @@ begin
   FTagType := 'ul';
 end;
 
-function TIWBSUnorderedList.GetClassString: string;
-var
-  s: string;
+procedure TIWBSUnorderedList.InternalRenderCss(var ACss: string);
 begin
   if Parent.ClassName = 'TIWBSNavBar' then
-    Result := 'nav navbar-nav'
+    TIWBSCommon.AddCssClass(ACss, 'nav navbar-nav')
   else
-    Result := 'list-group';
-  s := inherited;
-  if s <> '' then
-    Result := Result + ' ' + s;
+    TIWBSCommon.AddCssClass(ACss, 'list-group');
 end;
 {$endregion}
 
@@ -771,17 +781,11 @@ begin
   inherited;
 end;
 
-function TIWBSModal.GetClassString: string;
-var
-  s: string;
+procedure TIWBSModal.InternalRenderCss(var ACss: string);
 begin
-  Result := 'modal';
+  TIWBSCommon.AddCssClass(ACss, 'modal');
   if FFade then
-    Result := Result + ' fade';
-  s := inherited;
-  if s <> '' then
-    Result := Result + ' ' + s;
-  Result := Result + s;
+    TIWBSCommon.AddCssClass(ACss, 'fade');
 end;
 
 function TIWBSModal.GetRoleString: string;

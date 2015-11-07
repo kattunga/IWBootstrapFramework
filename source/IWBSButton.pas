@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, data.db, System.StrUtils, Vcl.Controls,
   IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseInterfaces,
-  IWBSCustomControl, IWScriptEvents, IWBSRegion, IWBSCommon;
+  IWBSCustomControl, IWScriptEvents, IWBSRegion, IWBSCommon, IWBSRegionCommon;
 
 type
   TIWBSButtonStyle = (bsbsDefault, bsbsPrimary, bsbsSuccess, bsbsInfo, bsbsWarning, bsbsDanger, bsbsLink, bsbsClose);
@@ -38,10 +38,21 @@ type
     FAsyncClickProc: TIWBSAsyncClickProc;
     FButtonType: TIWBSButtonType;
     FDataDismiss: TIWBSButtonDataDismiss;
+    FDataParent: IIWBSContainer;
+    FDataTarget: IIWBSContainer;
     FHotKey: string;
+    FHref: string;
+    FTarget: string;
 
     procedure DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
     procedure SetAsyncClickProc(Value: TIWBSAsyncClickProc);
+    function IsHrefStored: Boolean;
+    function IsTargetStored: Boolean;
+    procedure SetDataTarget(const Value: IIWBSContainer);
+    procedure SetDataParent(const Value: IIWBSContainer);
+    procedure SetHref(const Value: string);
+    procedure SetTarget(const Value: string);
+    procedure SetDataDismiss(const Value: TIWBSButtonDataDismiss);
   protected
     procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
@@ -51,10 +62,12 @@ type
   published
     property Anchor: boolean read FAnchor write FAnchor default False;
     property ButtonType: TIWBSButtonType read FButtonType write FButtonType default iwbsbtButton;
-    property BSDataDismiss: TIWBSButtonDataDismiss read FDataDismiss write FDataDismiss default bsbdNone;
-    property Confirmation;
-    property DoSubmitValidation;
+    property DataDismiss: TIWBSButtonDataDismiss read FDataDismiss write SetDataDismiss default bsbdNone;
+    property DataParent: IIWBSContainer read FDataParent write SetDataParent;
+    property DataTarget: IIWBSContainer read FDataTarget write SetDataTarget;
     property HotKey: string read FHotkey write FHotKey;
+    property Href: string read FHref write SetHref stored IsHrefStored;
+    property Target: string read FTarget write SetTarget stored IsTargetStored;
   end;
 
   const
@@ -99,6 +112,9 @@ begin
   FAnchor := False;
   FButtonType := iwbsbtButton;
   FDataDismiss := bsbdNone;
+  FHotKey := '';
+  FHref := '#';
+  FTarget := '_self';
 end;
 
 procedure TIWBSButton.InternalRenderCss(var ACss: string);
@@ -127,20 +143,36 @@ begin
   try
     AHTMLTag.AddStringParam('id', AHTMLName);
     AHTMLTag.AddClassParam(ActiveCss);
+
     if FDataDismiss <> bsbdNone then
       AHTMLTag.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
-    if FAnchor then
-      AHTMLTag.AddStringParam('href', '#')
-    else if FButtonType = iwbsbtButton then
-      AHTMLTag.AddStringParam('type', 'button')
+
+    if FAnchor or (FButtonType = iwbsbtButton) then
+      begin
+        if FAnchor and (FDataTarget = nil) then
+          AHTMLTag.AddStringParam('href', FHref);
+        if not FAnchor then
+          AHTMLTag.AddStringParam('type', 'button');
+        if FDataTarget <> nil then begin
+          if FAnchor then
+            AHTMLTag.AddStringParam('href', '#'+FDataTarget.HTMLName)
+          else
+            AHTMLTag.AddStringParam('data-target', '#'+FDataTarget.HTMLName);
+          if FDataParent <> nil then
+            AHTMLTag.AddStringParam('data-parent', '#'+FDataParent.HTMLName);
+          if (FDataTarget.InterfaceInstance is TIWBSModal) then
+            AHTMLTag.AddStringParam('data-toggle', 'modal')
+          else if (FDataTarget.InterfaceInstance is TIWBSRegion) and TIWBSRegion(FDataTarget.InterfaceInstance).Collapse then
+            AHTMLTag.AddStringParam('data-toggle', 'collapse');
+        end;
+      end
     else if FButtonType = iwbsbtSubmit then
       AHTMLTag.AddStringParam('type', 'submit')
     else if FButtonType = iwbsbtReset then
       AHTMLTag.AddStringParam('type', 'reset');
-    if ShowHint and (Hint <> '') then begin
-      AHTMLTag.AddStringParam('data-toggle', 'tooltip');
+
+    if ShowHint and (Hint <> '') then
       AHTMLTag.AddStringParam('title', Hint);
-    end;
     if IsDisabled then
       AHTMLTag.Add('disabled');
     s := TextToHTML(Caption);
@@ -152,12 +184,12 @@ begin
       AHTMLTag.AddStringParam('aria-label', 'Close');
     AHTMLTag.AddStringParam('style', ActiveStyle);
 
-    if FGlyphicon <> '' then begin
-      xHTMLTag := AHTMLTag.Contents.AddTag('span');
-      xHTMLTag.AddClassParam('glyphicon glyphicon-'+FGlyphicon);
-      xHTMLTag.AddBoolParam('aria-hidden',true);
-      s := ' '+s;
-    end;
+    if FGlyphicon <> '' then
+      with AHTMLTag.Contents.AddTag('span') do begin
+        AddClassParam('glyphicon glyphicon-'+FGlyphicon);
+        AddBoolParam('aria-hidden',true);
+        s := ' '+s;
+      end;
 
     // caption after glyphicon
     if (FButtonStyle = bsbsClose) and (s = '') and (FGlyphicon = '') then
@@ -181,6 +213,16 @@ begin
     AHTMLTag := IWBSCreateFormGroup(Parent, IWBSFindParentInputForm(Parent), AHTMLTag, AHTMLName, True);
 end;
 
+function TIWBSButton.IsHrefStored: Boolean;
+begin
+  Result := FHref <> '#';
+end;
+
+function TIWBSButton.IsTargetStored: Boolean;
+begin
+  Result := FTarget <> '_self';
+end;
+
 procedure TIWBSButton.DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
 begin
   FAsyncClickProc(EventParams);
@@ -190,6 +232,32 @@ procedure TIWBSButton.SetAsyncClickProc(Value: TIWBSAsyncClickProc);
 begin
   FAsyncClickProc := Value;
   OnAsyncClick := DoAsyncClickProc
+end;
+procedure TIWBSButton.SetHref(const Value: string);
+begin
+  FHref := Value;
+  AsyncRefreshControl;
+end;
+
+procedure TIWBSButton.SetTarget(const Value: string);
+begin
+  FTarget := Value;
+  AsyncRefreshControl;
+end;
+
+procedure TIWBSButton.SetDataDismiss(const Value: TIWBSButtonDataDismiss);
+begin
+  FDataDismiss := Value;
+end;
+
+procedure TIWBSButton.SetDataParent(const Value: IIWBSContainer);
+begin
+  FDataParent := Value;
+end;
+
+procedure TIWBSButton.SetDataTarget(const Value: IIWBSContainer);
+begin
+  FDataTarget := Value;
 end;
 {$endregion}
 

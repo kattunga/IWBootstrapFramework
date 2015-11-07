@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, System.StrUtils,
   IWRenderContext, IWHTMLTag, IWControl,
-  IWBSCommon, IWBSButton;
+  IWBSCommon, IWBSButton, IWBSRegionCommon, IWBSRegion;
 
 type
   TIWBSDropDown = class(TIWBSCustomButton)
@@ -18,7 +18,7 @@ type
     function IsStoredDropDownItems: Boolean;
     procedure SetDropDownItems(const Value: TOwnedCollection);
     procedure DoOnItemAsyncClick(AParams: TStringList);
-    function RenderAnchorTag(const AHTMLName, ACaption, ACss, AGlyphicon, AHint, AStyle: string; ADisabled: boolean; AItemIdx: integer; AOnAsyncClick: boolean; ADropDownItems: TOwnedCollection; ALevel: integer; AContext: TIWCompContext): TIWHTMLTag;
+    function RenderAnchorTag(const AHTMLName, ACaption, ACss, AGlyphicon, AHint, AHref, AStyle: string; ADisabled, AHeader: boolean; AItemIdx: integer; AOnAsyncClick: boolean; ADataParent, ADataTarget: IIWBSContainer; ADropDownItems: TOwnedCollection): TIWHTMLTag;
     procedure SetDropUp(const Value: boolean);
     procedure SetDropDownRight(const Value: boolean);
   protected
@@ -39,18 +39,36 @@ type
     FDisabled: boolean;
     FDropDownItems: TOwnedCollection;
     FGlyphicon: string;
+    FHeader: boolean;
     FHint: string;
     FOnAsyncClick: TIWAsyncEvent;
     FStyle: string;
+    FHref: string;
+    FTarget: string;
+    FDataParent: IIWBSContainer;
+    FDataTarget: IIWBSContainer;
     function GetDropDownItems: TOwnedCollection;
     function IsStoredDropDownItems: Boolean;
     procedure SetDropDownItems(const Value: TOwnedCollection);
+    function IsHrefStored: Boolean;
+    procedure SetHref(const Value: string);
+    function IsTargetStored: Boolean;
+    procedure SetTarget(const Value: string);
+    procedure SetDataParent(const Value: IIWBSContainer);
+    procedure SetDataTarget(const Value: IIWBSContainer);
   protected
     function GetDisplayName: string; override;
   published
+    constructor Create(Collection: TCollection); override;
     property Caption: string read FCaption write FCaption;
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
+    property DataParent: IIWBSContainer read FDataParent write SetDataParent;
+    property DataTarget: IIWBSContainer read FDataTarget write SetDataTarget;
     property DropDownItems: TOwnedCollection read GetDropDownItems write SetDropDownItems stored IsStoredDropDownItems;
+    property Header: boolean read FHeader write FHeader default False;
+    property Href: string read FHref write SetHref stored IsHrefStored;
+    property Target: string read FTarget write SetTarget stored IsTargetStored;
+
     property OnAsyncClick: TIWAsyncEvent read FOnAsyncClick write FOnAsyncClick;
   end;
 
@@ -59,6 +77,13 @@ implementation
 uses IW.Common.System;
 
 {$region 'TIWBSDropDownItem'}
+constructor TIWBSDropDownItem.Create(Collection: TCollection);
+begin
+  inherited;
+  FHref := '#';
+  FTarget := '_self';
+end;
+
 function TIWBSDropDownItem.GetDisplayName: string;
 begin
   Result := FCaption;
@@ -72,14 +97,43 @@ begin
   Result := FDropDownItems;
 end;
 
+function TIWBSDropDownItem.IsHrefStored: Boolean;
+begin
+  Result := FHref <> '#';
+end;
+
 function TIWBSDropDownItem.IsStoredDropDownItems: Boolean;
 begin
   Result := (FDropDownItems <> nil) and (FDropDownItems.Count > 0);
 end;
 
+function TIWBSDropDownItem.IsTargetStored: Boolean;
+begin
+  Result := FTarget <> '_self';
+end;
+
+procedure TIWBSDropDownItem.SetDataParent(const Value: IIWBSContainer);
+begin
+  FDataParent := Value;
+end;
+
+procedure TIWBSDropDownItem.SetDataTarget(const Value: IIWBSContainer);
+begin
+  FDataTarget := Value;
+end;
+
 procedure TIWBSDropDownItem.SetDropDownItems(const Value: TOwnedCollection);
 begin
   FDropDownItems.Assign(Value);
+end;
+procedure TIWBSDropDownItem.SetHref(const Value: string);
+begin
+  FHref := Value;
+end;
+
+procedure TIWBSDropDownItem.SetTarget(const Value: string);
+begin
+  FTarget := Value;
 end;
 {$endregion}
 
@@ -133,15 +187,15 @@ begin
     TIWBSDropDownItem(FItemsTree.Items[idx]).OnAsyncClick(FItemsTree.Items[idx], AParams);
 end;
 
-function TIWBSDropDown.RenderAnchorTag(const AHTMLName, ACaption, ACss, AGlyphicon, AHint, AStyle: string; ADisabled: boolean; AItemIdx: integer; AOnAsyncClick: boolean; ADropDownItems: TOwnedCollection; ALevel: integer; AContext: TIWCompContext): TIWHTMLTag;
+function TIWBSDropDown.RenderAnchorTag(const AHTMLName, ACaption, ACss, AGlyphicon, AHint, AHref, AStyle: string; ADisabled, AHeader: boolean; AItemIdx: integer; AOnAsyncClick: boolean; ADataParent, ADataTarget: IIWBSContainer; ADropDownItems: TOwnedCollection): TIWHTMLTag;
 var
   i: integer;
   button: boolean;
   LItemIdx: integer;
 begin
-  button := (ALevel = 0) and (Parent.ClassName <> 'TIWBSUnorderedList');
+  button := (AItemIdx < 0) and (Parent.ClassName <> 'TIWBSUnorderedList');
 
-  if (ALevel = 0) and Parent.ClassNameIs('TIWBSInputGroup') then
+  if (AItemIdx < 0) and Parent.ClassNameIs('TIWBSInputGroup') then
     begin
       result := TIWHTMLTag.CreateTag('span');
       Result.AddClassParam('input-group-btn');
@@ -151,19 +205,36 @@ begin
   else
     result := TIWHTMLTag.CreateTag('li');
   try
+
+    // divider
+    if (AItemIdx >= 0) and (ACaption = '-') then begin
+      Result.AddClassParam('divider');
+      Result.AddStringParam('role', 'separator');
+      Exit;
+    end;
+
+    // header
+    if AHeader then begin
+      Result.AddClassParam('dropdown-header');
+      Result.Contents.AddText(ACaption);
+      Exit;
+    end;
+
+    // items
     result.AddStringParam('id', AHTMLName+iif(AItemIdx >= 0, IntToStr(AItemIdx)));
     if ADropDownItems <> nil then begin
       if FDropUp then
         Result.AddClassParam('dropup')
       else
         Result.AddClassParam('dropdown');
-      if ALevel > 0 then
+      if AItemIdx >= 0 then
         Result.AddClassParam('dropdown-submenu');
     end;
 
     // anchor or button
     with result.Contents.AddTag(iif(button, 'button', 'a')) do begin
       AddClassParam(ACss);
+
       if Button then
         begin
           AddClassParam('btn');
@@ -173,23 +244,35 @@ begin
           if Parent.ClassName = 'TIWBSNavBar' then
             AddClassParam('navbar-btn');
         end
+      else if ADataTarget = nil then
+        AddStringParam('href', AHref)
       else
-        AddStringParam('href', '#');
-      if Showhint and (AHint <> '') then begin
-        AddStringParam('data-toggle', 'tooltip');
+        AddStringParam('href', '#'+ADataTarget.HTMLName);
+
+      if Showhint and (AHint <> '') then
         AddStringParam('title', AHint);
-      end;
       if ADisabled then
         Add('disabled');
       AddStringParam('style', AStyle);
 
-      if ADropDownItems <> nil then begin
-        AddClassParam('dropdown-toggle');
-        AddStringParam('data-toggle','dropdown');
-      end;
-
-      if (AItemIdx >= 0) and AOnAsyncClick then
-        AddStringParam('data-item-idx',IntToStr(AItemIdx));
+      if ADropDownItems <> nil then
+        begin
+          AddClassParam('dropdown-toggle');
+          AddStringParam('data-toggle','dropdown');
+        end
+      else
+        begin
+          if (AItemIdx >= 0) and AOnAsyncClick then
+            AddStringParam('data-item-idx',IntToStr(AItemIdx));
+          if ADataTarget <> nil then begin
+            if ADataParent <> nil then
+              AddStringParam('data-parent', '#'+ADataParent.HTMLName);
+            if (ADataTarget.InterfaceInstance is TIWBSModal) then
+              AddStringParam('data-toggle', 'modal')
+            else if (ADataTarget.InterfaceInstance is TIWBSRegion) and TIWBSRegion(ADataTarget.InterfaceInstance).Collapse then
+              AddStringParam('data-toggle', 'collapse');
+          end;
+        end;
 
       Contents.AddText(TextToHTML(ACaption));
 
@@ -200,7 +283,7 @@ begin
         end
       else if ADropDownItems <> nil then
         with Contents.AddTag('span') do
-          if ALevel = 0 then
+          if AItemIdx < 0 then
             AddClassParam('caret')
           else if FDropDownRight then
             AddClassParam('caret-left')
@@ -217,7 +300,7 @@ begin
         for i := 0 to ADropDownItems.Count-1 do begin
           LItemIdx := FItemsTree.Add(ADropDownItems.Items[i]);
           with TIWBSDropDownItem(ADropDownItems.Items[i]) do
-            Contents.AddTagAsObject(RenderAnchorTag(AHTMLName, FCaption, FCss, FGlyphicon, FHint, FStyle, FDisabled, LItemIdx, Assigned(FOnAsyncClick), FDropDownItems, ALevel+1, AContext));
+            Contents.AddTagAsObject(RenderAnchorTag(AHTMLName, FCaption, FCss, FGlyphicon, FHint, FHref, FStyle, FDisabled, FHeader, LItemIdx, Assigned(FOnAsyncClick), FDataParent, FDataTarget, FDropDownItems));
         end;
       end;
     end;
@@ -232,7 +315,7 @@ begin
   inherited;
   FreeAndNil(FItemsTree);
   FItemsTree := TList.Create;
-  AHTMLTag := RenderAnchorTag(AHTMLName, Caption, ActiveCss, BSGlyphicon, Hint, ActiveStyle, IsDisabled, -1, False, FDropDownItems, 0, AContext);
+  AHTMLTag := RenderAnchorTag(AHTMLName, Caption, ActiveCss, BSGlyphicon, Hint, '', ActiveStyle, IsDisabled, False, -1, False, nil, nil, FDropDownItems);
 end;
 
 procedure TIWBSDropDown.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);

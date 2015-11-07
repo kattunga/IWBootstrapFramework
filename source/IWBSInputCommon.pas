@@ -89,10 +89,8 @@ begin
       Result.AddClassParam(InputForm.BSFormOptions.GetOffsetClassString);
     lablTag := Result.Contents.AddTag('label');
     lablTag.AddStringParam('id', AHTMLName+'_CHKBCAPTION');
-    if AShowHint and (AHint <> '') then begin
-      lablTag.AddStringParam('data-toggle', 'tooltip');
+    if AShowHint and (AHint <> '') then
       lablTag.AddStringParam('title', AHint);
-    end;
     lablTag.Contents.AddTagAsObject(ATag);
     lablTag.Contents.AddText(TIWBaseHTMLControl.TextToHTML(ACaption));
 

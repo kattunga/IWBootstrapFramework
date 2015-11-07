@@ -96,6 +96,8 @@ constructor TIWBSLabel.Create(AOwner: TComponent);
 begin
   inherited;
   FRawText := False;
+  Height := 25;
+  Width := 200;
 end;
 
 procedure TIWBSLabel.SetForControl(const Value: TIWCustomControl);
@@ -154,6 +156,8 @@ begin
   FLines := TStringList.Create;
   FLines.OnChange := OnLinesChange;
   FRawText := False;
+  Height := 100;
+  Width := 200;
 end;
 
 procedure TIWBSText.OnLinesChange( ASender : TObject );
@@ -319,10 +323,8 @@ begin
     AHTMLTag.AddStringParam('id', AHTMLName);
     AHTMLTag.AddStringParam('name', AHTMLName+iif(FMultiple,'[]'));
     AHTMLTag.AddStringParam('type', 'file');
-    if ShowHint and (Hint <> '') then begin
-      AHTMLTag.AddStringParam('data-toggle', 'tooltip');
+    if ShowHint and (Hint <> '') then
       AHTMLTag.AddStringParam('title', Hint);
-    end;
     if FMultiple then
       AHTMLTag.Add('multiple');
 

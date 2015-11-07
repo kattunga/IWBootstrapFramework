@@ -67,6 +67,13 @@ object IWForm2: TIWForm2
               OnAsyncClick = IWBSDropDown2DropDownItems0AsyncClick
             end
             item
+              Caption = '-'
+            end
+            item
+              Caption = 'This is a Header'
+              Header = True
+            end
+            item
               Caption = 'Third Party Plugins'
               DropDownItems = <
                 item
@@ -450,367 +457,6 @@ object IWForm2: TIWForm2
                     TabOrder = -1
                     BSButtonStyle = bsbsClose
                     Caption = 'Close'
-                  end
-                end
-              end
-            end
-            object IWTabControl21Page4: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1076
-              Height = 1512
-              RenderInvisibleControls = True
-              TabOrder = 3
-              Title = 'Other Bootstrap Controls'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSRegion30: TIWBSRegion
-                Left = 0
-                Top = 0
-                Width = 1076
-                Height = 1512
-                Align = alClient
-                Style.Strings = (
-                  'margin: 1em')
-                object IWBSRegion9: TIWBSRegion
-                  Left = 15
-                  Top = 97
-                  Width = 698
-                  Height = 60
-                  BSRegionType = bsrtJumbotron
-                  object IWText1: TIWBSText
-                    Left = 20
-                    Top = 11
-                    Width = 540
-                    Height = 38
-                    FriendlyName = 'IWText1'
-                    TabOrder = -1
-                    Lines.Strings = (
-                      '<h1>This is a Jumbotron</h1>'
-                      '<h2>Example page header <small>Subtext for header</small></h2>')
-                    RawText = True
-                  end
-                end
-                object IWBSRegion14: TIWBSRegion
-                  Left = 15
-                  Top = 163
-                  Width = 698
-                  Height = 60
-                  BSRegionType = bsrtPageHeader
-                  object IWText4: TIWBSText
-                    Left = 20
-                    Top = 11
-                    Width = 540
-                    Height = 38
-                    FriendlyName = 'IWText4'
-                    TabOrder = -1
-                    Lines.Strings = (
-                      '<h1>This is a Page Header</h1>'
-                      '<h2>Example page header <small>Subtext for header</small></h2>')
-                    RawText = True
-                  end
-                end
-                object IWBSRegion24: TIWBSRegion
-                  Left = 15
-                  Top = 236
-                  Width = 698
-                  Height = 60
-                  BSRegionType = bsrtWell
-                  BSRelativeSize = bsrzLg
-                  object IWText10: TIWBSText
-                    Left = 20
-                    Top = 11
-                    Width = 540
-                    Height = 38
-                    FriendlyName = 'IWText10'
-                    TabOrder = -1
-                    Lines.Strings = (
-                      '<h1>This is a Well</h1>'
-                      '<h2>Example page header <small>Subtext for header</small></h2>')
-                    RawText = True
-                  end
-                end
-                object IWBSRegion19: TIWBSRegion
-                  Left = 16
-                  Top = 302
-                  Width = 698
-                  Height = 268
-                  BSPanelStyle = bspsPrimary
-                  BSRegionType = bsrtPanel
-                  object IWBSRegion20: TIWBSRegion
-                    Left = 8
-                    Top = 22
-                    Width = 681
-                    Height = 80
-                    BSRegionType = bsrtPanelHeading
-                    object IWText8: TIWBSText
-                      Left = 19
-                      Top = 55
-                      Width = 269
-                      Height = 22
-                      FriendlyName = 'IWText8'
-                      TabOrder = -1
-                      Lines.Strings = (
-                        '<h2>this is panel heading</h2>')
-                      RawText = True
-                    end
-                    object IWBSRegion23: TIWBSRegion
-                      Left = 12
-                      Top = 18
-                      Width = 653
-                      Height = 34
-                      BSRegionType = bsrtPanelTitle
-                      object IWText7: TIWBSText
-                        Left = 163
-                        Top = 9
-                        Width = 269
-                        Height = 22
-                        FriendlyName = 'IWText7'
-                        TabOrder = -1
-                        Lines.Strings = (
-                          '<h2>this is panel title</h2>')
-                        RawText = True
-                      end
-                    end
-                  end
-                  object IWBSRegion21: TIWBSRegion
-                    Left = 8
-                    Top = 193
-                    Width = 681
-                    Height = 60
-                    BSRegionType = bsrtPanelFooter
-                    object IWText9: TIWBSText
-                      Left = 24
-                      Top = 20
-                      Width = 269
-                      Height = 22
-                      FriendlyName = 'IWText9'
-                      TabOrder = -1
-                      Lines.Strings = (
-                        '<h2>this is panel footer</h2>')
-                      RawText = True
-                    end
-                  end
-                  object IWBSRegion22: TIWBSRegion
-                    Left = 8
-                    Top = 108
-                    Width = 681
-                    Height = 79
-                    BSRegionType = bsrtPanelBody
-                    object IWText6: TIWBSText
-                      Left = 155
-                      Top = 37
-                      Width = 269
-                      Height = 22
-                      FriendlyName = 'IWText6'
-                      TabOrder = -1
-                      Lines.Strings = (
-                        '<h2>this is panel body</h2>')
-                      RawText = True
-                    end
-                  end
-                end
-                object IWBSRegion34: TIWBSRegion
-                  Left = 16
-                  Top = 24
-                  Width = 697
-                  Height = 60
-                  BSRegionType = bsrtWell
-                  object IWBSButton40: TIWBSButton
-                    Left = 16
-                    Top = 20
-                    Width = 173
-                    Height = 25
-                    FriendlyName = 'IWBSButton40'
-                    TabOrder = -1
-                    OnAsyncClick = IWBSButton40AsyncClick
-                    Caption = 'Show Modal Window'
-                  end
-                end
-                object IWBSModal1: TIWBSModal
-                  Left = 728
-                  Top = 99
-                  Width = 353
-                  Height = 261
-                  object IWBSRegion35: TIWBSRegion
-                    Left = 8
-                    Top = 22
-                    Width = 325
-                    Height = 227
-                    BSRegionType = bsrtWell
-                    object IWBSText1: TIWBSText
-                      Left = 24
-                      Top = 24
-                      Width = 289
-                      Height = 117
-                      FriendlyName = 'IWBSText1'
-                      TabOrder = -1
-                      Lines.Strings = (
-                        'This is a modal window'
-                        'There are 2 buttons'
-                        
-                          'One button do an async callback and close modal windows setting ' +
-                          'BSModalVisible := False'
-                        
-                          'The other button automatically close because it have property BS' +
-                          'DataDismiss := bsbdModal'
-                        'The Modal window have an event that fires when modal close.'
-                        ''
-                        '')
-                    end
-                    object IWBSButton39: TIWBSButton
-                      Left = 24
-                      Top = 147
-                      Width = 293
-                      Height = 29
-                      FriendlyName = 'IWBSButton39'
-                      TabOrder = -1
-                      OnAsyncClick = IWBSButton39AsyncClick
-                      Caption = 'AsyncClick to close modal'
-                    end
-                    object IWBSButton38: TIWBSButton
-                      Left = 23
-                      Top = 189
-                      Width = 294
-                      Height = 25
-                      FriendlyName = 'IWBSButton38'
-                      TabOrder = -1
-                      Caption = 'Close Modal by data-dismiss'
-                      BSDataDismiss = bsbdModal
-                    end
-                  end
-                end
-              end
-            end
-            object IWTabControl21Page6: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1076
-              Height = 1512
-              RenderInvisibleControls = True
-              TabOrder = 4
-              Title = 'Funtionality'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSButton37: TIWBSButton
-                Left = 40
-                Top = 40
-                Width = 307
-                Height = 25
-                FriendlyName = 'IWBSButton37'
-                TabOrder = -1
-                OnAsyncClick = IWBSButton37AsyncClick
-                Caption = 'Toggle Visibility'
-              end
-              object IWBSRegion32: TIWBSRegion
-                Left = 40
-                Top = 78
-                Width = 698
-                Height = 72
-                BSRegionType = bsrtWell
-                object IWText11: TIWBSText
-                  Left = 20
-                  Top = 8
-                  Width = 540
-                  Height = 38
-                  FriendlyName = 'IWText11'
-                  TabOrder = -1
-                  Lines.Strings = (
-                    '<h1>This is a Well</h1>'
-                    '<h2>Example page header <small>Subtext for header</small></h2>')
-                  RawText = True
-                end
-              end
-              object IWBSRegion33: TIWBSRegion
-                Left = 38
-                Top = 163
-                Width = 700
-                Height = 91
-                BSRegionType = bsrtWell
-                object IWBSInput25: TIWBSInput
-                  Left = 19
-                  Top = 21
-                  Width = 201
-                  Height = 25
-                  ExtraTagParams.Strings = (
-                    '')
-                  FriendlyName = 'IWBSInput1'
-                  TabOrder = -1
-                  Caption = 'Input Type Text'
-                  Text = ''
-                  BSTextAlignment = bstaCenter
-                  PlaceHolder = 'Name'
-                end
-                object IWBSButton41: TIWBSButton
-                  Left = 16
-                  Top = 55
-                  Width = 223
-                  Height = 25
-                  FriendlyName = 'IWBSButton41'
-                  ScriptEvents = <
-                    item
-                      EventCode.Strings = (
-                        '$("#IWBSINPUT25").val("this text was setted with ScriptEvents");')
-                      Event = 'onClick'
-                    end>
-                  TabOrder = -1
-                  Caption = 'OnClick scriptEvent'
-                end
-              end
-              object IWBSRegion29: TIWBSRegion
-                Left = 35
-                Top = 272
-                Width = 702
-                Height = 381
-                BSRegionType = bsrtWell
-                object IWBSLabel3: TIWBSLabel
-                  Left = 20
-                  Top = 12
-                  Width = 361
-                  Height = 24
-                  FriendlyName = 'IWBSLabel3'
-                  TabOrder = -1
-                  Caption = 'File upload using Form Custom Submit event, (select a text file)'
-                end
-                object IWBSText2: TIWBSText
-                  Left = 20
-                  Top = 46
-                  Width = 635
-                  Height = 123
-                  FriendlyName = 'IWBSText2'
-                  TabOrder = -1
-                end
-                object IWBSInputForm5: TIWBSInputForm
-                  Left = 20
-                  Top = 203
-                  Width = 635
-                  Height = 138
-                  EncType = iwbsfeMultipart
-                  OnSubmit = IWBSInputForm5Submit
-                  object IWBSButton45: TIWBSButton
-                    Left = 22
-                    Top = 101
-                    Width = 200
-                    Height = 25
-                    FriendlyName = 'IWBSButton45'
-                    TabOrder = -1
-                    Caption = 'Submit File'
-                    ButtonType = iwbsbtSubmit
-                  end
-                  object IWBSInput26: TIWBSFile
-                    Left = 22
-                    Top = 55
-                    Width = 151
-                    Height = 25
-                    FriendlyName = 'IWBSInput26'
-                    TabStop = True
-                    TabOrder = -1
                   end
                 end
               end
@@ -1477,6 +1123,580 @@ object IWForm2: TIWForm2
                 end
               end
             end
+            object IWTabControl21Page6: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1076
+              Height = 1512
+              RenderInvisibleControls = True
+              TabOrder = 4
+              Title = 'Funtionality'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSButton37: TIWBSButton
+                Left = 39
+                Top = 13
+                Width = 205
+                Height = 25
+                FriendlyName = 'IWBSButton37'
+                TabOrder = -1
+                OnAsyncClick = IWBSButton37AsyncClick
+                Caption = 'Toggle Visibility'
+              end
+              object IWBSButton36: TIWBSButton
+                Left = 40
+                Top = 44
+                Width = 204
+                Height = 25
+                FriendlyName = 'IWBSButton36'
+                TabOrder = -1
+                Caption = 'Toggle Collapse'
+                DataTarget = IWBSRegion29
+              end
+              object IWBSRegion32: TIWBSRegion
+                Left = 40
+                Top = 78
+                Width = 698
+                Height = 72
+                BSRegionType = bsrtWell
+                object IWText11: TIWBSText
+                  Left = 20
+                  Top = 8
+                  Width = 540
+                  Height = 38
+                  FriendlyName = 'IWText11'
+                  TabOrder = -1
+                  Lines.Strings = (
+                    '<h1>This is a Well</h1>'
+                    '<h2>Example page header <small>Subtext for header</small></h2>')
+                  RawText = True
+                end
+              end
+              object IWBSRegion33: TIWBSRegion
+                Left = 38
+                Top = 163
+                Width = 700
+                Height = 91
+                BSRegionType = bsrtWell
+                object IWBSInput25: TIWBSInput
+                  Left = 19
+                  Top = 21
+                  Width = 201
+                  Height = 25
+                  ExtraTagParams.Strings = (
+                    '')
+                  FriendlyName = 'IWBSInput1'
+                  TabOrder = -1
+                  Caption = 'Input Type Text'
+                  Text = ''
+                  BSTextAlignment = bstaCenter
+                  PlaceHolder = 'Name'
+                end
+                object IWBSButton41: TIWBSButton
+                  Left = 16
+                  Top = 55
+                  Width = 223
+                  Height = 25
+                  FriendlyName = 'IWBSButton41'
+                  ScriptEvents = <
+                    item
+                      EventCode.Strings = (
+                        '$("#IWBSINPUT25").val("this text was setted with ScriptEvents");')
+                      Event = 'onClick'
+                    end>
+                  TabOrder = -1
+                  Caption = 'OnClick scriptEvent'
+                end
+              end
+              object IWBSRegion29: TIWBSRegion
+                Left = 35
+                Top = 272
+                Width = 702
+                Height = 381
+                BSRegionType = bsrtWell
+                Collapse = True
+                CollapseVisible = True
+                object IWBSLabel3: TIWBSLabel
+                  Left = 20
+                  Top = 12
+                  Width = 361
+                  Height = 24
+                  FriendlyName = 'IWBSLabel3'
+                  TabOrder = -1
+                  Caption = 'File upload using Form Custom Submit event, (select a text file)'
+                end
+                object IWBSText2: TIWBSText
+                  Left = 20
+                  Top = 46
+                  Width = 635
+                  Height = 123
+                  FriendlyName = 'IWBSText2'
+                  TabOrder = -1
+                end
+                object IWBSInputForm5: TIWBSInputForm
+                  Left = 20
+                  Top = 203
+                  Width = 635
+                  Height = 138
+                  EncType = iwbsfeMultipart
+                  OnSubmit = IWBSInputForm5Submit
+                  object IWBSButton45: TIWBSButton
+                    Left = 22
+                    Top = 101
+                    Width = 200
+                    Height = 25
+                    FriendlyName = 'IWBSButton45'
+                    TabOrder = -1
+                    Caption = 'Submit File'
+                    ButtonType = iwbsbtSubmit
+                  end
+                  object IWBSInput26: TIWBSFile
+                    Left = 22
+                    Top = 55
+                    Width = 151
+                    Height = 25
+                    FriendlyName = 'IWBSInput26'
+                    TabStop = True
+                    TabOrder = -1
+                  end
+                end
+              end
+            end
+            object IWTabControl21Page4: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1076
+              Height = 1512
+              RenderInvisibleControls = True
+              TabOrder = 3
+              Title = 'Other Bootstrap Controls'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSRegion30: TIWBSRegion
+                Left = 0
+                Top = 0
+                Width = 1076
+                Height = 1512
+                Align = alClient
+                Style.Strings = (
+                  'margin: 1em')
+                object IWBSLabel4: TIWBSLabel
+                  Left = 15
+                  Top = 598
+                  Width = 432
+                  Height = 24
+                  FriendlyName = 'IWBSLabel4'
+                  TabOrder = -1
+                  Caption = '<h2>This is an accordion</h2>'
+                  RawText = True
+                end
+                object IWBSRegion9: TIWBSRegion
+                  Left = 15
+                  Top = 97
+                  Width = 698
+                  Height = 60
+                  BSRegionType = bsrtJumbotron
+                  object IWText1: TIWBSText
+                    Left = 20
+                    Top = 11
+                    Width = 540
+                    Height = 38
+                    FriendlyName = 'IWText1'
+                    TabOrder = -1
+                    Lines.Strings = (
+                      '<h1>This is a Jumbotron</h1>'
+                      '<h2>Example page header <small>Subtext for header</small></h2>')
+                    RawText = True
+                  end
+                end
+                object IWBSRegion14: TIWBSRegion
+                  Left = 15
+                  Top = 163
+                  Width = 698
+                  Height = 60
+                  BSRegionType = bsrtPageHeader
+                  object IWText4: TIWBSText
+                    Left = 20
+                    Top = 11
+                    Width = 540
+                    Height = 38
+                    FriendlyName = 'IWText4'
+                    TabOrder = -1
+                    Lines.Strings = (
+                      '<h1>This is a Page Header</h1>'
+                      '<h2>Example page header <small>Subtext for header</small></h2>')
+                    RawText = True
+                  end
+                end
+                object IWBSRegion24: TIWBSRegion
+                  Left = 15
+                  Top = 236
+                  Width = 698
+                  Height = 60
+                  BSRegionType = bsrtWell
+                  BSRelativeSize = bsrzLg
+                  object IWText10: TIWBSText
+                    Left = 20
+                    Top = 11
+                    Width = 540
+                    Height = 38
+                    FriendlyName = 'IWText10'
+                    TabOrder = -1
+                    Lines.Strings = (
+                      '<h1>This is a Well</h1>'
+                      '<h2>Example page header <small>Subtext for header</small></h2>')
+                    RawText = True
+                  end
+                end
+                object IWBSRegion19: TIWBSRegion
+                  Left = 16
+                  Top = 304
+                  Width = 698
+                  Height = 268
+                  BSPanelStyle = bspsPrimary
+                  BSRegionType = bsrtPanel
+                  object IWBSRegion20: TIWBSRegion
+                    Left = 8
+                    Top = 22
+                    Width = 681
+                    Height = 80
+                    BSRegionType = bsrtPanelHeading
+                    object IWText8: TIWBSText
+                      Left = 19
+                      Top = 55
+                      Width = 269
+                      Height = 22
+                      FriendlyName = 'IWText8'
+                      TabOrder = -1
+                      Lines.Strings = (
+                        '<h2>this is panel heading</h2>')
+                      RawText = True
+                    end
+                    object IWBSRegion23: TIWBSRegion
+                      Left = 12
+                      Top = 18
+                      Width = 653
+                      Height = 34
+                      BSRegionType = bsrtPanelTitle
+                      object IWText7: TIWBSText
+                        Left = 163
+                        Top = 9
+                        Width = 269
+                        Height = 22
+                        FriendlyName = 'IWText7'
+                        TabOrder = -1
+                        Lines.Strings = (
+                          '<h2>this is panel title</h2>')
+                        RawText = True
+                      end
+                    end
+                  end
+                  object IWBSRegion21: TIWBSRegion
+                    Left = 8
+                    Top = 193
+                    Width = 681
+                    Height = 60
+                    BSRegionType = bsrtPanelFooter
+                    object IWText9: TIWBSText
+                      Left = 24
+                      Top = 20
+                      Width = 269
+                      Height = 22
+                      FriendlyName = 'IWText9'
+                      TabOrder = -1
+                      Lines.Strings = (
+                        '<h2>this is panel footer</h2>')
+                      RawText = True
+                    end
+                  end
+                  object IWBSRegion22: TIWBSRegion
+                    Left = 8
+                    Top = 108
+                    Width = 681
+                    Height = 79
+                    BSRegionType = bsrtPanelBody
+                    object IWText6: TIWBSText
+                      Left = 155
+                      Top = 37
+                      Width = 269
+                      Height = 22
+                      FriendlyName = 'IWText6'
+                      TabOrder = -1
+                      Lines.Strings = (
+                        '<h2>this is panel body</h2>')
+                      RawText = True
+                    end
+                  end
+                end
+                object IWBSRegion34: TIWBSRegion
+                  Left = 16
+                  Top = 24
+                  Width = 697
+                  Height = 60
+                  BSRegionType = bsrtWell
+                  object IWBSButton40: TIWBSButton
+                    Left = 16
+                    Top = 20
+                    Width = 173
+                    Height = 25
+                    FriendlyName = 'IWBSButton40'
+                    TabOrder = -1
+                    OnAsyncClick = IWBSButton40AsyncClick
+                    Caption = 'Show Modal Window'
+                  end
+                end
+                object IWBSModal1: TIWBSModal
+                  Left = 728
+                  Top = 99
+                  Width = 353
+                  Height = 261
+                  object IWBSRegion35: TIWBSRegion
+                    Left = 8
+                    Top = 22
+                    Width = 325
+                    Height = 227
+                    BSRegionType = bsrtWell
+                    object IWBSText1: TIWBSText
+                      Left = 24
+                      Top = 24
+                      Width = 289
+                      Height = 117
+                      FriendlyName = 'IWBSText1'
+                      TabOrder = -1
+                      Lines.Strings = (
+                        'This is a modal window'
+                        'There are 2 buttons'
+                        
+                          'One button do an async callback and close modal windows setting ' +
+                          'BSModalVisible := False'
+                        
+                          'The other button automatically close because it have property BS' +
+                          'DataDismiss := bsbdModal'
+                        'The Modal window have an event that fires when modal close.'
+                        ''
+                        '')
+                    end
+                    object IWBSButton39: TIWBSButton
+                      Left = 21
+                      Top = 147
+                      Width = 293
+                      Height = 29
+                      FriendlyName = 'IWBSButton39'
+                      TabOrder = -1
+                      OnAsyncClick = IWBSButton39AsyncClick
+                      Caption = 'AsyncClick to close modal'
+                    end
+                    object IWBSButton38: TIWBSButton
+                      Left = 23
+                      Top = 189
+                      Width = 294
+                      Height = 25
+                      FriendlyName = 'IWBSButton38'
+                      TabOrder = -1
+                      Caption = 'Close Modal by data-dismiss'
+                      DataDismiss = bsbdModal
+                    end
+                  end
+                end
+                object IWBSRegion4: TIWBSRegion
+                  Left = 15
+                  Top = 636
+                  Width = 698
+                  Height = 849
+                  BSRegionType = bsrtPanelGroup
+                  object IWBSRegion38: TIWBSRegion
+                    Left = 22
+                    Top = 22
+                    Width = 659
+                    Height = 255
+                    BSRegionType = bsrtPanel
+                    object IWBSRegion39: TIWBSRegion
+                      Left = 20
+                      Top = 24
+                      Width = 621
+                      Height = 81
+                      BSRegionType = bsrtPanelHeading
+                      object IWBSRegion41: TIWBSRegion
+                        Left = 16
+                        Top = 20
+                        Width = 585
+                        Height = 53
+                        BSRegionType = bsrtPanelTitle
+                        object IWBSButton43: TIWBSButton
+                          Left = 12
+                          Top = 20
+                          Width = 200
+                          Height = 25
+                          FriendlyName = 'IWBSButton43'
+                          TabOrder = -1
+                          Caption = 'Collapsible Group Item #1'
+                          Anchor = True
+                          DataParent = IWBSRegion4
+                          DataTarget = IWBSRegion42
+                        end
+                      end
+                    end
+                    object IWBSRegion42: TIWBSRegion
+                      Left = 19
+                      Top = 108
+                      Width = 622
+                      Height = 121
+                      BSRegionType = bsrtPanelBody
+                      Collapse = True
+                      CollapseVisible = True
+                      object IWBSText3: TIWBSText
+                        Left = 12
+                        Top = 40
+                        Width = 593
+                        Height = 76
+                        FriendlyName = 'IWBSText3'
+                        TabOrder = -1
+                        Lines.Strings = (
+                          
+                            'Anim pariatur cliche reprehenderit, enim eiusmod high life accus' +
+                            'amus terry richardson ad squid. 3 wolf moon officia aute, non cu' +
+                            'pidatat skateboard dolor brunch. Food truck quinoa nesciunt labo' +
+                            'rum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird o' +
+                            'n it squid single-origin coffee nulla assumenda shoreditch et. N' +
+                            'ihil anim keffiyeh helvetica, craft beer labore wes anderson cre' +
+                            'd nesciunt sapiente ea proident. Ad vegan excepteur butcher vice' +
+                            ' lomo. Leggings occaecat craft beer farm-to-table, raw denim aes' +
+                            'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
+                            'us labore sustainable VHS.')
+                      end
+                    end
+                  end
+                  object IWBSRegion43: TIWBSRegion
+                    Left = 22
+                    Top = 289
+                    Width = 659
+                    Height = 255
+                    BSRegionType = bsrtPanel
+                    object IWBSRegion44: TIWBSRegion
+                      Left = 20
+                      Top = 24
+                      Width = 621
+                      Height = 81
+                      BSRegionType = bsrtPanelHeading
+                      object IWBSRegion45: TIWBSRegion
+                        Left = 16
+                        Top = 20
+                        Width = 585
+                        Height = 53
+                        BSRegionType = bsrtPanelTitle
+                        object IWBSButton44: TIWBSButton
+                          Left = 12
+                          Top = 20
+                          Width = 200
+                          Height = 25
+                          FriendlyName = 'IWBSButton43'
+                          TabOrder = -1
+                          Caption = 'Collapsible Group Item #2'
+                          Anchor = True
+                          DataParent = IWBSRegion4
+                          DataTarget = IWBSRegion46
+                        end
+                      end
+                    end
+                    object IWBSRegion46: TIWBSRegion
+                      Left = 19
+                      Top = 108
+                      Width = 622
+                      Height = 121
+                      BSRegionType = bsrtPanelBody
+                      Collapse = True
+                      object IWBSText4: TIWBSText
+                        Left = 12
+                        Top = 40
+                        Width = 593
+                        Height = 76
+                        FriendlyName = 'IWBSText3'
+                        TabOrder = -1
+                        Lines.Strings = (
+                          
+                            'Anim pariatur cliche reprehenderit, enim eiusmod high life accus' +
+                            'amus terry richardson ad squid. 3 wolf moon officia aute, non cu' +
+                            'pidatat skateboard dolor brunch. Food truck quinoa nesciunt labo' +
+                            'rum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird o' +
+                            'n it squid single-origin coffee nulla assumenda shoreditch et. N' +
+                            'ihil anim keffiyeh helvetica, craft beer labore wes anderson cre' +
+                            'd nesciunt sapiente ea proident. Ad vegan excepteur butcher vice' +
+                            ' lomo. Leggings occaecat craft beer farm-to-table, raw denim aes' +
+                            'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
+                            'us labore sustainable VHS.')
+                      end
+                    end
+                  end
+                  object IWBSRegion47: TIWBSRegion
+                    Left = 22
+                    Top = 558
+                    Width = 659
+                    Height = 255
+                    BSRegionType = bsrtPanel
+                    object IWBSRegion48: TIWBSRegion
+                      Left = 20
+                      Top = 24
+                      Width = 621
+                      Height = 81
+                      BSRegionType = bsrtPanelHeading
+                      object IWBSRegion49: TIWBSRegion
+                        Left = 16
+                        Top = 20
+                        Width = 585
+                        Height = 53
+                        BSRegionType = bsrtPanelTitle
+                        object IWBSButton47: TIWBSButton
+                          Left = 12
+                          Top = 20
+                          Width = 200
+                          Height = 25
+                          FriendlyName = 'IWBSButton43'
+                          TabOrder = -1
+                          Caption = 'Collapsible Group Item #3'
+                          Anchor = True
+                          DataParent = IWBSRegion4
+                          DataTarget = IWBSRegion50
+                        end
+                      end
+                    end
+                    object IWBSRegion50: TIWBSRegion
+                      Left = 19
+                      Top = 108
+                      Width = 622
+                      Height = 121
+                      BSRegionType = bsrtPanelBody
+                      Collapse = True
+                      object IWBSText5: TIWBSText
+                        Left = 12
+                        Top = 40
+                        Width = 593
+                        Height = 76
+                        FriendlyName = 'IWBSText3'
+                        TabOrder = -1
+                        Lines.Strings = (
+                          
+                            'Anim pariatur cliche reprehenderit, enim eiusmod high life accus' +
+                            'amus terry richardson ad squid. 3 wolf moon officia aute, non cu' +
+                            'pidatat skateboard dolor brunch. Food truck quinoa nesciunt labo' +
+                            'rum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird o' +
+                            'n it squid single-origin coffee nulla assumenda shoreditch et. N' +
+                            'ihil anim keffiyeh helvetica, craft beer labore wes anderson cre' +
+                            'd nesciunt sapiente ea proident. Ad vegan excepteur butcher vice' +
+                            ' lomo. Leggings occaecat craft beer farm-to-table, raw denim aes' +
+                            'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
+                            'us labore sustainable VHS.')
+                      end
+                    end
+                  end
+                end
+              end
+            end
             object IWTabControl21Page0: TIWTabPage
               Left = 0
               Top = 20
@@ -1509,7 +1729,7 @@ object IWForm2: TIWForm2
                   BSRegionType = bsrtColumn
                   object IWBSRegion18: TIWBSRegion
                     Left = 12
-                    Top = 27
+                    Top = 34
                     Width = 245
                     Height = 195
                     BSRegionType = bsrtWell

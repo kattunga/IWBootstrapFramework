@@ -24,27 +24,28 @@ object IWForm4: TIWForm4
     Align = alClient
     BSRegionType = bsrtContainer
     object IWBSButton1: TIWBSButton
-      Left = 44
-      Top = 220
+      Left = 24
+      Top = 152
       Width = 200
       Height = 25
       FriendlyName = 'IWBSButton1'
       TabOrder = -1
       Caption = 'IWBSButton1'
+      HrefControl = IWBSRegion1
     end
     object IWBSNavBar1: TIWBSNavBar
       Left = 20
       Top = 16
       Width = 485
-      Height = 77
+      Height = 93
       object IWBSUnorderedList1: TIWBSUnorderedList
-        Left = 35
-        Top = 11
+        Left = 15
+        Top = 23
         Width = 438
         Height = 60
         object IWBSDropDown1: TIWBSDropDown
-          Left = 16
-          Top = 19
+          Left = 17
+          Top = 27
           Width = 173
           Height = 25
           FriendlyName = 'IWBSDropDown1'
@@ -93,7 +94,7 @@ object IWForm4: TIWForm4
         end
         object IWBSDropDown3: TIWBSDropDown
           Left = 196
-          Top = 19
+          Top = 27
           Width = 169
           Height = 25
           FriendlyName = 'IWBSDropDown1'
@@ -133,11 +134,12 @@ object IWForm4: TIWForm4
       end
     end
     object IWBSRegion1: TIWBSRegion
-      Left = 20
-      Top = 104
+      Left = 24
+      Top = 456
       Width = 481
       Height = 73
       BSRegionType = bsrtWell
+      Collapse = True
       object IWBSDropDown2: TIWBSDropDown
         Left = 24
         Top = 24
@@ -164,8 +166,8 @@ object IWForm4: TIWForm4
       end
     end
     object IWBSInputGroup1: TIWBSInputGroup
-      Left = 40
-      Top = 272
+      Left = 24
+      Top = 390
       Width = 397
       Height = 60
       Caption = ''

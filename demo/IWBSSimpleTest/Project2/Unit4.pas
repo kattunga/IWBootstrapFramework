@@ -27,8 +27,6 @@ type
     IWBSInputGroup1: TIWBSInputGroup;
     IWBSInput1: TIWBSInput;
     IWBSDropDown4: TIWBSDropDown;
-    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
-    procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -37,19 +35,6 @@ implementation
 {$R *.dfm}
 
 uses IW.HTTP.FileItem;
-
-procedure TIWForm4.IWBSButton1AsyncClick(Sender: TObject;
-  EventParams: TStringList);
-begin
-//
-end;
-
-procedure TIWForm4.IWBSButton3AsyncClick(Sender: TObject;
-  EventParams: TStringList);
-begin
-  IWBSDropDown1.DropDownItems.Add;
-  TForm(IWBSDropDown1).OnClick
-end;
 
 initialization
   TIWForm4.SetAsMainForm;

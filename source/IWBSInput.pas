@@ -143,10 +143,8 @@ begin
         AHTMLTag.AddStringParam('id', AHTMLName);
         AHTMLTag.AddStringParam('name', AHTMLName);
         AHTMLTag.AddStringParam('type', aIWBSInputType[InputType]);
-        if ShowHint and (Hint <> '') then begin
-          AHTMLTag.AddStringParam('data-toggle', 'tooltip');
+        if ShowHint and (Hint <> '') then
           AHTMLTag.AddStringParam('title', Hint);
-        end;
         if AutoFocus then
           AHTMLTag.Add('autofocus');
         if IsReadOnly then
@@ -225,10 +223,8 @@ begin
     AHTMLTag.AddStringParam('id', AHTMLName);
     AHTMLTag.AddClassParam(ActiveCss);
     AHTMLTag.AddStringParam('name', AHTMLName);
-    if ShowHint and (Hint <> '') then begin
-      AHTMLTag.AddStringParam('data-toggle', 'tooltip');
+    if ShowHint and (Hint <> '') then
       AHTMLTag.AddStringParam('title', Hint);
-    end;
     if AutoFocus then
       AHTMLTag.Add('autofocus');
     if IsReadOnly then
