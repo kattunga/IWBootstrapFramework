@@ -1,0 +1,6 @@
+DiGraph Classes {
+  TIWBSCustomControl -> TIWCustomControl
+  TIWBSCustomControl [href="IWBSCustomControl.TIWBSCustomControl.html"]
+  TIWBSCustomDbControl -> TIWBSCustomControl
+  TIWBSCustomDbControl [href="IWBSCustomControl.TIWBSCustomDbControl.html"]
+}
