@@ -30,8 +30,21 @@ object IWForm4: TIWForm4
       Height = 25
       FriendlyName = 'IWBSButton1'
       TabOrder = -1
+      BSBlockLevel = False
       Caption = 'IWBSButton1'
-      HrefControl = IWBSRegion1
+    end
+    object IWImageFile1: TIWImageFile
+      Left = 40
+      Top = 204
+      Width = 89
+      Height = 112
+      RenderSize = False
+      StyleRenderOptions.RenderSize = False
+      BorderOptions.Width = 0
+      TabOrder = -1
+      UseSize = False
+      Cacheable = True
+      FriendlyName = 'IWImageFile1'
     end
     object IWBSNavBar1: TIWBSNavBar
       Left = 20
@@ -50,6 +63,7 @@ object IWForm4: TIWForm4
           Height = 25
           FriendlyName = 'IWBSDropDown1'
           TabOrder = -1
+          BSBlockLevel = False
           Caption = 'IWBSDropDown1'
           DropDownItems = <
             item
@@ -99,6 +113,7 @@ object IWForm4: TIWForm4
           Height = 25
           FriendlyName = 'IWBSDropDown1'
           TabOrder = -1
+          BSBlockLevel = False
           Caption = 'IWBSDropDown1'
           DropDownItems = <
             item
@@ -148,6 +163,7 @@ object IWForm4: TIWForm4
         Css = 'btn-default'
         FriendlyName = 'IWBSDropDown1'
         TabOrder = -1
+        BSBlockLevel = False
         Caption = 'IWBSDropDown1'
         DropDownItems = <
           item
@@ -189,6 +205,7 @@ object IWForm4: TIWForm4
         Css = 'btn-default'
         FriendlyName = 'IWBSDropDown1'
         TabOrder = -1
+        BSBlockLevel = False
         Caption = 'IWBSDropDown1'
         DropDownItems = <
           item

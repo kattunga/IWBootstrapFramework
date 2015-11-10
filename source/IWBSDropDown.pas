@@ -318,7 +318,7 @@ begin
   inherited;
   FreeAndNil(FItemsTree);
   FItemsTree := TList.Create;
-  AHTMLTag := RenderAnchorTag(AHTMLName, Caption, ActiveCss, BSGlyphicon, Hint, '', ActiveStyle, IsDisabled, False, -1, False, nil, nil, FDropDownItems);
+  AHTMLTag := RenderAnchorTag(AHTMLName, Caption, ActiveCss, BSGlyphicon, Hint, '#', ActiveStyle, IsDisabled, False, -1, False, nil, nil, FDropDownItems);
 end;
 
 procedure TIWBSDropDown.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);

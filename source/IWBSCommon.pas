@@ -7,7 +7,7 @@ interface
 // don't enable here, we don't want to include in package
 
 uses System.Classes, System.SysUtils, System.StrUtils, {$IFDEF IWBS_JSONDATAOBJECTS}JsonDataObjects, {$ENDIF}
-     IWRenderContext, IWControl, IWHTML40Interfaces;
+     IWRenderContext, IWControl, IWHTML40Interfaces, IWTypes;
 
 const
   EOL = #13#10;
@@ -71,6 +71,7 @@ type
     procedure AsyncRemoveControl;
     procedure AsyncRefreshControl;
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
+    procedure InternalRenderStyle(AStyle: TStringList);
     function HTMLControlImplementation: TIWHTMLControlImplementation;
 
     function GetCustomAsyncEvents: TOwnedCollection;
@@ -89,6 +90,7 @@ type
     function get_Visible: Boolean;
     procedure set_Visible(Value: Boolean);
 
+    property Cursor: TIWCursor read get_WebCursor write set_WebCursor;
     property CustomAsyncEvents: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents;
     property CustomRestEvents: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents;
     property Script: TStringList read GetScript write SetScript;
@@ -119,7 +121,7 @@ procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const V
 
 implementation
 
-uses IW.Common.System, IWBaseHTMLControl, IWBSUtils;
+uses IW.Common.System, IWBaseHTMLControl, IWBSUtils, IWBSCustomControl;
 
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create;
@@ -257,11 +259,18 @@ begin
 
   xStyle := TStringList.Create;
   try
+    // assign user style
     xStyle.Assign(AComponent.Style);
 
-    // here render z-index
+    // z-index
     if AComponent.ZIndex <> 0 then
       xStyle.Values['z-index'] := IntToStr(AComponent.Zindex);
+
+    // render cursor
+    if AComponent.Cursor <> crAuto then
+      xStyle.Values['cursor'] := Copy(TIWCustomControl.RenderCursorStyle(AComponent.Cursor), 9, MaxInt);
+
+    AComponent.InternalRenderStyle(xStyle);
 
     for i := 0 to xStyle.Count-1 do begin
       if Result <> '' then

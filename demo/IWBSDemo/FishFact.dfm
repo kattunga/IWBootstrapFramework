@@ -43,6 +43,7 @@ object FFishFact: TFFishFact
         FriendlyName = 'IWBSButton1'
         TabOrder = -1
         OnAsyncClick = IWBSButton1AsyncClick
+        BSBlockLevel = False
         Caption = 'Switch to Standard Demo'
       end
       object IWText1: TIWBSText
@@ -318,6 +319,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'btnEdit'
                 TabOrder = -1
                 OnAsyncClick = btnEditAsyncClick
+                BSBlockLevel = False
                 BSGlyphicon = 'edit'
               end
               object btnPost: TIWBSButton
@@ -330,6 +332,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 TabOrder = -1
                 OnAsyncClick = btnPostAsyncClick
+                BSBlockLevel = False
                 BSGlyphicon = 'check'
               end
               object btnCancel: TIWBSButton
@@ -342,6 +345,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 TabOrder = -1
                 OnAsyncClick = btnCancelAsyncClick
+                BSBlockLevel = False
                 BSGlyphicon = 'remove'
               end
               object btnFirst: TIWBSButton
@@ -354,6 +358,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 TabOrder = -1
                 OnAsyncClick = btnFirstAsyncClick
+                BSBlockLevel = False
                 BSGlyphicon = 'fast-backward'
               end
               object btnPrior: TIWBSButton
@@ -366,6 +371,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 TabOrder = -1
                 OnAsyncClick = btnPriorAsyncClick
+                BSBlockLevel = False
                 BSGlyphicon = 'backward'
               end
               object btnNext: TIWBSButton
@@ -378,6 +384,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 TabOrder = -1
                 OnAsyncClick = btnNextAsyncClick
+                BSBlockLevel = False
                 BSGlyphicon = 'forward'
               end
               object btnLast: TIWBSButton
@@ -390,6 +397,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 TabOrder = -1
                 OnAsyncClick = btnLastAsyncClick
+                BSBlockLevel = False
                 BSGlyphicon = 'fast-forward'
               end
             end

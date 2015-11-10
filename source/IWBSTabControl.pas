@@ -63,6 +63,7 @@ type
   protected
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); virtual;
+    procedure InternalRenderStyle(AStyle: TStringList); virtual;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
@@ -266,6 +267,11 @@ begin
     AScript.Add('$("#'+AHTMLName+'_tabs").off("shown.bs.tab").on("shown.bs.tab", function(e){ executeAjaxEvent("&page="+$(e.target).attr("tabindex"), null, "'+AHTMLName+'.DoOnAsyncChange", true, null, true); });');
     AContext.WebApplication.RegisterCallBack(AHTMLName+'.DoOnAsyncChange', DoOnAsyncChange);
   end;
+end;
+
+procedure TIWBSTabControl.InternalRenderStyle(AStyle: TStringList);
+begin
+  //
 end;
 
 function TIWBSTabControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;

@@ -52,6 +52,7 @@ type
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure InternalRenderCss(var ACss: string); virtual;
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); virtual;
+    procedure InternalRenderStyle(AStyle: TStringList); virtual;
     property Released: boolean read FReleased;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     procedure RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext); override;
@@ -441,6 +442,11 @@ begin
 end;
 
 procedure TIWBSCustomRegion.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
+begin
+  //
+end;
+
+procedure TIWBSCustomRegion.InternalRenderStyle(AStyle: TStringList);
 begin
   //
 end;

@@ -27,6 +27,7 @@ type
     IWBSInputGroup1: TIWBSInputGroup;
     IWBSInput1: TIWBSInput;
     IWBSDropDown4: TIWBSDropDown;
+    IWImageFile1: TIWImageFile;
   public
   end;
 

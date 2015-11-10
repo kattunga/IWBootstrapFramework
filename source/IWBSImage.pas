@@ -283,7 +283,7 @@ end;
 procedure TIWBSImage.InternalRenderStyle(AStyle: TStringList);
 begin
   inherited;
-  if Assigned(FOnAsyncClick) and (Cursor in [crHandPoint,crPointer]) then
+  if Assigned(FOnAsyncClick) and (Cursor = crAuto) then
     AStyle.Values['cursor'] := 'pointer';
 end;
 {$endregion}
