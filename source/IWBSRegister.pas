@@ -67,7 +67,7 @@ procedure Register;
 implementation
 
 uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
-     IWBaseControl,
+     glyphicons, IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
      IWBSRegion, IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage;
 
@@ -85,19 +85,8 @@ procedure GlyphiconsFontAdvice;
 begin
   if lFontAdvice then begin
     lFontAdvice := False;
-    if Screen.Fonts.IndexOf(CNST_GLYPHICONSFONT) = 0 then
+    if Screen.Fonts.IndexOf(CNST_GLYPHICONSFONT) = -1 then
       ShowMessage('Please install "demo\bin\wwwroot\iwbs\bootstrap-3.3.5\fonts\glyphicons-halflings-regular.ttf" to render glyphicons at design time');
-  end;
-end;
-
-procedure LoadGlyphicons;
-var
-  rs: TResourceStream;
-begin
-  try
-    rs := TResourceStream.Create(hinstance, 'GlyphiconListNames', RT_RCDATA); // from https://gist.github.com/cdevroe/fb674eb895bd4b2f56d9
-    slGlyphicons.LoadFromStream(rs);
-  except
   end;
 end;
 
@@ -651,7 +640,7 @@ end;
 
 initialization
   slGlyphicons := TStringList.Create;
-  LoadGlyphicons;
+  slGlyphicons.Text := iwbsGlyphicons;
 
   IWRegisterPaintHandler('TIWBSRegion',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSInputForm',TIWBSPaintHandlerRegion);

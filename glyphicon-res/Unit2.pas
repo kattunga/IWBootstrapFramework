@@ -33,12 +33,21 @@ var
   name, valu: string;
   intv: integer;
   sample: string;
+  first: boolean;
 begin
   sample := '';
 
   css := TStringList.Create;
   res := TStringList.Create;
   try
+    res.Add('unit glyphicons;');
+    res.Add('');
+    res.Add('interface');
+    res.Add('');
+    res.Add('const');
+    res.Add('  iwbsGlyphicons =');
+
+    first := True;
     css.LoadFromFile('..\demo\bin\wwwroot\iwbs\bootstrap-3.3.5\css\bootstrap.css');
     for i := 0 to css.Count-1 do
       if AnsiStartsStr('.glyphicon-',css[i]) and AnsiContainsStr(css[i+1],'content:') then begin
@@ -47,15 +56,20 @@ begin
         valu := Copy(valu, 1, Pos('"', valu)-1);
         try
           intv := StrToInt('$'+valu);
-          res.Add(name+'='+IntToStr(intv));
-
+          res.Add(IfThen(not First, '+#13#10')+#39+name+'='+IntToStr(intv)+#39);
+          First := False;
           sample := sample + Char(intv);
         except
           ShowMessage('error in line '+IntToStr(i)+' '+name+' '+valu);
         end;
       end;
 
-    res.SaveToFile('..\source\glyphicon-res.txt');
+    res.Add(';');
+    res.Add('');
+    res.Add('implementation');
+    res.Add('');
+    res.Add('end.');
+    res.SaveToFile('..\source\glyphicons.pas');
     Memo1.Text := sample;
   finally
     res.Free;
