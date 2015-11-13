@@ -24,27 +24,15 @@ object IWForm4: TIWForm4
     Align = alClient
     BSRegionType = bsrtContainer
     object IWBSButton1: TIWBSButton
-      Left = 24
-      Top = 152
+      Left = 20
+      Top = 115
       Width = 200
       Height = 25
       FriendlyName = 'IWBSButton1'
       TabOrder = -1
+      OnAsyncClick = IWBSButton1AsyncClick
       BSBlockLevel = False
       Caption = 'IWBSButton1'
-    end
-    object IWImageFile1: TIWImageFile
-      Left = 40
-      Top = 204
-      Width = 89
-      Height = 112
-      RenderSize = False
-      StyleRenderOptions.RenderSize = False
-      BorderOptions.Width = 0
-      TabOrder = -1
-      UseSize = False
-      Cacheable = True
-      FriendlyName = 'IWImageFile1'
     end
     object IWBSNavBar1: TIWBSNavBar
       Left = 20
@@ -223,9 +211,108 @@ object IWForm4: TIWForm4
           end>
       end
     end
+    object IWBSTabControl1: TIWBSTabControl
+      Left = 20
+      Top = 156
+      Width = 493
+      Height = 205
+      RenderInvisibleControls = True
+      ActiveTabFont.Color = clWebWHITE
+      ActiveTabFont.FontFamily = 'Arial, Sans-Serif, Verdana'
+      ActiveTabFont.Size = 10
+      ActiveTabFont.Style = [fsBold]
+      InactiveTabFont.Color = clWebBLACK
+      InactiveTabFont.FontFamily = 'Arial, Sans-Serif, Verdana'
+      InactiveTabFont.Size = 10
+      InactiveTabFont.Style = []
+      ActiveTabColor = clWebDARKGRAY
+      InactiveTabColor = clWebLIGHTGRAY
+      ActivePage = 0
+      BorderOptions.NumericWidth = 0
+      BorderOptions.BorderWidth = cbwNumeric
+      BorderOptions.Style = cbsNone
+      BorderOptions.Color = clNone
+      Color = clWebSILVER
+      ZIndex = 1000
+      DesignSize = (
+        493
+        205)
+      object IWBSTabControl1Page1: TIWTabPage
+        Left = 0
+        Top = 20
+        Width = 493
+        Height = 185
+        RenderInvisibleControls = True
+        TabOrder = 1
+        Title = 'Page1'
+        BorderOptions.NumericWidth = 0
+        BorderOptions.BorderWidth = cbwNumeric
+        BorderOptions.Style = cbsNone
+        BorderOptions.Color = clNone
+        Color = clWebWHITE
+        object IWBSInput2: TIWBSInput
+          Left = 72
+          Top = 24
+          Width = 121
+          Height = 25
+          FriendlyName = 'IWBSInput2'
+          TabOrder = -1
+          Caption = ''
+          Text = ''
+        end
+      end
+      object IWBSTabControl1Page2: TIWTabPage
+        Left = 0
+        Top = 20
+        Width = 493
+        Height = 185
+        RenderInvisibleControls = True
+        TabOrder = 2
+        Title = 'Page2'
+        BorderOptions.NumericWidth = 0
+        BorderOptions.BorderWidth = cbwNumeric
+        BorderOptions.Style = cbsNone
+        BorderOptions.Color = clNone
+        Color = clWebWHITE
+        object IWBSButton2: TIWBSButton
+          Left = 80
+          Top = 68
+          Width = 200
+          Height = 25
+          FriendlyName = 'IWBSButton2'
+          TabOrder = -1
+          BSBlockLevel = False
+          Caption = 'IWBSButton2'
+        end
+      end
+      object IWBSTabControl1Page0: TIWTabPage
+        Left = 0
+        Top = 20
+        Width = 493
+        Height = 185
+        RenderInvisibleControls = True
+        TabOrder = 0
+        Title = 'Page0'
+        BorderOptions.NumericWidth = 0
+        BorderOptions.BorderWidth = cbwNumeric
+        BorderOptions.Style = cbsNone
+        BorderOptions.Color = clNone
+        Color = clWebWHITE
+        object IWBSInput3: TIWBSInput
+          Left = 56
+          Top = 48
+          Width = 121
+          Height = 25
+          FriendlyName = 'IWBSInput3'
+          TabOrder = -1
+          Caption = ''
+          Text = ''
+        end
+      end
+    end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
-    Left = 448
-    Top = 188
+    Left = 516
+    Top = 24
   end
 end

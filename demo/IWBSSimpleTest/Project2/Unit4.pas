@@ -27,7 +27,14 @@ type
     IWBSInputGroup1: TIWBSInputGroup;
     IWBSInput1: TIWBSInput;
     IWBSDropDown4: TIWBSDropDown;
-    IWImageFile1: TIWImageFile;
+    IWBSTabControl1: TIWBSTabControl;
+    IWBSTabControl1Page0: TIWTabPage;
+    IWBSTabControl1Page1: TIWTabPage;
+    IWBSTabControl1Page2: TIWTabPage;
+    IWBSButton2: TIWBSButton;
+    IWBSInput2: TIWBSInput;
+    IWBSInput3: TIWBSInput;
+    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -36,6 +43,12 @@ implementation
 {$R *.dfm}
 
 uses IW.HTTP.FileItem;
+
+procedure TIWForm4.IWBSButton1AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+  IWBSTabControl1.ActivePage := 1;
+end;
 
 initialization
   TIWForm4.SetAsMainForm;

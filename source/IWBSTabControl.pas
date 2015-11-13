@@ -29,7 +29,7 @@ type
     FOldCss: string;
     FOldStyle: string;
     FOldVisible: boolean;
-    FOldActivePage: integer;
+    FCangedActivePage: boolean;
 
     FAsyncRefreshControl: boolean;
     FCustomAsyncEvents: TOwnedCollection;
@@ -61,6 +61,7 @@ type
     function GetScript: TStringList;
     function GetScriptParams: TIWBSScriptParams;
   protected
+    procedure SetActivePage(AIndex: Integer);
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); virtual;
     procedure InternalRenderStyle(AStyle: TStringList); virtual;
@@ -81,6 +82,7 @@ type
     procedure SetTabPageVisibility(ATabIndex: integer; Visible: boolean); overload;
     procedure SetTabPageVisibility(ATabPage: TIWTabPage; Visible: boolean); overload;
   published
+    property ActivePage: Integer read FActivePage write SetActivePage;
     property Align;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
     property BSTabOptions: TIWBSTabOptions read FTabOptions write SetTabOptions;
@@ -155,6 +157,15 @@ procedure TIWBSTabControl.SetGridOptions(const Value: TIWBSGridOptions);
 begin
   FGridOptions.Assign(Value);
   invalidate;
+end;
+
+procedure TIWBSTabControl.SetActivePage(AIndex: Integer);
+begin
+  if FActivePage <> AIndex then begin
+    FActivePage := AIndex;
+    Invalidate;
+  end;
+  FCangedActivePage := True;
 end;
 
 procedure TIWBSTabControl.SetTabOptions(const Value: TIWBSTabOptions);
@@ -288,9 +299,9 @@ begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
       SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
       SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
-      if FOldActivePage <> ActivePage then begin
+      if FCangedActivePage then begin
         AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ActivePage)+']").tab("show");');
-        FOldActivePage := ActivePage;
+        FCangedActivePage := False;
       end;
     end;
 
@@ -337,7 +348,7 @@ begin
   FOldCss := RenderCSSClass(AContext);
   FOldStyle := RenderStyle(AContext);
   FOldVisible := Visible;
-  FOldActivePage := ActivePage;
+  FCangedActivePage := False;
 
   MergeSortList(Pages, TabOrderCompare);
   CheckActiveVisible;
