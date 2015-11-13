@@ -34,6 +34,17 @@ object IWForm4: TIWForm4
       BSBlockLevel = False
       Caption = 'IWBSButton1'
     end
+    object IWBSButton3: TIWBSButton
+      Left = 284
+      Top = 115
+      Width = 200
+      Height = 25
+      FriendlyName = 'IWBSButton3'
+      TabOrder = -1
+      OnAsyncClick = IWBSButton3AsyncClick
+      BSBlockLevel = False
+      Caption = 'IWBSButton3'
+    end
     object IWBSNavBar1: TIWBSNavBar
       Left = 20
       Top = 16

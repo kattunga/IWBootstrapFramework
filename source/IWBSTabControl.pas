@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, System.StrUtils,
-  IWApplication, IWBaseRenderContext, IWControl,
+  IWApplication, IWBaseRenderContext, IWControl, IWBaseInterfaces,
   IWCompTabControl,
   IWRenderContext, IWHTMLTag, IWBSCommon, IWBSRegionCommon, IWXMLTag, IW.Common.RenderStream;
 
@@ -24,12 +24,12 @@ type
     property Stacked: boolean read FStacked write FStacked default false;
   end;
 
-  TIWBSTabControl = class(TIWTabControl, IIWBSComponent, IIWBSContainer)
+  TIWBSTabControl = class(TIWTabControl, IIWInputControl, IIWBSComponent, IIWBSContainer)
   private
     FOldCss: string;
     FOldStyle: string;
     FOldVisible: boolean;
-    FCangedActivePage: boolean;
+    FOldActivePage: integer;
 
     FAsyncRefreshControl: boolean;
     FCustomAsyncEvents: TOwnedCollection;
@@ -61,7 +61,7 @@ type
     function GetScript: TStringList;
     function GetScriptParams: TIWBSScriptParams;
   protected
-    procedure SetActivePage(AIndex: Integer);
+    procedure SetValue(const AValue: string);
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); virtual;
     procedure InternalRenderStyle(AStyle: TStringList); virtual;
@@ -159,13 +159,18 @@ begin
   invalidate;
 end;
 
-procedure TIWBSTabControl.SetActivePage(AIndex: Integer);
+procedure TIWBSTabControl.SetValue(const AValue: string);
 begin
-  if FActivePage <> AIndex then begin
-    FActivePage := AIndex;
-    Invalidate;
-  end;
-  FCangedActivePage := True;
+  if RequiresUpdateNotification(Parent) then
+    UpdateNotifiedInterface(Parent).NotifyUpdate(Self,AValue);
+  FActivePage := StrToIntDef(AValue, 0);
+  if (FActivePage < 0) or (FActivePage >= Pages.Count) then
+    begin
+      FActivePage := 0;
+      FOldActivePage := -1;
+    end
+  else
+    FOldActivePage := FActivePage;
 end;
 
 procedure TIWBSTabControl.SetTabOptions(const Value: TIWBSTabOptions);
@@ -299,9 +304,9 @@ begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
       SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
       SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
-      if FCangedActivePage then begin
+      if FOldActivePage <> ActivePage then begin
         AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ActivePage)+']").tab("show");');
-        FCangedActivePage := False;
+        FOldActivePage := ActivePage;
       end;
     end;
 
@@ -348,7 +353,7 @@ begin
   FOldCss := RenderCSSClass(AContext);
   FOldStyle := RenderStyle(AContext);
   FOldVisible := Visible;
-  FCangedActivePage := False;
+  FOldActivePage := ActivePage;
 
   MergeSortList(Pages, TabOrderCompare);
   CheckActiveVisible;

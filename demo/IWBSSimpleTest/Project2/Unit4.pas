@@ -34,7 +34,9 @@ type
     IWBSButton2: TIWBSButton;
     IWBSInput2: TIWBSInput;
     IWBSInput3: TIWBSInput;
+    IWBSButton3: TIWBSButton;
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -48,6 +50,12 @@ procedure TIWForm4.IWBSButton1AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   IWBSTabControl1.ActivePage := 1;
+end;
+
+procedure TIWForm4.IWBSButton3AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+begin
+//
 end;
 
 initialization
