@@ -158,6 +158,8 @@ begin
           AHTMLTag.Add('required');
         if PlaceHolder <> '' then
           AHTMLTag.AddStringParam('placeholder', TextToHTML(PlaceHolder));
+        if TabIndex <> 0 then
+          AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
         AHTMLTag.AddStringParam('style', ActiveStyle);
       except
         FreeAndNil(AHTMLTag);
@@ -238,6 +240,8 @@ begin
     if PlaceHolder <> '' then
       AHTMLTag.AddStringParam('placeholder', TextToHTML(PlaceHolder));
     AHTMLTag.AddIntegerParam('rows', FRows);
+    if TabIndex <> 0 then
+      AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     AHTMLTag.AddStringParam('style', ActiveStyle);
     AHTMLTag.Contents.AddText(TextToHTML(FText,false,false));
   except
@@ -321,6 +325,8 @@ begin
       AHTMLTag.Add('disabled');
     if Checked then
       AHTMLTag.Add('checked');
+    if TabIndex <> 0 then
+      AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     AHTMLTag.AddStringParam('style', ActiveStyle);
   except
     FreeAndNil(AHTMLTag);
@@ -408,6 +414,8 @@ begin
       AHTMLTag.Add('checked');
     AHTMLTag.AddStringParam('onclick', 'radioButtonClick(event, '''+FGroup+''','''+AHTMLName+InputSuffix+''');');
     AHTMLTag.AddStringParam('value', 'on');
+    if TabIndex <> 0 then
+      AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     AHTMLTag.AddStringParam('style', ActiveStyle);
   except
     FreeAndNil(AHTMLTag);
@@ -566,6 +574,8 @@ begin
       AHTMLTag.Add('disabled');
     if AutoFocus then
       AHTMLTag.Add('autofocus');
+    if TabIndex <> 0 then
+      AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     for i := 0 to Items.Count - 1 do begin
       with AHTMLTag.Contents.AddTag('option') do begin
         AddStringParam('value', IntToStr(i));
@@ -616,6 +626,8 @@ begin
   try
     AHTMLTag.AddStringParam('id', AHTMLName);
     AHTMLTag.AddClassParam('radio');
+    if TabIndex <> 0 then
+      AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     AHTMLTag.AddStringParam('style', ActiveStyle);
     for i := 0 to Items.Count - 1 do begin
       with AHTMLTag.Contents.AddTag('label') do begin

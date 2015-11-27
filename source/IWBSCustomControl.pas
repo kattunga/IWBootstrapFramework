@@ -3,7 +3,7 @@ unit IWBSCustomControl;
 interface
 
 uses System.Classes, System.SysUtils, System.StrUtils, Data.db,
-     IWControl, IWRenderContext, IWHTMLTag, IWXMLTag, IWDBCommon, IWDBStdCtrls,
+     IWControl, IWRenderContext, IWHTMLTag, IWXMLTag, IWDBCommon, IWDBStdCtrls, IWTypes,
      IWBSCommon;
 
 type
@@ -20,7 +20,7 @@ type
     FAsyncRefreshControl: boolean;
     FCustomAsyncEvents: TOwnedCollection;
     FCustomRestEvents: TOwnedCollection;
-    FTabStop: boolean;
+    FTabIndex: Integer;
     FScript: TStringList;
     FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
@@ -43,6 +43,8 @@ type
   protected
     {$hints off}
     function get_HasTabOrder: Boolean; override;
+    function getTabOrder: TIWTabOrder; override;
+    procedure setTabOrder(AValue: TIWTabOrder); override;
     function RenderAsync(AContext: TIWCompContext): TIWXMLTag; override;
     function RenderCSSClass(AComponentContext: TIWCompContext): string; override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
@@ -75,6 +77,7 @@ type
 
     function IsStoredCustomAsyncEvents: Boolean;
     function IsStoredCustomRestEvents: Boolean;
+    function JQSelector: string;
   published
     property CustomAsyncEvents: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
     property CustomRestEvents: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
@@ -85,8 +88,10 @@ type
     property ScriptEvents;
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
-    property TabStop: boolean read FTabStop write FTabStop default False;
-    property TabOrder;
+
+    // It will be rendered if tabindex <> 0.
+    // Set to -1 to disable tabstop
+    property TabIndex: integer read FTabIndex write FTabIndex default 0;
 
     property OnAsyncClick;
     property OnAsyncDoubleClick;
@@ -145,7 +150,7 @@ begin
   FCustomAsyncEvents := nil;
   FCustomRestEvents := nil;
   FMainID := '';
-  FTabStop := False;
+  FTabIndex := 0;
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
   FScriptParams := TIWBSScriptParams.Create;
@@ -165,6 +170,11 @@ begin
   inherited;
 end;
 
+function TIWBSCustomControl.JQSelector: string;
+begin
+  Result := '$("#'+HTMLName+'")';
+end;
+
 procedure TIWBSCustomControl.AsyncRefreshControl;
 begin
   FAsyncRefreshControl := True;
@@ -178,7 +188,17 @@ end;
 
 function TIWBSCustomControl.get_HasTabOrder: Boolean;
 begin
-  Result := FTabStop and gIWBSEnableTabIndex;
+  Result := False;
+end;
+
+function TIWBSCustomControl.getTabOrder: TIWTabOrder;
+begin
+  Result := -1;
+end;
+
+procedure TIWBSCustomControl.setTabOrder(AValue: TIWTabOrder);
+begin
+  //
 end;
 
 function TIWBSCustomControl.GetCustomAsyncEvents: TOwnedCollection;

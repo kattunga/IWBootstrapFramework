@@ -629,6 +629,7 @@ begin
   UnlistPublishedProperty(TIWBSCustomControl, 'SkinId');
   UnlistPublishedProperty(TIWBSCustomControl, 'StyleRenderOptions');
 
+  UnlistPublishedProperty(TIWBSCustomRegion, 'TabOrder');
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignInsertBefore');
   UnlistPublishedProperty(TIWBSCustomRegion, 'OnAlignPosition');
 

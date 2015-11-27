@@ -41,7 +41,6 @@ type
     property Caption;
     // Rendered tabindex tag if true and gIWBSEnableTabIndex = true. @br
     // http://www.w3schools.com/tags/att_global_tabindex.asp
-    property TabStop default True;
   end;
 
   // TIWBSButton.DataDismiss
@@ -131,7 +130,6 @@ begin
   FNeedsFormTag := True;
   Height := 25;
   Width := 200;
-  TabStop := True;
 end;
 
 procedure TIWBSCustomButton.SetBlockLevel(const Value: boolean);
@@ -233,6 +231,9 @@ begin
     if FButtonStyle = bsbsClose then
       AHTMLTag.AddStringParam('aria-label', 'Close');
     AHTMLTag.AddStringParam('style', ActiveStyle);
+
+    if TabIndex <> 0 then
+      AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
 
     if FGlyphicon <> '' then
       with AHTMLTag.Contents.AddTag('span') do begin

@@ -1300,7 +1300,6 @@ object IWForm2: TIWForm2
                     Width = 151
                     Height = 25
                     FriendlyName = 'IWBSInput26'
-                    TabStop = True
                     TabOrder = -1
                   end
                 end

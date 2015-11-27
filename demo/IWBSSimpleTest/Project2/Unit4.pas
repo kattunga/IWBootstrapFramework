@@ -35,6 +35,7 @@ type
     IWBSInput2: TIWBSInput;
     IWBSInput3: TIWBSInput;
     IWBSButton3: TIWBSButton;
+    IWBSLabel1: TIWBSLabel;
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton3AsyncClick(Sender: TObject; EventParams: TStringList);
   public

@@ -45,9 +45,6 @@ var
   // global link files to include in every page
   gIWBSLinkFiles: TStringList = nil;
 
-  // global enable inputtag, usually not necessary to enable
-  gIWBSEnableTabIndex: boolean = False;
-
 procedure IWBSAddGlobalLinkFile(const AFile: string);
 
 implementation

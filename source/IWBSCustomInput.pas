@@ -70,7 +70,6 @@ type
     property NonEditableAsLabel default False;
     property ScriptEvents;
     property SubmitOnAsyncEvent default True;
-    property TabStop default True;
     property Text: TCaption read GetText write SetText;
   end;
 
@@ -143,7 +142,6 @@ begin
 
   Height := 25;
   Width := 121;
-  TabStop := True;
 end;
 
 procedure TIWBSCustomInput.Invalidate;

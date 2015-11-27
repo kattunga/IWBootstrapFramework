@@ -45,6 +45,15 @@ object IWForm4: TIWForm4
       BSBlockLevel = False
       Caption = 'IWBSButton3'
     end
+    object IWBSLabel1: TIWBSLabel
+      Left = 20
+      Top = 152
+      Width = 200
+      Height = 25
+      FriendlyName = 'IWBSLabel1'
+      TabOrder = -1
+      Caption = 'IWBSLabel1'
+    end
     object IWBSNavBar1: TIWBSNavBar
       Left = 20
       Top = 16
@@ -224,9 +233,9 @@ object IWForm4: TIWForm4
     end
     object IWBSTabControl1: TIWBSTabControl
       Left = 20
-      Top = 156
+      Top = 200
       Width = 493
-      Height = 205
+      Height = 161
       RenderInvisibleControls = True
       ActiveTabFont.Color = clWebWHITE
       ActiveTabFont.FontFamily = 'Arial, Sans-Serif, Verdana'
@@ -247,12 +256,12 @@ object IWForm4: TIWForm4
       ZIndex = 1000
       DesignSize = (
         493
-        205)
+        161)
       object IWBSTabControl1Page1: TIWTabPage
         Left = 0
         Top = 20
         Width = 493
-        Height = 185
+        Height = 141
         RenderInvisibleControls = True
         TabOrder = 1
         Title = 'Page1'
@@ -261,6 +270,7 @@ object IWForm4: TIWForm4
         BorderOptions.Style = cbsNone
         BorderOptions.Color = clNone
         Color = clWebWHITE
+        ExplicitHeight = 185
         object IWBSInput2: TIWBSInput
           Left = 72
           Top = 24
@@ -276,7 +286,7 @@ object IWForm4: TIWForm4
         Left = 0
         Top = 20
         Width = 493
-        Height = 185
+        Height = 141
         RenderInvisibleControls = True
         TabOrder = 2
         Title = 'Page2'
@@ -285,6 +295,7 @@ object IWForm4: TIWForm4
         BorderOptions.Style = cbsNone
         BorderOptions.Color = clNone
         Color = clWebWHITE
+        ExplicitHeight = 185
         object IWBSButton2: TIWBSButton
           Left = 80
           Top = 68
@@ -300,7 +311,7 @@ object IWForm4: TIWForm4
         Left = 0
         Top = 20
         Width = 493
-        Height = 185
+        Height = 141
         RenderInvisibleControls = True
         TabOrder = 0
         Title = 'Page0'
@@ -309,6 +320,7 @@ object IWForm4: TIWForm4
         BorderOptions.Style = cbsNone
         BorderOptions.Color = clNone
         Color = clWebWHITE
+        ExplicitHeight = 185
         object IWBSInput3: TIWBSInput
           Left = 56
           Top = 48
