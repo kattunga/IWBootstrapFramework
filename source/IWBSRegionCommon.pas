@@ -15,7 +15,7 @@ type
                      bsrtJumbotron, bsrtPageHeader, bsrtWell,
                      bsrtIWBSRegion, bsrtIWBSToolbar,
                      bsrtButtonToolbar, bsrtButtonGroup,
-                     bsrtModalContent, bsrtModalHeader, bsrtModalTitle, bsrtModalBody, bsrtModalFooter,
+                     bsrtModalContent, bsrtModalHeader, bsrtModalBody, bsrtModalFooter,
                      bsrtPanelGroup, bsrtPanel, bsrtPanelBody, bsrtPanelHeading, bsrtPanelTitle, bsrtPanelFooter);
 
 const
@@ -25,7 +25,7 @@ const
                      'jumbotron', 'page-header', 'well',
                      'iwbs-region', 'iwbs-toolbar',
                      'btn-toolbar', 'btn-group',
-                     'modal-content', 'modal-header', 'modal-title', 'modal-body', 'modal-footer',
+                     'modal-content', 'modal-header', 'modal-body', 'modal-footer',
                      'panel-group', 'panel', 'panel-body', 'panel-heading', 'panel-title', 'panel-footer');
 
 type
