@@ -52,6 +52,11 @@ type
     procedure Paint; override;
   end;
 
+  TIWBSPaintHandlerLabel = class (TIWPaintHandlerRectangle)
+  public
+    procedure Paint; override;
+  end;
+
   TIWBSPaintHandlerCustomComponent = class (TIWPaintHandlerRectangle)
   public
     procedure Paint; override;
@@ -483,6 +488,27 @@ begin
   end;
 end;
 
+procedure TIWBSPaintHandlerLabel.Paint;
+var
+  LRect: TRect;
+  s: string;
+begin
+  LRect := Rect(0, 0, Control.Width, Control.Height);
+
+  ControlCanvas.Brush.Color := clWhite;
+  ControlCanvas.Pen.Color := clGray;
+  ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+  ControlCanvas.Font.Size := 10;
+  ControlCanvas.Font.Color := clBlack;
+
+  if Control is TIWBSLabel then begin
+    s := TIWBSLabel(Control).DataField;
+    if s = '' then
+      s := TIWBSLabel(Control).Caption;
+    ControlCanvas.TextRect(LRect,s,[])
+  end;
+end;
+
 procedure TIWBSPaintHandlerCustomComponent.Paint;
 var
   LRect: TRect;
@@ -661,7 +687,7 @@ initialization
   IWRegisterPaintHandler('TIWBSButton',TIWBSPaintHandlerCustomButton);
   IWRegisterPaintHandler('TIWBSDropDown',TIWBSPaintHandlerCustomButton);
 
-  IWRegisterPaintHandler('TIWBSLabel',TIWBSPaintHandlerCustomText);
+  IWRegisterPaintHandler('TIWBSLabel',TIWBSPaintHandlerLabel);
 
   IWRegisterPaintHandler('TIWBSGlyphicon',TIWBSPaintHandlerGlyphicon);
 
