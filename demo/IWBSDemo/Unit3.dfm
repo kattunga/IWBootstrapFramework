@@ -2,13 +2,13 @@ object IWFrame3: TIWFrame3
   Left = 0
   Top = 0
   Width = 689
-  Height = 578
+  Height = 544
   TabOrder = 0
   object IWBSModal1: TIWBSModal
     Left = 3
     Top = 3
     Width = 674
-    Height = 566
+    Height = 526
     RenderInvisibleControls = True
     TabOrder = 0
     ModalVisible = True
@@ -17,29 +17,17 @@ object IWFrame3: TIWFrame3
       Left = 1
       Top = 1
       Width = 672
-      Height = 564
+      Height = 524
       RenderInvisibleControls = True
       Align = alClient
       BSRegionType = bsrtModalContent
       object IWBSRegion2: TIWBSRegion
-        Left = 40
-        Top = 152
+        Left = 44
+        Top = 100
         Width = 601
         Height = 325
         RenderInvisibleControls = True
         BSRegionType = bsrtModalBody
-        object IWLabel4: TIWLabel
-          Left = 24
-          Top = 16
-          Width = 99
-          Height = 16
-          Font.Color = clNone
-          Font.Size = 10
-          Font.Style = []
-          HasTabOrder = False
-          FriendlyName = 'IWLabel1'
-          Caption = 'This is the body'
-        end
         object IWBSInput1: TIWBSInput
           Left = 24
           Top = 64
@@ -81,28 +69,24 @@ object IWFrame3: TIWFrame3
           BSBlockLevel = False
           Caption = 'IWBSButton1'
         end
+        object IWLabel4: TIWBSLabel
+          Left = 24
+          Top = 16
+          Width = 193
+          Height = 21
+          FriendlyName = 'IWLabel1'
+          Caption = 'This is the body'
+        end
       end
       object IWBSRegion3: TIWBSRegion
-        Left = 40
-        Top = 86
+        Left = 44
+        Top = 34
         Width = 601
         Height = 60
         RenderInvisibleControls = True
         BSRegionType = bsrtModalHeader
-        object IWLabel2: TIWLabel
-          Left = 28
-          Top = 24
-          Width = 113
-          Height = 16
-          Font.Color = clNone
-          Font.Size = 10
-          Font.Style = []
-          HasTabOrder = False
-          FriendlyName = 'IWLabel1'
-          Caption = 'This is the header'
-        end
         object IWBSButton199: TIWBSButton
-          Left = 544
+          Left = 16
           Top = 16
           Width = 29
           Height = 29
@@ -119,45 +103,31 @@ object IWFrame3: TIWFrame3
           BSButtonStyle = bsbsClose
           DataDismiss = bsbdModal
         end
+        object IWLabel2: TIWBSLabel
+          Left = 72
+          Top = 24
+          Width = 193
+          Height = 21
+          FriendlyName = 'IWLabel1'
+          Caption = 'This is the header'
+          RawText = True
+          TagType = 'h4'
+        end
       end
       object IWBSRegion4: TIWBSRegion
-        Left = 40
-        Top = 488
+        Left = 44
+        Top = 436
         Width = 601
         Height = 60
         RenderInvisibleControls = True
         BSRegionType = bsrtModalFooter
-        object IWLabel1: TIWLabel
+        object IWLabel1: TIWBSLabel
           Left = 24
           Top = 20
-          Width = 106
-          Height = 16
-          Font.Color = clNone
-          Font.Size = 10
-          Font.Style = []
-          HasTabOrder = False
+          Width = 173
+          Height = 21
           FriendlyName = 'IWLabel1'
           Caption = 'This is the footer'
-        end
-      end
-      object IWBSRegion5: TIWBSRegion
-        Left = 40
-        Top = 14
-        Width = 601
-        Height = 60
-        RenderInvisibleControls = True
-        BSRegionType = bsrtModalTitle
-        object IWLabel3: TIWLabel
-          Left = 28
-          Top = 28
-          Width = 92
-          Height = 16
-          Font.Color = clNone
-          Font.Size = 10
-          Font.Style = []
-          HasTabOrder = False
-          FriendlyName = 'IWLabel1'
-          Caption = 'This is the title'
         end
       end
     end

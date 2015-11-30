@@ -303,7 +303,7 @@ end;
 procedure TIWForm2.IWBSButton28AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  TIWBSDialog.Create('This is the header', 'This is the Body').Show;
+  TIWBSDialog.Create('This is the header', 'This is the Body');
 end;
 
 procedure TIWForm2.IWBSButton30AsyncClick(Sender: TObject;
@@ -324,8 +324,7 @@ begin
       procedure(EventParams: TStringList)
       begin
         IWBSInput23.Text := 'You pressed OK!';
-      end);
-    Show;
+      end).DataDismiss := bsbdModal;
   end;
 end;
 

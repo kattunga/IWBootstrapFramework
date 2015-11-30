@@ -8,7 +8,7 @@ uses
   IWHTML40Container, IWBaseComponent, IWBaseHTMLComponent,
   IWBaseHTML40Component, IWCompExtCtrls, IWBSRegion, IWCompEdit, IWBSInput,
   IWCompLabel, IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl, IWControl,
-  IWCompButton, IWBSCustomInput, IWBSButton, IWBSCustomControl;
+  IWCompButton, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSControls;
 
 type
   TIWFrame3 = class(TFrame)
@@ -17,15 +17,13 @@ type
     IWBSRegion2: TIWBSRegion;
     IWBSRegion3: TIWBSRegion;
     IWBSRegion4: TIWBSRegion;
-    IWBSRegion5: TIWBSRegion;
-    IWLabel1: TIWLabel;
-    IWLabel2: TIWLabel;
-    IWLabel3: TIWLabel;
-    IWLabel4: TIWLabel;
     IWBSInput1: TIWBSInput;
     IWBSButton199: TIWBSButton;
     IWBSSelect1: TIWBSSelect;
     IWBSButton1: TIWBSButton;
+    IWLabel4: TIWBSLabel;
+    IWLabel2: TIWBSLabel;
+    IWLabel1: TIWBSLabel;
     procedure IWBSButton1Click(Sender: TObject);
   private
     { Private declarations }
