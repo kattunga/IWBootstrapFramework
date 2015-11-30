@@ -13,10 +13,14 @@ type
     FForControl: TIWCustomControl;
     FRawText: boolean;
     FOldText: string;
+    FTagType: string;
     function  RenderLabelText: string;
+    procedure SetTagType(const Value: string);
+    function IsTagTypeStored: Boolean;
   protected
     procedure CheckData(AContext: TIWCompContext); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure SetForControl(const Value: TIWCustomControl);
   public
@@ -25,6 +29,7 @@ type
     property Caption;
     property ForControl: TIWCustomControl read FForControl write SetForControl;
     property RawText: boolean read FRawText write FRawText default False;
+    property TagType: string read FTagType write SetTagType stored IsTagTypeStored;
   end;
 
   TIWBSText = class(TIWBSCustomDbControl)
@@ -65,6 +70,7 @@ type
     procedure OnHtmlChange(ASender : TObject);
     procedure SetHtml(const AValue: TStringList);
     procedure SetTagType(const Value: string);
+    function IsTagTypeStored: Boolean;
   protected
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
@@ -72,7 +78,7 @@ type
     destructor Destroy; override;
   published
     property Html: TStringList read FHtml write SetHtml;
-    property TagType: string read FTagType write SetTagType;
+    property TagType: string read FTagType write SetTagType stored IsTagTypeStored;
   end;
 
   TIWBSFile = class(TIWBSCustomControl)
@@ -89,13 +95,14 @@ type
 
 implementation
 
-uses IW.Common.System, IWBSInput, IWBSRegion, IWBSInputCommon, IWBSCustomEvents;
+uses IW.Common.System, IWBSInput, IWBSRegion, IWBSInputCommon, IWBSCustomEvents, IWBSRegionCommon;
 
 {$region 'TIWBSLabel'}
 constructor TIWBSLabel.Create(AOwner: TComponent);
 begin
   inherited;
   FRawText := False;
+  FTagType := 'span';
   Height := 25;
   Width := 200;
 end;
@@ -103,6 +110,13 @@ end;
 procedure TIWBSLabel.SetForControl(const Value: TIWCustomControl);
 begin
   FForControl := Value;
+end;
+
+procedure TIWBSLabel.SetTagType(const Value: string);
+begin
+  TIWBSCommon.ValidateTagName(Value);
+  FTagType := Value;
+  AsyncRefreshControl;
 end;
 
 function TIWBSLabel.RenderLabelText: string;
@@ -119,6 +133,13 @@ begin
   SetAsyncHtml(AContext, AHTMLName, RenderLabelText, FOldText);
 end;
 
+procedure TIWBSLabel.InternalRenderCss(var ACss: string);
+begin
+  inherited;
+  if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtModalHeader) then
+    TIWBSCommon.AddCssClass(ACss, 'modal-title');
+end;
+
 procedure TIWBSLabel.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 begin
   inherited;
@@ -130,7 +151,7 @@ begin
       AHTMLTag.AddStringParam('for', ForControl.HTMLName);
     end
   else
-    AHTMLTag := TIWHTMLTag.CreateTag('span');
+    AHTMLTag := TIWHTMLTag.CreateTag(FTagType);
   AHTMLTag.AddStringParam('id', HTMLName);
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('style',ActiveStyle);
@@ -138,6 +159,11 @@ begin
 
   if Parent is TIWBSInputGroup then
     AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, HTMLName, 'addon');
+end;
+
+function TIWBSLabel.IsTagTypeStored: Boolean;
+begin
+  Result := FTagType <> 'span';
 end;
 
 procedure TIWBSLabel.CheckData(AContext: TIWCompContext);
@@ -300,6 +326,11 @@ begin
   AHTMLTag.AddStringParam('style',ActiveStyle);
   AHTMLTag.Contents.AddText(FHtml.Text);
 end;
+function TIWBSCustomComponent.IsTagTypeStored: Boolean;
+begin
+  Result := FTagType <> 'div';
+end;
+
 {$endregion}
 
 {$region 'TIWBSFile' }
