@@ -136,7 +136,6 @@ object FJQGrid: TFJQGrid
               '')
             Style.Strings = (
               '')
-            TabOrder = -1
             Html.Strings = (
               '<table id="%htmlname%Grid"></table>'
               '<div id="%htmlname%GridPager"></div>')
@@ -148,7 +147,6 @@ object FJQGrid: TFJQGrid
             Width = 702
             Height = 40
             FriendlyName = 'IWText1'
-            TabOrder = -1
             Lines.Strings = (
               
                 '<h4>Guriddo jqGrid JS is an Ajax-enabled JavaScript control that' +
@@ -176,8 +174,8 @@ object FJQGrid: TFJQGrid
         Height = 25
         Css = 'navbar-btn navbar-right'
         FriendlyName = 'IWBSButton1'
-        TabOrder = -1
         OnAsyncClick = IWBSButton1AsyncClick
+        BSBlockLevel = False
         BSGlyphicon = 'arrow-left'
         Caption = 'Switch to Standard Demo'
       end

@@ -53,7 +53,7 @@ type
   public
     constructor Create;
     function GetClassString: string;
-
+    procedure Assign(Source: TPersistent); override;
     class function GetGridClassString(AGridXSOffset, AGridSMOffset, AGridMDOffset, AGridLGOffset, AGridXSSpan, AGridSMSpan, AGridMDSpan, AGridLGSpan: integer): string;
   published
     property GridXSOffset: integer read FGridXSOffset write FGridXSOffset default 0;
@@ -167,6 +167,23 @@ end;
 function TIWBSGridOptions.GetClassString: string;
 begin
   Result := GetGridClassString(FGridXSOffset, FGridSMOffset, FGridMDOffset, FGridLGOffset, FGridXSSpan, FGridSMSpan, FGridMDSpan, FGridLGSpan);
+end;
+
+procedure TIWBSGridOptions.Assign(Source: TPersistent);
+begin
+  if Source is TIWBSGridOptions then
+    begin
+      GridXSOffset := TIWBSGridOptions(Source).GridXSOffset;
+      GridXSSpan := TIWBSGridOptions(Source).GridXSSpan;
+      GridSMOffset := TIWBSGridOptions(Source).GridSMOffset;
+      GridSMSpan := TIWBSGridOptions(Source).GridSMSpan;
+      GridMDOffset := TIWBSGridOptions(Source).GridMDOffset;
+      GridMDSpan := TIWBSGridOptions(Source).GridMDSpan;
+      GridLGOffset := TIWBSGridOptions(Source).GridLGOffset;
+      GridLGSpan := TIWBSGridOptions(Source).GridLGSpan;
+    end
+  else
+    inherited;
 end;
 {$endregion}
 

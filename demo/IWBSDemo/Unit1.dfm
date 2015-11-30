@@ -17,7 +17,6 @@ object IWFrame1: TIWFrame1
       Width = 241
       Height = 21
       FriendlyName = 'IWBSInput'
-      TabOrder = -1
       Caption = ''
       Text = ''
       PlaceHolder = 'Input text here'
@@ -36,8 +35,8 @@ object IWFrame1: TIWFrame1
       StyleRenderOptions.RenderPadding = False
       StyleRenderOptions.RenderBorder = False
       FriendlyName = 'IWBSButton198'
-      TabOrder = -1
       OnAsyncClick = IWBSButton198AsyncClick
+      BSBlockLevel = False
       Caption = 'Press Here'
     end
     object IWBSInput2: TIWBSInput
@@ -46,7 +45,6 @@ object IWFrame1: TIWFrame1
       Width = 241
       Height = 21
       FriendlyName = 'IWBSInput2'
-      TabOrder = -1
       Caption = ''
       Text = ''
     end
@@ -64,7 +62,7 @@ object IWFrame1: TIWFrame1
               's");')
           Event = 'onClick'
         end>
-      TabOrder = -1
+      BSBlockLevel = False
       Caption = 'IWBSButton1'
     end
   end

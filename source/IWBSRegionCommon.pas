@@ -36,6 +36,7 @@ type
     FSize: TIWBSSize;
   public
     constructor Create(AOwner: TComponent);
+    procedure Assign(Source: TPersistent); override;
   published
     property Vertical: boolean read FVertical write FVertical default false;
     property Justified: boolean read FJustified write FJustified default false;
@@ -55,6 +56,7 @@ type
     constructor Create;
     destructor Destroy; override;
     function GetOffsetClassString: string;
+    procedure Assign(Source: TPersistent); override;
   published
     property CaptionsSize: TIWBSGridOptions read FCaptionsSize write SetCaptionsSize;
     property InputsSize: TIWBSGridOptions read FInputsSize write SetInputsSize;
@@ -97,6 +99,18 @@ begin
   FJustified := false;
   FSize := bsszDefault;
 end;
+
+procedure TIWBSButonGroupOptions.Assign(Source: TPersistent);
+begin
+  if Source is TIWBSButonGroupOptions then
+    begin
+      Vertical := TIWBSButonGroupOptions(Source).Vertical;
+      Justified := TIWBSButonGroupOptions(Source).Justified;
+      Size := TIWBSButonGroupOptions(Source).Size;
+    end
+  else
+    inherited;
+end;
 {$endregion}
 
 {$region 'TIWBSFormOptions'}
@@ -134,6 +148,17 @@ begin
     FInputsSize.GridSMSpan,
     FInputsSize.GridMDSpan,
     FInputsSize.GridLGSpan);
+end;
+
+procedure TIWBSFormOptions.Assign(Source: TPersistent);
+begin
+  if Source is TIWBSFormOptions then
+    begin
+      CaptionsSize.Assign(TIWBSFormOptions(Source).CaptionsSize);
+      InputsSize.Assign(TIWBSFormOptions(Source).InputsSize);
+    end
+  else
+    inherited;
 end;
 {$endregion}
 

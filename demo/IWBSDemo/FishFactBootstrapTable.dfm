@@ -74,7 +74,6 @@ object FBootstrapTable: TFBootstrapTable
                 'field, value, row) {%onClickCell%} );')
             Style.Strings = (
               '')
-            TabOrder = -1
             Html.Strings = (
               '<style>'
               '@media only screen and (max-width: 767px) {'
@@ -91,7 +90,6 @@ object FBootstrapTable: TFBootstrapTable
             Width = 702
             Height = 40
             FriendlyName = 'IWText1'
-            TabOrder = -1
             Lines.Strings = (
               
                 '<h4>An extended Bootstrap table with radio, checkbox, sort, pagi' +
@@ -117,8 +115,8 @@ object FBootstrapTable: TFBootstrapTable
         Height = 25
         Css = 'navbar-btn navbar-right'
         FriendlyName = 'IWBSButton1'
-        TabOrder = -1
         OnAsyncClick = IWBSButton1AsyncClick
+        BSBlockLevel = False
         BSGlyphicon = 'arrow-left'
         Caption = 'Switch to Standard Demo'
       end

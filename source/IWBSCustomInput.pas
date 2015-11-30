@@ -26,6 +26,11 @@ type
     FReadOnly: Boolean;
     FRequired: Boolean;
     procedure EditingChanged;
+    function GetAsDateTime: TDateTime;
+    function GetAsDouble: Double;
+    function GetAsVariant: Variant;
+    procedure SetAsDateTime(const Value: TDateTime);
+    procedure SetAsDouble(const Value: Double);
   protected
     FIsStatic: boolean;
     FSupportReadOnly: boolean;
@@ -59,6 +64,9 @@ type
     procedure Invalidate; override;
     procedure SetText(const AValue: TCaption); override;
     property Required: Boolean read FRequired write SetRequired default False;
+    property AsDateTime: TDateTime read GetAsDateTime write SetAsDateTime;
+    property AsDouble: Double read GetAsDouble write SetAsDouble;
+    property AsVariant: Variant read GetAsVariant;
   published
     property AutoEditable: Boolean read FAutoEditable write FAutoEditable default True;
     property AutoFocus: boolean read FAutoFocus write FAutoFocus default False;
@@ -149,6 +157,56 @@ begin
   inherited;
 end;
 
+function TIWBSCustomInput.GetAsDateTime: TDateTime;
+begin
+  if FInputType in [bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime] then
+    if FText = '' then
+      Result := 0
+    else
+      Result := StrToDateTime(ReplaceStr(FText,'T',' '), LFormatSettings)
+  else
+    raise Exception.Create('Invalid InputType');
+end;
+
+procedure TIWBSCustomInput.SetAsDateTime(const Value: TDateTime);
+begin
+  if FInputType = bsitDateTimeLocal then
+    FText := FormatDateTime('yyyy-mm-dd"T"hh:nn', Value)
+  else if FInputType = bsitDate then
+    FText := FormatDateTime('yyyy-mm-dd', Value)
+  else if FInputType = bsitDate then
+    FText := FormatDateTime('hh:nn', Value);
+end;
+
+function TIWBSCustomInput.GetAsDouble: Double;
+begin
+  if FInputType = bsitNumber then
+    if FText = '' then
+      Result := 0
+    else
+      Result := StrToFloat(FText, LFormatSettings)
+  else
+    raise Exception.Create('Invalid InputType');
+end;
+
+procedure TIWBSCustomInput.SetAsDouble(const Value: Double);
+begin
+  if FInputType = bsitNumber then
+    FText := FloatToStr(Value, LFormatSettings)
+  else
+    raise Exception.Create('Invalid InputType');
+end;
+
+function TIWBSCustomInput.GetAsVariant: Variant;
+begin
+  if FInputType = bsitNumber then
+    Result := GetAsDouble
+  else if FInputType in [bsitDateTimeLocal, bsitDate, bsitMonth, bsitTime] then
+    Result := GetAsDateTime
+  else
+    Result := FText;
+end;
+
 procedure TIWBSCustomInput.GetInputControlNames(ANames: TStringList);
 begin
   ANames.Text := HTMLName+InputSuffix;
@@ -223,9 +281,9 @@ begin
             LField.Text := LText
           else
             if FInputType = bsitNumber then
-              LField.AsFloat := StrToFloat(AValue, LFormatSettings)
+              LField.AsFloat := StrToFloat(LText, LFormatSettings)
             else if FInputType = bsitDateTimeLocal then  // agregar todos los tipos fecha que hay
-              LField.AsDateTime := StrToDateTime(ReplaceStr(AValue,'T',' '), LFormatSettings)
+              LField.AsDateTime := StrToDateTime(ReplaceStr(LText,'T',' '), LFormatSettings)
             else
               LField.AsString := LText;
         end

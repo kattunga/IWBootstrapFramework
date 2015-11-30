@@ -43,4 +43,10 @@ object IWForm4: TIWForm4
     TabOrder = 1
     OnClick = IWButton1Click
   end
+  object IWBSRegion1: TIWBSRegion
+    Left = 64
+    Top = 136
+    Width = 253
+    Height = 165
+  end
 end

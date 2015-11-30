@@ -54,7 +54,6 @@ object IWFrame3: TIWFrame3
           StyleRenderOptions.RenderPadding = False
           StyleRenderOptions.RenderBorder = False
           FriendlyName = 'IWBSInput1'
-          TabOrder = -1
           AutoFocus = True
           Caption = 'Input'
           Text = ''
@@ -65,7 +64,6 @@ object IWFrame3: TIWFrame3
           Width = 121
           Height = 25
           FriendlyName = 'IWBSSelect1'
-          TabOrder = -1
           Caption = ''
           Text = ''
           Items.Strings = (
@@ -80,7 +78,7 @@ object IWFrame3: TIWFrame3
           Width = 265
           Height = 25
           FriendlyName = 'IWBSButton1'
-          TabOrder = -1
+          BSBlockLevel = False
           Caption = 'IWBSButton1'
         end
       end
@@ -117,7 +115,7 @@ object IWFrame3: TIWFrame3
           StyleRenderOptions.RenderPadding = False
           StyleRenderOptions.RenderBorder = False
           FriendlyName = 'IWBSButton199'
-          TabOrder = -1
+          BSBlockLevel = False
           BSButtonStyle = bsbsClose
           DataDismiss = bsbdModal
         end

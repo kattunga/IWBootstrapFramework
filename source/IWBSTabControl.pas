@@ -17,6 +17,7 @@ type
     FStacked: boolean;
   public
     constructor Create(AOwner: TComponent);
+    procedure Assign(Source: TPersistent); override;
   published
     property Fade: boolean read FFade write FFade default false;
     property Pills: boolean read FPills write FPills default false;
@@ -112,6 +113,19 @@ begin
   FPills := False;
   FJustified := False;
   FStacked := False;
+end;
+
+procedure TIWBSTabOptions.Assign(Source: TPersistent);
+begin
+  if Source is TIWBSTabOptions then
+    begin
+      Fade := TIWBSTabOptions(Source).Fade;
+      Pills := TIWBSTabOptions(Source).Pills;
+      Justified := TIWBSTabOptions(Source).Justified;
+      Stacked := TIWBSTabOptions(Source).Stacked;
+    end
+  else
+    inherited;
 end;
 {$endregion}
 

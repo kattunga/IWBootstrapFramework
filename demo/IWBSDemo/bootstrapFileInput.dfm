@@ -56,7 +56,6 @@ object FBootstrapFileInput: TFBootstrapFileInput
             Width = 702
             Height = 95
             FriendlyName = 'IWText1'
-            TabOrder = -1
             Lines.Strings = (
               
                 '<h4> An enhanced HTML 5 file input for Bootstrap 3.x with file p' +
@@ -93,8 +92,6 @@ object FBootstrapFileInput: TFBootstrapFileInput
               
                 '$("#%htmlname%").off("fileuploaded").on("fileuploaded", function' +
                 '() {%fileuploaded%});')
-            TabStop = True
-            TabOrder = -1
             Multiple = True
           end
           object IWBSRegion5: TIWBSRegion
@@ -122,8 +119,8 @@ object FBootstrapFileInput: TFBootstrapFileInput
         Height = 25
         Css = 'navbar-btn navbar-right'
         FriendlyName = 'IWBSButton1'
-        TabOrder = -1
         OnAsyncClick = IWBSButton1AsyncClick
+        BSBlockLevel = False
         BSGlyphicon = 'arrow-left'
         Caption = 'Switch to Standard Demo'
       end
