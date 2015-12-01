@@ -16,7 +16,7 @@ type
                      bsrtIWBSRegion, bsrtIWBSToolbar,
                      bsrtButtonToolbar, bsrtButtonGroup,
                      bsrtModalContent, bsrtModalHeader, bsrtModalBody, bsrtModalFooter,
-                     bsrtPanelGroup, bsrtPanel, bsrtPanelBody, bsrtPanelHeading, bsrtPanelTitle, bsrtPanelFooter);
+                     bsrtPanelGroup, bsrtPanel, bsrtPanelBody, bsrtPanelHeading, bsrtPanelFooter);
 
 const
   aIWBSRegionType: array [bsrtNone..bsrtPanelFooter] of string =
@@ -26,7 +26,7 @@ const
                      'iwbs-region', 'iwbs-toolbar',
                      'btn-toolbar', 'btn-group',
                      'modal-content', 'modal-header', 'modal-body', 'modal-footer',
-                     'panel-group', 'panel', 'panel-body', 'panel-heading', 'panel-title', 'panel-footer');
+                     'panel-group', 'panel', 'panel-body', 'panel-heading', 'panel-footer');
 
 type
   TIWBSButonGroupOptions = class(TPersistent)

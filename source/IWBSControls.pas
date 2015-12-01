@@ -136,8 +136,11 @@ end;
 procedure TIWBSLabel.InternalRenderCss(var ACss: string);
 begin
   inherited;
-  if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtModalHeader) then
-    TIWBSCommon.AddCssClass(ACss, 'modal-title');
+  if Parent is TIWBSRegion then
+    if TIWBSRegion(Parent).BSRegionType = bsrtModalHeader then
+      TIWBSCommon.AddCssClass(ACss, 'modal-title')
+    else if TIWBSRegion(Parent).BSRegionType = bsrtPanelHeading then
+      TIWBSCommon.AddCssClass(ACss, 'panel-title');
 end;
 
 procedure TIWBSLabel.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
