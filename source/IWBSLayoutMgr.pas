@@ -27,8 +27,8 @@ implementation
 
 uses
   IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists, IWURL,
-  IWRegion, IW.Common.Strings, IWBSGlobal,
-  IWBSRegionCommon, IWBSCommon, IWBSTabControl;
+  IWRegion, IW.Common.Strings, IWMimeTypes,
+  IWBSGlobal, IWBSRegionCommon, IWBSCommon, IWBSTabControl;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
@@ -321,5 +321,9 @@ begin
 
   APageContext.AppendContext(LComponentContext);
 end;
+
+initialization
+  TIWMimeTypes.RegisterType('.woff','text/html; charset=UTF-8',True);
+  TIWMimeTypes.RegisterType('.woff2','text/html; charset=UTF-8',True);
 
 end.
