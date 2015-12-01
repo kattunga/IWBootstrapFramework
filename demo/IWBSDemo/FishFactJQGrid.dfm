@@ -50,7 +50,21 @@ object FJQGrid: TFJQGrid
           Height = 1097
           Align = alClient
           BSRegionType = bsrtColumn
-          object DbTable: TIWBSCustomComponent
+          object IWText1: TIWBSText
+            Left = 10
+            Top = 19
+            Width = 702
+            Height = 40
+            FriendlyName = 'IWText1'
+            Lines.Strings = (
+              
+                '<h4>Guriddo jqGrid JS is an Ajax-enabled JavaScript control that' +
+                ' provides solutions for representing and manipulating tabular da' +
+                'ta on the web. Since the grid is a client-side solution loading ' +
+                'data dynamically through Ajax callbacks.</h4>')
+            RawText = True
+          end
+          object DbTable: TIWBSText
             Left = 10
             Top = 75
             Width = 702
@@ -136,23 +150,10 @@ object FJQGrid: TFJQGrid
               '')
             Style.Strings = (
               '')
-            Html.Strings = (
-              '<table id="%htmlname%Grid"></table>'
-              '<div id="%htmlname%GridPager"></div>')
-            TagType = 'div'
-          end
-          object IWText1: TIWBSText
-            Left = 10
-            Top = 19
-            Width = 702
-            Height = 40
-            FriendlyName = 'IWText1'
             Lines.Strings = (
-              
-                '<h4>Guriddo jqGrid JS is an Ajax-enabled JavaScript control that' +
-                ' provides solutions for representing and manipulating tabular da' +
-                'ta on the web. Since the grid is a client-side solution loading ' +
-                'data dynamically through Ajax callbacks.</h4>')
+              '<table id="%htmlname%Grid"></table>'
+              '<div id="%htmlname%GridPager"></div>'
+              '')
             RawText = True
           end
         end

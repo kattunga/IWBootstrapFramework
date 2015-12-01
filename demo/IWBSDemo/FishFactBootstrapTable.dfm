@@ -50,7 +50,19 @@ object FBootstrapTable: TFBootstrapTable
           Height = 1097
           Align = alClient
           BSRegionType = bsrtColumn
-          object DbTable: TIWBSCustomComponent
+          object IWText1: TIWBSText
+            Left = 10
+            Top = 19
+            Width = 702
+            Height = 40
+            FriendlyName = 'IWText1'
+            Lines.Strings = (
+              
+                '<h4>An extended Bootstrap table with radio, checkbox, sort, pagi' +
+                'nation, and other added features.</h4>')
+            RawText = True
+          end
+          object DbTable: TIWBSText
             Left = 10
             Top = 75
             Width = 702
@@ -74,7 +86,7 @@ object FBootstrapTable: TFBootstrapTable
                 'field, value, row) {%onClickCell%} );')
             Style.Strings = (
               '')
-            Html.Strings = (
+            Lines.Strings = (
               '<style>'
               '@media only screen and (max-width: 767px) {'
               '.pagination-detail {display: none;}'
@@ -82,18 +94,6 @@ object FBootstrapTable: TFBootstrapTable
               '</style>'
               ''
               '<table id="%htmlname%_table"></table>')
-            TagType = 'div'
-          end
-          object IWText1: TIWBSText
-            Left = 10
-            Top = 19
-            Width = 702
-            Height = 40
-            FriendlyName = 'IWText1'
-            Lines.Strings = (
-              
-                '<h4>An extended Bootstrap table with radio, checkbox, sort, pagi' +
-                'nation, and other added features.</h4>')
             RawText = True
           end
         end

@@ -34,11 +34,11 @@ type
     ClientDataSet1FoundDate: TDateTimeField;
     ClientDataSet1Option: TStringField;
     ClientDataSet1Check: TStringField;
-    DbTable: TIWBSCustomComponent;
     IWText1: TIWBSText;
     IWBSRegion8: TIWBSNavBar;
     IWBSButton1: TIWBSButton;
     IWBSRegion4: TIWBSRegion;
+    DbTable: TIWBSText;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure DbTableCustomAjaxEvents0AsyncEvent(aParams: TStringList);
     procedure DbTableCustomRestEvents0RestEvent(aApplication: TIWApplication;

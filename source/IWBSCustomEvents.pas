@@ -18,6 +18,7 @@ type
   public
     procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
     procedure ParseParamEvent(AScript: TStringList);
+    procedure Assign(Source: TPersistent); override;
   published
     property EventName: string read FEventName write SetEventName;
     property Params: string read FParams write FParams;
@@ -36,6 +37,7 @@ type
   public
     procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
     procedure ParseParamEvent(AScript: TStringList);
+    procedure Assign(Source: TPersistent); override;
   published
     property EventName: string read FEventName write SetEventName;
     property OnRestEvent: TIWBSRestCallBackFunction read FRestEvent write FRestEvent;
@@ -56,6 +58,18 @@ procedure TIWBSCustomAsyncEvent.SetEventName(const AValue: string);
 begin
   // here we need to check that is a valid event name
   FEventName := AValue;
+end;
+
+procedure TIWBSCustomAsyncEvent.Assign(Source: TPersistent);
+begin
+  if Source is TIWBSCustomAsyncEvent then
+    begin
+      EventName := TIWBSCustomAsyncEvent(Source).EventName;
+      Params := TIWBSCustomAsyncEvent(Source).Params;
+      OnAsyncEvent := TIWBSCustomAsyncEvent(Source).OnAsyncEvent;
+    end
+  else
+    inherited;
 end;
 
 procedure TIWBSCustomAsyncEvent.RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
@@ -102,6 +116,18 @@ procedure TIWBSCustomRestEvent.SetEventName(const AValue: string);
 begin
   // here we need to check that is a valid event name
   FEventName := AValue;
+end;
+
+procedure TIWBSCustomRestEvent.Assign(Source: TPersistent);
+begin
+  if Source is TIWBSCustomRestEvent then
+    begin
+      EventName := TIWBSCustomRestEvent(Source).EventName;
+      ParseFileUpload := TIWBSCustomRestEvent(Source).ParseFileUpload;
+      OnRestEvent := TIWBSCustomRestEvent(Source).OnRestEvent;
+    end
+  else
+    inherited;
 end;
 
 procedure TIWBSCustomRestEvent.RegisterEvent(AApplication: TIWApplication; const AComponentName: string);

@@ -18,7 +18,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -289
+  DesignTop = 8
   object IWBSRegion40: TIWBSRegion
     Left = 0
     Top = 0
@@ -130,7 +130,7 @@ object IWForm2: TIWForm2
             InactiveTabFont.Style = []
             ActiveTabColor = clWebDARKGRAY
             InactiveTabColor = clWebLIGHTGRAY
-            ActivePage = 3
+            ActivePage = 0
             Align = alClient
             BorderOptions.NumericWidth = 0
             BorderOptions.BorderWidth = cbwNumeric
@@ -1237,408 +1237,6 @@ object IWForm2: TIWForm2
                 end
               end
             end
-            object IWTabControl21Page0: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1076
-              Height = 1512
-              RenderInvisibleControls = True
-              TabOrder = 0
-              Title = 'Form Controls'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSRegion25: TIWBSRegion
-                Left = 0
-                Top = 0
-                Width = 1076
-                Height = 1305
-                Align = alTop
-                Style.Strings = (
-                  'margin: 1em')
-                BSRegionType = bsrtRow
-                object IWBSRegion2: TIWBSRegion
-                  Left = 1
-                  Top = 1
-                  Width = 334
-                  Height = 1303
-                  Align = alLeft
-                  BSGridOptions.GridMDSpan = 4
-                  BSRegionType = bsrtColumn
-                  object IWBSRegion18: TIWBSRegion
-                    Left = 12
-                    Top = 34
-                    Width = 245
-                    Height = 195
-                    BSRegionType = bsrtWell
-                    object IWBSInputForm3: TIWBSInputForm
-                      Left = 4
-                      Top = 24
-                      Width = 234
-                      Height = 159
-                      object LstFormType: TIWBSRadioGroup
-                        Left = 10
-                        Top = 47
-                        Width = 128
-                        Height = 64
-                        FriendlyName = 'LstFormType'
-                        Caption = ''
-                        Text = 'form-vertical'
-                        ItemIndex = 0
-                        Items.Strings = (
-                          'form-vertical'
-                          'form-horizontal'
-                          'form-inline')
-                      end
-                      object IWBSButton35: TIWBSButton
-                        Left = 10
-                        Top = 122
-                        Width = 127
-                        Height = 25
-                        RenderSize = False
-                        StyleRenderOptions.RenderSize = False
-                        FriendlyName = 'IWBSButton20'
-                        OnAsyncClick = IWBSButton35AsyncClick
-                        BSBlockLevel = False
-                        Caption = 'Apply change'
-                      end
-                      object IWText2: TIWBSText
-                        Left = 10
-                        Top = 16
-                        Width = 201
-                        Height = 19
-                        FriendlyName = 'IWText2'
-                        Lines.Strings = (
-                          '<h3>Form Layout</h3>')
-                        RawText = True
-                      end
-                    end
-                  end
-                end
-                object IWBSInputForm2: TIWBSInputForm
-                  Left = 335
-                  Top = 1
-                  Width = 740
-                  Height = 1303
-                  Align = alClient
-                  BSGridOptions.GridMDSpan = 8
-                  BSFormOptions.CaptionsSize.GridMDSpan = 4
-                  BSFormOptions.InputsSize.GridMDSpan = 8
-                  object IWBSInput1: TIWBSInput
-                    Left = 12
-                    Top = 35
-                    Width = 201
-                    Height = 25
-                    Cursor = crWait
-                    ExtraTagParams.Strings = (
-                      '')
-                    FriendlyName = 'IWBSInput1'
-                    Caption = 'Input Type Text'
-                    Text = ''
-                    BSTextAlignment = bstaCenter
-                    PlaceHolder = 'Name'
-                  end
-                  object IWBSInput2: TIWBSInput
-                    Left = 12
-                    Top = 220
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Numer'
-                    Text = ''
-                    PlaceHolder = 'Amount'
-                    InputType = bsitNumber
-                  end
-                  object IWBSInput3: TIWBSInput
-                    Left = 12
-                    Top = 62
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Password'
-                    Text = ''
-                    PlaceHolder = 'Password'
-                    InputType = bsitPassword
-                  end
-                  object IWBSMemo2: TIWBSMemo
-                    Left = 14
-                    Top = 447
-                    Width = 433
-                    Height = 121
-                    FriendlyName = 'IWBSMemo2'
-                    Caption = 'This is a Memo'
-                    Text = ''
-                    BSTextAlignment = bstaRight
-                    BSTextCase = bstcUppercase
-                    PlaceHolder = 'This is a text area with right align and uppercase'
-                  end
-                  object IWBSButton20: TIWBSButton
-                    Left = 12
-                    Top = 4
-                    Width = 326
-                    Height = 25
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSButton20'
-                    OnAsyncClick = IWBSButton20AsyncClick
-                    BSBlockLevel = False
-                    BSGlyphicon = 'check'
-                    Caption = 'Ajax Click (see input values in memo)'
-                  end
-                  object IWBSInput7: TIWBSInput
-                    Left = 12
-                    Top = 113
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Date'
-                    Text = ''
-                    PlaceHolder = 'Date'
-                    InputType = bsitDate
-                  end
-                  object IWBSInput14: TIWBSInput
-                    Left = 12
-                    Top = 89
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type DateTimeLocal'
-                    Text = ''
-                    PlaceHolder = 'DateTimeLocal'
-                    InputType = bsitDateTimeLocal
-                  end
-                  object IWBSInput15: TIWBSInput
-                    Left = 12
-                    Top = 139
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Month'
-                    Text = ''
-                    PlaceHolder = 'Month'
-                    InputType = bsitMonth
-                  end
-                  object IWBSInput16: TIWBSInput
-                    Left = 12
-                    Top = 166
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Time'
-                    Text = ''
-                    PlaceHolder = 'Time'
-                    InputType = bsitTime
-                  end
-                  object IWBSInput17: TIWBSInput
-                    Left = 12
-                    Top = 193
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Week'
-                    Text = ''
-                    PlaceHolder = 'Week'
-                    InputType = bsitWeek
-                  end
-                  object IWBSInput18: TIWBSInput
-                    Left = 12
-                    Top = 244
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Email'
-                    Text = ''
-                    PlaceHolder = 'Email'
-                    InputType = bsitEmail
-                  end
-                  object IWBSInput19: TIWBSInput
-                    Left = 12
-                    Top = 270
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Url'
-                    Text = ''
-                    PlaceHolder = 'home page'
-                    InputType = bsitUrl
-                  end
-                  object IWBSInput20: TIWBSInput
-                    Left = 12
-                    Top = 297
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Search'
-                    Text = ''
-                    PlaceHolder = 'Search'
-                    InputType = bsitSearch
-                  end
-                  object IWBSInput21: TIWBSInput
-                    Left = 12
-                    Top = 324
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Tel'
-                    Text = ''
-                    PlaceHolder = 'Telephone'
-                    InputType = bsitTel
-                  end
-                  object IWBSInput22: TIWBSInput
-                    Left = 12
-                    Top = 351
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Color'
-                    Text = ''
-                    PlaceHolder = 'Pick a Color'
-                    InputType = bsitColor
-                  end
-                  object IWBSInput13: TIWBSInput
-                    Left = 12
-                    Top = 382
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input NonEditableAsLabel'
-                    Editable = False
-                    NonEditableAsLabel = True
-                    Text = 'This is a static text'
-                    PlaceHolder = 'Pick a Color'
-                  end
-                  object IWBSRadioGroup1: TIWBSRadioGroup
-                    Left = 15
-                    Top = 932
-                    Width = 237
-                    Height = 125
-                    FriendlyName = 'IWBSRadioGroup1'
-                    Caption = 'This is a radio group'
-                    Text = 'item 1'
-                    ItemIndex = 0
-                    Items.Strings = (
-                      'item 1'
-                      'item 2'
-                      'item 3'
-                      'item 4')
-                  end
-                  object IWBSComboBox2: TIWBSSelect
-                    Left = 15
-                    Top = 755
-                    Width = 291
-                    Height = 25
-                    FriendlyName = 'IWBSComboBox1'
-                    Caption = 'This is a Select (Size = 1)'
-                    Text = ''
-                    Items.Strings = (
-                      'item 1'
-                      'item 2'
-                      'item 3'
-                      'item 4')
-                  end
-                  object IWBSListbox2: TIWBSSelect
-                    Left = 14
-                    Top = 575
-                    Width = 291
-                    Height = 82
-                    FriendlyName = 'IWBSListbox1'
-                    Caption = 'This is a ListBox with multi select'
-                    Text = ''
-                    Items.Strings = (
-                      'item 1'
-                      'item 2'
-                      'item 3'
-                      'item 4')
-                    MultiSelect = True
-                    Size = 4
-                  end
-                  object IWBSListbox3: TIWBSSelect
-                    Left = 15
-                    Top = 663
-                    Width = 291
-                    Height = 77
-                    FriendlyName = 'IWBSListbox1'
-                    Caption = 'This is a Select (Size <> 1)'
-                    Text = ''
-                    Items.Strings = (
-                      'item 1'
-                      'item 2'
-                      'item 3'
-                      'item 4')
-                    Size = 0
-                  end
-                  object IWBSCheckBox1: TIWBSCheckBox
-                    Left = 12
-                    Top = 416
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSCheckBox1'
-                    Caption = 'IWBSCheckBox1'
-                    Text = 'false'
-                    ValueChecked = 'true'
-                    ValueUnchecked = 'false'
-                  end
-                  object IWBSRegion1: TIWBSRegion
-                    Left = 15
-                    Top = 799
-                    Width = 237
-                    Height = 121
-                    BSRegionType = bsrtFormGroup
-                    object IWBSRadioButton6: TIWBSRadioButton
-                      Left = 8
-                      Top = 12
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSRadioButton6'
-                      Caption = 'Radio Button 1'
-                      Text = 'true'
-                      Checked = True
-                      Group = 'group1'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object IWBSRadioButton7: TIWBSRadioButton
-                      Left = 8
-                      Top = 40
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSRadioButton6'
-                      Caption = 'Radio Button 2'
-                      Text = 'false'
-                      Group = 'group1'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object IWBSRadioButton8: TIWBSRadioButton
-                      Left = 8
-                      Top = 65
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSRadioButton6'
-                      Caption = 'Radio Button 3'
-                      Text = 'false'
-                      Group = 'group1'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object IWBSRadioButton9: TIWBSRadioButton
-                      Left = 8
-                      Top = 92
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSRadioButton6'
-                      Caption = 'Radio Button 4'
-                      Text = 'false'
-                      Group = 'group1'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                  end
-                end
-              end
-            end
             object IWTabControl21Page4: TIWTabPage
               Left = 0
               Top = 20
@@ -2015,6 +1613,408 @@ object IWForm2: TIWForm2
                             'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
                             'us labore sustainable VHS.')
                       end
+                    end
+                  end
+                end
+              end
+            end
+            object IWTabControl21Page0: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1076
+              Height = 1512
+              RenderInvisibleControls = True
+              TabOrder = 0
+              Title = 'Form Controls'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSRegion25: TIWBSRegion
+                Left = 0
+                Top = 0
+                Width = 1076
+                Height = 1305
+                Align = alTop
+                Style.Strings = (
+                  'margin: 1em')
+                BSRegionType = bsrtRow
+                object IWBSRegion2: TIWBSRegion
+                  Left = 1
+                  Top = 1
+                  Width = 334
+                  Height = 1303
+                  Align = alLeft
+                  BSGridOptions.GridMDSpan = 4
+                  BSRegionType = bsrtColumn
+                  object IWBSRegion18: TIWBSRegion
+                    Left = 12
+                    Top = 27
+                    Width = 245
+                    Height = 195
+                    BSRegionType = bsrtWell
+                    object IWBSInputForm3: TIWBSInputForm
+                      Left = 4
+                      Top = 24
+                      Width = 234
+                      Height = 159
+                      object LstFormType: TIWBSRadioGroup
+                        Left = 10
+                        Top = 47
+                        Width = 128
+                        Height = 64
+                        FriendlyName = 'LstFormType'
+                        Caption = ''
+                        Text = 'form-vertical'
+                        ItemIndex = 0
+                        Items.Strings = (
+                          'form-vertical'
+                          'form-horizontal'
+                          'form-inline')
+                      end
+                      object IWBSButton35: TIWBSButton
+                        Left = 10
+                        Top = 122
+                        Width = 127
+                        Height = 25
+                        RenderSize = False
+                        StyleRenderOptions.RenderSize = False
+                        FriendlyName = 'IWBSButton20'
+                        OnAsyncClick = IWBSButton35AsyncClick
+                        BSBlockLevel = False
+                        Caption = 'Apply change'
+                      end
+                      object IWText2: TIWBSText
+                        Left = 10
+                        Top = 16
+                        Width = 201
+                        Height = 19
+                        FriendlyName = 'IWText2'
+                        Lines.Strings = (
+                          '<h3>Form Layout</h3>')
+                        RawText = True
+                      end
+                    end
+                  end
+                end
+                object IWBSInputForm2: TIWBSInputForm
+                  Left = 335
+                  Top = 1
+                  Width = 740
+                  Height = 1303
+                  Align = alClient
+                  BSGridOptions.GridMDSpan = 8
+                  BSFormOptions.CaptionsSize.GridMDSpan = 4
+                  BSFormOptions.InputsSize.GridMDSpan = 8
+                  object IWBSInput1: TIWBSInput
+                    Left = 12
+                    Top = 35
+                    Width = 201
+                    Height = 25
+                    Cursor = crWait
+                    ExtraTagParams.Strings = (
+                      '')
+                    FriendlyName = 'IWBSInput1'
+                    Caption = 'Input Type Text'
+                    Text = ''
+                    BSTextAlignment = bstaCenter
+                    PlaceHolder = 'Name'
+                  end
+                  object IWBSInput2: TIWBSInput
+                    Left = 12
+                    Top = 220
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Numer'
+                    Text = ''
+                    PlaceHolder = 'Amount'
+                    InputType = bsitNumber
+                  end
+                  object IWBSInput3: TIWBSInput
+                    Left = 12
+                    Top = 62
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Password'
+                    Text = ''
+                    PlaceHolder = 'Password'
+                    InputType = bsitPassword
+                  end
+                  object IWBSMemo2: TIWBSMemo
+                    Left = 14
+                    Top = 447
+                    Width = 433
+                    Height = 121
+                    FriendlyName = 'IWBSMemo2'
+                    Caption = 'This is a Memo'
+                    Text = ''
+                    BSTextAlignment = bstaRight
+                    BSTextCase = bstcUppercase
+                    PlaceHolder = 'This is a text area with right align and uppercase'
+                  end
+                  object IWBSButton20: TIWBSButton
+                    Left = 12
+                    Top = 4
+                    Width = 326
+                    Height = 25
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSButton20'
+                    OnAsyncClick = IWBSButton20AsyncClick
+                    BSBlockLevel = False
+                    BSGlyphicon = 'check'
+                    Caption = 'Ajax Click (see input values in memo)'
+                  end
+                  object IWBSInput7: TIWBSInput
+                    Left = 12
+                    Top = 113
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Date'
+                    Text = ''
+                    PlaceHolder = 'Date'
+                    InputType = bsitDate
+                  end
+                  object IWBSInput14: TIWBSInput
+                    Left = 12
+                    Top = 89
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type DateTimeLocal'
+                    Text = ''
+                    PlaceHolder = 'DateTimeLocal'
+                    InputType = bsitDateTimeLocal
+                  end
+                  object IWBSInput15: TIWBSInput
+                    Left = 12
+                    Top = 139
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Month'
+                    Text = ''
+                    PlaceHolder = 'Month'
+                    InputType = bsitMonth
+                  end
+                  object IWBSInput16: TIWBSInput
+                    Left = 12
+                    Top = 166
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Time'
+                    Text = ''
+                    PlaceHolder = 'Time'
+                    InputType = bsitTime
+                  end
+                  object IWBSInput17: TIWBSInput
+                    Left = 12
+                    Top = 193
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Week'
+                    Text = ''
+                    PlaceHolder = 'Week'
+                    InputType = bsitWeek
+                  end
+                  object IWBSInput18: TIWBSInput
+                    Left = 12
+                    Top = 244
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Email'
+                    Text = ''
+                    PlaceHolder = 'Email'
+                    InputType = bsitEmail
+                  end
+                  object IWBSInput19: TIWBSInput
+                    Left = 12
+                    Top = 270
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Url'
+                    Text = ''
+                    PlaceHolder = 'home page'
+                    InputType = bsitUrl
+                  end
+                  object IWBSInput20: TIWBSInput
+                    Left = 12
+                    Top = 297
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Search'
+                    Text = ''
+                    PlaceHolder = 'Search'
+                    InputType = bsitSearch
+                  end
+                  object IWBSInput21: TIWBSInput
+                    Left = 12
+                    Top = 324
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Tel'
+                    Text = ''
+                    PlaceHolder = 'Telephone'
+                    InputType = bsitTel
+                  end
+                  object IWBSInput22: TIWBSInput
+                    Left = 12
+                    Top = 351
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Color'
+                    Text = ''
+                    PlaceHolder = 'Pick a Color'
+                    InputType = bsitColor
+                  end
+                  object IWBSInput13: TIWBSInput
+                    Left = 12
+                    Top = 382
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input NonEditableAsLabel'
+                    Editable = False
+                    NonEditableAsLabel = True
+                    Text = 'This is a static text'
+                    PlaceHolder = 'Pick a Color'
+                  end
+                  object IWBSRadioGroup1: TIWBSRadioGroup
+                    Left = 15
+                    Top = 932
+                    Width = 237
+                    Height = 125
+                    FriendlyName = 'IWBSRadioGroup1'
+                    Caption = 'This is a radio group'
+                    Text = 'item 1'
+                    ItemIndex = 0
+                    Items.Strings = (
+                      'item 1'
+                      'item 2'
+                      'item 3'
+                      'item 4')
+                  end
+                  object IWBSComboBox2: TIWBSSelect
+                    Left = 15
+                    Top = 755
+                    Width = 291
+                    Height = 25
+                    FriendlyName = 'IWBSComboBox1'
+                    Caption = 'This is a Select (Size = 1)'
+                    Text = ''
+                    Items.Strings = (
+                      'item 1'
+                      'item 2'
+                      'item 3'
+                      'item 4')
+                  end
+                  object IWBSListbox2: TIWBSSelect
+                    Left = 14
+                    Top = 575
+                    Width = 291
+                    Height = 82
+                    FriendlyName = 'IWBSListbox1'
+                    Caption = 'This is a ListBox with multi select'
+                    Text = ''
+                    Items.Strings = (
+                      'item 1'
+                      'item 2'
+                      'item 3'
+                      'item 4')
+                    MultiSelect = True
+                    Size = 4
+                  end
+                  object IWBSListbox3: TIWBSSelect
+                    Left = 15
+                    Top = 663
+                    Width = 291
+                    Height = 77
+                    FriendlyName = 'IWBSListbox1'
+                    Caption = 'This is a Select (Size <> 1)'
+                    Text = ''
+                    Items.Strings = (
+                      'item 1'
+                      'item 2'
+                      'item 3'
+                      'item 4')
+                    Size = 0
+                  end
+                  object IWBSCheckBox1: TIWBSCheckBox
+                    Left = 12
+                    Top = 416
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSCheckBox1'
+                    Caption = 'IWBSCheckBox1'
+                    Text = 'false'
+                    ValueChecked = 'true'
+                    ValueUnchecked = 'false'
+                  end
+                  object IWBSRegion1: TIWBSRegion
+                    Left = 15
+                    Top = 799
+                    Width = 237
+                    Height = 121
+                    BSRegionType = bsrtFormGroup
+                    object IWBSRadioButton6: TIWBSRadioButton
+                      Left = 8
+                      Top = 12
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSRadioButton6'
+                      Caption = 'Radio Button 1'
+                      Text = 'true'
+                      Checked = True
+                      Group = 'group1'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object IWBSRadioButton7: TIWBSRadioButton
+                      Left = 8
+                      Top = 40
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSRadioButton6'
+                      Caption = 'Radio Button 2'
+                      Text = 'false'
+                      Group = 'group1'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object IWBSRadioButton8: TIWBSRadioButton
+                      Left = 8
+                      Top = 65
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSRadioButton6'
+                      Caption = 'Radio Button 3'
+                      Text = 'false'
+                      Group = 'group1'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object IWBSRadioButton9: TIWBSRadioButton
+                      Left = 8
+                      Top = 92
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSRadioButton6'
+                      Caption = 'Radio Button 4'
+                      Text = 'false'
+                      Group = 'group1'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
                     end
                   end
                 end

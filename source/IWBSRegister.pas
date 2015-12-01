@@ -47,17 +47,12 @@ type
     procedure Paint; override;
   end;
 
-  TIWBSPaintHandlerCustomText = class (TIWPaintHandlerRectangle)
+  TIWBSPaintHandlerText = class (TIWPaintHandlerRectangle)
   public
     procedure Paint; override;
   end;
 
   TIWBSPaintHandlerLabel = class (TIWPaintHandlerRectangle)
-  public
-    procedure Paint; override;
-  end;
-
-  TIWBSPaintHandlerCustomComponent = class (TIWPaintHandlerRectangle)
   public
     procedure Paint; override;
   end;
@@ -458,27 +453,34 @@ begin
   end;
 end;
 
-procedure TIWBSPaintHandlerCustomText.Paint;
+procedure TIWBSPaintHandlerText.Paint;
 var
   LRect: TRect;
   s: string;
 begin
-  LRect := Rect(0, 0, Control.Width, Control.Height);
+  with TIWBSText(Control) do begin
+    LRect := Rect(0, 0, Control.Width, Control.Height);
+    ControlCanvas.Brush.Color := clWhite;
+    ControlCanvas.Pen.Color := clGray;
+    ControlCanvas.Rectangle(LRect);
 
-  ControlCanvas.Brush.Color := clWhite;
-  ControlCanvas.Pen.Color := clGray;
-  ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
-  ControlCanvas.Font.Size := 10;
-  ControlCanvas.Font.Color := clBlack;
-  ControlCanvas.Rectangle(LRect);
+    if RawText then
+      ControlCanvas.Font.Name := 'Courier New'
+    else
+      ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+    ControlCanvas.Font.Size := 10;
+    ControlCanvas.Font.Color := clBlack;
 
-  if Control is TIWBSCustomDbControl then begin
-    s := TIWBSCustomDbControl(Control).DataField;
+    s := DataField;
     if s = '' then
-      if Control is TIWBSLabel then
-        s := TIWBSLabel(Control).Caption
-      else if Control is TIWBSText then
-        s := TIWBSText(Control).Lines.Text;
+      s := Lines.Text;
+
+    if RawText then begin
+      s := '<'+TagType+'>'#13#10+s;
+      if Script.Count > 0 then
+        s := s+#13#10'<script>'#13#10+Script.Text+'</script>';
+      s := s+#13#10'</'+TagType+'>';
+    end;
 
     Inc(LRect.Top, 1);
     Inc(LRect.Left, 8);
@@ -493,45 +495,18 @@ var
   LRect: TRect;
   s: string;
 begin
-  LRect := Rect(0, 0, Control.Width, Control.Height);
+  with TIWBSLabel(Control) do begin
+    LRect := Rect(0, 0, Control.Width, Control.Height);
 
-  ControlCanvas.Brush.Color := clWhite;
-  ControlCanvas.Pen.Color := clGray;
-  ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
-  ControlCanvas.Font.Size := 10;
-  ControlCanvas.Font.Color := clBlack;
+    ControlCanvas.Brush.Color := clWhite;
+    ControlCanvas.Pen.Color := clGray;
+    ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+    ControlCanvas.Font.Size := 10;
+    ControlCanvas.Font.Color := clBlack;
 
-  if Control is TIWBSLabel then begin
-    s := TIWBSLabel(Control).DataField;
+    s := DataField;
     if s = '' then
-      s := TIWBSLabel(Control).Caption;
-    ControlCanvas.TextRect(LRect,s,[])
-  end;
-end;
-
-procedure TIWBSPaintHandlerCustomComponent.Paint;
-var
-  LRect: TRect;
-  s: string;
-begin
-  LRect := Rect(0, 0, Control.Width, Control.Height);
-
-  ControlCanvas.Brush.Color := clWhite;
-  ControlCanvas.Pen.Color := clGray;
-  ControlCanvas.Font.Name := 'Courier New';
-  ControlCanvas.Font.Size := 10;
-  ControlCanvas.Font.Color := clBlack;
-  ControlCanvas.Rectangle(LRect);
-
-  with TIWBSCustomComponent(Control) do begin
-    Inc(LRect.Top, 1);
-    Inc(LRect.Left, 8);
-    Dec(LRect.Bottom, 1);
-    Dec(LRect.Right, 8);
-    s := '<'+TagType+'>'#13#10+Html.Text;
-    if Script.Count > 0 then
-      s := s+#13#10'<script>'#13#10+Script.Text+'</script>';
-    s := s+#13#10'</'+TagType+'>';
+      s := Caption;
     ControlCanvas.TextRect(LRect,s,[])
   end;
 end;
@@ -644,8 +619,6 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSGlyphicon]);
   RegisterPropertyEditor(TypeInfo(string), TIWBSGlyphicon,'BSGlyphicon', TGlyphiconEditor);
 
-  RegisterComponents('IW BootsTrap', [TIWBSCustomComponent]);
-
   RegisterComponents('IW BootsTrap', [TIWBSImage]);
 
   RegisterComponents('IW BootsTrap', [TIWBSFile]);
@@ -691,9 +664,7 @@ initialization
 
   IWRegisterPaintHandler('TIWBSGlyphicon',TIWBSPaintHandlerGlyphicon);
 
-  IWRegisterPaintHandler('TIWBSText',TIWBSPaintHandlerCustomText);
-
-  IWRegisterPaintHandler('TIWBSCustomComponent',TIWBSPaintHandlerCustomComponent);
+  IWRegisterPaintHandler('TIWBSText',TIWBSPaintHandlerText);
 
   IWRegisterPaintHandler('TIWBSImage',TIWBSPaintHandlerImage);
 
@@ -727,8 +698,6 @@ finalization
   IWUnRegisterPaintHandler('TIWBSGlyphicon');
 
   IWUnRegisterPaintHandler('TIWBSText');
-
-  IWUnRegisterPaintHandler('TIWBSCustomComponent');
 
   IWUnRegisterPaintHandler('TIWBSImage');
 

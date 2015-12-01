@@ -37,9 +37,13 @@ type
     FLines: TStringList;
     FRawText: boolean;
     FOldText: string;
+    FTagType: string;
     function  RenderText: string;
     procedure OnLinesChange(ASender : TObject);
     procedure SetLines(const AValue: TStringList);
+    function IsTagTypeStored: Boolean;
+    procedure SetTagType(const Value: string);
+    procedure SetRawText(const Value: boolean);
   protected
     procedure CheckData(AContext: TIWCompContext); override;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
@@ -48,7 +52,8 @@ type
     constructor Create(AOwner: TComponent); override;
   published
     property Lines: TStringList read FLines write SetLines;
-    property RawText: boolean read FRawText write FRawText default False;
+    property RawText: boolean read FRawText write SetRawText default False;
+    property TagType: string read FTagType write SetTagType stored IsTagTypeStored;
   end;
 
   TIWBSGlyphicon = class(TIWBSCustomControl)
@@ -61,24 +66,6 @@ type
     constructor Create(AOwner: TComponent); override;
   published
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
-  end;
-
-  TIWBSCustomComponent = class(TIWBSCustomControl)
-  private
-    FHtml: TStringList;
-    FTagType: string;
-    procedure OnHtmlChange(ASender : TObject);
-    procedure SetHtml(const AValue: TStringList);
-    procedure SetTagType(const Value: string);
-    function IsTagTypeStored: Boolean;
-  protected
-    procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
-  public
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
-  published
-    property Html: TStringList read FHtml write SetHtml;
-    property TagType: string read FTagType write SetTagType stored IsTagTypeStored;
   end;
 
   TIWBSFile = class(TIWBSCustomControl)
@@ -185,6 +172,7 @@ begin
   FLines := TStringList.Create;
   FLines.OnChange := OnLinesChange;
   FRawText := False;
+  FTagType := 'div';
   Height := 100;
   Width := 200;
 end;
@@ -201,10 +189,47 @@ begin
   FLines.Assign(AValue);
 end;
 
+procedure TIWBSText.SetRawText(const Value: boolean);
+begin
+  FRawText := Value;
+  AsyncRefreshControl;
+end;
+
+procedure TIWBSText.SetTagType(const Value: string);
+begin
+  TIWBSCommon.ValidateTagName(Value);
+  FTagType := Value;
+  AsyncRefreshControl;
+end;
+
 function TIWBSText.RenderText: string;
+var
+  i: integer;
+  LLines: TStringList;
 begin
   if RawText then
-    Result := Lines.Text
+    begin
+      LLines := TStringList.Create;
+      try
+        LLines.Assign(FLines);
+
+        TIWBSCommon.ReplaceParams(HTMLName, LLines, ScriptParams);
+
+        // replace inner events calls
+        if IsStoredCustomAsyncEvents then
+          for i := 0 to CustomAsyncEvents.Count-1 do
+            TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParamEvent(LLines);
+
+        // replace inner events calls
+        if IsStoredCustomRestEvents then
+          for i := 0 to CustomRestEvents.Count-1 do
+            TIWBSCustomRestEvent(CustomRestEvents.Items[i]).ParseParamEvent(LLines);
+
+        Result := LLines.Text;
+      finally
+        LLines.Free;
+      end;
+    end
   else
     Result := TextToHTML(Lines.Text);
 end;
@@ -220,11 +245,16 @@ begin
   inherited;
   FOldText := RenderText;
 
-  AHTMLTag := TIWHTMLTag.CreateTag('div');
+  AHTMLTag := TIWHTMLTag.CreateTag(FTagType);
   AHTMLTag.AddStringParam('id', HTMLName);
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('style',ActiveStyle);
   AHTMLTag.Contents.AddText(FOldText);
+end;
+
+function TIWBSText.IsTagTypeStored: Boolean;
+begin
+  Result := FTagType <> 'div';
 end;
 
 procedure TIWBSText.CheckData(AContext: TIWCompContext);
@@ -272,72 +302,7 @@ begin
 end;
 {$endregion}
 
-{$region 'TIWBSCustomComponent'}
-constructor TIWBSCustomComponent.Create(AOwner: TComponent);
-begin
-  inherited;
-  FHtml := TStringList.Create;
-  FHtml.OnChange := OnHtmlChange;
-  FTagType := 'div';
-end;
-
-destructor TIWBSCustomComponent.Destroy;
-begin
-  FreeAndNil(FHtml);
-  inherited;
-end;
-
-procedure TIWBSCustomComponent.OnHtmlChange(ASender : TObject);
-begin
-  Invalidate;
-  if Script.Count > 0 then
-    AsyncRefreshControl;
-end;
-
-procedure TIWBSCustomComponent.SetHtml(const AValue: TStringList);
-begin
-  FHtml.Assign(AValue);
-end;
-
-procedure TIWBSCustomComponent.SetTagType(const Value: string);
-begin
-  TIWBSCommon.ValidateTagName(Value);
-  FTagType := Value;
-  AsyncRefreshControl;
-end;
-
-procedure TIWBSCustomComponent.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
-var
-  i: integer;
-begin
-  inherited;
-  TIWBSCommon.ReplaceParams(HTMLName, FHtml, ScriptParams);
-
-  // register ajax callbacks
-  if IsStoredCustomAsyncEvents then
-    for i := 0 to CustomAsyncEvents.Count-1 do
-      TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParamEvent(FHtml);
-
-  // register rest callbacks
-  if IsStoredCustomRestEvents then
-    for i := 0 to CustomRestEvents.Count-1 do
-      TIWBSCustomRestEvent(CustomRestEvents.Items[i]).ParseParamEvent(FHtml);
-
-  AHTMLTag := TIWHTMLTag.CreateTag(FTagType);
-  AHTMLTag.AddStringParam('id', HTMLName);
-  AHTMLTag.AddClassParam(ActiveCss);
-  AHTMLTag.AddStringParam('style',ActiveStyle);
-  AHTMLTag.Contents.AddText(FHtml.Text);
-end;
-function TIWBSCustomComponent.IsTagTypeStored: Boolean;
-begin
-  Result := FTagType <> 'div';
-end;
-
-{$endregion}
-
 {$region 'TIWBSFile' }
-
 constructor TIWBSFile.Create(AOwner: TComponent);
 begin
   inherited;
