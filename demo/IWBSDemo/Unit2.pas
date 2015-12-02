@@ -326,7 +326,7 @@ end;
 procedure TIWForm2.IWBSButton32AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  TIWBSAlert.Create('This is simple Alert').Show;
+  TIWBSAlert.Create('This is simple Alert');
 end;
 
 procedure TIWForm2.IWBSButton33AsyncClick(Sender: TObject;
@@ -339,7 +339,6 @@ begin
       begin
         IWBSInput24.Text := 'You pressed OK in the alert!';
       end);
-    Show;
   end;
 end;
 

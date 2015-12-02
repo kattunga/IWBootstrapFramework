@@ -218,12 +218,12 @@ begin
         // replace inner events calls
         if IsStoredCustomAsyncEvents then
           for i := 0 to CustomAsyncEvents.Count-1 do
-            TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParamEvent(LLines);
+            TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParam(LLines);
 
         // replace inner events calls
         if IsStoredCustomRestEvents then
           for i := 0 to CustomRestEvents.Count-1 do
-            TIWBSCustomRestEvent(CustomRestEvents.Items[i]).ParseParamEvent(LLines);
+            TIWBSCustomRestEvent(CustomRestEvents.Items[i]).ParseParam(LLines);
 
         Result := LLines.Text;
       finally

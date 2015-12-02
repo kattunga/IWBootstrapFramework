@@ -44,10 +44,8 @@ end;
 
 procedure TIWBSLayoutMgr.AddLinkFile(const AFile: string);
 begin
-  if FLinkFiles = nil then begin
+  if FLinkFiles = nil then
     FLinkFiles := TStringList.Create;
-    FLinkFiles.Sorted := True;
-  end;
   if FLinkFiles.IndexOf(AFile) = -1 then
     FLinkFiles.Add(AFile);
 end;

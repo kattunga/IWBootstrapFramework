@@ -87,14 +87,16 @@ begin
 
     if AComponent.IsStoredCustomAsyncEvents then
       for i := 0 to AComponent.CustomAsyncEvents.Count-1 do begin
-        TIWBSCustomAsyncEvent(AComponent.CustomAsyncEvents.Items[i]).RegisterEvent(AContext.WebApplication, LHTMLName);
-        TIWBSCustomAsyncEvent(AComponent.CustomAsyncEvents.Items[i]).ParseParamEvent(LJScript);
+        AComponent.CustomAsyncEvents.Items[i].RegisterEvent(AContext.WebApplication, LHTMLName);
+        AComponent.CustomAsyncEvents.Items[i].ParseParam(LJScript);
+        if AComponent.CustomAsyncEvents.Items[i].AutoBind and (AComponent.CustomAsyncEvents.Items[i].EventName <> '') then
+          LJScript.Add('$("#'+LHTMLName+'").off("'+LHTMLName+'").on("'+AComponent.CustomAsyncEvents.Items[i].EventName+'", function(event) {'+AComponent.CustomAsyncEvents.Items[i].GetScript+'});');
       end;
 
     if AComponent.IsStoredCustomRestEvents then
       for i := 0 to AComponent.CustomRestEvents.Count-1 do begin
-        TIWBSCustomRestEvent(AComponent.CustomRestEvents.Items[i]).RegisterEvent(AContext.WebApplication, LHTMLName);
-        TIWBSCustomRestEvent(AComponent.CustomRestEvents.Items[i]).ParseParamEvent(LJScript);
+        AComponent.CustomRestEvents.Items[i].RegisterEvent(AContext.WebApplication, LHTMLName);
+        AComponent.CustomRestEvents.Items[i].ParseParam(LJScript);
       end;
 
     if LJScript.Count > 0 then

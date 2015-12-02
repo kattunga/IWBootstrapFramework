@@ -4,7 +4,7 @@ interface
 
 uses System.Classes, System.SysUtils, System.StrUtils, Data.db,
      IWControl, IWRenderContext, IWHTMLTag, IWXMLTag, IWDBCommon, IWDBStdCtrls, IWTypes,
-     IWBSCommon;
+     IWBSCommon, IWBSCustomEvents;
 
 type
   // Base class for IWBS controls
@@ -18,8 +18,8 @@ type
     FOldVisible: boolean;
 
     FAsyncRefreshControl: boolean;
-    FCustomAsyncEvents: TOwnedCollection;
-    FCustomRestEvents: TOwnedCollection;
+    FCustomAsyncEvents: TIWBSCustomAsyncEvents;
+    FCustomRestEvents: TIWBSCustomRestEvents;
     FTabIndex: Integer;
     FScript: TStringList;
     FScriptParams: TIWBSScriptParams;
@@ -34,10 +34,10 @@ type
     procedure SetStyle(const AValue: TStringList);
     procedure OnScriptChange(ASender : TObject);
     procedure OnStyleChange(ASender : TObject);
-    function GetCustomAsyncEvents: TOwnedCollection;
-    procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
-    function GetCustomRestEvents: TOwnedCollection;
-    procedure SetCustomRestEvents(const Value: TOwnedCollection);
+    function GetCustomAsyncEvents: TIWBSCustomAsyncEvents;
+    procedure SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);
+    function GetCustomRestEvents: TIWBSCustomRestEvents;
+    procedure SetCustomRestEvents(const Value: TIWBSCustomRestEvents);
     function GetScript: TStringList;
     function GetScriptParams: TIWBSScriptParams;
   protected
@@ -77,10 +77,10 @@ type
 
     function IsStoredCustomAsyncEvents: Boolean;
     function IsStoredCustomRestEvents: Boolean;
-    function JQSelector: string;
+    function JQSelector(const Suffix: string = ''): string;
   published
-    property CustomAsyncEvents: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
-    property CustomRestEvents: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
+    property CustomAsyncEvents: TIWBSCustomAsyncEvents read GetCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
+    property CustomRestEvents: TIWBSCustomRestEvents read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
     property Enabled;
     property ExtraTagParams;
     property FriendlyName;
@@ -140,7 +140,7 @@ type
 
 implementation
 
-uses IW.Common.RenderStream, IWBaseHTMLInterfaces, IWForm, IWBSScriptEvents, IWBSGlobal, IWBSUtils, IWBSCustomEvents;
+uses IW.Common.RenderStream, IWBaseHTMLInterfaces, IWForm, IWBSScriptEvents, IWBSGlobal, IWBSUtils;
 
 {$region 'TIWBSCustomControl'}
 constructor TIWBSCustomControl.Create(AOwner: TComponent);
@@ -170,9 +170,9 @@ begin
   inherited;
 end;
 
-function TIWBSCustomControl.JQSelector: string;
+function TIWBSCustomControl.JQSelector(const Suffix: string = ''): string;
 begin
-  Result := '$("#'+HTMLName+'")';
+  Result := '$("#'+HTMLName+Suffix+'")';
 end;
 
 procedure TIWBSCustomControl.AsyncRefreshControl;
@@ -201,26 +201,26 @@ begin
   //
 end;
 
-function TIWBSCustomControl.GetCustomAsyncEvents: TOwnedCollection;
+function TIWBSCustomControl.GetCustomAsyncEvents: TIWBSCustomAsyncEvents;
 begin
   if FCustomAsyncEvents = nil then
-    FCustomAsyncEvents := TOwnedCollection.Create(Self, TIWBSCustomAsyncEvent);
+    FCustomAsyncEvents := TIWBSCustomAsyncEvents.Create(Self);
   Result := FCustomAsyncEvents;
 end;
 
-function TIWBSCustomControl.GetCustomRestEvents: TOwnedCollection;
+function TIWBSCustomControl.GetCustomRestEvents: TIWBSCustomRestEvents;
 begin
   if FCustomRestEvents = nil then
-    FCustomRestEvents := TOwnedCollection.Create(Self, TIWBSCustomRestEvent);
+    FCustomRestEvents := TIWBSCustomRestEvents.Create(Self);
   Result := FCustomRestEvents;
 end;
 
-procedure TIWBSCustomControl.SetCustomAsyncEvents(const Value: TOwnedCollection);
+procedure TIWBSCustomControl.SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);
 begin
   FCustomAsyncEvents.Assign(Value);
 end;
 
-procedure TIWBSCustomControl.SetCustomRestEvents(const Value: TOwnedCollection);
+procedure TIWBSCustomControl.SetCustomRestEvents(const Value: TIWBSCustomRestEvents);
 begin
   FCustomRestEvents.Assign(Value);
 end;

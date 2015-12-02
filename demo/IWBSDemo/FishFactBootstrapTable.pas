@@ -131,7 +131,7 @@ end;
 procedure TFBootstrapTable.DbTableCustomAjaxEvents0AsyncEvent(
   aParams: TStringList);
 begin
-  TIWBSAlert.Create('You clicked field '+aParams.Values['field']+' row '+aParams.Values['row.field0']).Show;
+  TIWBSAlert.Create('You clicked field '+aParams.Values['field']+' row '+aParams.Values['row']);
 end;
 
 procedure TFBootstrapTable.DbTableCustomRestEvents0RestEvent(

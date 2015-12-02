@@ -40,7 +40,6 @@ type
     IWBSRegion4: TIWBSRegion;
     DbTable: TIWBSText;
     procedure IWFormModuleBaseCreate(Sender: TObject);
-    procedure DbTableCustomAjaxEvents0AsyncEvent(aParams: TStringList);
     procedure DbTableCustomRestEvents0RestEvent(aApplication: TIWApplication;
       aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -94,12 +93,6 @@ begin
   finally
     options.Free;
   end;
-end;
-
-procedure TFJQGrid.DbTableCustomAjaxEvents0AsyncEvent(
-  aParams: TStringList);
-begin
-  TIWBSAlert.Create('You clicked field '+aParams.Values['field']+' row '+aParams.Values['row.field0']).Show;
 end;
 
 procedure TFJQGrid.DbTableCustomRestEvents0RestEvent(

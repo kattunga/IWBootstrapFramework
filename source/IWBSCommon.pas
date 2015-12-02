@@ -7,7 +7,7 @@ interface
 // don't enable here, we don't want to include in package
 
 uses System.Classes, System.SysUtils, System.StrUtils, {$IFDEF IWBS_JSONDATAOBJECTS}JsonDataObjects, {$ENDIF}
-     IWRenderContext, IWControl, IWHTML40Interfaces, IWTypes;
+     IWRenderContext, IWControl, IWHTML40Interfaces, IWTypes, IWBSCustomEvents;
 
 const
   EOL = #13#10;
@@ -74,11 +74,11 @@ type
     procedure InternalRenderStyle(AStyle: TStringList);
     function HTMLControlImplementation: TIWHTMLControlImplementation;
 
-    function GetCustomAsyncEvents: TOwnedCollection;
-    procedure SetCustomAsyncEvents(const Value: TOwnedCollection);
+    function GetCustomAsyncEvents: TIWBSCustomAsyncEvents;
+    procedure SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);
     function IsStoredCustomAsyncEvents: Boolean;
-    function GetCustomRestEvents: TOwnedCollection;
-    procedure SetCustomRestEvents(const Value: TOwnedCollection);
+    function GetCustomRestEvents: TIWBSCustomRestEvents;
+    procedure SetCustomRestEvents(const Value: TIWBSCustomRestEvents);
     function IsStoredCustomRestEvents: Boolean;
 
     function GetScript: TStringList;
@@ -91,8 +91,8 @@ type
     procedure set_Visible(Value: Boolean);
 
     property Cursor: TIWCursor read get_WebCursor write set_WebCursor;
-    property CustomAsyncEvents: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents;
-    property CustomRestEvents: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents;
+    property CustomAsyncEvents: TIWBSCustomAsyncEvents read GetCustomAsyncEvents write SetCustomAsyncEvents;
+    property CustomRestEvents: TIWBSCustomRestEvents read GetCustomRestEvents write SetCustomRestEvents;
     property Script: TStringList read GetScript write SetScript;
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;

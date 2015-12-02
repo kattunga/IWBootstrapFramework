@@ -10,19 +10,33 @@ type
   private
     FEventName: string;
     FAsyncEvent: TIWCallbackFunction;
-    FAsyncEventFunc: string;
-    FParams: string;
+    FParams: TStringList;
+    FAutoBind: boolean;
+    procedure SetParams(const Value: TStringList);
   protected
     function GetDisplayName: string; override;
     procedure SetEventName(const AValue: string);
   public
-    procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
-    procedure ParseParamEvent(AScript: TStringList);
+    constructor Create(Collection: TCollection); override;
+    destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
+    function GetScript: string;
+    procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
+    procedure ParseParam(AScript: TStringList);
   published
+    property AutoBind: boolean read FAutoBind write FAutoBind default False;
     property EventName: string read FEventName write SetEventName;
-    property Params: string read FParams write FParams;
+    property Params: TStringList read FParams write SetParams;
     property OnAsyncEvent: TIWCallbackFunction read FAsyncEvent write FAsyncEvent;
+  end;
+
+  TIWBSCustomAsyncEvents = class (TOwnedCollection)
+  private
+    function GetItems(I: Integer): TIWBSCustomAsyncEvent;
+    procedure SetItems(I: Integer; const Value: TIWBSCustomAsyncEvent);
+  public
+    constructor Create(AOwner: TPersistent);
+    property Items[I: Integer]: TIWBSCustomAsyncEvent read GetItems write SetItems; default;
   end;
 
   TIWBSCustomRestEvent = class (TCollectionItem)
@@ -35,18 +49,42 @@ type
     function GetDisplayName: string; override;
     procedure SetEventName(const AValue: string);
   public
-    procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
-    procedure ParseParamEvent(AScript: TStringList);
     procedure Assign(Source: TPersistent); override;
+    procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
+    procedure ParseParam(AScript: TStringList);
   published
     property EventName: string read FEventName write SetEventName;
     property OnRestEvent: TIWBSRestCallBackFunction read FRestEvent write FRestEvent;
     property ParseFileUpload: boolean read FParseFileUpload write FParseFileUpload default False;
   end;
 
+  TIWBSCustomRestEvents = class (TOwnedCollection)
+  private
+    function GetItems(I: Integer): TIWBSCustomRestEvent;
+    procedure SetItems(I: Integer; const Value: TIWBSCustomRestEvent);
+  public
+    constructor Create(AOwner: TPersistent);
+    property Items[I: Integer]: TIWBSCustomRestEvent read GetItems write SetItems; default;
+  end;
+
 implementation
 
-uses IWBSCommon;
+uses IWBSCommon, IWBSCustomControl;
+
+{$region 'TIWBSCustomAsyncEvent'}
+constructor TIWBSCustomAsyncEvent.Create(Collection: TCollection);
+begin
+  inherited;
+  FAutoBind := False;
+  FEventName := '';
+  FParams := TStringList.Create;
+end;
+
+destructor TIWBSCustomAsyncEvent.Destroy;
+begin
+  FParams.Free;
+  inherited;
+end;
 
 function TIWBSCustomAsyncEvent.GetDisplayName: string;
 begin
@@ -56,8 +94,13 @@ end;
 
 procedure TIWBSCustomAsyncEvent.SetEventName(const AValue: string);
 begin
-  // here we need to check that is a valid event name
+  TIWBSCommon.ValidateParamName(AValue);
   FEventName := AValue;
+end;
+
+procedure TIWBSCustomAsyncEvent.SetParams(const Value: TStringList);
+begin
+  FParams.Assign(Value);
 end;
 
 procedure TIWBSCustomAsyncEvent.Assign(Source: TPersistent);
@@ -72,40 +115,54 @@ begin
     inherited;
 end;
 
-procedure TIWBSCustomAsyncEvent.RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
+function TIWBSCustomAsyncEvent.GetScript: string;
 var
-  sl: TstringList;
-  LParams: string;
+  LParams, LName: string;
   i: integer;
 begin
-  AApplication.RegisterCallBack(AComponentName+'.'+FEventName, FAsyncEvent);
   LParams := '';
-  if FParams <> '' then begin
-    sl := TstringList.Create;
-    try
-      sl.CommaText := FParams;
-      LParams := '';
-      for i := 0 to sl.Count-1 do begin
-        TIWBSCommon.ValidateParamName(sl[i]);
-        if i > 0 then
-          LParams := LParams+'+';
-        LParams := LParams+'"&'+sl[i]+'="+'+sl[i];
-      end;
-    finally
-      sl.Free;
-    end;
+  for i := 0 to FParams.Count-1 do begin
+    LName := FParams.Names[i];
+    TIWBSCommon.ValidateParamName(LName);
+    if i > 0 then
+      LParams := LParams+'+';
+    LParams := LParams+'"&'+LName+'="+'+FParams.ValueFromIndex[i];
   end;
   if LParams = '' then
     LParams := '""';
-  FAsyncEventFunc := 'executeAjaxEvent('+LParams+', null, "'+AComponentName+'.'+FEventName+'", true, null, true);';
+  Result := 'executeAjaxEvent('+LParams+', null, "'+TIWBSCustomControl(Collection.Owner).HTMLName+'.'+FEventName+'", true, null, true);';
 end;
 
-procedure TIWBSCustomAsyncEvent.ParseParamEvent(AScript: TStringList);
+procedure TIWBSCustomAsyncEvent.RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
+begin
+  AApplication.RegisterCallBack(AComponentName+'.'+FEventName, FAsyncEvent);
+end;
+
+procedure TIWBSCustomAsyncEvent.ParseParam(AScript: TStringList);
 begin
   if AScript.Count > 0 then
-    AScript.Text := ReplaceStr(AScript.Text,'%'+FEventName+'%',FAsyncEventFunc);
+    AScript.Text := ReplaceStr(AScript.Text,'%'+FEventName+'%',GetScript);
+end;
+{$endregion}
+
+{$region 'TIWBSCustomAsyncEvents'}
+constructor TIWBSCustomAsyncEvents.Create(AOwner: TPersistent);
+begin
+  inherited Create(AOwner, TIWBSCustomAsyncEvent);
 end;
 
+function TIWBSCustomAsyncEvents.GetItems(I: Integer): TIWBSCustomAsyncEvent;
+begin
+  Result := TIWBSCustomAsyncEvent(inherited Items[I]);
+end;
+
+procedure TIWBSCustomAsyncEvents.SetItems(I: Integer; const Value: TIWBSCustomAsyncEvent);
+begin
+  inherited SetItem(I, Value);
+end;
+{$endregion}
+
+{$region 'TIWBSCustomRestEvent'}
 function TIWBSCustomRestEvent.GetDisplayName: string;
 begin
   Result := FEventName;
@@ -114,7 +171,7 @@ end;
 
 procedure TIWBSCustomRestEvent.SetEventName(const AValue: string);
 begin
-  // here we need to check that is a valid event name
+  TIWBSCommon.ValidateParamName(AValue);
   FEventName := AValue;
 end;
 
@@ -135,10 +192,29 @@ begin
   FRestEventPath := IWBSRegisterRestCallBack(AApplication, AComponentName+'.'+FEventName, FRestEvent, FParseFileUpload);
 end;
 
-procedure TIWBSCustomRestEvent.ParseParamEvent(AScript: TStringList);
+procedure TIWBSCustomRestEvent.ParseParam(AScript: TStringList);
 begin
   if AScript.Count > 0 then
     AScript.Text := ReplaceStr(AScript.Text,'%'+FEventName+'%',FRestEventPath);
 end;
+{$endregion}
+
+{$region 'TIWBSCustomRestEvents'}
+constructor TIWBSCustomRestEvents.Create(AOwner: TPersistent);
+begin
+  inherited Create(AOwner, TIWBSCustomRestEvent);
+end;
+
+function TIWBSCustomRestEvents.GetItems(I: Integer): TIWBSCustomRestEvent;
+begin
+  Result := TIWBSCustomRestEvent(inherited Items[I]);
+end;
+
+procedure TIWBSCustomRestEvents.SetItems(I: Integer;
+  const Value: TIWBSCustomRestEvent);
+begin
+  inherited SetItem(I, Value);
+end;
+{$endregion}
 
 end.

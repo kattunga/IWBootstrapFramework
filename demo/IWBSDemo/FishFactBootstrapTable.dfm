@@ -70,7 +70,10 @@ object FBootstrapTable: TFBootstrapTable
             CustomAsyncEvents = <
               item
                 EventName = 'onClickCell'
-                Params = 'field, value, row.field0'
+                Params.Strings = (
+                  'field=field'
+                  'value=value'
+                  'row=row.field0')
                 OnAsyncEvent = DbTableCustomAjaxEvents0AsyncEvent
               end>
             CustomRestEvents = <

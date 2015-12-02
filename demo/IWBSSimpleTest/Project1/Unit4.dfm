@@ -15,38 +15,19 @@ object IWForm4: TIWForm4
   XPTheme = True
   DesignLeft = 8
   DesignTop = 8
-  object IWEdit1: TIWEdit
-    Left = 64
-    Top = 32
-    Width = 121
-    Height = 21
-    Font.Color = clNone
-    Font.Size = 10
-    Font.Style = []
-    FriendlyName = 'IWEdit1'
-    Required = True
-    SubmitOnAsyncEvent = True
-    TabOrder = 0
-    Text = 'IWEdit1'
-  end
-  object IWButton1: TIWButton
-    Left = 64
-    Top = 72
-    Width = 245
+  object IWBSButton1: TIWBSButton
+    Left = 36
+    Top = 48
+    Width = 200
     Height = 25
-    Caption = 'IWButton1'
-    Color = clBtnFace
-    Font.Color = clNone
-    Font.Size = 10
-    Font.Style = []
-    FriendlyName = 'IWButton1'
-    TabOrder = 1
-    OnClick = IWButton1Click
-  end
-  object IWBSRegion1: TIWBSRegion
-    Left = 64
-    Top = 136
-    Width = 253
-    Height = 165
+    FriendlyName = 'IWBSButton1'
+    ScriptEvents = <
+      item
+        EventCode.Strings = (
+          '%OnClickParam%')
+        Event = 'onClick'
+      end>
+    BSBlockLevel = False
+    Caption = 'IWBSButton1'
   end
 end
