@@ -3,16 +3,17 @@ unit IWBSCustomEvents;
 interface
 
 uses System.Classes, System.StrUtils,
-     IWApplication, IWBSRestServer;
+     IWApplication, IWControl, IWBSRestServer;
 
 type
   TIWBSCustomAsyncEvent = class (TCollectionItem)
   private
     FEventName: string;
-    FAsyncEvent: TIWCallbackFunction;
+    FAsyncEvent: TIWAsyncEvent;
     FParams: TStringList;
     FAutoBind: boolean;
     procedure SetParams(const Value: TStringList);
+    procedure ExecuteCallBack(aParams: TStringList);
   protected
     function GetDisplayName: string; override;
     procedure SetEventName(const AValue: string);
@@ -27,7 +28,7 @@ type
     property AutoBind: boolean read FAutoBind write FAutoBind default False;
     property EventName: string read FEventName write SetEventName;
     property Params: TStringList read FParams write SetParams;
-    property OnAsyncEvent: TIWCallbackFunction read FAsyncEvent write FAsyncEvent;
+    property OnAsyncEvent: TIWAsyncEvent read FAsyncEvent write FAsyncEvent;
   end;
 
   TIWBSCustomAsyncEvents = class (TOwnedCollection)
@@ -133,9 +134,15 @@ begin
   Result := 'executeAjaxEvent('+LParams+', null, "'+TIWBSCustomControl(Collection.Owner).HTMLName+'.'+FEventName+'", true, null, true);';
 end;
 
+procedure TIWBSCustomAsyncEvent.ExecuteCallBack(aParams: TStringList);
+begin
+  if Assigned(FAsyncEvent) then
+    FAsyncEvent(Collection.Owner, aParams);
+end;
+
 procedure TIWBSCustomAsyncEvent.RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
 begin
-  AApplication.RegisterCallBack(AComponentName+'.'+FEventName, FAsyncEvent);
+  AApplication.RegisterCallBack(AComponentName+'.'+FEventName, ExecuteCallBack);
 end;
 
 procedure TIWBSCustomAsyncEvent.ParseParam(AScript: TStringList);

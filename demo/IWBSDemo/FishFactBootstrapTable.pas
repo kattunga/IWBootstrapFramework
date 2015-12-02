@@ -40,10 +40,11 @@ type
     IWBSRegion4: TIWBSRegion;
     DbTable: TIWBSText;
     procedure IWFormModuleBaseCreate(Sender: TObject);
-    procedure DbTableCustomAjaxEvents0AsyncEvent(aParams: TStringList);
     procedure DbTableCustomRestEvents0RestEvent(aApplication: TIWApplication;
       aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure DbTableCustomAsyncEvents0AsyncEvent(Sender: TObject;
+      EventParams: TStringList);
   end;
 
 implementation
@@ -128,10 +129,10 @@ begin
 {$ENDIF}
 end;
 
-procedure TFBootstrapTable.DbTableCustomAjaxEvents0AsyncEvent(
-  aParams: TStringList);
+procedure TFBootstrapTable.DbTableCustomAsyncEvents0AsyncEvent(Sender: TObject;
+  EventParams: TStringList);
 begin
-  TIWBSAlert.Create('You clicked field '+aParams.Values['field']+' row '+aParams.Values['row']);
+  TIWBSAlert.Create('You clicked field '+EventParams.Values['field']+' row '+EventParams.Values['row']);
 end;
 
 procedure TFBootstrapTable.DbTableCustomRestEvents0RestEvent(

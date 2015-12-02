@@ -74,7 +74,7 @@ object FBootstrapTable: TFBootstrapTable
                   'field=field'
                   'value=value'
                   'row=row.field0')
-                OnAsyncEvent = DbTableCustomAjaxEvents0AsyncEvent
+                OnAsyncEvent = DbTableCustomAsyncEvents0AsyncEvent
               end>
             CustomRestEvents = <
               item
