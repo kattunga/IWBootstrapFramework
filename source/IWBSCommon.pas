@@ -83,6 +83,8 @@ type
 
     function GetScript: TStringList;
     procedure SetScript(const AValue: TStringList);
+    function GetScriptInsideTag: boolean;
+    procedure SetScriptInsideTag(const AValue: boolean);
     function GetScriptParams: TIWBSScriptParams;
     procedure SetScriptParams(const AValue: TIWBSScriptParams);
     function GetStyle: TStringList;
@@ -94,6 +96,7 @@ type
     property CustomAsyncEvents: TIWBSCustomAsyncEvents read GetCustomAsyncEvents write SetCustomAsyncEvents;
     property CustomRestEvents: TIWBSCustomRestEvents read GetCustomRestEvents write SetCustomRestEvents;
     property Script: TStringList read GetScript write SetScript;
+    property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag;
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property Visible: boolean read get_Visible write set_Visible;
@@ -323,7 +326,7 @@ var
   i: integer;
 begin
   for i := 1 to Length(AName) do
-    if not CharInSet(AName[i], ['.','0'..'9','A'..'Z','a'..'z']) then
+    if not CharInSet(AName[i], ['-','.','0'..'9','A'..'Z','a'..'z']) then
       raise Exception.Create('Invalid character in param name '+AName);
 end;
 
@@ -362,7 +365,6 @@ begin
   inherited;
   Duplicates := dupError;
   OwnsObjects := True;
-  Sorted := True;
 end;
 
 function TIWBSScriptParams.GetJson(const Name: string): TJsonObject;

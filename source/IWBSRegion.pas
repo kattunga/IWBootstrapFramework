@@ -12,6 +12,7 @@ uses
 type
   TIWBSCustomRegion = class(TIWCustomRegion, IIWBSComponent, IIWBSContainer)
   private
+    FMainID: string;
     FOldCss: string;
     FOldStyle: string;
     FOldVisible: boolean;
@@ -24,6 +25,7 @@ type
     FGridOptions: TIWBSGridOptions;
     FRegionDiv: TIWHTMLTag;
     FScript: TStringList;
+    FScriptInsideTag: boolean;
     FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
     FReleased: boolean;
@@ -47,6 +49,8 @@ type
     procedure SetScriptParams(const AValue: TIWBSScriptParams);
     function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
+    function GetScriptInsideTag: boolean;
+    procedure SetScriptInsideTag(const Value: boolean);
   protected
     function ContainerPrefix: string; override;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
@@ -83,6 +87,7 @@ type
     property RenderInvisibleControls default False;
     property ScriptEvents: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;
     property Script: TStringList read GetScript write SetScript;
+    property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag default True;
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property ZIndex default 0;
@@ -255,8 +260,10 @@ begin
   FCss := '';
   FContentSuffix := '';
   FGridOptions := TIWBSGridOptions.Create;
+  FMainID := '';
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
+  FScriptInsideTag := True;
   FScriptParams := TIWBSScriptParams.Create;
   FScriptParams.OnChange := OnScriptChange;
   FStyle := TStringList.Create;
@@ -379,6 +386,11 @@ begin
   FScript.Assign(AValue);
 end;
 
+procedure TIWBSCustomRegion.SetScriptInsideTag(const Value: boolean);
+begin
+  FScriptInsideTag := Value;
+end;
+
 procedure TIWBSCustomRegion.SetScriptParams(const AValue: TIWBSScriptParams);
 begin
   FScriptParams.Assign(AValue);
@@ -387,6 +399,11 @@ end;
 function TIWBSCustomRegion.GetScript: TStringList;
 begin
   Result := FScript;
+end;
+
+function TIWBSCustomRegion.GetScriptInsideTag: boolean;
+begin
+  Result := FScriptInsideTag;
 end;
 
 function TIWBSCustomRegion.GetScriptParams: TIWBSScriptParams;
@@ -459,12 +476,12 @@ begin
   xHTMLName := HTMLName;
 
   if FAsyncRefreshControl then
-    TIWBSRegionCommon.RenderAsync(Self, AContext)
+    TIWBSRegionCommon.RenderAsync(FMainID, Self, AContext)
   else
     begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
       SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-      SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
+      SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
     end;
 
   if Assigned(FOnRenderAsync) then
@@ -501,9 +518,12 @@ begin
   FRegionDiv.AddClassParam(FOldCss);
   FRegionDiv.AddStringParam('role',GetRoleString);
   FRegionDiv.AddStringParam('style',RenderStyle(AContext));
+
+  IWBSRenderScript(Self, AContext, FRegionDiv);
+  FMainID := FRegionDiv.Params.Values['id'];
+
   Result := FRegionDiv;
 
-  IWBSRenderScript(Self, AContext, Result);
   FAsyncRefreshControl := False;
 end;
 

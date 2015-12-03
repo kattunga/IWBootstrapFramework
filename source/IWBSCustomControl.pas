@@ -22,6 +22,7 @@ type
     FCustomRestEvents: TIWBSCustomRestEvents;
     FTabIndex: Integer;
     FScript: TStringList;
+    FScriptInsideTag: boolean;
     FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
     FOnRenderAsync: TNotifyEvent;
@@ -40,6 +41,8 @@ type
     procedure SetCustomRestEvents(const Value: TIWBSCustomRestEvents);
     function GetScript: TStringList;
     function GetScriptParams: TIWBSScriptParams;
+    function GetScriptInsideTag: boolean;
+    procedure SetScriptInsideTag(const Value: boolean);
   protected
     {$hints off}
     function get_HasTabOrder: Boolean; override;
@@ -77,7 +80,7 @@ type
 
     function IsStoredCustomAsyncEvents: Boolean;
     function IsStoredCustomRestEvents: Boolean;
-    function JQSelector(const Suffix: string = ''): string;
+    function JQSelector: string;
   published
     property CustomAsyncEvents: TIWBSCustomAsyncEvents read GetCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
     property CustomRestEvents: TIWBSCustomRestEvents read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
@@ -86,6 +89,7 @@ type
     property FriendlyName;
     property Script: TStringList read GetScript write SetScript;
     property ScriptEvents;
+    property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag default True;
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
 
@@ -153,6 +157,7 @@ begin
   FTabIndex := 0;
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
+  FScriptInsideTag := True;
   FScriptParams := TIWBSScriptParams.Create;
   FScriptParams.OnChange := OnScriptChange;
   FStyle := TStringList.Create;
@@ -170,9 +175,9 @@ begin
   inherited;
 end;
 
-function TIWBSCustomControl.JQSelector(const Suffix: string = ''): string;
+function TIWBSCustomControl.JQSelector: string;
 begin
-  Result := '$("#'+HTMLName+Suffix+'")';
+  Result := '$("#'+HTMLName+'")';
 end;
 
 procedure TIWBSCustomControl.AsyncRefreshControl;
@@ -245,6 +250,11 @@ begin
   FScript.Assign(AValue);
 end;
 
+procedure TIWBSCustomControl.SetScriptInsideTag(const Value: boolean);
+begin
+  FScriptInsideTag := Value;
+end;
+
 procedure TIWBSCustomControl.OnStyleChange( ASender : TObject );
 begin
   Invalidate;
@@ -258,6 +268,11 @@ end;
 function TIWBSCustomControl.GetScript: TStringList;
 begin
   Result := FScript;
+end;
+
+function TIWBSCustomControl.GetScriptInsideTag: boolean;
+begin
+  Result := FScriptInsideTag;
 end;
 
 function TIWBSCustomControl.GetScriptParams: TIWBSScriptParams;
@@ -345,7 +360,7 @@ begin
             Exit;
         end;
       LHtmlTag := RenderHtmlTag(AContext);
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+xHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");')
+      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+FMainID+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");')
     end
   else
     begin

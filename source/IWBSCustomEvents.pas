@@ -10,10 +10,12 @@ type
   private
     FEventName: string;
     FAsyncEvent: TIWAsyncEvent;
-    FParams: TStringList;
+    FCallBackParams: TStringList;
     FAutoBind: boolean;
-    procedure SetParams(const Value: TStringList);
+    FEventParams: string;
+    procedure SetCallBackParams(const Value: TStringList);
     procedure ExecuteCallBack(aParams: TStringList);
+    function IsEventParamsStored: Boolean;
   protected
     function GetDisplayName: string; override;
     procedure SetEventName(const AValue: string);
@@ -27,7 +29,8 @@ type
   published
     property AutoBind: boolean read FAutoBind write FAutoBind default False;
     property EventName: string read FEventName write SetEventName;
-    property Params: TStringList read FParams write SetParams;
+    property EventParams: string read FEventParams write FEventParams stored IsEventParamsStored;
+    property CallBackParams: TStringList read FCallBackParams write SetCallBackParams;
     property OnAsyncEvent: TIWAsyncEvent read FAsyncEvent write FAsyncEvent;
   end;
 
@@ -78,12 +81,13 @@ begin
   inherited;
   FAutoBind := False;
   FEventName := '';
-  FParams := TStringList.Create;
+  FEventParams := 'event';
+  FCallBackParams := TStringList.Create;
 end;
 
 destructor TIWBSCustomAsyncEvent.Destroy;
 begin
-  FParams.Free;
+  FCallBackParams.Free;
   inherited;
 end;
 
@@ -99,9 +103,9 @@ begin
   FEventName := AValue;
 end;
 
-procedure TIWBSCustomAsyncEvent.SetParams(const Value: TStringList);
+procedure TIWBSCustomAsyncEvent.SetCallBackParams(const Value: TStringList);
 begin
-  FParams.Assign(Value);
+  FCallBackParams.Assign(Value);
 end;
 
 procedure TIWBSCustomAsyncEvent.Assign(Source: TPersistent);
@@ -109,7 +113,8 @@ begin
   if Source is TIWBSCustomAsyncEvent then
     begin
       EventName := TIWBSCustomAsyncEvent(Source).EventName;
-      Params := TIWBSCustomAsyncEvent(Source).Params;
+      EventParams := TIWBSCustomAsyncEvent(Source).EventParams;
+      CallBackParams.Assign(TIWBSCustomAsyncEvent(Source).CallBackParams);
       OnAsyncEvent := TIWBSCustomAsyncEvent(Source).OnAsyncEvent;
     end
   else
@@ -122,16 +127,21 @@ var
   i: integer;
 begin
   LParams := '';
-  for i := 0 to FParams.Count-1 do begin
-    LName := FParams.Names[i];
+  for i := 0 to FCallBackParams.Count-1 do begin
+    LName := FCallBackParams.Names[i];
     TIWBSCommon.ValidateParamName(LName);
     if i > 0 then
       LParams := LParams+'+';
-    LParams := LParams+'"&'+LName+'="+'+FParams.ValueFromIndex[i];
+    LParams := LParams+'"&'+LName+'="+'+FCallBackParams.ValueFromIndex[i];
   end;
   if LParams = '' then
     LParams := '""';
   Result := 'executeAjaxEvent('+LParams+', null, "'+TIWBSCustomControl(Collection.Owner).HTMLName+'.'+FEventName+'", true, null, true);';
+end;
+
+function TIWBSCustomAsyncEvent.IsEventParamsStored: Boolean;
+begin
+  Result := FEventParams <> 'event';
 end;
 
 procedure TIWBSCustomAsyncEvent.ExecuteCallBack(aParams: TStringList);

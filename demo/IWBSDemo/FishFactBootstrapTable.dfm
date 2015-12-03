@@ -7,6 +7,13 @@ object FBootstrapTable: TFBootstrapTable
   RenderInvisibleControls = False
   AllowPageAccess = True
   ConnectionMode = cmAny
+  ExtraHeader.Strings = (
+    '<style>'
+    '@media only screen and (max-width: 767px) {'
+    '.pagination-detail {display: none;}'
+    '}'
+    '</style>'
+    '')
   Title = 'FishFact Edit Demo'
   OnCreate = IWFormModuleBaseCreate
   Background.Fixed = False
@@ -54,7 +61,7 @@ object FBootstrapTable: TFBootstrapTable
             Left = 10
             Top = 19
             Width = 702
-            Height = 40
+            Height = 58
             FriendlyName = 'IWText1'
             Lines.Strings = (
               
@@ -64,13 +71,15 @@ object FBootstrapTable: TFBootstrapTable
           end
           object DbTable: TIWBSText
             Left = 10
-            Top = 75
+            Top = 107
             Width = 702
             Height = 258
             CustomAsyncEvents = <
               item
-                EventName = 'onClickCell'
-                Params.Strings = (
+                AutoBind = True
+                EventName = 'click-cell.bs.table'
+                EventParams = 'elem, field, value, row'
+                CallBackParams.Strings = (
                   'field=field'
                   'value=value'
                   'row=row.field0')
@@ -83,21 +92,12 @@ object FBootstrapTable: TFBootstrapTable
               end>
             FriendlyName = 'DbTable'
             Script.Strings = (
-              '$('#39'#%htmlname%_table'#39').bootstrapTable(%options%);'
-              
-                '$('#39'#%htmlname%_table'#39').on("click-cell.bs.table", function(elem, ' +
-                'field, value, row) {%onClickCell%} );')
+              '$('#39'#%htmlname%'#39').bootstrapTable(%options%);')
+            ScriptInsideTag = False
             Style.Strings = (
               '')
-            Lines.Strings = (
-              '<style>'
-              '@media only screen and (max-width: 767px) {'
-              '.pagination-detail {display: none;}'
-              '}'
-              '</style>'
-              ''
-              '<table id="%htmlname%_table"></table>')
             RawText = True
+            TagType = 'table'
           end
         end
       end

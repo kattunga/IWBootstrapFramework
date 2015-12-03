@@ -66,7 +66,7 @@ object FJQGrid: TFJQGrid
           end
           object DbTable: TIWBSText
             Left = 10
-            Top = 75
+            Top = 65
             Width = 702
             Height = 258
             CustomRestEvents = <
@@ -112,12 +112,12 @@ object FJQGrid: TFJQGrid
                 'note: "note3", amount: "400.00", tax: "30.00", total: "430.00" }'
               '        ];'
               ''
-              '        var w = $("#%htmlname%").width();'
+              '        var w = $("#%htmlname%").parent().width();'
               ''
               '        $(document).ready(function () {'
-              '            $("#%htmlname%Grid").jqGrid({'
+              '            $("#%htmlname%").jqGrid({'
               '                datatype: "local",'
-              #9#9#9#9'data: mydata,'
+              #9#9'data: mydata,'
               '                height: 250,'
               '                colModel: ['
               
@@ -148,13 +148,11 @@ object FJQGrid: TFJQGrid
               '            });'
               '        });'
               '')
+            ScriptInsideTag = False
             Style.Strings = (
               '')
-            Lines.Strings = (
-              '<table id="%htmlname%Grid"></table>'
-              '<div id="%htmlname%GridPager"></div>'
-              '')
             RawText = True
+            TagType = 'table'
           end
         end
       end

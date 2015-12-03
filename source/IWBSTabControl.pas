@@ -27,6 +27,7 @@ type
 
   TIWBSTabControl = class(TIWTabControl, IIWInputControl, IIWBSComponent, IIWBSContainer)
   private
+    FMainID: string;
     FOldCss: string;
     FOldStyle: string;
     FOldVisible: boolean;
@@ -38,10 +39,12 @@ type
     FGridOptions: TIWBSGridOptions;
     FRegionDiv: TIWHTMLTag;
     FScript: TStringList;
+    FScriptInsideTag: boolean;
     FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
     FTabOptions: TIWBSTabOptions;
     FOnRenderAsync: TNotifyEvent;
+    FActivePage: Integer;
 
     procedure CheckActiveVisible;
     function HTMLControlImplementation: TIWHTMLControlImplementation;
@@ -61,6 +64,9 @@ type
     procedure SetCustomRestEvents(const Value: TIWBSCustomRestEvents);
     function GetScript: TStringList;
     function GetScriptParams: TIWBSScriptParams;
+    function GetScriptInsideTag: boolean;
+    procedure SetActivePage(const Value: Integer);
+    procedure SetScriptInsideTag(const Value: boolean);
   protected
     procedure SetValue(const AValue: string);
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
@@ -94,6 +100,7 @@ type
     property LayoutMgr;
     property RenderInvisibleControls default False;
     property Script: TStringList read GetScript write SetScript;
+    property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag default True;
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property ZIndex default 0;
@@ -134,8 +141,10 @@ constructor TIWBSTabControl.Create(AOwner: TComponent);
 begin
   inherited;
   FGridOptions := TIWBSGridOptions.Create;
+  FMainID := '';
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
+  FScriptInsideTag := True;
   FScriptParams := TIWBSScriptParams.Create;
   FScriptParams.OnChange := OnScriptChange;
   FStyle := TStringList.Create;
@@ -217,6 +226,11 @@ begin
   Result := FCustomRestEvents;
 end;
 
+procedure TIWBSTabControl.SetActivePage(const Value: Integer);
+begin
+  FActivePage := Value;
+end;
+
 procedure TIWBSTabControl.SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);
 begin
   FCustomAsyncEvents.Assign(Value);
@@ -242,6 +256,11 @@ begin
   FScript.Assign(AValue);
 end;
 
+procedure TIWBSTabControl.SetScriptInsideTag(const Value: boolean);
+begin
+  FScriptInsideTag := Value;
+end;
+
 procedure TIWBSTabControl.SetScriptParams(const AValue: TIWBSScriptParams);
 begin
   FScriptParams.Assign(AValue);
@@ -250,6 +269,11 @@ end;
 function TIWBSTabControl.GetScript: TStringList;
 begin
   Result := FScript;
+end;
+
+function TIWBSTabControl.GetScriptInsideTag: boolean;
+begin
+  Result := FScriptInsideTag;
 end;
 
 function TIWBSTabControl.GetScriptParams: TIWBSScriptParams;
@@ -312,12 +336,12 @@ begin
   xHTMLName := HTMLName;
 
   if FAsyncRefreshControl then
-    TIWBSRegionCommon.RenderAsync(Self, AContext)
+    TIWBSRegionCommon.RenderAsync(FMainID, Self, AContext)
   else
     begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
       SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-      SetAsyncVisible(AContext, xHTMLName, Visible, FOldVisible);
+      SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
       if FOldActivePage <> ActivePage then begin
         AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ActivePage)+']").tab("show");');
         FOldActivePage := ActivePage;
@@ -423,7 +447,9 @@ begin
   // this hidden input is for input seleted tab page
   Result.Contents.AddHiddenField(xHTMLInput, xHTMLInput, IntToStr(tabIndex));
 
+  // render scripts
   IWBSRenderScript(Self, AContext, Result);
+  FMainID := Result.Params.Values['id'];
 
   // initialize hidden input (after render scripts)
   TIWPageContext40(AContext.PageContext).AddToIWCLInitProc('  IW.initIWCL('+HTMLControlImplementation.IWCLName+',"'+xHTMLName+'_input",true);');

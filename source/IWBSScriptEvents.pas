@@ -5,7 +5,7 @@ interface
 uses System.Classes, System.SysUtils, System.StrUtils,
      IWScriptEvents, IWRenderContext, IWHTMLTag, IWHTML40Interfaces, IWBSCommon;
 
-procedure IWBSRenderScript(AComponent: IIWBSComponent; AContext: TIWCompContext; AHTMLTag: TIWHTMLTag);
+procedure IWBSRenderScript(AComponent: IIWBSComponent; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 
 implementation
 
@@ -47,7 +47,7 @@ begin
   end;
 end;
 
-procedure IWBSRenderScript(AComponent: IIWBSComponent; AContext: TIWCompContext; AHTMLTag: TIWHTMLTag);
+procedure IWBSRenderScript(AComponent: IIWBSComponent; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 var
   LHTMLName: string;
   LPageContext: TIWPageContext40;
@@ -56,6 +56,7 @@ var
   LInitProcCode: string;
   LJScript: TstringList;
   I: Integer;
+  LHTMLTag: TIWHTMLTag;
 begin
   LHTMLName := AComponent.HTMLName;
   LPageContext := TIWPageContext40(AContext.PageContext);
@@ -90,7 +91,7 @@ begin
         AComponent.CustomAsyncEvents.Items[i].RegisterEvent(AContext.WebApplication, LHTMLName);
         AComponent.CustomAsyncEvents.Items[i].ParseParam(LJScript);
         if AComponent.CustomAsyncEvents.Items[i].AutoBind and (AComponent.CustomAsyncEvents.Items[i].EventName <> '') then
-          LJScript.Add('$("#'+LHTMLName+'").off("'+LHTMLName+'").on("'+AComponent.CustomAsyncEvents.Items[i].EventName+'", function(event) {'+AComponent.CustomAsyncEvents.Items[i].GetScript+'});');
+          LJScript.Add('$("#'+LHTMLName+'").off("'+LHTMLName+'").on("'+AComponent.CustomAsyncEvents.Items[i].EventName+'", function('+AComponent.CustomAsyncEvents.Items[i].EventParams+') {'+AComponent.CustomAsyncEvents.Items[i].GetScript+'});');
       end;
 
     if AComponent.IsStoredCustomRestEvents then
@@ -99,8 +100,16 @@ begin
         AComponent.CustomRestEvents.Items[i].ParseParam(LJScript);
       end;
 
-    if LJScript.Count > 0 then
+    if LJScript.Count > 0 then begin
+      if not AComponent.ScriptInsideTag then begin
+        LHTMLTag := TIWHTMLTag.CreateTag('div');
+        LHTMLTag.AddStringParam('id',LHTMLName+'_WRP');
+        LHTMLTag.Contents.AddTagAsObject(AHTMLTag);
+        AHTMLTag := LHTMLTag;
+      end;
       AHTMLTag.Contents.AddTag('script').Contents.AddText(LJScript.Text);
+    end;
+
   finally
     LJScript.Free;
     AComponent.ScriptEvents.Rendering := False;

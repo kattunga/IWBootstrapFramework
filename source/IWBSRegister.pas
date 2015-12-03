@@ -2,7 +2,7 @@ unit IWBSRegister;
 
 interface
 
-uses System.Classes, System.SysUtils, DesignEditors, IWDsnPaintHandlers;
+uses System.Classes, System.SysUtils, System.StrUtils, DesignEditors, IWDsnPaintHandlers;
 
 type
   TGlyphiconEditor = class(TEnumProperty)
@@ -456,7 +456,7 @@ end;
 procedure TIWBSPaintHandlerText.Paint;
 var
   LRect: TRect;
-  s: string;
+  LLines, LScript: string;
 begin
   with TIWBSText(Control) do begin
     LRect := Rect(0, 0, Control.Width, Control.Height);
@@ -471,22 +471,28 @@ begin
     ControlCanvas.Font.Size := 10;
     ControlCanvas.Font.Color := clBlack;
 
-    s := DataField;
-    if s = '' then
-      s := Lines.Text;
+    LLines := DataField;
+    if LLines = '' then
+      LLines := Trim(Lines.Text);
 
     if RawText then begin
-      s := '<'+TagType+'>'#13#10+s;
       if Script.Count > 0 then
-        s := s+#13#10'<script>'#13#10+Script.Text+'</script>';
-      s := s+#13#10'</'+TagType+'>';
+        LScript := #13#10'<script>'#13#10+Script.Text+'</script>'
+      else
+        LScript := '';
+      LLines := '<'+TagType+'>'+IfThen(LLines <> '',#13#10+LLines);
+      if ScriptInsideTag then
+        LLines := LLines+LScript;
+      LLines := LLines+#13#10'</'+TagType+'>';
+      if not ScriptInsideTag then
+        LLines := LLines+LScript;
     end;
 
     Inc(LRect.Top, 1);
     Inc(LRect.Left, 8);
     Dec(LRect.Bottom, 1);
     Dec(LRect.Right, 8);
-    ControlCanvas.TextRect(LRect,s,[])
+    ControlCanvas.TextRect(LRect,LLines,[])
   end;
 end;
 
