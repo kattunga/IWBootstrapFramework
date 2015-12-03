@@ -118,7 +118,7 @@ object FJQGrid: TFJQGrid
               '            $("#%htmlname%").jqGrid({'
               '                datatype: "local",'
               #9#9'data: mydata,'
-              '                height: 250,'
+              '                height: "auto",'
               '                colModel: ['
               
                 '                    { label: '#39'Inv No'#39', name: '#39'id'#39', width: 75, ke' +

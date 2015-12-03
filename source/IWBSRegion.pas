@@ -476,7 +476,7 @@ begin
   xHTMLName := HTMLName;
 
   if FAsyncRefreshControl then
-    TIWBSRegionCommon.RenderAsync(FMainID, Self, AContext)
+    TIWBSRegionCommon.RenderAsync(Self, AContext)
   else
     begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);

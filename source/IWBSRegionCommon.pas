@@ -83,7 +83,7 @@ type
   public
     class procedure DisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
     class procedure PrepareChildComponentsForRender(AContainer: IIWBaseContainer);
-    class procedure RenderAsync(const AMainID: string; AContainer: IIWBSContainer; AContext: TIWCompContext);
+    class procedure RenderAsync(AContainer: IIWBSContainer; AContext: TIWCompContext);
     class procedure RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
   end;
 
@@ -237,7 +237,7 @@ begin
   end;
 end;
 
-class procedure TIWBSRegionCommon.RenderAsync(const AMainID: string; AContainer: IIWBSContainer; AContext: TIWCompContext);
+class procedure TIWBSRegionCommon.RenderAsync(AContainer: IIWBSContainer; AContext: TIWCompContext);
 var
   LParentContainer: IIWBaseHTMLComponent;
   LParentSl: string;

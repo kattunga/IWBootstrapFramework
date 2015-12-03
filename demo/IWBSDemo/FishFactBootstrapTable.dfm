@@ -66,7 +66,13 @@ object FBootstrapTable: TFBootstrapTable
             Lines.Strings = (
               
                 '<h4>An extended Bootstrap table with radio, checkbox, sort, pagi' +
-                'nation, and other added features.</h4>')
+                'nation, and other added features.</h4>'
+              
+                '<p>In this example you can see how to implement a third party co' +
+                'mponent</p>'
+              
+                '<p>Look following properties: CustomAsyncEnvents, CustomRestEven' +
+                'ts, Script, ScriptInsideTag, TagType</p>')
             RawText = True
           end
           object DbTable: TIWBSText
