@@ -107,7 +107,7 @@ type
     class procedure AddCssClass(var ACss: string; const AClass: string);
     class procedure AsyncRemoveControl(const AHTMLName: string);
     class function RenderStyle(AComponent: IIWBSComponent): string;
-    class procedure ReplaceParams(const AHTMLName: string; AScript: TStrings; AParams: TStrings);
+    class function ReplaceParams(AComponent: IIWBSComponent; const AScript: string; AFrom: integer = 1): string;
     class procedure SetNotVisible(AParams: TStrings);
     class procedure ValidateParamName(const AName: string);
     class procedure ValidateTagName(const AName: string);
@@ -302,22 +302,61 @@ begin
   end;
 end;
 
-class procedure TIWBSCommon.ReplaceParams(const AHTMLName: string; AScript: TStrings; AParams: TStrings);
+class function TIWBSCommon.ReplaceParams(AComponent: IIWBSComponent; const AScript: string; AFrom: integer = 1): string;
 var
-  i: integer;
-  s: string;
+  LF, LT, i: integer;
+  LParam, LParNm: string;
+  LFound: boolean;
+  LCompo: Tcomponent;
+  LIComp: IIWBSComponent;
 begin
-  if AScript.Count > 0 then begin
-    s := AScript.Text;
-    s := ReplaceText(s,'%HTMLNAME%',AHTMLName);
-    for i := 0 to AParams.Count-1 do
-    {$IFDEF IWBS_JSONDATAOBJECTS}
-      if AParams.Objects[i] is TJsonObject then
-        s := ReplaceText(s,'%'+AParams[i]+'%',TJsonObject(AParams.Objects[i]).ToJSON)
+  Result := AScript;
+
+  LF := PosEx('{%', Result, AFrom);
+  if LF > 0 then begin
+    LFound := False;
+
+    LT := PosEx('%}', Result, LF);
+    if LT > LF then
+      LParam := Copy(Result, LF, LT-LF+2);
+      LParNm := Copy(Result, LF+2, LT-LF-2);
+
+      i := AComponent.ScriptParams.IndexOfName(LParNm);
+      if i >= 0 then begin
+        Result := ReplaceStr(Result, LParam, AComponent.ScriptParams.ValueFromIndex[i]);
+        LFound := True;
+      end;
+
+      i := AComponent.ScriptParams.IndexOf(LParNm);
+      if i >= 0 then begin
+        {$IFDEF IWBS_JSONDATAOBJECTS}
+        if AComponent.ScriptParams.Objects[i] is TJsonObject then
+          Result := ReplaceText(Result, LParam, TJsonObject(AComponent.ScriptParams.Objects[i]).ToJSON)
+        else
+        {$ENDIF}
+          Result := ReplaceText(Result, LParam, '');
+      end;
+
+      if not LFound and AnsiSameText('htmlname', LParNm) then begin
+        Result := ReplaceStr(Result, LParam, AComponent.HTMLName);
+        LFound := True;
+      end;
+
+      if not LFound and (AComponent.InterfaceInstance.Owner <> nil) then begin
+        LCompo := AComponent.InterfaceInstance.Owner.FindComponent(LParNm);
+        if (LCompo <> nil) then begin
+          LCompo.GetInterface(IIWBSComponent, LIComp);
+          if LIComp <> nil then begin
+            Result := ReplaceStr(Result, LParam, LIComp.HTMLName);
+            LFound := True;
+          end;
+        end;
+      end;
+
+      if LFound then
+        Result := ReplaceParams(AComponent, Result)
       else
-    {$ENDIF}
-        s := ReplaceText(s,'%'+AParams.Names[i]+'%',AParams.ValueFromIndex[i]);
-    AScript.Text := s;
+        Result := ReplaceParams(AComponent, Result, LF+1);
   end;
 end;
 

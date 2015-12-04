@@ -213,7 +213,8 @@ begin
       try
         LLines.Assign(FLines);
 
-        TIWBSCommon.ReplaceParams(HTMLName, LLines, ScriptParams);
+        // replace params before custom events
+        LLines.Text := TIWBSCommon.ReplaceParams(Self, LLines.Text);
 
         // replace inner events calls
         if IsStoredCustomAsyncEvents then

@@ -27,9 +27,15 @@ begin
   LInitProc := '';
   if (LScriptEvents.Count > 0) or (LScriptEvents.DefaultHandlers <> '') or (not LScriptEvents.FProperties.IsEmpty) then begin
     for i := 0 to LScriptEvents.Count - 1 do begin
-      LEventName := LowerCase(LScriptEvents.Items[i].EventName);
-      if Pos('on', LEventName) = 1 then
-        Delete(LEventName, 1, 2);
+      if AnsiStartsStr('"', LScriptEvents.Items[i].EventName) then
+        LEventName := AnsiDequotedStr(LScriptEvents.Items[i].EventName,'"')
+      else
+        begin
+          LEventName := LowerCase(LScriptEvents.Items[i].EventName);
+          if Pos('on', LEventName) = 1 then
+            Delete(LEventName, 1, 2);
+          LFuncCode := Trim(LScriptEvents.Items[i].EventCode.Text);
+        end;
       LFuncCode := Trim(LScriptEvents.Items[i].EventCode.Text);
       AScript.Add('$("#'+AHtmlName+'").off("'+LEventName+'").on("'+LEventName+'", function(event) {'+LFuncCode+'});');
     end;
@@ -78,13 +84,14 @@ begin
     AComponent.HookEvents(LPageContext, AComponent.ScriptEvents);
     AComponent.HintEvents(AHTMLTag);
 
+    LJScript.AddStrings(AComponent.Script);
+
     RenderScriptEvents(LHTMLName, AComponent.ScriptEvents, LPageContext, LJScript);
 
     AComponent.InternalRenderScript(AContext, LHTMLName, LJScript);
 
-    LJScript.AddStrings(AComponent.Script);
-
-    TIWBSCommon.ReplaceParams(LHTMLName, LJScript, AComponent.ScriptParams);
+    if LJScript.Count > 0 then
+      LJScript.Text := TIWBSCommon.ReplaceParams(AComponent, LJScript.Text);
 
     if AComponent.IsStoredCustomAsyncEvents then
       for i := 0 to AComponent.CustomAsyncEvents.Count-1 do begin

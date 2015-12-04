@@ -158,7 +158,7 @@ end;
 procedure TIWBSCustomAsyncEvent.ParseParam(AScript: TStringList);
 begin
   if AScript.Count > 0 then
-    AScript.Text := ReplaceStr(AScript.Text,'%'+FEventName+'%',GetScript);
+    AScript.Text := ReplaceStr(AScript.Text,'{%'+FEventName+'%}',GetScript);
 end;
 {$endregion}
 
@@ -212,7 +212,7 @@ end;
 procedure TIWBSCustomRestEvent.ParseParam(AScript: TStringList);
 begin
   if AScript.Count > 0 then
-    AScript.Text := ReplaceStr(AScript.Text,'%'+FEventName+'%',FRestEventPath);
+    AScript.Text := ReplaceStr(AScript.Text,'{%'+FEventName+'%}',FRestEventPath);
 end;
 {$endregion}
 
