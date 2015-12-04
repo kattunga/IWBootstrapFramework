@@ -88,7 +88,7 @@ begin
           S['field'] := 'field'+IntToStr(j);
           S['title'] := ClientDataSet1.Fields[j].DisplayLabel;
         end;
-    S['url'] := '%dataurl%';
+    S['url'] := '{%dataurl%}';
     B['pagination'] := true;
     S['sidePagination'] := 'server';
     B['mobileResponsive'] := true;
@@ -114,7 +114,7 @@ begin
     options.QuoteChar := ' ';
     options.StrictDelimiter := True;
 
-    options.Values['url'] := '"%dataurl%"';
+    options.Values['url'] := '"{%dataurl%}"';
     options.Values['columns'] := columns;
     options.Values['pagination'] := 'true';
     options.Values['sidePagination'] := '"server"';

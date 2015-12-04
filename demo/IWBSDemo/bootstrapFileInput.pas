@@ -28,10 +28,11 @@ type
     IWBSInput1: TIWBSFile;
     IWBSRegion5: TIWBSRegion;
     procedure IWFormModuleBaseCreate(Sender: TObject);
+    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSInput1CustomAsyncEvents0AsyncEvent(Sender: TObject;
+      EventParams: TStringList);
     procedure IWBSInput1CustomRestEvents0RestEvent(aApplication: TIWApplication;
       aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
-    procedure IWBSInput1CustomAsyncEvents0AsyncEvent(aParams: TStringList);
-    procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
   end;
 
 implementation
@@ -46,11 +47,11 @@ begin
 //  Application.MainForm.Show;
 end;
 
-procedure TFBootstrapFileInput.IWBSInput1CustomAsyncEvents0AsyncEvent(
-  aParams: TStringList);
+procedure TFBootstrapFileInput.IWBSInput1CustomAsyncEvents0AsyncEvent(Sender: TObject; EventParams: TStringList);
 begin
   IWBSRegion5.AsyncRefreshControl;
 end;
+
 
 procedure TFBootstrapFileInput.IWBSInput1CustomRestEvents0RestEvent(
   aApplication: TIWApplication; aRequest: THttpRequest; aReply: THttpReply;

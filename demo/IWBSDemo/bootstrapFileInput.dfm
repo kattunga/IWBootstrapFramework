@@ -87,11 +87,11 @@ object FBootstrapFileInput: TFBootstrapFileInput
             FriendlyName = 'IWBSInput1'
             Script.Strings = (
               
-                '$("#%htmlname%").fileinput({uploadUrl: "%uploadUrl%", "maxFileSi' +
-                'ze": 48, "allowedFileTypes": ["image"]});'
+                '$("#{%htmlname%}").fileinput({uploadUrl: "{%uploadUrl%}", "maxFi' +
+                'leSize": 48, "allowedFileTypes": ["image"]});'
               
-                '$("#%htmlname%").off("fileuploaded").on("fileuploaded", function' +
-                '() {%fileuploaded%});')
+                '$("#{%htmlname%}").off("fileuploaded").on("fileuploaded", functi' +
+                'on() {{%fileuploaded%}});')
             Multiple = True
           end
           object IWBSRegion5: TIWBSRegion

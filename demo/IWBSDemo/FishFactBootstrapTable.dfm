@@ -98,7 +98,7 @@ object FBootstrapTable: TFBootstrapTable
               end>
             FriendlyName = 'DbTable'
             Script.Strings = (
-              '$('#39'#%htmlname%'#39').bootstrapTable(%options%);')
+              '$('#39'#{%htmlname%}'#39').bootstrapTable({%options%});')
             ScriptInsideTag = False
             Style.Strings = (
               '')
