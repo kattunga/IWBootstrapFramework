@@ -14,7 +14,7 @@
 </head>
 <body>
 <table class="container"><tr><td class="navigation">
-<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="_tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
+<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
 <div style="clear: both"></div>
 
 <script>
@@ -65,9 +65,13 @@ Base class for IWBS controls</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#AsyncRefreshControl">AsyncRefreshControl</a></b>;</code></td>
+<td class="itemcode"><code>function <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#JQSelector">JQSelector</a></b>: string;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#AsyncRefreshControl">AsyncRefreshControl</a></b>;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><code>procedure <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#AsyncRemoveControl">AsyncRemoveControl</a></b>;</code></td>
 </tr>
@@ -76,11 +80,11 @@ Base class for IWBS controls</p>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#CustomAsyncEvents">CustomAsyncEvents</a></b>: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#CustomAsyncEvents">CustomAsyncEvents</a></b>: <a  href="IWBSCustomEvents.TIWBSCustomAsyncEvents.html">TIWBSCustomAsyncEvents</a> read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#CustomRestEvents">CustomRestEvents</a></b>: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#CustomRestEvents">CustomRestEvents</a></b>: <a  href="IWBSCustomEvents.TIWBSCustomRestEvents.html">TIWBSCustomRestEvents</a> read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
@@ -164,19 +168,19 @@ Base class for IWBS controls</p>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#ScriptParams">ScriptParams</a></b>: <a  href="IWBSCommon.TIWBSScriptParams.html">TIWBSScriptParams</a> read GetScriptParams write SetScriptParams;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#ScriptInsideTag">ScriptInsideTag</a></b>: boolean read GetScriptInsideTag write SetScriptInsideTag default True;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#Style">Style</a></b>: TStringList read GetStyle write SetStyle;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#ScriptParams">ScriptParams</a></b>: <a  href="IWBSCommon.TIWBSScriptParams.html">TIWBSScriptParams</a> read GetScriptParams write SetScriptParams;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#TabOrder">TabOrder</a></b>;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#Style">Style</a></b>: TStringList read GetStyle write SetStyle;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#TabStop">TabStop</a></b>: boolean read FTabStop write FTabStop default False;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomControl.TIWBSCustomControl.html#TabIndex">TabIndex</a></b>: integer read FTabIndex write FTabIndex default 0;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -216,6 +220,14 @@ Base class for IWBS controls</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="JQSelector"></a><code>function <b>JQSelector</b>: string;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><a name="AsyncRefreshControl"></a><code>procedure <b>AsyncRefreshControl</b>;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -237,7 +249,7 @@ Remove a control from html flow. You should execute this when destroying a contr
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="CustomAsyncEvents"></a><code>property <b>CustomAsyncEvents</b>: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
+<td class="itemcode"><a name="CustomAsyncEvents"></a><code>property <b>CustomAsyncEvents</b>: <a  href="IWBSCustomEvents.TIWBSCustomAsyncEvents.html">TIWBSCustomAsyncEvents</a> read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -245,7 +257,7 @@ Remove a control from html flow. You should execute this when destroying a contr
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="CustomRestEvents"></a><code>property <b>CustomRestEvents</b>: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
+<td class="itemcode"><a name="CustomRestEvents"></a><code>property <b>CustomRestEvents</b>: <a  href="IWBSCustomEvents.TIWBSCustomRestEvents.html">TIWBSCustomRestEvents</a> read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -404,7 +416,9 @@ this event is fired after component is updated during async calls</p>
 <td class="itemcode"><a name="Script"></a><code>property <b>Script</b>: TStringList read GetScript write SetScript;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+here you can add javascript code that will be rendered with this object. you can use <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#ScriptParams">ScriptParams</a> inside the <code>script</code>. Params are specified in scripts as: {%param%}. with property <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#ScriptInsideTag">ScriptInsideTag</a> you can define if the <code>script</code> will be rendered inside or outside the <code>script</code>.</p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -412,7 +426,19 @@ this event is fired after component is updated during async calls</p>
 <td class="itemcode"><a name="ScriptEvents"></a><code>property <b>ScriptEvents</b>;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+look an IW documentation</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="ScriptInsideTag"></a><code>property <b>ScriptInsideTag</b>: boolean read GetScriptInsideTag write SetScriptInsideTag default True;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+If true (default) the <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#Script">script</a> will be rendered inside the tag. If false a new div will be created to surround the control and the <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#Script">script</a> will be rendered in this div, outside the control tag. this sometimes is necessary when plugins will change the content of the control tag.</p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -420,7 +446,9 @@ this event is fired after component is updated during async calls</p>
 <td class="itemcode"><a name="ScriptParams"></a><code>property <b>ScriptParams</b>: <a  href="IWBSCommon.TIWBSScriptParams.html">TIWBSScriptParams</a> read GetScriptParams write SetScriptParams;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+Params that will be replaced in scripts and in some controls content, for example in <a class="normal" href="IWBSControls.TIWBSText.html">TIWBSText</a>. Params are specified in scripts as: {%param%}.</p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -433,18 +461,12 @@ this event is fired after component is updated during async calls</p>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="TabOrder"></a><code>property <b>TabOrder</b>;</code></td>
+<td class="itemcode"><a name="TabIndex"></a><code>property <b>TabIndex</b>: integer read FTabIndex write FTabIndex default 0;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="TabStop"></a><code>property <b>TabStop</b>: boolean read FTabStop write FTabStop default False;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+It will be rendered if <code>tabindex</code> &lt;&gt; 0. Set to -1 to disable tabstop</p>
+</td></tr>
 </table>
 <hr noshade size="1"><span class="appinfo"><em>Generated by <a  href="http://pasdoc.sourceforge.net/">PasDoc 0.14.0</a>. </em>
 </span>

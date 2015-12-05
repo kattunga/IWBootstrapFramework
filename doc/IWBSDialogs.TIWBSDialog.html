@@ -14,7 +14,7 @@
 </head>
 <body>
 <table class="container"><tr><td class="navigation">
-<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="_tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
+<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
 <div style="clear: both"></div>
 
 <script>
@@ -49,15 +49,15 @@ $(document).ready(function() {
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a  href="IWBSDialogs.TIWBSDialog.html#Create">Create</a></b>(const AHeaderText, ABodyText: string); reintroduce; overload;</code></td>
+<td class="itemcode"><code>constructor <b><a  href="IWBSDialogs.TIWBSDialog.html#Create">Create</a></b>(const ATitleText, ABodyText: string; ACloseButton: <a  href="IWBSDialogs.html#TIWBSDialogCloseButton">TIWBSDialogCloseButton</a> = iwbsdcBoth); reintroduce; overload;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a  href="IWBSDialogs.TIWBSDialog.html#Create">Create</a></b>(AForm: TIWForm; const AHeaderText, ABodyText: string); reintroduce; overload;</code></td>
+<td class="itemcode"><code>constructor <b><a  href="IWBSDialogs.TIWBSDialog.html#Create">Create</a></b>(AForm: TIWForm; const ATitleText, ABodyText: string; ACloseButton: <a  href="IWBSDialogs.html#TIWBSDialogCloseButton">TIWBSDialogCloseButton</a> = iwbsdcBoth); reintroduce; overload;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="IWBSDialogs.TIWBSDialog.html#AddButton">AddButton</a></b>(AParent: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>; const ACaption: string; AAsyncClickProc: <a  href="IWBSButton.html#TIWBSAsyncClickProc">TIWBSAsyncClickProc</a>): <a  href="IWBSButton.TIWBSButton.html">TIWBSButton</a>;</code></td>
+<td class="itemcode"><code>function <b><a  href="IWBSDialogs.TIWBSDialog.html#AddButton">AddButton</a></b>(AParent: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>; const ACaption: string; AAsyncClickProc: <a  href="IWBSButton.html#TIWBSAsyncClickProc">TIWBSAsyncClickProc</a> = nil): <a  href="IWBSButton.TIWBSButton.html">TIWBSButton</a>;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -65,42 +65,30 @@ $(document).ready(function() {
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="IWBSDialogs.TIWBSDialog.html#GetFooter">GetFooter</a></b>: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>;</code></td>
+<td class="itemcode"><code>function <b><a  href="IWBSDialogs.TIWBSDialog.html#GetBodyControl">GetBodyControl</a></b>: <a  href="IWBSControls.TIWBSText.html">TIWBSText</a>;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="IWBSDialogs.TIWBSDialog.html#GetHeader">GetHeader</a></b>: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>;</code></td>
+<td class="itemcode"><code>function <b><a  href="IWBSDialogs.TIWBSDialog.html#GetFooter">GetFooter</a></b>: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>function <b><a  href="IWBSDialogs.TIWBSDialog.html#GetTitle">GetTitle</a></b>: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>;</code></td>
+<td class="itemcode"><code>function <b><a  href="IWBSDialogs.TIWBSDialog.html#GetHeader">GetHeader</a></b>: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="IWBSDialogs.TIWBSDialog.html#Show">Show</a></b>;</code></td>
+<td class="itemcode"><code>function <b><a  href="IWBSDialogs.TIWBSDialog.html#GetTitleControl">GetTitleControl</a></b>: <a  href="IWBSControls.TIWBSLabel.html">TIWBSLabel</a>;</code></td>
 </tr>
 </table>
 <a name="PasDoc-Properties"></a><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSDialogs.TIWBSDialog.html#BodyText">BodyText</a></b>: string read FBodyText write FBodyText;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSDialogs.TIWBSDialog.html#BodyText">BodyText</a></b>: string read GetBodyText write SetBodyText;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSDialogs.TIWBSDialog.html#CloseButton">CloseButton</a></b>: boolean read FCloseButton write FCloseButton;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSDialogs.TIWBSDialog.html#FooterText">FooterText</a></b>: string read FFooterText write FFooterText;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSDialogs.TIWBSDialog.html#HeaderText">HeaderText</a></b>: string read FHeaderText write FHeaderText;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSDialogs.TIWBSDialog.html#TitleText">TitleText</a></b>: string read FTitleText write FTitleText;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSDialogs.TIWBSDialog.html#TitleText">TitleText</a></b>: string read GetTitleText write SetTitleText;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -108,7 +96,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(const AHeaderText, ABodyText: string); reintroduce; overload;</code></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(const ATitleText, ABodyText: string; ACloseButton: <a  href="IWBSDialogs.html#TIWBSDialogCloseButton">TIWBSDialogCloseButton</a> = iwbsdcBoth); reintroduce; overload;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -116,7 +104,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(AForm: TIWForm; const AHeaderText, ABodyText: string); reintroduce; overload;</code></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(AForm: TIWForm; const ATitleText, ABodyText: string; ACloseButton: <a  href="IWBSDialogs.html#TIWBSDialogCloseButton">TIWBSDialogCloseButton</a> = iwbsdcBoth); reintroduce; overload;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -124,7 +112,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="AddButton"></a><code>function <b>AddButton</b>(AParent: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>; const ACaption: string; AAsyncClickProc: <a  href="IWBSButton.html#TIWBSAsyncClickProc">TIWBSAsyncClickProc</a>): <a  href="IWBSButton.TIWBSButton.html">TIWBSButton</a>;</code></td>
+<td class="itemcode"><a name="AddButton"></a><code>function <b>AddButton</b>(AParent: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>; const ACaption: string; AAsyncClickProc: <a  href="IWBSButton.html#TIWBSAsyncClickProc">TIWBSAsyncClickProc</a> = nil): <a  href="IWBSButton.TIWBSButton.html">TIWBSButton</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -133,6 +121,14 @@ $(document).ready(function() {
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
 <td class="itemcode"><a name="GetBody"></a><code>function <b>GetBody</b>: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="GetBodyControl"></a><code>function <b>GetBodyControl</b>: <a  href="IWBSControls.TIWBSText.html">TIWBSText</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -156,15 +152,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="GetTitle"></a><code>function <b>GetTitle</b>: <a  href="IWBSRegion.TIWBSRegion.html">TIWBSRegion</a>;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Show"></a><code>procedure <b>Show</b>;</code></td>
+<td class="itemcode"><a name="GetTitleControl"></a><code>function <b>GetTitleControl</b>: <a  href="IWBSControls.TIWBSLabel.html">TIWBSLabel</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -173,7 +161,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="BodyText"></a><code>property <b>BodyText</b>: string read FBodyText write FBodyText;</code></td>
+<td class="itemcode"><a name="BodyText"></a><code>property <b>BodyText</b>: string read GetBodyText write SetBodyText;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -181,31 +169,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="CloseButton"></a><code>property <b>CloseButton</b>: boolean read FCloseButton write FCloseButton;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="FooterText"></a><code>property <b>FooterText</b>: string read FFooterText write FFooterText;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="HeaderText"></a><code>property <b>HeaderText</b>: string read FHeaderText write FHeaderText;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="TitleText"></a><code>property <b>TitleText</b>: string read FTitleText write FTitleText;</code></td>
+<td class="itemcode"><a name="TitleText"></a><code>property <b>TitleText</b>: string read GetTitleText write SetTitleText;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>

@@ -14,7 +14,7 @@
 </head>
 <body>
 <table class="container"><tr><td class="navigation">
-<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="_tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
+<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
 <div style="clear: both"></div>
 
 <script>
@@ -102,11 +102,11 @@ $(document).ready(function() {
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#CustomAsyncEvents">CustomAsyncEvents</a></b>: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSRegion.TIWBSCustomRegion.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#CustomAsyncEvents">CustomAsyncEvents</a></b>: <a  href="IWBSCustomEvents.TIWBSCustomAsyncEvents.html">TIWBSCustomAsyncEvents</a> read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSRegion.TIWBSCustomRegion.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#CustomRestEvents">CustomRestEvents</a></b>: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSRegion.TIWBSCustomRegion.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#CustomRestEvents">CustomRestEvents</a></b>: <a  href="IWBSCustomEvents.TIWBSCustomRestEvents.html">TIWBSCustomRestEvents</a> read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSRegion.TIWBSCustomRegion.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
@@ -126,7 +126,7 @@ $(document).ready(function() {
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#RenderInvisibleControls">RenderInvisibleControls</a></b> default False;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#RenderInvisibleControls">RenderInvisibleControls</a></b> default True;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
@@ -138,13 +138,17 @@ $(document).ready(function() {
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#ScriptParams">ScriptParams</a></b>: <a  href="IWBSCommon.TIWBSScriptParams.html">TIWBSScriptParams</a> read GetScriptParams write SetScriptParams;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#ScriptInsideTag">ScriptInsideTag</a></b>: boolean read GetScriptInsideTag write SetScriptInsideTag default True;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#Style">Style</a></b>: TStringList read GetStyle write SetStyle;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#ScriptParams">ScriptParams</a></b>: <a  href="IWBSCommon.TIWBSScriptParams.html">TIWBSScriptParams</a> read GetScriptParams write SetScriptParams;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#Style">Style</a></b>: TStringList read GetStyle write SetStyle;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSRegion.TIWBSCustomRegion.html#ZIndex">ZIndex</a></b> default 0;</code></td>
 </tr>
@@ -259,7 +263,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="CustomAsyncEvents"></a><code>property <b>CustomAsyncEvents</b>: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSRegion.TIWBSCustomRegion.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
+<td class="itemcode"><a name="CustomAsyncEvents"></a><code>property <b>CustomAsyncEvents</b>: <a  href="IWBSCustomEvents.TIWBSCustomAsyncEvents.html">TIWBSCustomAsyncEvents</a> read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSRegion.TIWBSCustomRegion.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -267,7 +271,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="CustomRestEvents"></a><code>property <b>CustomRestEvents</b>: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSRegion.TIWBSCustomRegion.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
+<td class="itemcode"><a name="CustomRestEvents"></a><code>property <b>CustomRestEvents</b>: <a  href="IWBSCustomEvents.TIWBSCustomRestEvents.html">TIWBSCustomRestEvents</a> read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSRegion.TIWBSCustomRegion.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -307,7 +311,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="RenderInvisibleControls"></a><code>property <b>RenderInvisibleControls</b> default False;</code></td>
+<td class="itemcode"><a name="RenderInvisibleControls"></a><code>property <b>RenderInvisibleControls</b> default True;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -324,6 +328,14 @@ $(document).ready(function() {
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><a name="ScriptEvents"></a><code>property <b>ScriptEvents</b>: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="ScriptInsideTag"></a><code>property <b>ScriptInsideTag</b>: boolean read GetScriptInsideTag write SetScriptInsideTag default True;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>

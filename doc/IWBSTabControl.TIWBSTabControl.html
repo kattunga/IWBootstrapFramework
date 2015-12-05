@@ -14,7 +14,7 @@
 </head>
 <body>
 <table class="container"><tr><td class="navigation">
-<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="_tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
+<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
 <div style="clear: both"></div>
 
 <script>
@@ -38,7 +38,7 @@ $(document).ready(function() {
 <a  href="IWBSTabControl.html">IWBSTabControl</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type TIWBSTabControl = class(TIWTabControl, <a class="normal" href="IWBSCommon.IIWBSComponent.html">IIWBSComponent</a>, <a class="normal" href="IWBSRegionCommon.IIWBSContainer.html">IIWBSContainer</a>)</code></p>
+<code>type TIWBSTabControl = class(TIWTabControl, IIWInputControl, <a class="normal" href="IWBSCommon.IIWBSComponent.html">IIWBSComponent</a>, <a class="normal" href="IWBSRegionCommon.IIWBSContainer.html">IIWBSContainer</a>)</code></p>
 <h2 class="description">Description</h2>
 <a name="PasDoc-Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
 <ul class="hierarchy"><li class="ancestor">TIWTabControl</li>
@@ -86,51 +86,59 @@ $(document).ready(function() {
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#Align">Align</a></b>;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#ActivePage">ActivePage</a></b>: Integer read FActivePage write SetActivePage;</code></td>
 </tr>
 <tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#Align">Align</a></b>;</code></td>
+</tr>
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#BSGridOptions">BSGridOptions</a></b>: <a  href="IWBSCommon.TIWBSGridOptions.html">TIWBSGridOptions</a> read FGridOptions write SetGridOptions;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#BSTabOptions">BSTabOptions</a></b>: <a  href="IWBSTabControl.TIWBSTabOptions.html">TIWBSTabOptions</a> read FTabOptions write SetTabOptions;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#ClipRegion">ClipRegion</a></b> default False;</code></td>
 </tr>
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#CustomAsyncEvents">CustomAsyncEvents</a></b>: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSTabControl.TIWBSTabControl.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
-</tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#CustomRestEvents">CustomRestEvents</a></b>: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSTabControl.TIWBSTabControl.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#CustomAsyncEvents">CustomAsyncEvents</a></b>: <a  href="IWBSCustomEvents.TIWBSCustomAsyncEvents.html">TIWBSCustomAsyncEvents</a> read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSTabControl.TIWBSTabControl.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
 </tr>
 <tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#CustomRestEvents">CustomRestEvents</a></b>: <a  href="IWBSCustomEvents.TIWBSCustomRestEvents.html">TIWBSCustomRestEvents</a> read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSTabControl.TIWBSTabControl.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
+</tr>
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#ExtraTagParams">ExtraTagParams</a></b>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#LayoutMgr">LayoutMgr</a></b>;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#OnHTMLTag">OnHTMLTag</a></b>;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#OnRenderAsync">OnRenderAsync</a></b>: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;</code></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#RenderInvisibleControls">RenderInvisibleControls</a></b> default False;</code></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#Script">Script</a></b>: TStringList read GetScript write SetScript;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="IWBSTabControl.TIWBSTabControl.html#ScriptInsideTag">ScriptInsideTag</a></b>: boolean read GetScriptInsideTag write SetScriptInsideTag default True;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
@@ -223,6 +231,14 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="ActivePage"></a><code>property <b>ActivePage</b>: Integer read FActivePage write SetActivePage;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><a name="Align"></a><code>property <b>Align</b>;</code></td>
 </tr>
 <tr><td colspan="2">
@@ -255,7 +271,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="CustomAsyncEvents"></a><code>property <b>CustomAsyncEvents</b>: TOwnedCollection read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSTabControl.TIWBSTabControl.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
+<td class="itemcode"><a name="CustomAsyncEvents"></a><code>property <b>CustomAsyncEvents</b>: <a  href="IWBSCustomEvents.TIWBSCustomAsyncEvents.html">TIWBSCustomAsyncEvents</a> read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSTabControl.TIWBSTabControl.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -263,7 +279,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="CustomRestEvents"></a><code>property <b>CustomRestEvents</b>: TOwnedCollection read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSTabControl.TIWBSTabControl.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
+<td class="itemcode"><a name="CustomRestEvents"></a><code>property <b>CustomRestEvents</b>: <a  href="IWBSCustomEvents.TIWBSCustomRestEvents.html">TIWBSCustomRestEvents</a> read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSTabControl.TIWBSTabControl.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -312,6 +328,14 @@ $(document).ready(function() {
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><a name="Script"></a><code>property <b>Script</b>: TStringList read GetScript write SetScript;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="ScriptInsideTag"></a><code>property <b>ScriptInsideTag</b>: boolean read GetScriptInsideTag write SetScriptInsideTag default True;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>

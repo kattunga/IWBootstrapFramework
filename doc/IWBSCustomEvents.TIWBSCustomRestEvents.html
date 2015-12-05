@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
 <html>
 <head>
-<title>IWBootstrap Framework: IWBSRegionCommon: Class TIWBSButonGroupOptions</title>
+<title>IWBootstrap Framework: IWBSCustomEvents: Class TIWBSCustomRestEvents</title>
 <meta name="generator" content="PasDoc 0.14.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="tipuesearch/jquery.min.js"></script>
@@ -29,44 +29,32 @@ $(document).ready(function() {
 });
 </script>
 </p></td><td class="content">
-<a name="TIWBSButonGroupOptions"></a><h1 class="cio">Class TIWBSButonGroupOptions</h1>
+<a name="TIWBSCustomRestEvents"></a><h1 class="cio">Class TIWBSCustomRestEvents</h1>
 <table class="sections wide_list">
 <tr>
 <td><a class="section" href="#PasDoc-Description">Description</a></td><td><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></td><td>Fields</td><td><a class="section" href="#PasDoc-Methods">Methods</a></td><td><a class="section" href="#PasDoc-Properties">Properties</a></td></tr></table>
 <a name="PasDoc-Description"></a><h2 class="unit">Unit</h2>
 <p class="unitlink">
-<a  href="IWBSRegionCommon.html">IWBSRegionCommon</a></p>
+<a  href="IWBSCustomEvents.html">IWBSCustomEvents</a></p>
 <h2 class="declaration">Declaration</h2>
 <p class="declaration">
-<code>type TIWBSButonGroupOptions = class(TPersistent)</code></p>
+<code>type TIWBSCustomRestEvents = class(TOwnedCollection)</code></p>
 <h2 class="description">Description</h2>
 <a name="PasDoc-Hierarchy"></a><h2 class="hierarchy">Hierarchy</h2>
-<ul class="hierarchy"><li class="ancestor">TPersistent</li>
-<li class="thisitem">TIWBSButonGroupOptions</li></ul><h2 class="overview">Overview</h2>
+<ul class="hierarchy"><li class="ancestor">TOwnedCollection</li>
+<li class="thisitem">TIWBSCustomRestEvents</li></ul><h2 class="overview">Overview</h2>
 <a name="PasDoc-Methods"></a><h3 class="summary">Methods</h3>
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>constructor <b><a  href="IWBSRegionCommon.TIWBSButonGroupOptions.html#Create">Create</a></b>(AOwner: TComponent);</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="IWBSRegionCommon.TIWBSButonGroupOptions.html#Assign">Assign</a></b>(Source: TPersistent); override;</code></td>
+<td class="itemcode"><code>constructor <b><a  href="IWBSCustomEvents.TIWBSCustomRestEvents.html#Create">Create</a></b>(AOwner: TPersistent);</code></td>
 </tr>
 </table>
 <a name="PasDoc-Properties"></a><h3 class="summary">Properties</h3>
 <table class="summary wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSRegionCommon.TIWBSButonGroupOptions.html#Justified">Justified</a></b>: boolean read FJustified write FJustified default false;</code></td>
-</tr>
-<tr class="list2">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSRegionCommon.TIWBSButonGroupOptions.html#Size">Size</a></b>: <a  href="IWBSCommon.html#TIWBSSize">TIWBSSize</a> read FSize write FSize default bsszDefault;</code></td>
-</tr>
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSRegionCommon.TIWBSButonGroupOptions.html#Vertical">Vertical</a></b>: boolean read FVertical write FVertical default false;</code></td>
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomEvents.TIWBSCustomRestEvents.html#Items">Items</a></b>[I:Integer]: <a  href="IWBSCustomEvents.TIWBSCustomRestEvent.html">TIWBSCustomRestEvent</a> read GetItems write SetItems;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -74,15 +62,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(AOwner: TComponent);</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="Assign"></a><code>procedure <b>Assign</b>(Source: TPersistent); override;</code></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(AOwner: TPersistent);</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -90,24 +70,8 @@ $(document).ready(function() {
 <h3 class="detail">Properties</h3>
 <table class="detail wide_list">
 <tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="Justified"></a><code>property <b>Justified</b>: boolean read FJustified write FJustified default false;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="Size"></a><code>property <b>Size</b>: <a  href="IWBSCommon.html#TIWBSSize">TIWBSSize</a> read FSize write FSize default bsszDefault;</code></td>
-</tr>
-<tr><td colspan="2">
-&nbsp;</td></tr>
-</table>
-<table class="detail wide_list">
-<tr class="list">
-<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="Vertical"></a><code>property <b>Vertical</b>: boolean read FVertical write FVertical default false;</code></td>
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Items"></a><code>property <b>Items</b>[I:Integer]: <a  href="IWBSCustomEvents.TIWBSCustomRestEvent.html">TIWBSCustomRestEvent</a> read GetItems write SetItems;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>

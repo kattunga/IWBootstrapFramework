@@ -14,7 +14,7 @@
 </head>
 <body>
 <table class="container"><tr><td class="navigation">
-<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="_tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
+<h2>IWBootstrap Framework</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><p><form class="search-form" action="tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
 <div style="clear: both"></div>
 
 <script>
@@ -47,7 +47,23 @@ $(document).ready(function() {
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><code>procedure <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#ParseParamEvent">ParseParamEvent</a></b>(AScript: TStringList);</code></td>
+<td class="itemcode"><code>constructor <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#Create">Create</a></b>(Collection: TCollection); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#GetScript">GetScript</a></b>: string;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#Assign">Assign</a></b>(Source: TPersistent); override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#ParseParam">ParseParam</a></b>(AScript: TStringList);</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
@@ -58,15 +74,23 @@ $(document).ready(function() {
 <table class="summary wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#AutoBind">AutoBind</a></b>: boolean read FAutoBind write FAutoBind default False;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#CallBackParams">CallBackParams</a></b>: TStringList read FCallBackParams write SetCallBackParams;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><code>property <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventName">EventName</a></b>: string read FEventName write SetEventName;</code></td>
 </tr>
 <tr class="list2">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#OnAsyncEvent">OnAsyncEvent</a></b>: TIWCallbackFunction read FAsyncEvent write FAsyncEvent;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventParams">EventParams</a></b>: string read FEventParams write FEventParams stored IsEventParamsStored;</code></td>
 </tr>
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><code>property <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#Params">Params</a></b>: string read FParams write FParams;</code></td>
+<td class="itemcode"><code>property <b><a  href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#OnAsyncEvent">OnAsyncEvent</a></b>: TIWAsyncEvent read FAsyncEvent write FAsyncEvent;</code></td>
 </tr>
 </table>
 <h2 class="description">Description</h2>
@@ -74,7 +98,7 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="ParseParamEvent"></a><code>procedure <b>ParseParamEvent</b>(AScript: TStringList);</code></td>
+<td class="itemcode"><a name="Create"></a><code>constructor <b>Create</b>(Collection: TCollection); override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
@@ -82,35 +106,99 @@ $(document).ready(function() {
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
-<td class="itemcode"><a name="RegisterEvent"></a><code>procedure <b>RegisterEvent</b>(AApplication: TIWApplication; const AComponentName: string);</code></td>
+<td class="itemcode"><a name="Destroy"></a><code>destructor <b>Destroy</b>; override;</code></td>
 </tr>
 <tr><td colspan="2">
 &nbsp;</td></tr>
 </table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="GetScript"></a><code>function <b>GetScript</b>: string;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+this function return the javascript code necessary to do a callback</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="Assign"></a><code>procedure <b>Assign</b>(Source: TPersistent); override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="ParseParam"></a><code>procedure <b>ParseParam</b>(AScript: TStringList);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+this procedure will replace params in a script with same name as <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventName">EventName</a></p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><a name="RegisterEvent"></a><code>procedure <b>RegisterEvent</b>(AApplication: TIWApplication; const AComponentName: string);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+this procedure will register the callback in the server. Is for internal use, don't use it.</p>
+</td></tr>
+</table>
 <h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="AutoBind"></a><code>property <b>AutoBind</b>: boolean read FAutoBind write FAutoBind default False;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+if true, the event will be automatically attached to the rendered object. if false, you need to manually bind the event. to manually bind an event in delphi code you can do: <a class="normal" href="IWBSUtils.html#IWBSExecuteJScript">IWBSExecuteJScript</a>(MyObject.JQSelector+'.on(&quot;api.event.name&quot;, function(event, param1, param2) {'+MyObject.CustomAsyncEvents[0].GetScript+'})'); or you can add in the script property: $(&quot;#{%htmlname%}&quot;).on(&quot;api.event.name&quot;, function(event, param1, param2) { {%<a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventName">eventname</a>%} });</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><a name="CallBackParams"></a><code>property <b>CallBackParams</b>: TStringList read FCallBackParams write SetCallBackParams;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+a set of pairs names=values to translate <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventParams">EventParams</a> to params pased to the <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#OnAsyncEvent">OnAsyncEvent</a></p>
+</td></tr>
+</table>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
 <td class="itemcode"><a name="EventName"></a><code>property <b>EventName</b>: string read FEventName write SetEventName;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+the event name, if <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#AutoBind">AutoBind</a> = True, the <code>EventName</code> should be real name of the event, if <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#AutoBind">AutoBind</a> = False you can set any name here and use the correct one when you manually register it. look at <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#AutoBind">AutoBind</a> property.</p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="OnAsyncEvent"></a><code>property <b>OnAsyncEvent</b>: TIWCallbackFunction read FAsyncEvent write FAsyncEvent;</code></td>
+<td class="itemcode"><a name="EventParams"></a><code>property <b>EventParams</b>: string read FEventParams write FEventParams stored IsEventParamsStored;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+A list of comma separated names of params that the event will pass to the callback function. this params names are defined in the api of the object you are using.</p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
 <td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
-<td class="itemcode"><a name="Params"></a><code>property <b>Params</b>: string read FParams write FParams;</code></td>
+<td class="itemcode"><a name="OnAsyncEvent"></a><code>property <b>OnAsyncEvent</b>: TIWAsyncEvent read FAsyncEvent write FAsyncEvent;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+this event will be executed when the defined JQ event is triggered</p>
+</td></tr>
 </table>
 <hr noshade size="1"><span class="appinfo"><em>Generated by <a  href="http://pasdoc.sourceforge.net/">PasDoc 0.14.0</a>. </em>
 </span>
