@@ -70,40 +70,54 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    // Force a full refresh of the control during an Async call.
-    // Usually there is no need to use this method, only if some property change during async calls is not reflected.
+    // Force a full refresh of the control during an Async call. @br
+    // Usually there is no need to use this method, only if some property changed during async calls is not reflected.
     procedure AsyncRefreshControl;
 
-    // Remove a control from html flow. You should execute this when destroying a control durinc async calls before Freeing
-    // if you are destroying a region is enought to execute this in that region, you don't need to execute it in each child control.
+    // Remove a control from html flow. You should execute this when destroying a control durinc async calls before Freeing @br
+    // If you are destroying a region is enought to execute this in that region, you don't need to execute it in each child control.
     procedure AsyncRemoveControl;
 
     function IsStoredCustomAsyncEvents: Boolean;
     function IsStoredCustomRestEvents: Boolean;
+    // returns a string representing the the JQSelector for this object.
+    // @preformatted(IWBSCustomControl.JQSelector > '$(#"htmlname")')
     function JQSelector: string;
   published
+    // Mainteins a list of TIWBSCustomAsyncEvent. @br
+    // CustomAsyncEvent let you bind delphi code execution to practically any jQuery event of the control. @br
+    // This is usefull when you apply third party plugins to the control.
     property CustomAsyncEvents: TIWBSCustomAsyncEvents read GetCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
+    // Mainteins a list of TIWBSCustomRestEvent. @br
+    // CustomRestEvent are for providing data to third party controls that request data via REST calls.
     property CustomRestEvents: TIWBSCustomRestEvents read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
+    // Specifies whether the control responds to mouse, keyboard, and timer events.
     property Enabled;
+
     property ExtraTagParams;
+
     property FriendlyName;
-    // here you can add javascript code that will be rendered with this object.
-    // you can use ScriptParams inside the script. Params are specified in scripts as: {%param%}.
-    // with property ScriptInsideTag you can define if the script will be rendered inside or outside the script.
+    // Specifies user javascript code that will be rendered and executed with this object. @br
+    // You can define ScriptParams inside the script. ScriptParams are specified in scripts as: {%param%}. @br
+    // With property ScriptInsideTag you can define if the script will be rendered inside or outside the script.
     property Script: TStringList read GetScript write SetScript;
-    // look an IW documentation
+    // Maintains a list of JS events you can directly write events in JS @br
+    // at design time you can access to a limited set of events, but at runtime you can attach to any event of the control doing:
+    // @preformatted(IWBSCustomControl.ScriptEvents.Values['object.custom.event'] := 'your javascript code...';
+    // or if you want to define the function params:
+    // @preformatted(IWBSCustomControl.ScriptEvents.Values['object.custom.event'] := 'function (param1, param2, param3) { your javascript code... }';
     property ScriptEvents;
-    // If true (default) the script will be rendered inside the tag.
-    // If false a new div will be created to surround the control and the script will be rendered in this div, outside the control tag.
+    // Specifies if the script will be rendered inside the control tag or not. @br
+    // If true (default) the script will be rendered inside the tag. @br
+    // If false a new div will be created to surround the control and the script will be rendered in this div, outside the control tag. @br
     // this sometimes is necessary when plugins will change the content of the control tag.
     property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag default True;
-    // Params that will be replaced in scripts and in some controls content, for example in TIWBSText.
+    // Params that will be replaced in scripts and in some controls content, for example in TIWBSText. @br
     // Params are specified in scripts as: {%param%}.
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
+    // List of inline styles in pairs name: value
     property Style: TStringList read GetStyle write SetStyle;
-
-    // It will be rendered if tabindex <> 0.
-    // Set to -1 to disable tabstop
+    // Corresponds to html tabindex attribute. It will be rendered if tabindex <> 0. Set to -1 to disable tabstop
     property TabIndex: integer read FTabIndex write FTabIndex default 0;
 
     property OnAsyncClick;
@@ -120,10 +134,10 @@ type
     property OnAsyncMouseOut;
     property OnAsyncMouseUp;
 
-    // this event is fired after HTMLTag is created
+    // Occurs after HTMLTag is created
     property OnHTMLtag;
 
-    // this event is fired after component is updated during async calls
+    // Occurs after component is updated during async calls
     property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
   end;
 

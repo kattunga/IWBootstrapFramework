@@ -23,30 +23,30 @@ type
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
-    // this function return the javascript code necessary to do a callback
+    // Return the javascript code necessary to execute the callback
     function GetScript: string;
-    // this procedure will register the callback in the server. Is for internal use, don't use it.
+    // Register the callback in the server. Is for internal use, don't use it.
     procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
-    // this procedure will replace params in a script with same name as EventName
+    // Search in a script and replace params with same name as EventName with the js code necessary to execute the callback.
     procedure ParseParam(AScript: TStringList);
   published
-    // if true, the event will be automatically attached to the rendered object.
-    // if false, you need to manually bind the event.
-    // to manually bind an event in delphi code you can do:
-    // IWBSExecuteJScript(MyObject.JQSelector+'.on("api.event.name", function(event, param1, param2) {'+MyObject.CustomAsyncEvents[0].GetScript+'})');
+    // Specifies if the delphi event will be automatically binded to the jQuery control with the EventName specified.
+    // If true, the event will be automatically attached to the rendered object. @br
+    // If false, you need to manually bind the event. @br
+    // To manually bind an event in delphi code you could do:
+    // @preformatted(IWBSExecuteJScript(MyObject.JQSelector+'.on("api.event.name", function(event, param1, param2) {'+MyObject.CustomAsyncEvents[0].GetScript+'})');)
     // or you can add in the script property:
-    // $("#{%htmlname%}").on("api.event.name", function(event, param1, param2) { {%eventname%} });
+    // @preformatted($("#{%htmlname%}").on("api.event.name", function(event, param1, param2) { {%eventname%} });)
     property AutoBind: boolean read FAutoBind write FAutoBind default False;
-    // the event name, if AutoBind = True, the EventName should be real name of the event,
-    // if AutoBind = False you can set any name here and use the correct one when you manually register it.
-    // look at AutoBind property.
+    // Specifies the event name, if AutoBind = True, the EventName should be exactly the name of the jQuery event,
+    // if AutoBind = False you can set any name here and use the correct one when you manually register it. @br
     property EventName: string read FEventName write SetEventName;
-    // A list of comma separated names of params that the event will pass to the callback function.
-    // this params names are defined in the api of the object you are using.
+    // Specifies a list of comma separated names of params that the event will pass to the callback function. @br
+    // This params names are defined in the api of the object you are using.
     property EventParams: string read FEventParams write FEventParams stored IsEventParamsStored;
-    // a set of pairs names=values to translate EventParams to params pased to the OnAsyncEvent
+    // Mainteins a list of pairs names=values to translate the EventParams to the params pased to the OnAsyncEvent
     property CallBackParams: TStringList read FCallBackParams write SetCallBackParams;
-    // this event will be executed when the defined JQ event is triggered
+    // Occurs when the defined JQ event is triggered
     property OnAsyncEvent: TIWAsyncEvent read FAsyncEvent write FAsyncEvent;
   end;
 

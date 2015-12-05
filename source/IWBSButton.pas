@@ -32,7 +32,7 @@ type
     // http://getbootstrap.com/css/#buttons-sizes
     property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
     // Bootstrap Button Style @br
-    //http://getbootstrap.com/css/#buttons-options
+    // http://getbootstrap.com/css/#buttons-options
     property BSButtonStyle: TIWBSButtonStyle read FButtonStyle write SetButtonStyle default bsbsDefault;
     // Bootstrap Glyphicon @br
     // http://getbootstrap.com/components/#glyphicons
