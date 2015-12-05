@@ -59,9 +59,9 @@ object FBootstrapTable: TFBootstrapTable
           BSRegionType = bsrtColumn
           object IWText1: TIWBSText
             Left = 10
-            Top = 19
+            Top = 23
             Width = 702
-            Height = 58
+            Height = 94
             FriendlyName = 'IWText1'
             Lines.Strings = (
               
@@ -77,7 +77,7 @@ object FBootstrapTable: TFBootstrapTable
           end
           object DbTable: TIWBSText
             Left = 10
-            Top = 107
+            Top = 131
             Width = 702
             Height = 258
             CustomAsyncEvents = <

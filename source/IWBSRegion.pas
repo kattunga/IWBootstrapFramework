@@ -84,7 +84,7 @@ type
     property Css: string read FCss write FCss;
     property ExtraTagParams;
     property LayoutMgr;
-    property RenderInvisibleControls default False;
+    property RenderInvisibleControls default True;
     property ScriptEvents: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;
     property Script: TStringList read GetScript write SetScript;
     property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag default True;
@@ -272,7 +272,7 @@ begin
   FTagType := 'div';
 
   ClipRegion := False;
-  RenderInvisibleControls := False;
+  RenderInvisibleControls := True;
   set_ZIndex(0);
 
   if name = '' then

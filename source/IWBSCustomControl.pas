@@ -87,9 +87,18 @@ type
     property Enabled;
     property ExtraTagParams;
     property FriendlyName;
+    // here you can add javascript code that will be rendered with this object.
+    // you can use ScriptParams inside the script. Params are specified in scripts as: {%param%}.
+    // with property ScriptInsideTag you can define if the script will be rendered inside or outside the script.
     property Script: TStringList read GetScript write SetScript;
+    // look an IW documentation
     property ScriptEvents;
+    // If true (default) the script will be rendered inside the tag.
+    // If false a new div will be created to surround the control and the script will be rendered in this div, outside the control tag.
+    // this sometimes is necessary when plugins will change the content of the control tag.
     property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag default True;
+    // Params that will be replaced in scripts and in some controls content, for example in TIWBSText.
+    // Params are specified in scripts as: {%param%}.
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
 

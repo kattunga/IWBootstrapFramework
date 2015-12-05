@@ -294,7 +294,10 @@ begin
         begin
           ControlCanvas.Brush.Color := clWhite;
           ControlCanvas.Pen.Color := clGray;
-          ControlCanvas.Font.Color := clBlack;
+          if Enabled then
+            ControlCanvas.Font.Color := clBlack
+          else
+            ControlCanvas.Font.Color := clDkGray;
         end;
       bsbsPrimary:
         begin

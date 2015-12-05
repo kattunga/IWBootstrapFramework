@@ -21,6 +21,7 @@ object IWServerController: TIWServerController
   SSLOptions.SSLVersions = []
   Version = '14.0.45'
   AllowMultipleSessionsPerUser = False
+  JavaScriptOptions.RenderjQuery = False
   OnNewSession = IWServerControllerBaseNewSession
   Height = 310
   Width = 342
