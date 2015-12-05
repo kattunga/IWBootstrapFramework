@@ -79,7 +79,7 @@ object FBootstrapTable: TFBootstrapTable
             Left = 10
             Top = 131
             Width = 702
-            Height = 258
+            Height = 422
             CustomAsyncEvents = <
               item
                 AutoBind = True
@@ -90,6 +90,24 @@ object FBootstrapTable: TFBootstrapTable
                   'value=value'
                   'row=row.field0')
                 OnAsyncEvent = DbTableCustomAsyncEvents0AsyncEvent
+              end
+              item
+                EventName = 'click.like'
+                CallBackParams.Strings = (
+                  'row=row.field0')
+                OnAsyncEvent = DbTableCustomAsyncEvents1AsyncEvent
+              end
+              item
+                EventName = 'click.edit'
+                CallBackParams.Strings = (
+                  'row=row.field0')
+                OnAsyncEvent = DbTableCustomAsyncEvents2AsyncEvent
+              end
+              item
+                EventName = 'click.remove'
+                CallBackParams.Strings = (
+                  'row=row.field0')
+                OnAsyncEvent = DbTableCustomAsyncEvents3AsyncEvent
               end>
             CustomRestEvents = <
               item
@@ -98,7 +116,44 @@ object FBootstrapTable: TFBootstrapTable
               end>
             FriendlyName = 'DbTable'
             Script.Strings = (
-              '$('#39'#{%htmlname%}'#39').bootstrapTable({%options%});')
+              '// this fuction is used in the actions column formatter'
+              'function actionFormatter(value, row, index) {'
+              '    return ['
+              
+                '        '#39'<a class="like" href="javascript:void(0)" title="Like">' +
+                #39','
+              '        '#39'<i class="glyphicon glyphicon-heart"></i>'#39','
+              '        '#39'</a>'#39','
+              
+                '        '#39'<a class="edit ml10" href="javascript:void(0)" title="E' +
+                'dit">'#39','
+              '        '#39'<i class="glyphicon glyphicon-edit"></i>'#39','
+              '        '#39'</a>'#39','
+              
+                '        '#39'<a class="remove ml10" href="javascript:void(0)" title=' +
+                '"Remove">'#39','
+              '        '#39'<i class="glyphicon glyphicon-remove"></i>'#39','
+              '        '#39'</a>'#39
+              '    ].join('#39#39');'
+              '}'
+              ''
+              
+                '// this var holds the object with events for the actions colum f' +
+                'ormatter'
+              'window.actionEvents = {'
+              '    '#39'click .like'#39': function (e, value, row, index) {'
+              '        {%click.like%}'
+              '    },'
+              '    '#39'click .edit'#39': function (e, value, row, index) {'
+              '        {%click.edit%}'
+              '    },'
+              '    '#39'click .remove'#39': function (e, value, row, index) {'
+              '        {%click.remove%}'
+              '    }'
+              '};'
+              ''
+              '$('#39'#{%htmlname%}'#39').bootstrapTable({%options%});'
+              '')
             ScriptInsideTag = False
             Style.Strings = (
               '')
@@ -34750,6 +34805,7 @@ object FBootstrapTable: TFBootstrapTable
     object ClientDataSet1Graphic: TGraphicField
       FieldName = 'Graphic'
       Origin = 'DBDEMOS."biolife.DB".Graphic'
+      Visible = False
       BlobType = ftGraphic
     end
     object ClientDataSet1FoundDate: TDateTimeField

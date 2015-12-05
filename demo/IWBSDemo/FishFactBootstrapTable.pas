@@ -45,6 +45,12 @@ type
     procedure IWBSButton1AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure DbTableCustomAsyncEvents0AsyncEvent(Sender: TObject;
       EventParams: TStringList);
+    procedure DbTableCustomAsyncEvents1AsyncEvent(Sender: TObject;
+      EventParams: TStringList);
+    procedure DbTableCustomAsyncEvents2AsyncEvent(Sender: TObject;
+      EventParams: TStringList);
+    procedure DbTableCustomAsyncEvents3AsyncEvent(Sender: TObject;
+      EventParams: TStringList);
   end;
 
 implementation
@@ -84,10 +90,11 @@ begin
   with DbTable.ScriptParams.Json['options'] do begin
     with A['columns'] do
       for j := 0 to ClientDataSet1.FieldCount-1 do
-        with AddObject do begin
-          S['field'] := 'field'+IntToStr(j);
-          S['title'] := ClientDataSet1.Fields[j].DisplayLabel;
-        end;
+        if ClientDataSet1.Fields[j].Visible then
+          with AddObject do begin
+            S['field'] := 'field'+IntToStr(j);
+            S['title'] := ClientDataSet1.Fields[j].DisplayLabel;
+          end;
     S['url'] := '{%dataurl%}';
     B['pagination'] := true;
     S['sidePagination'] := 'server';
@@ -100,11 +107,15 @@ begin
 
   // configure grid options
   columns := '[';
-  for j := 0 to ClientDataSet1.FieldCount-1 do begin
-    if j > 0 then
-      columns := columns+',';
-    columns := columns+'{"field":'+'"field'+IntToStr(j)+'","title":"'+ClientDataSet1.Fields[j].DisplayLabel+'"}';
-  end;
+  for j := 0 to ClientDataSet1.FieldCount-1 do
+    if ClientDataSet1.Fields[j].Visible then begin
+      if j > 0 then
+        columns := columns+',';
+      columns := columns+'{"field":'+'"field'+IntToStr(j)+'","title":"'+ClientDataSet1.Fields[j].DisplayLabel+'"}';
+    end;
+  if columns <> '' then
+    columns := columns+',';
+  columns := columns+'{"field": "action", "title":"action", "formatter": actionFormatter, "events": actionEvents}';
   columns := columns+']';
 
   options := TStringList.Create;
@@ -132,7 +143,26 @@ end;
 procedure TFBootstrapTable.DbTableCustomAsyncEvents0AsyncEvent(Sender: TObject;
   EventParams: TStringList);
 begin
-  TIWBSAlert.Create('You clicked field '+EventParams.Values['field']+' row '+EventParams.Values['row']);
+  if EventParams.Values['field'] <> 'action' then
+    TIWBSAlert.Create('You clicked field '+EventParams.Values['field']+' row '+EventParams.Values['row']);
+end;
+
+procedure TFBootstrapTable.DbTableCustomAsyncEvents1AsyncEvent(Sender: TObject;
+  EventParams: TStringList);
+begin
+  TIWBSAlert.Create('You clicked Like button of row '+EventParams.Values['row']);
+end;
+
+procedure TFBootstrapTable.DbTableCustomAsyncEvents2AsyncEvent(Sender: TObject;
+  EventParams: TStringList);
+begin
+  TIWBSAlert.Create('You clicked Edit button of row '+EventParams.Values['row']);
+end;
+
+procedure TFBootstrapTable.DbTableCustomAsyncEvents3AsyncEvent(Sender: TObject;
+  EventParams: TStringList);
+begin
+  TIWBSAlert.Create('You clicked Remove button of row '+EventParams.Values['row']);
 end;
 
 procedure TFBootstrapTable.DbTableCustomRestEvents0RestEvent(
@@ -157,17 +187,17 @@ begin
       ClientDataSet1.RecNo := r;
 
       line := '';
-      for i := 0 to ClientDataSet1.FieldCount-1 do begin
-        if i > 0 then
-          line := line+',';
-        if ClientDataSet1.Fields[i] is TNumericField then
-          line := line+'"field'+IntToStr(i)+'":'+FloatToStr(ClientDataSet1.Fields[i].AsFloat,fs)
-        else if (ClientDataSet1.Fields[i] is TStringField) or (ClientDataSet1.Fields[i] is TMemoField) then
-          line := line+'"field'+IntToStr(i)+'":"'+EscapeJsonString(ClientDataSet1.Fields[i].AsString)+'"'
-        else
-          line := line+'"field'+IntToStr(i)+'":""';
-
-      end;
+      for i := 0 to ClientDataSet1.FieldCount-1 do
+        if ClientDataSet1.Fields[i].Visible then begin
+          if i > 0 then
+            line := line+',';
+          if ClientDataSet1.Fields[i] is TNumericField then
+            line := line+'"field'+IntToStr(i)+'":'+FloatToStr(ClientDataSet1.Fields[i].AsFloat,fs)
+          else if (ClientDataSet1.Fields[i] is TStringField) or (ClientDataSet1.Fields[i] is TMemoField) then
+            line := line+'"field'+IntToStr(i)+'":"'+EscapeJsonString(ClientDataSet1.Fields[i].AsString)+'"'
+          else
+            line := line+'"field'+IntToStr(i)+'":""';
+        end;
       if data <> '' then
         data := data+',';
       data := data+'{'+line+'}';
