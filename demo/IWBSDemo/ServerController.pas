@@ -68,8 +68,8 @@ begin
   gIWBSLibBootstrapCss := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css';
   gIWBSLibBootstrapJs := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js';
 
-  gIWBSLibIWBSCss := 'https://rawgit.com/kattunga/IWBootstrapFramework/master/demo/bin/wwwroot/iwbs/iwbs.css';
-  gIWBSLibIWBSJs := 'https://rawgit.com/kattunga/IWBootstrapFramework/master/demo/bin/wwwroot/iwbs/iwbs.js';
+  gIWBSLibIWBSCss := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.2/demo/bin/wwwroot/iwbs/iwbs.css';
+  gIWBSLibIWBSJs := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.2/demo/bin/wwwroot/iwbs/iwbs.js';
 
   gIWBSLibPolyFillerJs := 'https://cdnjs.cloudflare.com/ajax/libs/webshim/1.15.10/dev/polyfiller.js';
 
@@ -83,7 +83,7 @@ begin
   {$ENDIF}
 
   // custom css for this demo
-  IWBSAddGlobalLinkFile('https://rawgit.com/kattunga/IWBootstrapFramework/master/demo/bin/wwwroot/iwbsdemo.css');
+  IWBSAddGlobalLinkFile('https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.2/demo/bin/wwwroot/iwbsdemo.css');
 
 {$ELSE}
 
