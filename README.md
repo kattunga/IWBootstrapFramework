@@ -8,66 +8,31 @@ It's light and fast so it provides a great experience for the final user on prac
 
 If you need to develop applications for phones, tablets and any other device this is the best alternative for use  with Intraweb for Delphi. 
 
+## WebSite
+
+http://kattunga.github.io/IWBootstrapFramework
+
 ## Online Demo
 
 http://iwbs.sig2k.com/iwbootstrap
 
 Test the demo on desktop and mobile devices to see how it work.
 
-## Features
+## Documentation
 
-It implement most bootstrap Css, Components and Js. 
+https://github.com/kattunga/IWBootstrapFramework/wiki
 
-Bootstrap CSS
-* Grid System
-* Forms
-* Buttons
+http://kattunga.github.io/IWBootstrapFramework/doc/index.html
 
-Bootstrap Components
-* Glyphicons
-* Button Groups
-* Inputs Groups
-* Labels
-* Jumbotron
-* Page Header
-* Alerts
-* Panels
-* Weels
+## Discussion group
 
-Bootstrap JS
-* Alert
-* Modal
-* Tab
-
-HTML 5 Elements
-* HTML5 input (all types)
-* radio
-* select
-
-Other Features
-* Dinamically create and destroy components at runtime using ajax.
-* Classes for dinamically create Dialogs a Alerts
-* CustomComponent that can handle practically any third party component like DbGrid Tables. Using an embeded REST server you can browse tables with millions of records with no overhead.
-* It is compatible with many standard IW components.
-* Global hooks that let you easily apply third party plugins to any component
+https://groups.google.com/forum/?place=forum/intraweb-bootstrap-framework
 
 ## Requirements:
 
 Intraweb version 14.0.38 or above.
 
 http://www.atozed.com/intraweb/index.en.aspx
-
-## WebSite
-
-http://kattunga.github.io/IWBootstrapFramework
-
-## Documentation
-
-https://github.com/kattunga/IWBootstrapFramework/wiki
-
-## Discussion group
-
-https://groups.google.com/forum/?place=forum/intraweb-bootstrap-framework
 
 ## Contribute
 
