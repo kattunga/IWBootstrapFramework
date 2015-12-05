@@ -118,7 +118,7 @@ $(document).ready(function() {
 </tr>
 <tr><td colspan="2">
 <p>
-this function return the javascript code necessary to do a callback</p>
+Return the javascript code necessary to execute the callback</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -136,7 +136,7 @@ this function return the javascript code necessary to do a callback</p>
 </tr>
 <tr><td colspan="2">
 <p>
-this procedure will replace params in a script with same name as <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventName">EventName</a></p>
+Search in a script and replace params with same name as <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventName">EventName</a> with the js code necessary to execute the callback.</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -146,7 +146,7 @@ this procedure will replace params in a script with same name as <a class="norma
 </tr>
 <tr><td colspan="2">
 <p>
-this procedure will register the callback in the server. Is for internal use, don't use it.</p>
+Register the callback in the server. Is for internal use, don't use it.</p>
 </td></tr>
 </table>
 <h3 class="detail">Properties</h3>
@@ -157,7 +157,15 @@ this procedure will register the callback in the server. Is for internal use, do
 </tr>
 <tr><td colspan="2">
 <p>
-if true, the event will be automatically attached to the rendered object. if false, you need to manually bind the event. to manually bind an event in delphi code you can do: <a class="normal" href="IWBSUtils.html#IWBSExecuteJScript">IWBSExecuteJScript</a>(MyObject.JQSelector+'.on(&quot;api.event.name&quot;, function(event, param1, param2) {'+MyObject.CustomAsyncEvents[0].GetScript+'})'); or you can add in the script property: $(&quot;#{%htmlname%}&quot;).on(&quot;api.event.name&quot;, function(event, param1, param2) { {%<a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventName">eventname</a>%} });</p>
+Specifies if the delphi event will be automatically binded to the jQuery control with the <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventName">EventName</a> specified. If true, the event will be automatically attached to the rendered object. <br> If false, you need to manually bind the event. <br> To manually bind an event in delphi code you could do: </p>
+
+<pre class="preformatted">IWBSExecuteJScript(MyObject.JQSelector+'.on(&quot;api.event.name&quot;, function(event, param1, param2) {'+MyObject.CustomAsyncEvents[0].GetScript+'})');</pre>
+
+<p> or you can add in the script property: </p>
+
+<pre class="preformatted">$(&quot;#{%htmlname%}&quot;).on(&quot;api.event.name&quot;, function(event, param1, param2) { {%eventname%} });</pre>
+
+<p></p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -167,7 +175,7 @@ if true, the event will be automatically attached to the rendered object. if fal
 </tr>
 <tr><td colspan="2">
 <p>
-a set of pairs names=values to translate <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventParams">EventParams</a> to params pased to the <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#OnAsyncEvent">OnAsyncEvent</a></p>
+Mainteins a list of pairs names=values to translate the <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#EventParams">EventParams</a> to the params pased to the <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#OnAsyncEvent">OnAsyncEvent</a></p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -177,7 +185,7 @@ a set of pairs names=values to translate <a class="normal" href="IWBSCustomEvent
 </tr>
 <tr><td colspan="2">
 <p>
-the event name, if <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#AutoBind">AutoBind</a> = True, the <code>EventName</code> should be real name of the event, if <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#AutoBind">AutoBind</a> = False you can set any name here and use the correct one when you manually register it. look at <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#AutoBind">AutoBind</a> property.</p>
+Specifies the event name, if <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#AutoBind">AutoBind</a> = True, the <code>EventName</code> should be exactly the name of the jQuery event, if <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html#AutoBind">AutoBind</a> = False you can set any name here and use the correct one when you manually register it. <br></p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -187,7 +195,7 @@ the event name, if <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEven
 </tr>
 <tr><td colspan="2">
 <p>
-A list of comma separated names of params that the event will pass to the callback function. this params names are defined in the api of the object you are using.</p>
+Specifies a list of comma separated names of params that the event will pass to the callback function. <br> This params names are defined in the api of the object you are using.</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -197,7 +205,7 @@ A list of comma separated names of params that the event will pass to the callba
 </tr>
 <tr><td colspan="2">
 <p>
-this event will be executed when the defined JQ event is triggered</p>
+Occurs when the defined JQ event is triggered</p>
 </td></tr>
 </table>
 <hr noshade size="1"><span class="appinfo"><em>Generated by <a  href="http://pasdoc.sourceforge.net/">PasDoc 0.14.0</a>. </em>

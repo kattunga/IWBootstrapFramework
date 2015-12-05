@@ -223,7 +223,13 @@ Base class for IWBS controls</p>
 <td class="itemcode"><a name="JQSelector"></a><code>function <b>JQSelector</b>: string;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+returns a string representing the the <code>JQSelector</code> for this object. </p>
+
+<pre class="preformatted">IWBSCustomControl.JQSelector &gt; '$(#&quot;htmlname&quot;)'</pre>
+
+<p></p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -232,7 +238,7 @@ Base class for IWBS controls</p>
 </tr>
 <tr><td colspan="2">
 <p>
-Force a full refresh of the control during an Async call. Usually there is no need to use this method, only if some property change during async calls is not reflected.</p>
+Force a full refresh of the control during an Async call. <br> Usually there is no need to use this method, only if some property changed during async calls is not reflected.</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -242,7 +248,7 @@ Force a full refresh of the control during an Async call. Usually there is no ne
 </tr>
 <tr><td colspan="2">
 <p>
-Remove a control from html flow. You should execute this when destroying a control durinc async calls before Freeing if you are destroying a region is enought to execute this in that region, you don't need to execute it in each child control.</p>
+Remove a control from html flow. You should execute this when destroying a control durinc async calls before Freeing <br> If you are destroying a region is enought to execute this in that region, you don't need to execute it in each child control.</p>
 </td></tr>
 </table>
 <h3 class="detail">Properties</h3>
@@ -252,7 +258,9 @@ Remove a control from html flow. You should execute this when destroying a contr
 <td class="itemcode"><a name="CustomAsyncEvents"></a><code>property <b>CustomAsyncEvents</b>: <a  href="IWBSCustomEvents.TIWBSCustomAsyncEvents.html">TIWBSCustomAsyncEvents</a> read GetCustomAsyncEvents write SetCustomAsyncEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomAsyncEvents">IsStoredCustomAsyncEvents</a>;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+Mainteins a list of <a class="normal" href="IWBSCustomEvents.TIWBSCustomAsyncEvent.html">TIWBSCustomAsyncEvent</a>. <br> CustomAsyncEvent let you bind delphi code execution to practically any jQuery event of the control. <br> This is usefull when you apply third party plugins to the control.</p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -260,7 +268,9 @@ Remove a control from html flow. You should execute this when destroying a contr
 <td class="itemcode"><a name="CustomRestEvents"></a><code>property <b>CustomRestEvents</b>: <a  href="IWBSCustomEvents.TIWBSCustomRestEvents.html">TIWBSCustomRestEvents</a> read GetCustomRestEvents write SetCustomRestEvents stored <a  href="IWBSCustomControl.TIWBSCustomControl.html#IsStoredCustomRestEvents">IsStoredCustomRestEvents</a>;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+Mainteins a list of <a class="normal" href="IWBSCustomEvents.TIWBSCustomRestEvent.html">TIWBSCustomRestEvent</a>. <br> CustomRestEvent are for providing data to third party controls that request data via REST calls.</p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -268,7 +278,9 @@ Remove a control from html flow. You should execute this when destroying a contr
 <td class="itemcode"><a name="Enabled"></a><code>property <b>Enabled</b>;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+Specifies whether the control responds to mouse, keyboard, and timer events.</p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -397,7 +409,7 @@ Remove a control from html flow. You should execute this when destroying a contr
 </tr>
 <tr><td colspan="2">
 <p>
-this event is fired after HTMLTag is created</p>
+Occurs after HTMLTag is created</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -407,7 +419,7 @@ this event is fired after HTMLTag is created</p>
 </tr>
 <tr><td colspan="2">
 <p>
-this event is fired after component is updated during async calls</p>
+Occurs after component is updated during async calls</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -417,7 +429,7 @@ this event is fired after component is updated during async calls</p>
 </tr>
 <tr><td colspan="2">
 <p>
-here you can add javascript code that will be rendered with this object. you can use <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#ScriptParams">ScriptParams</a> inside the <code>script</code>. Params are specified in scripts as: {%param%}. with property <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#ScriptInsideTag">ScriptInsideTag</a> you can define if the <code>script</code> will be rendered inside or outside the <code>script</code>.</p>
+Specifies user javascript code that will be rendered and executed with this object. <br> You can define <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#ScriptParams">ScriptParams</a> inside the <code>script</code>. <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#ScriptParams">ScriptParams</a> are specified in scripts as: {%param%}. <br> With property <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#ScriptInsideTag">ScriptInsideTag</a> you can define if the <code>script</code> will be rendered inside or outside the <code>script</code>.</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -427,7 +439,15 @@ here you can add javascript code that will be rendered with this object. you can
 </tr>
 <tr><td colspan="2">
 <p>
-look an IW documentation</p>
+Maintains a list of JS events you can directly write events in JS <br> at design time you can access to a limited set of events, but at runtime you can attach to any event of the control doing: </p>
+
+<pre class="preformatted"></pre>
+
+<p>(IWBSCustomControl.ScriptEvents.Values['object.custom.event'] := 'your javascript code...'; or if you want to define the function params: </p>
+
+<pre class="preformatted"></pre>
+
+<p>(IWBSCustomControl.ScriptEvents.Values['object.custom.event'] := 'function (param1, param2, param3) { your javascript code... }';</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -437,7 +457,7 @@ look an IW documentation</p>
 </tr>
 <tr><td colspan="2">
 <p>
-If true (default) the <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#Script">script</a> will be rendered inside the tag. If false a new div will be created to surround the control and the <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#Script">script</a> will be rendered in this div, outside the control tag. this sometimes is necessary when plugins will change the content of the control tag.</p>
+Specifies if the <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#Script">script</a> will be rendered inside the control tag or not. <br> If true (default) the <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#Script">script</a> will be rendered inside the tag. <br> If false a new div will be created to surround the control and the <a class="normal" href="IWBSCustomControl.TIWBSCustomControl.html#Script">script</a> will be rendered in this div, outside the control tag. <br> this sometimes is necessary when plugins will change the content of the control tag.</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -447,7 +467,7 @@ If true (default) the <a class="normal" href="IWBSCustomControl.TIWBSCustomContr
 </tr>
 <tr><td colspan="2">
 <p>
-Params that will be replaced in scripts and in some controls content, for example in <a class="normal" href="IWBSControls.TIWBSText.html">TIWBSText</a>. Params are specified in scripts as: {%param%}.</p>
+Params that will be replaced in scripts and in some controls content, for example in <a class="normal" href="IWBSControls.TIWBSText.html">TIWBSText</a>. <br> Params are specified in scripts as: {%param%}.</p>
 </td></tr>
 </table>
 <table class="detail wide_list">
@@ -456,7 +476,9 @@ Params that will be replaced in scripts and in some controls content, for exampl
 <td class="itemcode"><a name="Style"></a><code>property <b>Style</b>: TStringList read GetStyle write SetStyle;</code></td>
 </tr>
 <tr><td colspan="2">
-&nbsp;</td></tr>
+<p>
+List of inline styles in pairs name: value</p>
+</td></tr>
 </table>
 <table class="detail wide_list">
 <tr class="list">
@@ -465,7 +487,7 @@ Params that will be replaced in scripts and in some controls content, for exampl
 </tr>
 <tr><td colspan="2">
 <p>
-It will be rendered if <code>tabindex</code> &lt;&gt; 0. Set to -1 to disable tabstop</p>
+Corresponds to html <code>tabindex</code> attribute. It will be rendered if <code>tabindex</code> &lt;&gt; 0. Set to -1 to disable tabstop</p>
 </td></tr>
 </table>
 <hr noshade size="1"><span class="appinfo"><em>Generated by <a  href="http://pasdoc.sourceforge.net/">PasDoc 0.14.0</a>. </em>
