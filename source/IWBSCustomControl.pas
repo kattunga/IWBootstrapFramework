@@ -27,8 +27,6 @@ type
     FStyle: TStringList;
     FOnRenderAsync: TNotifyEvent;
 
-    function RenderHTMLTag(AContext: TIWCompContext): string;
-
     procedure SetScript(const AValue: TStringList);
     procedure SetScriptParams(const AValue: TIWBSScriptParams);
     function GetStyle: TStringList;
@@ -73,6 +71,10 @@ type
     // Force a full refresh of the control during an Async call. @br
     // Usually there is no need to use this method, only if some property changed during async calls is not reflected.
     procedure AsyncRefreshControl;
+
+    // Cancel AsyncRefreshControl
+    // Usually there is no need to use this method. It is for internal use.
+    procedure ResetAsyncRefreshControl;
 
     // Remove a control from html flow. You should execute this when destroying a control durinc async calls before Freeing @br
     // If you are destroying a region is enought to execute this in that region, you don't need to execute it in each child control.
@@ -207,6 +209,11 @@ procedure TIWBSCustomControl.AsyncRefreshControl;
 begin
   FAsyncRefreshControl := True;
   Invalidate;
+end;
+
+procedure TIWBSCustomControl.ResetAsyncRefreshControl;
+begin
+  FAsyncRefreshControl := False;
 end;
 
 procedure TIWBSCustomControl.AsyncRemoveControl;
@@ -362,29 +369,12 @@ function TIWBSCustomControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   xHTMLName: string;
   xInputSelector: string;
-  LParentContainer: IIWBaseHTMLComponent;
-  LParentSl: string;
-  LHtmlTag: string;
 begin
   Result := nil;
   xHTMLName := HTMLName;
 
   if FAsyncRefreshControl then
-    begin
-      // get base container
-      if ParentContainer.InterfaceInstance is TIWForm then
-        LParentSl := 'body'
-      else
-        begin
-          LParentContainer := BaseHTMLComponentInterface(ParentContainer.InterfaceInstance);
-          if LParentContainer <> nil then
-            LParentSl := '#'+LParentContainer.HTMLName
-          else
-            Exit;
-        end;
-      LHtmlTag := RenderHtmlTag(AContext);
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+FMainID+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");')
-    end
+    TIWBSCommon.RenderAsync(FMainID, Self, AContext)
   else
     begin
       if InputSelector <> '' then
@@ -428,28 +418,6 @@ begin
   IWBSRenderScript(Self, AContext, Result);
   FMainID := Result.Params.Values['id'];
   FAsyncRefreshControl := False;
-end;
-
-function TIWBSCustomControl.RenderHTMLTag(AContext: TIWCompContext): string;
-var
-  LBuffer: TIWRenderStream;
-  LTag: TIWHTMLTag;
-begin
-  LTag := RenderHTML(AContext);
-  try
-    if not Visible then
-      TIWBSCommon.SetNotVisible(LTag.Params);
-
-    LBuffer := TIWRenderStream.Create(True, True);
-    try
-      RenderHTML(AContext).Render(LBuffer);
-      Result := LBuffer.AsString;
-    finally
-      LBuffer.Free;
-    end;
-  finally
-    LTag.Free;
-  end;
 end;
 
 procedure TIWBSCustomControl.RenderScripts(AComponentContext: TIWCompContext);

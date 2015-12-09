@@ -82,6 +82,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure AsyncRefreshControl;
+    procedure ResetAsyncRefreshControl;
     procedure AsyncRemoveControl;
     function GetTabPageCSSClass(ATabPage: TComponent): string;
     function IsStoredCustomAsyncEvents: Boolean;
@@ -169,6 +170,11 @@ procedure TIWBSTabControl.AsyncRefreshControl;
 begin
   FAsyncRefreshControl := True;
   Invalidate;
+end;
+
+procedure TIWBSTabControl.ResetAsyncRefreshControl;
+begin
+  FAsyncRefreshControl := False;
 end;
 
 procedure TIWBSTabControl.AsyncRemoveControl;
@@ -336,7 +342,11 @@ begin
   xHTMLName := HTMLName;
 
   if FAsyncRefreshControl then
-    TIWBSRegionCommon.RenderAsync(Self, AContext)
+    begin
+      TIWBSRegionCommon.CancelChildAsyncRender(Self);
+      DoRender;
+      TIWBSCommon.RenderAsync(xHTMLName, Self, AContext);
+    end
   else
     begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);

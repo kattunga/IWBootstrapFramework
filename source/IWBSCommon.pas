@@ -7,7 +7,9 @@ interface
 // don't enable here, we don't want to include in package
 
 uses System.Classes, System.SysUtils, System.StrUtils, {$IFDEF IWBS_JSONDATAOBJECTS}JsonDataObjects, {$ENDIF}
-     IWRenderContext, IWControl, IWHTML40Interfaces, IWTypes, IWBSCustomEvents;
+     IWApplication, IWRenderContext, IWControl, IWHTML40Interfaces, IWBaseHTMLInterfaces, IWTypes,
+     IWBaseInterfaces, IWHTMLTag, IWBaseRenderContext,
+     IWBSCustomEvents;
 
 const
   EOL = #13#10;
@@ -73,6 +75,8 @@ type
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
     procedure InternalRenderStyle(AStyle: TStringList);
     function HTMLControlImplementation: TIWHTMLControlImplementation;
+    function ParentContainer: IIWBaseContainer;
+    procedure ResetAsyncRefreshControl;
 
     function GetCustomAsyncEvents: TIWBSCustomAsyncEvents;
     procedure SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);
@@ -102,10 +106,27 @@ type
     property Visible: boolean read get_Visible write set_Visible;
   end;
 
+  IIWBSContainer = interface(IIWBaseContainer)
+    ['{819FB21E-8204-450F-8778-3DEB56FDB062}']
+    function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
+    function ParentContainer: IIWBaseContainer;
+    function RegionDiv: TIWHTMLTag;
+    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
+
+    function get_ContainerContext: TIWContainerContext;
+    procedure set_ContainerContext(const AContainerContext: TIWContainerContext);
+    function get_HTMLName: String;
+
+    property ContainerContext: TIWContainerContext read get_ContainerContext write set_ContainerContext;
+    property HTMLName: string read get_HTMLName;
+  end;
+
   TIWBSCommon = class
   public
     class procedure AddCssClass(var ACss: string; const AClass: string);
     class procedure AsyncRemoveControl(const AHTMLName: string);
+    class procedure RenderAsync(const AHTMLName: string; AControl: IIWBSComponent; AContext: TIWCompContext);
+    class function RenderHTMLTag(AControl: IIWBSComponent; AContext: TIWCompContext): string;
     class function RenderStyle(AComponent: IIWBSComponent): string;
     class function ReplaceParams(AComponent: IIWBSComponent; const AScript: string; AFrom: integer = 1): string;
     class procedure SetNotVisible(AParams: TStrings);
@@ -124,7 +145,8 @@ procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const V
 
 implementation
 
-uses IW.Common.System, IWBaseHTMLControl, IWBSUtils, IWBSCustomControl;
+uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm,
+     IWBSUtils, IWBSCustomControl, IWBSRegionCommon;
 
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create;
@@ -268,6 +290,63 @@ end;
 class procedure TIWBSCommon.AsyncRemoveControl(const AHTMLName: string);
 begin
   IWBSExecuteAsyncJScript('AsyncDestroyControl("'+AHTMLName+'");');
+end;
+
+class procedure TIWBSCommon.RenderAsync(const AHTMLName: string; AControl: IIWBSComponent; AContext: TIWCompContext);
+var
+  LParentContainer: IIWBaseHTMLComponent;
+  LParentSl: string;
+  LHtmlTag: string;
+begin
+  // get base container
+  if AControl.ParentContainer.InterfaceInstance is TIWForm then
+    LParentSl := 'body'
+  else
+    begin
+      LParentContainer := BaseHTMLComponentInterface(AControl.ParentContainer.InterfaceInstance);
+      if LParentContainer <> nil then
+        LParentSl := '#'+LParentContainer.HTMLName
+      else
+        Exit;
+
+      // if not visible and parent.RenderInvisibleControls is false, do not render
+      if not BaseControlInterface(AControl.InterfaceInstance).Visible then
+        if SupportsInterface(AControl.ParentContainer.InterfaceInstance, IIWInvisibleControlRenderer) then
+          if not (AControl.ParentContainer as IIWInvisibleControlRenderer).RenderInvisibleControls then
+            Exit;
+    end;
+  LHtmlTag := RenderHtmlTag(AControl, AContext);
+  AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+AHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");')
+end;
+
+class function TIWBSCommon.RenderHTMLTag(AControl: IIWBSComponent; AContext: TIWCompContext): string;
+var
+  LContainer: IIWBSContainer;
+  LBuffer: TIWRenderStream;
+  LTag: TIWHTMLTag;
+begin
+  LTag := AControl.RenderHTML(AContext);
+  try
+    if not BaseControlInterface(AControl.InterfaceInstance).Visible then
+      TIWBSCommon.SetNotVisible(LTag.Params);
+
+    // render child components
+    AControl.InterfaceInstance.GetInterface(IIWBSContainer, LContainer);
+    if LContainer <> nil then
+      TIWBSRegionCommon.RenderComponents(LContainer, LContainer.InitContainerContext(AContext.WebApplication), AContext.PageContext);
+
+    LBuffer := TIWRenderStream.Create(True, True);
+    try
+      LTag.Render(LBuffer);
+      Result := LBuffer.AsString;
+    finally
+      LBuffer.Free;
+    end;
+  finally
+    LTag.Free;
+  end;
+
+  BaseHTMLComponentInterface(AControl.InterfaceInstance).DoHTMLTag(LTag);
 end;
 
 class function TIWBSCommon.RenderStyle(AComponent: IIWBSComponent): string;

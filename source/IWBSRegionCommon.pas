@@ -1,9 +1,8 @@
 unit IWBSRegionCommon;
 
 interface
-  uses System.Classes, System.SysUtils, Vcl.Controls, Vcl.Forms,
-       IWContainer, IWHTML40Container, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream, IWtypes,
-       IWApplication, IWHTMLTag, IWBaseInterfaces,
+  uses System.Classes, System.SysUtils, Vcl.Forms,
+       IWContainer, IWHTML40Container, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream, IWtypes, IWBaseInterfaces,
        IWBSCommon;
 
 type
@@ -62,28 +61,11 @@ type
     property InputsSize: TIWBSGridOptions read FInputsSize write SetInputsSize;
   end;
 
-  IIWBSContainer = interface(IIWBaseContainer)
-    ['{819FB21E-8204-450F-8778-3DEB56FDB062}']
-    function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
-    function ParentContainer: IIWBaseContainer;
-    function RegionDiv: TIWHTMLTag;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
-
-    function get_ContainerContext: TIWContainerContext;
-    procedure set_ContainerContext(const AContainerContext: TIWContainerContext);
-    function get_HTMLName: String;
-
-    property ContainerContext: TIWContainerContext read get_ContainerContext write set_ContainerContext;
-    property HTMLName: string read get_HTMLName;
-  end;
-
   TIWBSRegionCommon = class
-  private
-    class function RenderHTMLTag(AContainer: IIWBSContainer; AContext: TIWCompContext): string;
   public
+    class procedure CancelChildAsyncRender(AContainer: IIWBSContainer);
     class procedure DisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
     class procedure PrepareChildComponentsForRender(AContainer: IIWBaseContainer);
-    class procedure RenderAsync(AContainer: IIWBSContainer; AContext: TIWCompContext);
     class procedure RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
   end;
 
@@ -237,27 +219,6 @@ begin
   end;
 end;
 
-class procedure TIWBSRegionCommon.RenderAsync(AContainer: IIWBSContainer; AContext: TIWCompContext);
-var
-  LParentContainer: IIWBaseHTMLComponent;
-  LParentSl: string;
-  LHtmlTag: string;
-begin
-  // get base container
-  if AContainer.ParentContainer.InterfaceInstance is TIWForm then
-    LParentSl := 'body'
-  else
-    begin
-      LParentContainer := BaseHTMLComponentInterface(AContainer.ParentContainer.InterfaceInstance);
-      if LParentContainer <> nil then
-        LParentSl := '#'+LParentContainer.HTMLName
-      else
-        Exit;
-    end;
-  LHtmlTag := RenderHtmlTag(AContainer, AContext);
-  AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+AContainer.HTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");')
-end;
-
 class procedure TIWBSRegionCommon.RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 var
   LBuffer: TIWRenderStream;
@@ -276,28 +237,21 @@ begin
   end;
 end;
 
-class function TIWBSRegionCommon.RenderHTMLTag(AContainer: IIWBSContainer; AContext: TIWCompContext): string;
+class procedure TIWBSRegionCommon.CancelChildAsyncRender(AContainer: IIWBSContainer);
 var
-  LBuffer: TIWRenderStream;
-  LTag: TIWHTMLTag;
+  i: integer;
+  LCompo: TComponent;
+  LIComp: IIWBSComponent;
+  LICont: IIWBSContainer;
 begin
-  LTag := AContainer.RenderHTML(AContext);
-  try
-    if not TControl(AContainer.InterfaceInstance).Visible then
-      TIWBSCommon.SetNotVisible(LTag.Params);
-
-    // render child components
-    RenderComponents(AContainer, AContainer.InitContainerContext(AContext.WebApplication), AContext.PageContext);
-
-    LBuffer := TIWRenderStream.Create(True, True);
-    try
-      LTag.Render(LBuffer);
-      Result := LBuffer.AsString;
-    finally
-      LBuffer.Free;
-    end;
-  finally
-    LTag.Free;
+  for i := 0 to AContainer.IWComponentsCount - 1 do begin
+    LCompo := AContainer.Component[i];
+    LCompo.GetInterface(IIWBSComponent, LIComp);
+    if LIComp <> nil then
+      LIComp.ResetAsyncRefreshControl;
+    LCompo.GetInterface(IIWBSContainer, LICont);
+    if LICont <> nil then
+      CancelChildAsyncRender(LICont);
   end;
 end;
 {$endregion}

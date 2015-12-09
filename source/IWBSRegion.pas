@@ -70,6 +70,7 @@ type
     destructor Destroy; override;
     procedure Release;
     procedure AsyncRefreshControl;
+    procedure ResetAsyncRefreshControl;
     procedure AsyncRemoveControl;
     function GetCssString: string;
     function GetRoleString: string; virtual;
@@ -294,6 +295,11 @@ begin
   Invalidate;
 end;
 
+procedure TIWBSCustomRegion.ResetAsyncRefreshControl;
+begin
+  FAsyncRefreshControl := False;
+end;
+
 procedure TIWBSCustomRegion.AsyncRemoveControl;
 begin
   TIWBSCommon.AsyncRemoveControl(HTMLName);
@@ -476,7 +482,11 @@ begin
   xHTMLName := HTMLName;
 
   if FAsyncRefreshControl then
-    TIWBSRegionCommon.RenderAsync(Self, AContext)
+    begin
+      TIWBSRegionCommon.CancelChildAsyncRender(Self);
+      DoRender;
+      TIWBSCommon.RenderAsync(xHTMLName, Self, AContext);
+    end
   else
     begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);

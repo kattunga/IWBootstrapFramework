@@ -50,7 +50,7 @@ begin
   if LWebApplication = nil then
     raise Exception.Create('User session not found');
 
-  if LWebApplication.IsCallBack and LWebApplication.CallBackProcessing then
+  if LWebApplication.IsCallBack then
     LWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript)
   else
     HTML40FormInterface(LWebApplication.ActiveForm).PageContext.AddToInitProc(AScript);
@@ -66,7 +66,7 @@ begin
   if LWebApplication = nil then
     raise Exception.Create('User session not found');
 
-  if LWebApplication.IsCallBack and LWebApplication.CallBackProcessing then
+  if LWebApplication.IsCallBack then
     LWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript);
 end;
 
