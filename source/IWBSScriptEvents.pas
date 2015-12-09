@@ -27,17 +27,26 @@ begin
   LInitProc := '';
   if (LScriptEvents.Count > 0) or (LScriptEvents.DefaultHandlers <> '') or (not LScriptEvents.FProperties.IsEmpty) then begin
     for i := 0 to LScriptEvents.Count - 1 do begin
-      if AnsiStartsStr('"', LScriptEvents.Items[i].EventName) then
-        LEventName := AnsiDequotedStr(LScriptEvents.Items[i].EventName,'"')
-      else
+
+      // legacy IW events, declare only content of the function
+      if AnsiStartsText('on', LScriptEvents.Items[i].EventName) then
         begin
           LEventName := LowerCase(LScriptEvents.Items[i].EventName);
           if Pos('on', LEventName) = 1 then
             Delete(LEventName, 1, 2);
+          LFuncCode := 'function(event) { '+Trim(LScriptEvents.Items[i].EventCode.Text)+ '}';
+        end
+
+      // new way, full funtion declaration
+      else
+        begin
+          if AnsiStartsStr('"', LScriptEvents.Items[i].EventName) then
+            LEventName := AnsiDequotedStr(LScriptEvents.Items[i].EventName,'"')
+          else
+            LEventName := LowerCase(LScriptEvents.Items[i].EventName);
           LFuncCode := Trim(LScriptEvents.Items[i].EventCode.Text);
         end;
-      LFuncCode := Trim(LScriptEvents.Items[i].EventCode.Text);
-      AScript.Add('$("#'+AHtmlName+'").off("'+LEventName+'").on("'+LEventName+'", function(event) {'+LFuncCode+'});');
+      AScript.Add('$("#'+AHtmlName+'").off("'+LEventName+'").on("'+LEventName+'", '+LFuncCode+');');
     end;
 
     if LScriptEvents.FDefaultHandlers <> '' then begin

@@ -12,6 +12,8 @@ function IWBSTextToJsParamText(AText: string): string;
 procedure IWBSExecuteJScript(const AScript: string);
 procedure IWBSExecuteAsyncJScript(const AScript: string);
 
+function IWBSexecuteAjaxEventJs(const HtmlName, EventName: string): string;
+
 implementation
 
 uses IWHTML40Interfaces;
@@ -66,6 +68,11 @@ begin
 
   if LWebApplication.IsCallBack and LWebApplication.CallBackProcessing then
     LWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript);
+end;
+
+function IWBSexecuteAjaxEventJs(const HtmlName, EventName: string): string;
+begin
+  Result := format('executeAjaxEvent("",null,"%s",true,null,true)',[HTMLName+EventName]);
 end;
 
 end.
