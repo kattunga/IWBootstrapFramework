@@ -111,7 +111,6 @@ object IWForm2: TIWForm2
           Top = 1
           Width = 1078
           Height = 1534
-          RenderInvisibleControls = True
           Align = alClient
           BSRegionType = bsrtColumn
           object IWTabControl21: TIWBSTabControl

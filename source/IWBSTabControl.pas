@@ -235,6 +235,7 @@ end;
 procedure TIWBSTabControl.SetActivePage(const Value: Integer);
 begin
   FActivePage := Value;
+  Invalidate;
 end;
 
 procedure TIWBSTabControl.SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);
