@@ -17,7 +17,7 @@ type
     constructor Create(AOnwer: TComponent); override;
     destructor Destroy; override;
     procedure AddLinkFile(const AFile: string);
-    function ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
+    function ParseLinkFile(const AUrlBase, AFile: string; ADisableCache: boolean = True): string;
     procedure ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent); override;
     procedure ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
     procedure Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext); override;
@@ -27,7 +27,7 @@ implementation
 
 uses
   IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists, IWURL,
-  IWRegion, IW.Common.Strings, IWMimeTypes,
+  IWRegion, IW.Common.Strings, IWMimeTypes, IWApplication,
   IWBSGlobal, IWBSRegionCommon, IWBSCommon, IWBSTabControl;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
@@ -50,7 +50,7 @@ begin
     FLinkFiles.Add(AFile);
 end;
 
-function TIWBSLayoutMgr.ParseLinkFile(const AFile: string; ADisableCache: boolean = True): string;
+function TIWBSLayoutMgr.ParseLinkFile(const AUrlBase, AFile: string; ADisableCache: boolean = True): string;
 var
   LFile: string;
   LDisableCache: boolean;
@@ -58,7 +58,7 @@ begin
   LDisableCache := ADisableCache;
 
   if not AnsiStartsStr('//', AFile) and not AnsiStartsStr('http://', AFile) and not AnsiStartsStr('https://', AFile) then
-    LFile := ReplaceStr(TURL.Concat(gSC.URLBase,AFile), '/<iwbspath>/', gIWBSLibPath)
+    LFile := ReplaceStr(TURL.Concat(AUrlBase,AFile), '/<iwbspath>/', gIWBSLibPath)
   else
     begin
       LFile := AFile;
@@ -77,10 +77,13 @@ end;
 
 procedure TIWBSLayoutMgr.ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
 var
+  LUrlBase: string;
   LPageContext: TIWPageContext40;
   LTerminated: Boolean;
   i: integer;
 begin
+
+  LUrlBase := gGetWebApplicationThreadVar.AppUrlBase;
 
   LPageContext := TIWPageContext40(APage);
   LTerminated := Assigned(LPageContext.WebApplication) and LPageContext.WebApplication.Terminated;
@@ -98,35 +101,35 @@ begin
   ABuffer.WriteLine(PreHeadContent);
 
   // jquery
-  ABuffer.WriteLine(ParseLinkFile(gIWBSLibJQueryJs, False));
+  ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibJQueryJs, False));
 
   // bootstrap
-  ABuffer.WriteLine(ParseLinkFile(gIWBSLibBootstrapCss, False));
-  ABuffer.WriteLine(ParseLinkFile(gIWBSLibBootstrapJs, False));
+  ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibBootstrapCss, False));
+  ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibBootstrapJs, False));
 
   // iwbs
-  ABuffer.WriteLine(ParseLinkFile(gIWBSLibIWBSCss));
-  ABuffer.WriteLine(ParseLinkFile(gIWBSLibIWBSJs));
+  ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibIWBSCss));
+  ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibIWBSJs));
 
   // polyfiller
   if gIWBSlibPolyfiller then
-    ABuffer.WriteLine(ParseLinkFile(gIWBSLibPolyfillerJs, False));
+    ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibPolyfillerJs, False));
 
   // Dynamic Tabs
   if gIWBSLibDynamicTabs then begin
-    ABuffer.WriteLine(ParseLinkFile(gIWBSLibDynamicTabsCss));
-    ABuffer.WriteLine(ParseLinkFile(gIWBSLibDynamicTabsJs));
+    ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibDynamicTabsCss));
+    ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibDynamicTabsJs));
   end;
 
   // add global linkfiles
   if gIWBSLinkFiles <> nil then
     for i := 0 to gIWBSLinkFiles.Count-1 do
-      ABuffer.WriteLine(ParseLinkFile(gIWBSLinkFiles[i]));
+      ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLinkFiles[i]));
 
   // add LayoutMgr linkfiles
   if FLinkFiles <> nil then
     for i := 0 to FLinkFiles.Count-1 do
-      ABuffer.WriteLine(ParseLinkFile(FLinkFiles[i]));
+      ABuffer.WriteLine(ParseLinkFile(LUrlBase, FLinkFiles[i]));
 
   ABuffer.WriteLine(ScriptSection(LPageContext));
   ABuffer.WriteLine(HeadContent);

@@ -1743,9 +1743,9 @@ object IWForm2: TIWForm2
                     InputType = bsitPassword
                   end
                   object IWBSMemo2: TIWBSMemo
-                    Left = 14
+                    Left = 12
                     Top = 447
-                    Width = 433
+                    Width = 435
                     Height = 121
                     FriendlyName = 'IWBSMemo2'
                     Caption = 'This is a Memo'

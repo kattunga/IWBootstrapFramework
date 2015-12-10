@@ -392,7 +392,6 @@ begin
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainerFluid
   else
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
-//  WebApplication.GoToURL(WebApplication.SessionInternalUrlBase);
   IWBSRegion3.AsyncRefreshControl;
 end;
 
