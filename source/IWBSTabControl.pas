@@ -87,6 +87,8 @@ type
     function GetTabPageCSSClass(ATabPage: TComponent): string;
     function IsStoredCustomAsyncEvents: Boolean;
     function IsStoredCustomRestEvents: Boolean;
+    function JQSelector: string;
+    procedure SetFocus; override;
     procedure SetTabPageVisibility(ATabIndex: integer; Visible: boolean); overload;
     procedure SetTabPageVisibility(ATabPage: TIWTabPage; Visible: boolean); overload;
   published
@@ -164,6 +166,16 @@ begin
   FreeAndNil(FStyle);
   FreeAndNil(FTabOptions);
   inherited;
+end;
+
+function TIWBSTabControl.JQSelector: string;
+begin
+  Result := '$("#'+HTMLName+'")';
+end;
+
+procedure TIWBSTabControl.SetFocus;
+begin
+  IWBSExecuteJScript(JQSelector+'.focus()');
 end;
 
 procedure TIWBSTabControl.AsyncRefreshControl;

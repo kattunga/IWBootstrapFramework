@@ -43,7 +43,7 @@ begin
           if AnsiStartsStr('"', LScriptEvents.Items[i].EventName) then
             LEventName := AnsiDequotedStr(LScriptEvents.Items[i].EventName,'"')
           else
-            LEventName := LowerCase(LScriptEvents.Items[i].EventName);
+            LEventName := LScriptEvents.Items[i].EventName;
           LFuncCode := Trim(LScriptEvents.Items[i].EventCode.Text);
         end;
       AScript.Add('$("#'+AHtmlName+'").off("'+LEventName+'").on("'+LEventName+'", '+LFuncCode+');');

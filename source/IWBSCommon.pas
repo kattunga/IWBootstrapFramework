@@ -75,8 +75,10 @@ type
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
     procedure InternalRenderStyle(AStyle: TStringList);
     function HTMLControlImplementation: TIWHTMLControlImplementation;
+    function JQSelector: string;
     function ParentContainer: IIWBaseContainer;
     procedure ResetAsyncRefreshControl;
+    procedure SetFocus;
 
     function GetCustomAsyncEvents: TIWBSCustomAsyncEvents;
     procedure SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);

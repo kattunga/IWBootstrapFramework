@@ -85,6 +85,8 @@ type
     // returns a string representing the the JQSelector for this object.
     // @preformatted(IWBSCustomControl.JQSelector > '$(#"htmlname")')
     function JQSelector: string;
+
+    procedure SetFocus;
   published
     // Mainteins a list of TIWBSCustomAsyncEvent. @br
     // CustomAsyncEvent let you bind delphi code execution to practically any jQuery event of the control. @br
@@ -203,6 +205,11 @@ end;
 function TIWBSCustomControl.JQSelector: string;
 begin
   Result := '$("#'+HTMLName+'")';
+end;
+
+procedure TIWBSCustomControl.SetFocus;
+begin
+  IWBSExecuteJScript(JQSelector+'.focus()');
 end;
 
 procedure TIWBSCustomControl.AsyncRefreshControl;

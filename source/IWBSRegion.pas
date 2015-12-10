@@ -76,6 +76,8 @@ type
     function GetRoleString: string; virtual;
     function IsStoredCustomAsyncEvents: Boolean;
     function IsStoredCustomRestEvents: Boolean;
+    function JQSelector: string;
+    procedure SetFocus; override;
   published
     property Align;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
@@ -289,6 +291,11 @@ begin
   inherited;
 end;
 
+function TIWBSCustomRegion.JQSelector: string;
+begin
+  Result := '$("#'+HTMLName+'")';
+end;
+
 procedure TIWBSCustomRegion.AsyncRefreshControl;
 begin
   FAsyncRefreshControl := True;
@@ -320,6 +327,11 @@ begin
       LWebApplication.ReleaseForm(Parent)
     else
       LWebApplication.ReleaseForm(Self);
+end;
+
+procedure TIWBSCustomRegion.SetFocus;
+begin
+  IWBSExecuteJScript(JQSelector+'.focus()');
 end;
 
 function TIWBSCustomRegion.IsScriptEventsStored: Boolean;
