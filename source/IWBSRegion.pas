@@ -52,6 +52,9 @@ type
     function GetScriptInsideTag: boolean;
     procedure SetScriptInsideTag(const Value: boolean);
   protected
+    procedure set_Visible(Value: Boolean); override;
+    procedure SetParent(AParent: TWinControl); override;
+
     function ContainerPrefix: string; override;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
     procedure InternalRenderCss(var ACss: string); virtual;
@@ -289,6 +292,20 @@ begin
   FreeAndNil(FScriptParams);
   FreeAndNil(FStyle);
   inherited;
+end;
+
+procedure TIWBSCustomRegion.set_Visible(Value: Boolean);
+begin
+  inherited;
+  if (Parent is TFrame) and (Name = 'IWFrameRegion') then
+    TFrame(Parent).Visible := Value;
+end;
+
+procedure TIWBSCustomRegion.SetParent(AParent: TWinControl);
+begin
+  inherited;
+  if (Parent is TFrame) and (Name <> 'IWFrameRegion') and (Parent.FindComponent('IWFrameRegion') = nil) then
+    Name := 'IWFrameRegion';
 end;
 
 function TIWBSCustomRegion.JQSelector: string;
