@@ -52,6 +52,7 @@ type
     function GetScriptInsideTag: boolean;
     procedure SetScriptInsideTag(const Value: boolean);
   protected
+    function get_Visible: Boolean; override;
     procedure set_Visible(Value: Boolean); override;
     procedure SetParent(AParent: TWinControl); override;
 
@@ -294,11 +295,19 @@ begin
   inherited;
 end;
 
+function TIWBSCustomRegion.get_Visible: Boolean;
+begin
+  if (Parent is TFrame) and (Name = 'IWFrameRegion') then
+    Result := Parent.Visible
+  else
+    Result := inherited;
+end;
+
 procedure TIWBSCustomRegion.set_Visible(Value: Boolean);
 begin
   inherited;
-  if (Parent is TFrame) and (Name = 'IWFrameRegion') then
-    TFrame(Parent).Visible := Value;
+  if (Parent is TFrame) and (Name = 'IWFrameRegion') and (Parent.Visible <> Value) then
+    Parent.Visible := Value;
 end;
 
 procedure TIWBSCustomRegion.SetParent(AParent: TWinControl);
