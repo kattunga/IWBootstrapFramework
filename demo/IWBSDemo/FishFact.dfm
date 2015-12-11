@@ -49,7 +49,7 @@ object FFishFact: TFFishFact
         Left = 16
         Top = 16
         Width = 381
-        Height = 27
+        Height = 39
         Css = 'pull-left'
         FriendlyName = 'IWText1'
         Lines.Strings = (

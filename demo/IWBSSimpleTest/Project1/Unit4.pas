@@ -8,20 +8,13 @@ uses
   IWCompEdit, Vcl.Forms, IWVCLBaseContainer, IWContainer, IWHTMLContainer,
   IWHTML40Container, IWRegion, IWBSRegion, IWBSCustomControl, IWBSButton,
   IWVCLComponent, IWBaseLayoutComponent, IWBaseContainerLayout,
-  IWContainerLayout, IWBSLayoutMgr;
+  IWContainerLayout, IWBSLayoutMgr, IWBSImage;
 
 type
   TIWForm4 = class(TIWAppForm)
-    GridNavBar: TIWBSNavBar;
-    BtnSav: TIWBSButton;
-    BtnPrn: TIWBSButton;
-    BtnGra: TIWBSButton;
-    BtnCan: TIWBSButton;
-    BtnIns: TIWBSButton;
-    BtnDel: TIWBSButton;
-    BtnMod: TIWBSButton;
-    BtnCls: TIWBSButton;
     IWBSLayoutMgr1: TIWBSLayoutMgr;
+    IWBSRegion1: TIWBSRegion;
+    IWBSImage1: TIWBSImage;
   public
   end;
 

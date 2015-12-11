@@ -36,15 +36,6 @@ object IWForm2: TIWForm2
       Brand = 'IWBootstrap Framework'
       BrandLink = 'https://github.com/kattunga/IWBootstrapFramework'
       BSFixed = bsnvfxTop
-      object IWBSButton48: TIWBSButton
-        Left = 54
-        Top = 8
-        Width = 200
-        Height = 25
-        FriendlyName = 'IWBSButton48'
-        BSBlockLevel = False
-        Caption = 'IWBSButton48'
-      end
       object IWBSUnorderedList1: TIWBSUnorderedList
         Left = 244
         Top = 8
@@ -1109,142 +1100,6 @@ object IWForm2: TIWForm2
                 end
               end
             end
-            object IWTabControl21Page6: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1076
-              Height = 1512
-              RenderInvisibleControls = True
-              TabOrder = 5
-              Title = 'Funtionality'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSButton37: TIWBSButton
-                Left = 39
-                Top = 13
-                Width = 205
-                Height = 25
-                FriendlyName = 'IWBSButton37'
-                OnAsyncClick = IWBSButton37AsyncClick
-                BSBlockLevel = False
-                Caption = 'Toggle Visibility'
-              end
-              object IWBSButton36: TIWBSButton
-                Left = 40
-                Top = 44
-                Width = 204
-                Height = 25
-                FriendlyName = 'IWBSButton36'
-                BSBlockLevel = False
-                Caption = 'Toggle Collapse'
-                DataTarget = IWBSRegion29
-              end
-              object IWBSRegion32: TIWBSRegion
-                Left = 40
-                Top = 78
-                Width = 698
-                Height = 72
-                BSRegionType = bsrtWell
-                object IWText11: TIWBSText
-                  Left = 20
-                  Top = 8
-                  Width = 540
-                  Height = 38
-                  FriendlyName = 'IWText11'
-                  Lines.Strings = (
-                    '<h1>This is a Well</h1>'
-                    '<h2>Example page header <small>Subtext for header</small></h2>')
-                  RawText = True
-                end
-              end
-              object IWBSRegion33: TIWBSRegion
-                Left = 38
-                Top = 163
-                Width = 700
-                Height = 91
-                BSRegionType = bsrtWell
-                object IWBSInput25: TIWBSInput
-                  Left = 19
-                  Top = 21
-                  Width = 201
-                  Height = 25
-                  ExtraTagParams.Strings = (
-                    '')
-                  FriendlyName = 'IWBSInput1'
-                  Caption = 'Input Type Text'
-                  Text = ''
-                  BSTextAlignment = bstaCenter
-                  PlaceHolder = 'Name'
-                end
-                object IWBSButton41: TIWBSButton
-                  Left = 16
-                  Top = 55
-                  Width = 223
-                  Height = 25
-                  FriendlyName = 'IWBSButton41'
-                  ScriptEvents = <
-                    item
-                      EventCode.Strings = (
-                        '$("#IWBSINPUT25").val("this text was setted with ScriptEvents");')
-                      Event = 'onClick'
-                    end>
-                  BSBlockLevel = False
-                  Caption = 'OnClick scriptEvent'
-                end
-              end
-              object IWBSRegion29: TIWBSRegion
-                Left = 35
-                Top = 272
-                Width = 702
-                Height = 381
-                BSRegionType = bsrtWell
-                Collapse = True
-                CollapseVisible = True
-                object IWBSLabel3: TIWBSLabel
-                  Left = 20
-                  Top = 12
-                  Width = 361
-                  Height = 24
-                  FriendlyName = 'IWBSLabel3'
-                  Caption = 'File upload using Form Custom Submit event, (select a text file)'
-                end
-                object IWBSText2: TIWBSText
-                  Left = 20
-                  Top = 46
-                  Width = 635
-                  Height = 123
-                  FriendlyName = 'IWBSText2'
-                end
-                object IWBSInputForm5: TIWBSInputForm
-                  Left = 20
-                  Top = 203
-                  Width = 635
-                  Height = 138
-                  EncType = iwbsfeMultipart
-                  OnSubmit = IWBSInputForm5Submit
-                  object IWBSButton45: TIWBSButton
-                    Left = 22
-                    Top = 101
-                    Width = 200
-                    Height = 25
-                    FriendlyName = 'IWBSButton45'
-                    BSBlockLevel = False
-                    Caption = 'Submit File'
-                    ButtonType = iwbsbtSubmit
-                  end
-                  object IWBSInput26: TIWBSFile
-                    Left = 22
-                    Top = 55
-                    Width = 151
-                    Height = 25
-                    FriendlyName = 'IWBSInput26'
-                  end
-                end
-              end
-            end
             object IWTabControl21Page4: TIWTabPage
               Left = 0
               Top = 20
@@ -1626,6 +1481,142 @@ object IWForm2: TIWForm2
                 end
               end
             end
+            object IWTabControl21Page6: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1076
+              Height = 1512
+              RenderInvisibleControls = True
+              TabOrder = 5
+              Title = 'Funtionality'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSButton37: TIWBSButton
+                Left = 39
+                Top = 13
+                Width = 205
+                Height = 25
+                FriendlyName = 'IWBSButton37'
+                OnAsyncClick = IWBSButton37AsyncClick
+                BSBlockLevel = False
+                Caption = 'Toggle Visibility'
+              end
+              object IWBSButton36: TIWBSButton
+                Left = 40
+                Top = 44
+                Width = 204
+                Height = 25
+                FriendlyName = 'IWBSButton36'
+                BSBlockLevel = False
+                Caption = 'Toggle Collapse'
+                DataTarget = IWBSRegion29
+              end
+              object IWBSRegion32: TIWBSRegion
+                Left = 40
+                Top = 78
+                Width = 698
+                Height = 72
+                BSRegionType = bsrtWell
+                object IWText11: TIWBSText
+                  Left = 20
+                  Top = 8
+                  Width = 540
+                  Height = 38
+                  FriendlyName = 'IWText11'
+                  Lines.Strings = (
+                    '<h1>This is a Well</h1>'
+                    '<h2>Example page header <small>Subtext for header</small></h2>')
+                  RawText = True
+                end
+              end
+              object IWBSRegion33: TIWBSRegion
+                Left = 38
+                Top = 163
+                Width = 700
+                Height = 91
+                BSRegionType = bsrtWell
+                object IWBSInput25: TIWBSInput
+                  Left = 19
+                  Top = 21
+                  Width = 201
+                  Height = 25
+                  ExtraTagParams.Strings = (
+                    '')
+                  FriendlyName = 'IWBSInput1'
+                  Caption = 'Input Type Text'
+                  Text = ''
+                  BSTextAlignment = bstaCenter
+                  PlaceHolder = 'Name'
+                end
+                object IWBSButton41: TIWBSButton
+                  Left = 16
+                  Top = 55
+                  Width = 223
+                  Height = 25
+                  FriendlyName = 'IWBSButton41'
+                  ScriptEvents = <
+                    item
+                      EventCode.Strings = (
+                        '$("#IWBSINPUT25").val("this text was setted with ScriptEvents");')
+                      Event = 'onClick'
+                    end>
+                  BSBlockLevel = False
+                  Caption = 'OnClick scriptEvent'
+                end
+              end
+              object IWBSRegion29: TIWBSRegion
+                Left = 35
+                Top = 272
+                Width = 702
+                Height = 381
+                BSRegionType = bsrtWell
+                Collapse = True
+                CollapseVisible = True
+                object IWBSLabel3: TIWBSLabel
+                  Left = 20
+                  Top = 12
+                  Width = 361
+                  Height = 24
+                  FriendlyName = 'IWBSLabel3'
+                  Caption = 'File upload using Form Custom Submit event, (select a text file)'
+                end
+                object IWBSText2: TIWBSText
+                  Left = 20
+                  Top = 46
+                  Width = 635
+                  Height = 123
+                  FriendlyName = 'IWBSText2'
+                end
+                object IWBSInputForm5: TIWBSInputForm
+                  Left = 20
+                  Top = 203
+                  Width = 635
+                  Height = 138
+                  EncType = iwbsfeMultipart
+                  OnSubmit = IWBSInputForm5Submit
+                  object IWBSButton45: TIWBSButton
+                    Left = 22
+                    Top = 101
+                    Width = 200
+                    Height = 25
+                    FriendlyName = 'IWBSButton45'
+                    BSBlockLevel = False
+                    Caption = 'Submit File'
+                    ButtonType = iwbsbtSubmit
+                  end
+                  object IWBSInput26: TIWBSFile
+                    Left = 22
+                    Top = 55
+                    Width = 151
+                    Height = 25
+                    FriendlyName = 'IWBSInput26'
+                  end
+                end
+              end
+            end
             object IWTabControl21Page0: TIWTabPage
               Left = 0
               Top = 20
@@ -1658,7 +1649,7 @@ object IWForm2: TIWForm2
                   BSRegionType = bsrtColumn
                   object IWBSRegion18: TIWBSRegion
                     Left = 12
-                    Top = 27
+                    Top = 34
                     Width = 245
                     Height = 195
                     BSRegionType = bsrtWell

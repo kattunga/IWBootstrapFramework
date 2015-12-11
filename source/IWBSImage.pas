@@ -2,7 +2,7 @@ unit IWBSImage;
 
 interface
 
-uses System.Classes, System.SysUtils, Vcl.Graphics, Data.Db,
+uses System.Classes, System.SysUtils, System.StrUtils, Vcl.Graphics, Data.Db,
      IWScriptEvents, IWBaseInterfaces,
      IWRenderContext, IWHTMLTag, IWBSCustomControl, IWCompExtCtrls;
 
@@ -42,6 +42,7 @@ type
     destructor Destroy; override;
     property ActiveSrc: string read FActiveSrc;
     procedure Refresh;
+    function GetFixedFilePath: string;
   published
     property AltText: string read FAltText write FAltText;
     property BSImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [iwbsimResponsive];
@@ -56,7 +57,8 @@ type
 
 implementation
 
-uses IW.Common.System, IW.Common.Strings, IWTypes, IWForm, IWAppCache, IW.CacheStream, IWDbCommon, InCoderMIME,
+uses IW.Common.System, IW.Common.Strings, IWTypes, IWForm, IWAppCache, IW.CacheStream,
+     IWDbCommon, IWURL, IWFilePath, IWGlobal, InCoderMIME,
      IWBSCommon;
 
 {$region 'FieldBlobStream'}
@@ -159,6 +161,18 @@ begin
   Invalidate;
 end;
 
+function TIWBSImage.GetFixedFilePath: string;
+begin
+  if not TFilePath.IsAbsolute(FImageFile) and Assigned(gSC) then
+    begin
+      Result := TFilePath.Concat(gSC.ContentPath, FImageFile);
+      if not FileExists(Result) then
+        Result := FImageFile;
+    end
+  else
+    Result := FImageFile;
+end;
+
 procedure TIWBSImage.CheckData(AContext: TIWCompContext);
 var
   LField: TField;
@@ -202,39 +216,47 @@ begin
     end;
   end;
 
-  if FActiveSrc = '' then
-    if FImageSrc <> '' then
-      FActiveSrc := FImageSrc
-    else
-      begin
-        if Assigned(FPicture) and Assigned(FPicture.Graphic) and (not FPicture.Graphic.Empty) then
-          if FEmbedBase64 then
-            begin
-              LStream := TMemoryStream.Create;
-              try
-                FPicture.Graphic.SaveToStream(LStream);
-                LStream.Position := 0;
-                FActiveSrc := 'data:image;base64, '+TIdEncoderMIME.EncodeStream(LStream)
-              finally
-                LStream.Free;
-              end;
-            end
-          else
-            begin
-              LFile := TIWAppCache.NewTempFileName;
-              FPicture.SaveToFile(LFile);
-            end
-        else if FImageFile <> '' then
-          LFile := FImageFile;
+  if FActiveSrc = '' then begin
 
-        if LFile <> '' then begin
-          LParentForm := TIWForm.FindParentForm(Self);
-          if LParentForm <> nil then
-            FActiveSrc := TIWAppCache.AddFileToCache(LParentForm, LFile, LMimeType, ctForm)
-          else
-            FActiveSrc := TIWAppCache.AddFileToCache(AContext.WebApplication, LFile, LMimeType);
-        end;
+    if Assigned(FPicture) and Assigned(FPicture.Graphic) and (not FPicture.Graphic.Empty) then
+      begin
+        if FEmbedBase64 then
+          begin
+            LStream := TMemoryStream.Create;
+            try
+              FPicture.Graphic.SaveToStream(LStream);
+              LStream.Position := 0;
+              FActiveSrc := 'data:image;base64, '+TIdEncoderMIME.EncodeStream(LStream)
+            finally
+              LStream.Free;
+            end;
+          end
+        else
+          begin
+            LFile := TIWAppCache.NewTempFileName;
+            FPicture.SaveToFile(LFile);
+          end;
+      end
+
+    else if FImageFile <> ''  then
+      LFile := GetFixedFilePath
+
+    else if FImageSrc <> '' then
+      begin
+        if AnsiStartsStr('//', FImageSrc) or AnsiContainsStr('://', FImageSrc) then
+          FActiveSrc := FImageSrc
+        else
+          FActiveSrc := TURL.MakeValidFileUrl(AContext.WebApplication.AppUrlBase, FImageSrc);
       end;
+
+    if LFile <> '' then begin
+      LParentForm := TIWForm.FindParentForm(Self);
+      if LParentForm <> nil then
+        FActiveSrc := TIWAppCache.AddFileToCache(LParentForm, LFile, LMimeType, ctForm)
+      else
+        FActiveSrc := TIWAppCache.AddFileToCache(AContext.WebApplication, LFile, LMimeType);
+    end;
+  end;
 end;
 
 procedure TIWBSImage.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);

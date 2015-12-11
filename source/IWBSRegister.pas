@@ -524,7 +524,7 @@ procedure TIWBSPaintHandlerImage.Paint;
 var
   LRect, LImageRect: TRect;
   LPicture: TPicture;
-  LText: string;
+  LText, LImageFile: string;
 begin
   LRect := Rect(0, 0, Control.Width, Control.Height);
   LImageRect := LRect;
@@ -550,9 +550,11 @@ begin
           LText := LText+#13#10'Fallback to picture';
         ControlCanvas.StretchDraw(LImageRect, Picture.Graphic);
       end
+
     else if ImageFile <> '' then
       begin
-        if FileExists(ImageFile) then
+        LImageFile := GetFixedFilePath;
+        if FileExists(LImageFile) then
           begin
             LPicture := TPicture.Create;
             try
@@ -562,7 +564,7 @@ begin
                 Dec(LImageRect.Bottom,20);
                 Dec(LImageRect.Right,20);
               end;
-              LPicture.LoadFromFile(ImageFile);
+              LPicture.LoadFromFile(LImageFile);
               if Assigned(LPicture.Graphic) and (not LPicture.Graphic.Empty) then
                 ControlCanvas.StretchDraw(LImageRect, LPicture.Graphic);
             except

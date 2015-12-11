@@ -57,13 +57,11 @@ var
 begin
   LDisableCache := ADisableCache;
 
-  if not AnsiStartsStr('//', AFile) and not AnsiStartsStr('http://', AFile) and not AnsiStartsStr('https://', AFile) then
-    LFile := ReplaceStr(TURL.Concat(AUrlBase,AFile), '/<iwbspath>/', gIWBSLibPath)
+  LFile := ReplaceStr(AFile, '/<iwbspath>/', gIWBSLibPath);
+  if AnsiStartsStr('//', AFile) or AnsiContainsStr('://', AFile) then
+    LDisableCache := False
   else
-    begin
-      LFile := AFile;
-      LDisableCache := False;
-    end;
+    LFile := TURL.MakeValidFileUrl(AUrlBase, AFile);
 
   if AnsiEndsStr('.js', LFile) then
     Result := '<script type="text/javascript" src="'+LFile+IfThen(LDisableCache,'?v='+gIWBSRefreshCacheParam)+'"></script>'
