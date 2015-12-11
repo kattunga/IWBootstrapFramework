@@ -87,6 +87,9 @@ type
     procedure SetCustomRestEvents(const Value: TIWBSCustomRestEvents);
     function IsStoredCustomRestEvents: Boolean;
 
+    function GetAfterRender: TNotifyEvent;
+    procedure SetAfterRender(const Value: TNotifyEvent);
+
     function GetScript: TStringList;
     procedure SetScript(const AValue: TStringList);
     function GetScriptInsideTag: boolean;
@@ -106,6 +109,8 @@ type
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
     property Visible: boolean read get_Visible write set_Visible;
+
+    property OnAfterRender: TNotifyEvent read GetAfterRender write SetAfterRender;
   end;
 
   IIWBSContainer = interface(IIWBaseContainer)
@@ -317,8 +322,12 @@ begin
           if not (AControl.ParentContainer as IIWInvisibleControlRenderer).RenderInvisibleControls then
             Exit;
     end;
+
   LHtmlTag := RenderHtmlTag(AControl, AContext);
-  AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+AHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");')
+  AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+AHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");');
+
+  if Assigned(AControl.OnAfterRender) then
+    AControl.OnAfterRender(AControl.InterfaceInstance)
 end;
 
 class function TIWBSCommon.RenderHTMLTag(AControl: IIWBSComponent; AContext: TIWCompContext): string;

@@ -33,6 +33,7 @@ type
     FOldVisible: boolean;
     FOldActivePage: integer;
 
+    FActivePage: Integer;
     FAsyncRefreshControl: boolean;
     FCustomAsyncEvents: TIWBSCustomAsyncEvents;
     FCustomRestEvents: TIWBSCustomRestEvents;
@@ -43,8 +44,9 @@ type
     FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
     FTabOptions: TIWBSTabOptions;
+
+    FOnAfterRender: TNotifyEvent;
     FOnRenderAsync: TNotifyEvent;
-    FActivePage: Integer;
 
     function TabOrderToTabIndex(ATabOrder: integer): integer;
     procedure CheckActiveVisible;
@@ -68,6 +70,8 @@ type
     function GetScriptInsideTag: boolean;
     procedure SetActivePage(const Value: Integer);
     procedure SetScriptInsideTag(const Value: boolean);
+    function GetAfterRender: TNotifyEvent;
+    procedure SetAfterRender(const Value: TNotifyEvent);
   protected
     procedure SetValue(const AValue: string);
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
@@ -109,7 +113,12 @@ type
     property Style: TStringList read GetStyle write SetStyle;
     property ZIndex default 0;
 
+    // Occurs after component is rendered.
+    property OnAfterRender: TNotifyEvent read GetAfterRender write SetAfterRender;
+
+    // Occurs after component is updated during async calls
     property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
+
     property OnHTMLTag;
   end;
 
@@ -236,6 +245,11 @@ begin
   Invalidate;
 end;
 
+function TIWBSTabControl.GetAfterRender: TNotifyEvent;
+begin
+  Result := FOnAfterRender;
+end;
+
 function TIWBSTabControl.GetCustomAsyncEvents: TIWBSCustomAsyncEvents;
 begin
   if FCustomAsyncEvents = nil then
@@ -254,6 +268,11 @@ procedure TIWBSTabControl.SetActivePage(const Value: Integer);
 begin
   FActivePage := Value;
   Invalidate;
+end;
+
+procedure TIWBSTabControl.SetAfterRender(const Value: TNotifyEvent);
+begin
+  FOnAfterRender := Value;
 end;
 
 procedure TIWBSTabControl.SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);

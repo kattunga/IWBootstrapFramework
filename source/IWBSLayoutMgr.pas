@@ -253,6 +253,7 @@ var
   LVisible: boolean;
   LHTML: TIWHTMLTag;
   L40Component: IIWHTML40Component;
+  LIWBSComponent: IIWBSComponent;
   LInputLists: TStringList;
   i: integer;
 begin
@@ -320,6 +321,10 @@ begin
   end;
 
   APageContext.AppendContext(LComponentContext);
+
+  AControl.InterfaceInstance.GetInterface(IIWBSComponent, LIWBSComponent);
+  if (LIWBSComponent <> nil) and Assigned(LIWBSComponent.OnAfterRender) then
+    LIWBSComponent.OnAfterRender(LIWBSComponent.InterfaceInstance);
 end;
 
 initialization

@@ -30,6 +30,8 @@ type
     FStyle: TStringList;
     FReleased: boolean;
     FContentSuffix: string;
+
+    FOnAfterRender: TNotifyEvent;
     FOnRenderAsync: TNotifyEvent;
 
     function HTMLControlImplementation: TIWHTMLControlImplementation;
@@ -51,6 +53,10 @@ type
     procedure SetStyle(const AValue: TStringList);
     function GetScriptInsideTag: boolean;
     procedure SetScriptInsideTag(const Value: boolean);
+    function get_ScriptEvents: TIWScriptEvents;
+    function GetAfterRender: TNotifyEvent;
+    procedure set_ScriptEvents(const Value: TIWScriptEvents);
+    procedure SetAfterRender(const Value: TNotifyEvent);
   protected
     function get_Visible: Boolean; override;
     procedure set_Visible(Value: Boolean); override;
@@ -99,7 +105,12 @@ type
     property Style: TStringList read GetStyle write SetStyle;
     property ZIndex default 0;
 
+    // Occurs after component is rendered.
+    property OnAfterRender: TNotifyEvent read GetAfterRender write SetAfterRender;
+
+    // Occurs after component is updated during async calls
     property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
+
     property OnHTMLTag;
   end;
 
@@ -295,12 +306,22 @@ begin
   inherited;
 end;
 
+function TIWBSCustomRegion.get_ScriptEvents: TIWScriptEvents;
+begin
+  Result := inherited get_ScriptEvents;
+end;
+
 function TIWBSCustomRegion.get_Visible: Boolean;
 begin
   if (Parent is TFrame) and (Name = 'IWFrameRegion') then
     Result := Parent.Visible
   else
     Result := inherited;
+end;
+
+procedure TIWBSCustomRegion.set_ScriptEvents(const Value: TIWScriptEvents);
+begin
+  inherited set_ScriptEvents(Value);
 end;
 
 procedure TIWBSCustomRegion.set_Visible(Value: Boolean);
@@ -386,6 +407,11 @@ begin
   Invalidate;
 end;
 
+function TIWBSCustomRegion.GetAfterRender: TNotifyEvent;
+begin
+  Result := FOnAfterRender;
+end;
+
 function TIWBSCustomRegion.GetCssString: string;
 begin
   Result := RenderCSSClass(nil);
@@ -403,6 +429,11 @@ begin
   if FCustomRestEvents = nil then
     FCustomRestEvents := TIWBSCustomRestEvents.Create(Self);
   Result := FCustomRestEvents;
+end;
+
+procedure TIWBSCustomRegion.SetAfterRender(const Value: TNotifyEvent);
+begin
+  FOnAfterRender := Value;
 end;
 
 procedure TIWBSCustomRegion.SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);

@@ -25,6 +25,8 @@ type
     FScriptInsideTag: boolean;
     FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
+
+    FOnAfterRender: TNotifyEvent;
     FOnRenderAsync: TNotifyEvent;
 
     procedure SetScript(const AValue: TStringList);
@@ -41,6 +43,8 @@ type
     function GetScriptParams: TIWBSScriptParams;
     function GetScriptInsideTag: boolean;
     procedure SetScriptInsideTag(const Value: boolean);
+    function GetAfterRender: TNotifyEvent;
+    procedure SetAfterRender(const Value: TNotifyEvent);
   protected
     {$hints off}
     function get_HasTabOrder: Boolean; override;
@@ -140,6 +144,9 @@ type
 
     // Occurs after HTMLTag is created
     property OnHTMLtag;
+
+    // Occurs after component is rendered.
+    property OnAfterRender: TNotifyEvent read GetAfterRender write SetAfterRender;
 
     // Occurs after component is updated during async calls
     property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
@@ -243,6 +250,11 @@ begin
   //
 end;
 
+function TIWBSCustomControl.GetAfterRender: TNotifyEvent;
+begin
+  Result := FOnAfterRender;
+end;
+
 function TIWBSCustomControl.GetCustomAsyncEvents: TIWBSCustomAsyncEvents;
 begin
   if FCustomAsyncEvents = nil then
@@ -255,6 +267,11 @@ begin
   if FCustomRestEvents = nil then
     FCustomRestEvents := TIWBSCustomRestEvents.Create(Self);
   Result := FCustomRestEvents;
+end;
+
+procedure TIWBSCustomControl.SetAfterRender(const Value: TNotifyEvent);
+begin
+  FOnAfterRender := Value;
 end;
 
 procedure TIWBSCustomControl.SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);
