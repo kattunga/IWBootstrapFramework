@@ -36,6 +36,15 @@ object IWForm2: TIWForm2
       Brand = 'IWBootstrap Framework'
       BrandLink = 'https://github.com/kattunga/IWBootstrapFramework'
       BSFixed = bsnvfxTop
+      object IWBSButton48: TIWBSButton
+        Left = 54
+        Top = 8
+        Width = 200
+        Height = 25
+        FriendlyName = 'IWBSButton48'
+        BSBlockLevel = False
+        Caption = 'IWBSButton48'
+      end
       object IWBSUnorderedList1: TIWBSUnorderedList
         Left = 244
         Top = 8
@@ -678,7 +687,7 @@ object IWForm2: TIWForm2
               Width = 1076
               Height = 1512
               RenderInvisibleControls = True
-              TabOrder = 5
+              TabOrder = 6
               Title = 'TabControl Options'
               BorderOptions.NumericWidth = 0
               BorderOptions.BorderWidth = cbwNumeric
@@ -1106,7 +1115,7 @@ object IWForm2: TIWForm2
               Width = 1076
               Height = 1512
               RenderInvisibleControls = True
-              TabOrder = 4
+              TabOrder = 5
               Title = 'Funtionality'
               BorderOptions.NumericWidth = 0
               BorderOptions.BorderWidth = cbwNumeric

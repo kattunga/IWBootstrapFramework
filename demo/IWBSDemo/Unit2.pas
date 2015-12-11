@@ -206,6 +206,7 @@ type
     IWBSButton44: TIWBSButton;
     IWBSButton47: TIWBSButton;
     IWBSLabel5: TIWBSLabel;
+    IWBSButton48: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);

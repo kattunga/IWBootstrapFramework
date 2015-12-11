@@ -46,6 +46,7 @@ type
     FOnRenderAsync: TNotifyEvent;
     FActivePage: Integer;
 
+    function TabOrderToTabIndex(ATabOrder: integer): integer;
     procedure CheckActiveVisible;
     function HTMLControlImplementation: TIWHTMLControlImplementation;
     function RegionDiv: TIWHTMLTag;
@@ -201,17 +202,22 @@ begin
 end;
 
 procedure TIWBSTabControl.SetValue(const AValue: string);
+var
+  LIndex: Integer;
 begin
   if RequiresUpdateNotification(Parent) then
     UpdateNotifiedInterface(Parent).NotifyUpdate(Self,AValue);
-  FActivePage := StrToIntDef(AValue, 0);
-  if (FActivePage < 0) or (FActivePage >= Pages.Count) then
+  LIndex := StrToIntDef(AValue, 0);
+  if (LIndex < 0) or (LIndex >= Pages.Count) then
     begin
       FActivePage := 0;
       FOldActivePage := -1;
     end
   else
-    FOldActivePage := FActivePage;
+    begin
+      FActivePage := TIWTabPage(Pages[LIndex]).TabOrder;
+      FOldActivePage := FActivePage;
+    end;
 end;
 
 procedure TIWBSTabControl.SetTabOptions(const Value: TIWBSTabOptions);
@@ -365,9 +371,9 @@ begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
       SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
       SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-      if FOldActivePage <> ActivePage then begin
-        AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ActivePage)+']").tab("show");');
-        FOldActivePage := ActivePage;
+      if FOldActivePage <> FActivePage then begin
+        AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(TabOrderToTabIndex(FActivePage))+']").tab("show");');
+        FOldActivePage := FActivePage;
       end;
     end;
 
@@ -383,19 +389,29 @@ begin
   TIWBSRegionCommon.RenderComponents(Self, AContainerContext, APageContext);
 end;
 
+function TIWBSTabControl.TabOrderToTabIndex(ATabOrder: integer): integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := 0 to Pages.Count-1 do
+    if TIWTabPage(Pages[i]).TabOrder = ATabOrder then begin
+      Result := i;
+      break;
+    end;
+end;
+
 procedure TIWBSTabControl.CheckActiveVisible;
 var
-  i, tabIndex: integer;
+  i, LIndex: integer;
 begin
-  if (ActivePage >= 0) and (ActivePage < Pages.Count) and not TIWTabPage(FPages.Items[ActivePage]).Visible then begin
-    tabIndex := -1;
+  LIndex := TabOrderToTabIndex(FActivePage);
+  if (LIndex = -1) or not TIWTabPage(FPages.Items[LIndex]).Visible then
     for i := 0 to Pages.Count-1 do
       if TIWTabPage(FPages[i]).Visible then begin
-        tabIndex := i;
+        FActivePage := TIWTabPage(FPages[i]).TabOrder;
         break;
       end;
-    ActivePage := tabIndex;
-  end;
 end;
 
 function TIWBSTabControl.RenderCSSClass(AComponentContext: TIWCompContext): string;
@@ -414,7 +430,7 @@ begin
   FOldCss := RenderCSSClass(AContext);
   FOldStyle := RenderStyle(AContext);
   FOldVisible := Visible;
-  FOldActivePage := ActivePage;
+  FOldActivePage := FActivePage;
 
   MergeSortList(Pages, TabOrderCompare);
   CheckActiveVisible;
@@ -454,7 +470,7 @@ begin
     if not TabPage.Visible and not RenderInvisibleControls then
       Continue;
     tag := tagTabs.Contents.AddTag('li');
-    if (ActivePage = i) and TabPage.Visible then begin
+    if (tabIndex = -1) and (FActivePage = TabPage.TabOrder) and TabPage.Visible then begin
       tag.AddClassParam('active');
       tabIndex := i;
     end;
@@ -495,16 +511,19 @@ begin
   Result := 'tab-pane';
   if BSTabOptions.Fade then
     Result := Result + ' fade';
-  if (ActivePage >= 0) and (ActivePage < Pages.Count) and (Pages[ActivePage] = ATabPage) then
+  if TIWTabPage(ATabPage).TabOrder = FActivePage then
     Result := Result + ' active in';
 end;
 
 procedure TIWBSTabControl.SetTabPageVisibility(ATabIndex: integer; Visible: boolean);
+var
+  LIndex: integer;
 begin
-  if (ATabIndex >= 0) and (ATabIndex < Pages.Count) then begin
-    TIWTabPage(FPages.Items[ATabIndex]).Visible := Visible;
+  LIndex := TabOrderToTabIndex(ATabIndex);
+  if LIndex >= 0 then begin
+    TIWTabPage(FPages.Items[LIndex]).Visible := Visible;
     CheckActiveVisible;
-    IWBSExecuteAsyncJScript('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(ATabIndex)+']").css("display", "'+iif(Visible,'','none')+'");');
+    IWBSExecuteAsyncJScript('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(LIndex)+']").css("display", "'+iif(Visible,'','none')+'");');
   end;
 end;
 
