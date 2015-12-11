@@ -58,10 +58,10 @@ begin
   LDisableCache := ADisableCache;
 
   LFile := ReplaceStr(AFile, '/<iwbspath>/', gIWBSLibPath);
-  if AnsiStartsStr('//', AFile) or AnsiContainsStr('://', AFile) then
+  if AnsiStartsStr('//', LFile) or AnsiContainsStr('://', LFile) then
     LDisableCache := False
   else
-    LFile := TURL.MakeValidFileUrl(AUrlBase, AFile);
+    LFile := TURL.MakeValidFileUrl(AUrlBase, LFile);
 
   if AnsiEndsStr('.js', LFile) then
     Result := '<script type="text/javascript" src="'+LFile+IfThen(LDisableCache,'?v='+gIWBSRefreshCacheParam)+'"></script>'
