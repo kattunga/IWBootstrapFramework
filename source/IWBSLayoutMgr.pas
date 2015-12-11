@@ -129,6 +129,7 @@ begin
     for i := 0 to FLinkFiles.Count-1 do
       ABuffer.WriteLine(ParseLinkFile(LUrlBase, FLinkFiles[i]));
 
+  ABuffer.WriteLine('<script>var IWBSAppBaseUrl = "'+LUrlBase+'";</script>');
   ABuffer.WriteLine(ScriptSection(LPageContext));
   ABuffer.WriteLine(HeadContent);
   if LPageContext.StyleTag.Contents.Count > 0 then
