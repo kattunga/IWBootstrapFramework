@@ -27,7 +27,7 @@ type
     FStyle: TStringList;
 
     FOnAfterRender: TNotifyEvent;
-    FOnRenderAsync: TNotifyEvent;
+    FOnAfterAsyncChange: TNotifyEvent;
 
     procedure SetScript(const AValue: TStringList);
     procedure SetScriptParams(const AValue: TIWBSScriptParams);
@@ -57,8 +57,6 @@ type
     function RenderStyle(AContext: TIWCompContext): string; override;
   protected
     {$hints on}
-    property ActiveCss: string read FOldCss;
-    property ActiveStyle: string read FOldStyle;
     procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
     procedure InternalRenderCss(var ACss: string); virtual;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); virtual;
@@ -68,6 +66,9 @@ type
     function InputSuffix: string; virtual;
     function IsReadOnly: boolean; virtual;
     function IsDisabled: boolean; virtual;
+
+    property ActiveCss: string read FOldCss;
+    property ActiveStyle: string read FOldStyle;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -148,8 +149,8 @@ type
     // Occurs after component is rendered.
     property OnAfterRender: TNotifyEvent read GetAfterRender write SetAfterRender;
 
-    // Occurs after component is updated during async calls
-    property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
+    // Occurs after component is changed on an Asyn call, it doesn't occurs if the control is fully rendered
+    property OnAfterAsyncChange: TNotifyEvent read FOnAfterAsyncChange write FOnAfterAsyncChange;
   end;
 
   // Base class for IWBS data aware controls
@@ -411,13 +412,13 @@ begin
       SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
       SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
       InternalRenderAsync(xHTMLName, AContext);
+
+      if Assigned(FOnAfterAsyncChange) then
+        FOnAfterAsyncChange(Self);
+
+      if Assigned(gIWBSOnAfterAsyncChange) then
+        gIWBSOnAfterAsyncChange(Self, xHTMLName);
     end;
-
-  if Assigned(FOnRenderAsync) then
-    FOnRenderAsync(Self);
-
-  if Assigned(gIWBSOnRenderAsync) then
-    gIWBSOnRenderAsync(Self, xHTMLName);
 end;
 
 function TIWBSCustomControl.RenderCSSClass(AComponentContext: TIWCompContext): string;

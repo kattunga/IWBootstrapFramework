@@ -37,10 +37,16 @@ var
   // server start timestamp value in format string, it is usefull to force client refresh cache browsers of included files
   gIWBSRefreshCacheParam: string = '';
 
-  // global hook events, let you customize controls in a simple way
-  gIWBSOnRenderAsync: procedure(AControl: TComponent; const AHTMLName);
-  gIWBSOnBeforeRender: procedure(AControl: TComponent);
-  gIWBSOnHTMLTag: procedure(AControl: TComponent; const AHTMLName: string; ATag: TIWHTMLTag);
+  // occurs for each control, after component is changed on an Asyn call, it doesn't occurs if the control is fully rendered
+  // useful for execute a refresh on third party plugins that need it
+  gIWBSOnAfterAsyncChange: procedure(AControl: TComponent; const AHTMLName);
+
+  // occurs for each control, after control is rendered
+  gIWBSOnAfterRender: procedure(AControl: TComponent);
+
+  // occurs for each control, before control is rendered
+  // useful for set common properties to certain components, for examplë: to enable third party plugins
+  gIWBSOnRender: procedure(AControl: TComponent);
 
   // global link files to include in every page
   gIWBSLinkFiles: TStringList = nil;

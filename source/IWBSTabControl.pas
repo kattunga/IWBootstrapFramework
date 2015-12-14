@@ -46,7 +46,7 @@ type
     FTabOptions: TIWBSTabOptions;
 
     FOnAfterRender: TNotifyEvent;
-    FOnRenderAsync: TNotifyEvent;
+    FOnAfterAsyncChange: TNotifyEvent;
 
     function TabOrderToTabIndex(ATabOrder: integer): integer;
     procedure CheckActiveVisible;
@@ -116,8 +116,8 @@ type
     // Occurs after component is rendered.
     property OnAfterRender: TNotifyEvent read GetAfterRender write SetAfterRender;
 
-    // Occurs after component is updated during async calls
-    property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
+    // Occurs after component is changed on an Asyn call, it doesn't occurs if the control is fully rendered
+    property OnAfterAsyncChange: TNotifyEvent read FOnAfterAsyncChange write FOnAfterAsyncChange;
 
     property OnHTMLTag;
   end;
@@ -394,13 +394,13 @@ begin
         AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(TabOrderToTabIndex(FActivePage))+']").tab("show");');
         FOldActivePage := FActivePage;
       end;
+
+      if Assigned(FOnAfterAsyncChange) then
+        FOnAfterAsyncChange(Self);
+
+      if Assigned(gIWBSOnAfterAsyncChange) then
+        gIWBSOnAfterAsyncChange(Self, xHTMLName);
     end;
-
-  if Assigned(FOnRenderAsync) then
-    FOnRenderAsync(Self);
-
-  if Assigned(gIWBSOnRenderAsync) then
-    gIWBSOnRenderAsync(Self, xHTMLName);
 end;
 
 procedure TIWBSTabControl.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);

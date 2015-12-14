@@ -6,7 +6,8 @@ interface
 // include in your application: define JsonDataObjects
 // don't enable here, we don't want to include in package
 
-uses System.Classes, System.SysUtils, System.StrUtils, {$IFDEF IWBS_JSONDATAOBJECTS}JsonDataObjects, {$ENDIF}
+uses System.Classes, System.SysUtils, System.StrUtils, Vcl.Forms,
+     {$IFDEF IWBS_JSONDATAOBJECTS}JsonDataObjects, {$ENDIF}
      IWApplication, IWRenderContext, IWControl, IWHTML40Interfaces, IWBaseHTMLInterfaces, IWTypes,
      IWBaseInterfaces, IWHTMLTag, IWBaseRenderContext,
      IWBSCustomEvents;
@@ -132,6 +133,7 @@ type
   public
     class procedure AddCssClass(var ACss: string; const AClass: string);
     class procedure AsyncRemoveControl(const AHTMLName: string);
+    class procedure DoAfterRender(AControl: TComponent);
     class procedure RenderAsync(const AHTMLName: string; AControl: IIWBSComponent; AContext: TIWCompContext);
     class function RenderHTMLTag(AControl: IIWBSComponent; AContext: TIWCompContext): string;
     class function RenderStyle(AComponent: IIWBSComponent): string;
@@ -153,7 +155,7 @@ procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const V
 implementation
 
 uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm,
-     IWBSUtils, IWBSCustomControl, IWBSRegionCommon;
+     IWBSUtils, IWBSCustomControl, IWBSRegionCommon, IWBSGlobal;
 
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create;
@@ -299,6 +301,33 @@ begin
   IWBSExecuteAsyncJScript('AsyncDestroyControl("'+AHTMLName+'");');
 end;
 
+class procedure TIWBSCommon.DoAfterRender(AControl: TComponent);
+var
+  i: integer;
+  LComponent: IIWBSComponent;
+  LContainer: IIWBaseContainer;
+begin
+  AControl.GetInterface(IIWBSComponent, LComponent);
+  if LComponent <> nil then begin
+    if Assigned(LComponent.OnAfterRender) then
+      LComponent.OnAfterRender(LComponent.InterfaceInstance);
+
+    if Assigned(gIWBSOnAfterRender) then
+      gIWBSOnAfterRender(LComponent.InterfaceInstance);
+  end;
+
+  if AControl is TFrame then
+    for i := 0 to AControl.ComponentCount-1 do
+      DoAfterRender(AControl.Components[i])
+  else
+    begin
+      AControl.GetInterface(IIWBaseContainer, LContainer);
+      if LContainer <> nil then
+        for i := 0 to LContainer.IWComponentsCount-1 do
+          DoAfterRender(LContainer.Component[i])
+    end;
+end;
+
 class procedure TIWBSCommon.RenderAsync(const AHTMLName: string; AControl: IIWBSComponent; AContext: TIWCompContext);
 var
   LParentContainer: IIWBaseHTMLComponent;
@@ -324,10 +353,11 @@ begin
     end;
 
   LHtmlTag := RenderHtmlTag(AControl, AContext);
-  AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('AsyncRenderControl("'+AHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");');
 
-  if Assigned(AControl.OnAfterRender) then
-    AControl.OnAfterRender(AControl.InterfaceInstance)
+  // the creation of the controls is executed as first script in the callback response, so further scripts in callback could reference them
+  IWBSExecuteAsyncJScript(AContext.WebApplication, 'AsyncRenderControl("'+AHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");', True, True);
+
+  DoAfterRender(AControl.InterfaceInstance);
 end;
 
 class function TIWBSCommon.RenderHTMLTag(AControl: IIWBSComponent; AContext: TIWCompContext): string;

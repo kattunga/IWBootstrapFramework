@@ -32,7 +32,7 @@ type
     FContentSuffix: string;
 
     FOnAfterRender: TNotifyEvent;
-    FOnRenderAsync: TNotifyEvent;
+    FOnAfterAsyncChange: TNotifyEvent;
 
     function HTMLControlImplementation: TIWHTMLControlImplementation;
     function IsScriptEventsStored: Boolean; virtual;
@@ -58,9 +58,11 @@ type
     procedure set_ScriptEvents(const Value: TIWScriptEvents);
     procedure SetAfterRender(const Value: TNotifyEvent);
   protected
+    {$hints off}
     function get_Visible: Boolean; override;
     procedure set_Visible(Value: Boolean); override;
     procedure SetParent(AParent: TWinControl); override;
+    {$hints on}
 
     function ContainerPrefix: string; override;
     function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext; override;
@@ -78,6 +80,8 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    // Let you destroy the region inside a self event handler
     procedure Release;
     procedure AsyncRefreshControl;
     procedure ResetAsyncRefreshControl;
@@ -108,8 +112,8 @@ type
     // Occurs after component is rendered.
     property OnAfterRender: TNotifyEvent read GetAfterRender write SetAfterRender;
 
-    // Occurs after component is updated during async calls
-    property OnRenderAsync: TNotifyEvent read FOnRenderAsync write FOnRenderAsync;
+    // Occurs after component is changed on an Asyn call, it doesn't occurs if the control is fully rendered
+    property OnAfterAsyncChange: TNotifyEvent read FOnAfterAsyncChange write FOnAfterAsyncChange;
 
     property OnHTMLTag;
   end;
@@ -561,13 +565,13 @@ begin
       SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
       SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
       SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
+
+      if Assigned(FOnAfterAsyncChange) then
+        FOnAfterAsyncChange(Self);
+
+      if Assigned(gIWBSOnAfterAsyncChange) then
+        gIWBSOnAfterAsyncChange(Self, xHTMLName);
     end;
-
-  if Assigned(FOnRenderAsync) then
-    FOnRenderAsync(Self);
-
-  if Assigned(gIWBSOnRenderAsync) then
-    gIWBSOnRenderAsync(Self, xHTMLName);
 end;
 
 procedure TIWBSCustomRegion.RenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);

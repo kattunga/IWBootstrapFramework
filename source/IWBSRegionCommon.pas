@@ -63,7 +63,7 @@ type
 
   TIWBSRegionCommon = class
   public
-    class procedure CancelChildAsyncRender(AContainer: IIWBSContainer);
+    class procedure CancelChildAsyncRender(AControl: TComponent);
     class procedure DisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
     class procedure PrepareChildComponentsForRender(AContainer: IIWBaseContainer);
     class procedure RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
@@ -182,7 +182,7 @@ begin
 
     LComponent := AContainer.Component[i];
 
-    // if user forgot to delete the IWRegion of the TFrame
+    // TFrame
     if LComponent is TFrame then
       begin
         LFrameRegion := TFrame(LComponent).FindComponent('IWFrameRegion');
@@ -212,10 +212,9 @@ begin
       DisableRenderOptions(LHTML40Control.StyleRenderOptions);
     end;
 
-    // global hook
-    if Assigned(gIWBSOnBeforeRender) then
-      gIWBSOnBeforeRender(LComponent);
-
+    // execute global OnRender hook
+    if Assigned(gIWBSOnRender) then
+      gIWBSOnRender(LComponent);
   end;
 end;
 
@@ -237,22 +236,27 @@ begin
   end;
 end;
 
-class procedure TIWBSRegionCommon.CancelChildAsyncRender(AContainer: IIWBSContainer);
+
+class procedure TIWBSRegionCommon.CancelChildAsyncRender(AControl: TComponent);
 var
   i: integer;
-  LCompo: TComponent;
-  LIComp: IIWBSComponent;
-  LICont: IIWBSContainer;
+  LComponent: IIWBSComponent;
+  LContainer: IIWBaseContainer;
 begin
-  for i := 0 to AContainer.IWComponentsCount - 1 do begin
-    LCompo := AContainer.Component[i];
-    LCompo.GetInterface(IIWBSComponent, LIComp);
-    if LIComp <> nil then
-      LIComp.ResetAsyncRefreshControl;
-    LCompo.GetInterface(IIWBSContainer, LICont);
-    if LICont <> nil then
-      CancelChildAsyncRender(LICont);
-  end;
+  AControl.GetInterface(IIWBSComponent, LComponent);
+  if LComponent <> nil then
+    LComponent.ResetAsyncRefreshControl;
+
+  if AControl is TFrame then
+    for i := 0 to AControl.ComponentCount-1 do
+      CancelChildAsyncRender(AControl.Components[i])
+  else
+    begin
+      AControl.GetInterface(IIWBaseContainer, LContainer);
+      if LContainer <> nil then
+        for i := 0 to LContainer.IWComponentsCount-1 do
+          CancelChildAsyncRender(LContainer.Component[i])
+    end;
 end;
 {$endregion}
 

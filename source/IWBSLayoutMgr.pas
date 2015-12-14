@@ -3,7 +3,7 @@ unit IWBSLayoutMgr;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.StrUtils, Vcl.Controls,
+  System.Classes, System.SysUtils, System.StrUtils, Vcl.Forms, Vcl.Controls,
   IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag;
 
 type
@@ -16,6 +16,7 @@ type
   public
     constructor Create(AOnwer: TComponent); override;
     destructor Destroy; override;
+
     procedure AddLinkFile(const AFile: string);
     function ParseLinkFile(const AUrlBase, AFile: string; ADisableCache: boolean = True): string;
     procedure ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent); override;
@@ -236,7 +237,10 @@ begin
 
     // write to buffer
     if Container.InterfaceInstance is TIWBaseForm then
-      ProcessForm(aBuffer, LTmp, aPage)
+      begin
+        ProcessForm(aBuffer, LTmp, aPage);
+        TIWBSCommon.DoAfterRender(Container.InterfaceInstance);
+      end
     else
       aBuffer.Stream.CopyFrom(LTmp.Stream, 0);
 
@@ -253,7 +257,6 @@ var
   LVisible: boolean;
   LHTML: TIWHTMLTag;
   L40Component: IIWHTML40Component;
-  LIWBSComponent: IIWBSComponent;
   LInputLists: TStringList;
   i: integer;
 begin
@@ -300,11 +303,6 @@ begin
         if not LVisible and LRenderInvisibleControls then
           TIWBSCommon.SetNotVisible(LHTML.Params);
       end;
-
-    // global hook
-    if Assigned(gIWBSOnHTMLTag) then
-      gIWBSOnHTMLTag(AControl.InterfaceInstance, xHTMLName, LHTML);
-
   end;
 
   // render hidden inputs for submit
@@ -321,10 +319,6 @@ begin
   end;
 
   APageContext.AppendContext(LComponentContext);
-
-  AControl.InterfaceInstance.GetInterface(IIWBSComponent, LIWBSComponent);
-  if (LIWBSComponent <> nil) and Assigned(LIWBSComponent.OnAfterRender) then
-    LIWBSComponent.OnAfterRender(LIWBSComponent.InterfaceInstance);
 end;
 
 initialization

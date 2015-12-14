@@ -50,6 +50,7 @@ type
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
   published
     property Lines: TStringList read FLines write SetLines;
     property RawText: boolean read FRawText write SetRawText default False;
@@ -175,6 +176,12 @@ begin
   FTagType := 'div';
   Height := 100;
   Width := 200;
+end;
+
+destructor TIWBSText.Destroy;
+begin
+  FLines.Free;
+  inherited;
 end;
 
 procedure TIWBSText.OnLinesChange( ASender : TObject );

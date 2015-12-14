@@ -9,14 +9,20 @@ function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): 
 
 function IWBSTextToJsParamText(AText: string): string;
 
-procedure IWBSExecuteJScript(const AScript: string);
-procedure IWBSExecuteAsyncJScript(const AScript: string);
+procedure IWBSExecuteJScript(AWebApplication: TIWApplication; const AScript: string); overload;
+procedure IWBSExecuteJScript(const AScript: string); overload;
+
+procedure IWBSExecuteAsyncJScript(AWebApplication: TIWApplication; const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
+procedure IWBSExecuteAsyncJScript(const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 
 function IWBSexecuteAjaxEventJs(const HtmlName, EventName: string): string;
 
 implementation
 
-uses IWHTML40Interfaces;
+uses IWHTML40Interfaces, IWXMLTag, IWCallBack;
+
+type
+  TIWCallBackResponseHack = class(TIWCallBackResponse);
 
 function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;
 var
@@ -40,34 +46,57 @@ begin
   Result := ReplaceStr(Result, #13, '');
 end;
 
+procedure IWBSExecuteJScript(AWebApplication: TIWApplication; const AScript: string); overload;
+begin
+  if Length(AScript) <= 0 then Exit;
+
+  if AWebApplication.IsCallBack then
+    AWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript)
+  else
+    HTML40FormInterface(AWebApplication.ActiveForm).PageContext.AddToInitProc(AScript);
+end;
+
 procedure IWBSExecuteJScript(const AScript: string);
 var
   LWebApplication: TIWApplication;
 begin
-  if Length(AScript) <= 0 then Exit;
-
   LWebApplication := GGetWebApplicationThreadVar;
   if LWebApplication = nil then
     raise Exception.Create('User session not found');
-
-  if LWebApplication.IsCallBack then
-    LWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript)
-  else
-    HTML40FormInterface(LWebApplication.ActiveForm).PageContext.AddToInitProc(AScript);
+  IWBSExecuteJScript(LWebApplication, AScript);
 end;
 
-procedure IWBSExecuteAsyncJScript(const AScript: string);
+procedure IWBSExecuteAsyncJScript(AWebApplication: TIWApplication; const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 var
-  LWebApplication: TIWApplication;
+  LCallTag: TIWXMLTag;
 begin
   if Length(AScript) <= 0 then Exit;
 
+  if AWebApplication.IsCallBack then begin
+    if AFirst then
+      begin
+        LCallTag := TIWXMLTag.CreateTag('literal');
+        if AsCDATA then
+          LCallTag.Contents.AddText('<![CDATA[' + AScript + ']]>')
+        else
+          LCallTag.Contents.AddText(AScript);
+        TIWCallBackResponseHack(AWebApplication.CallBackResponse).FExecuteTag.Contents.Insert(0,LCallTag);
+      end
+    else if AsCDATA then
+      AWebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA(AScript)
+    else
+      AWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript);
+  end;
+end;
+
+procedure IWBSExecuteAsyncJScript(const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False);
+var
+  LWebApplication: TIWApplication;
+begin
   LWebApplication := GGetWebApplicationThreadVar;
   if LWebApplication = nil then
     raise Exception.Create('User session not found');
-
-  if LWebApplication.IsCallBack then
-    LWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript);
+  IWBSExecuteAsyncJScript(LWebApplication, AScript, AsCDATA, AFirst);
 end;
 
 function IWBSexecuteAjaxEventJs(const HtmlName, EventName: string): string;
