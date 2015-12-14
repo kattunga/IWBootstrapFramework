@@ -185,7 +185,7 @@ end;
 
 procedure TIWBSTabControl.SetFocus;
 begin
-  IWBSExecuteJScript(JQSelector+'.focus()');
+  IWBSExecuteAsyncJScript(JQSelector+'.focus()');
 end;
 
 procedure TIWBSTabControl.AsyncRefreshControl;

@@ -71,7 +71,7 @@ type
 
 implementation
 
-uses IWHTML40Interfaces, IWRegion, IWForm, IWBaseHTMLInterfaces,
+uses IWHTML40Interfaces, IWRegion, IWForm, IWBaseHTMLInterfaces, IWMarkupLanguageTag,
      IWBSLayoutMgr, IWBSUtils, IWBSGlobal;
 
 {$region 'TIWBSBtnGroupOptions'}
@@ -221,6 +221,7 @@ end;
 class procedure TIWBSRegionCommon.RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
 var
   LBuffer: TIWRenderStream;
+  LContentTag: TIWBinaryElement;
 begin
   PrepareChildComponentsForRender(AContainer);
   AContainer.ContainerContext := AContainerContext;
@@ -229,7 +230,11 @@ begin
     THackTIWHTML40Container(AContainer.InterfaceInstance).CallInheritedRenderComponents(AContainerContext, APageContext);
     THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
     THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.Process(LBuffer, AContainerContext, APageContext);
-    AContainer.RegionDiv.Contents.AddBuffer(LBuffer);
+
+    // insert content before scripts
+    LContentTag := TIWBinaryElement.Create(nil);
+    LContentTag.Buffer.Stream.CopyFrom(LBuffer.Stream, 0);
+    AContainer.RegionDiv.Contents.Insert(0, LContentTag);
   finally
     THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.SetContainer(nil);
     FreeAndNil(LBuffer);

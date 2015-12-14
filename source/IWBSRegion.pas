@@ -382,7 +382,7 @@ end;
 
 procedure TIWBSCustomRegion.SetFocus;
 begin
-  IWBSExecuteJScript(JQSelector+'.focus()');
+  IWBSExecuteAsyncJScript(JQSelector+'.focus()');
 end;
 
 function TIWBSCustomRegion.IsScriptEventsStored: Boolean;

@@ -217,7 +217,7 @@ end;
 
 procedure TIWBSCustomControl.SetFocus;
 begin
-  IWBSExecuteJScript(JQSelector+'.focus()');
+  IWBSExecuteAsyncJScript(JQSelector+'.focus()');
 end;
 
 procedure TIWBSCustomControl.AsyncRefreshControl;
