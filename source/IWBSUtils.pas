@@ -9,8 +9,8 @@ function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): 
 
 function IWBSTextToJsParamText(AText: string): string;
 
-procedure IWBSExecuteJScript(AWebApplication: TIWApplication; const AScript: string); overload;
-procedure IWBSExecuteJScript(const AScript: string); overload;
+//procedure IWBSExecuteJScript(AWebApplication: TIWApplication; const AScript: string); overload;
+//procedure IWBSExecuteJScript(const AScript: string); overload;
 
 procedure IWBSExecuteAsyncJScript(AWebApplication: TIWApplication; const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 procedure IWBSExecuteAsyncJScript(const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
@@ -42,10 +42,11 @@ end;
 function IWBSTextToJsParamText(AText: string): string;
 begin
   Result := ReplaceStr(AText, '"', '\"');
+  Result := ReplaceStr(Result, #39, '\'#39);
   Result := ReplaceStr(Result, #10, '\n');
   Result := ReplaceStr(Result, #13, '');
 end;
-
+{
 procedure IWBSExecuteJScript(AWebApplication: TIWApplication; const AScript: string); overload;
 begin
   if Length(AScript) <= 0 then Exit;
@@ -65,7 +66,7 @@ begin
     raise Exception.Create('User session not found');
   IWBSExecuteJScript(LWebApplication, AScript);
 end;
-
+}
 procedure IWBSExecuteAsyncJScript(AWebApplication: TIWApplication; const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 var
   LCallTag: TIWXMLTag;
