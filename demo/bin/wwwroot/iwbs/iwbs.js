@@ -26,6 +26,9 @@ function AsyncRenderControl(id, parentSelector, htmlTag) {
 			formTag.append('<input type="hidden" name="' + this.name + '">');
 		}
 	});
+	if (typeof webshims !== "undefined") {
+		$("#" + id).updatePolyfill();
+	}
 }
 
 function AsyncDestroyControl(id) {
