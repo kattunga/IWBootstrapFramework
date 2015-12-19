@@ -222,6 +222,7 @@ class procedure TIWBSRegionCommon.RenderComponents(AContainer: IIWBSContainer; A
 var
   LBuffer: TIWRenderStream;
   LContentTag: TIWBinaryElement;
+  i, j: integer;
 begin
   PrepareChildComponentsForRender(AContainer);
   AContainer.ContainerContext := AContainerContext;
@@ -234,7 +235,15 @@ begin
     // insert content before scripts
     LContentTag := TIWBinaryElement.Create(nil);
     LContentTag.Buffer.Stream.CopyFrom(LBuffer.Stream, 0);
-    AContainer.RegionDiv.Contents.Insert(0, LContentTag);
+    j := -1;
+    for i := 0 to AContainer.RegionDiv.Contents.Count-1 do
+      if AContainer.RegionDiv.Contents.Items[i] is TIWMarkupLanguageTag then
+        if TIWMarkupLanguageTag(AContainer.RegionDiv.Contents.Items[i]).Tag = 'script' then
+          j := i;
+    if j >= 0 then
+      AContainer.RegionDiv.Contents.Insert(j, LContentTag)
+    else
+      AContainer.RegionDiv.Contents.Add(LContentTag);
   finally
     THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.SetContainer(nil);
     FreeAndNil(LBuffer);
