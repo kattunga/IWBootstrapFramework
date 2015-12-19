@@ -31,7 +31,7 @@ implementation
 {$R *.dfm}
 
 uses
-  IW.Server.Indy, IWGlobal;
+  IW.Server.Indy, IWGlobal, inGlobal;
 
 procedure TFCustomServer.FormCreate(Sender: TObject);
 begin
@@ -41,6 +41,9 @@ begin
   memoLog.Lines.Add('');
 
   TSaServerIndy(TIWStandAloneServerHack(IWStandAloneServer1).FHttpInstance).HTTP.OnHeadersAvailable := HeadersAvailable;
+
+  if GetEnvironmentVariable('SHELL') <> '' then
+    TSaServerIndy(TIWStandAloneServerHack(IWStandAloneServer1).FHttpInstance).HTTP.ReuseSocket := rsTrue;
 end;
 
 procedure TFCustomServer.HeadersAvailable(AContext: TInContext; const AUri: string; AHeaders: TInHeaderList; var VContinueProcessing: Boolean);
