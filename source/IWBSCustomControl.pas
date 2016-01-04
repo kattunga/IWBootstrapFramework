@@ -2,7 +2,7 @@ unit IWBSCustomControl;
 
 interface
 
-uses System.Classes, System.SysUtils, System.StrUtils, Data.db,
+uses Classes, SysUtils, StrUtils, db,
      IWControl, IWRenderContext, IWHTMLTag, IWXMLTag, IWDBCommon, IWDBStdCtrls, IWTypes,
      IWBSCommon, IWBSCustomEvents;
 

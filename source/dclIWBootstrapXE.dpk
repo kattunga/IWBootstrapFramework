@@ -1,4 +1,4 @@
-package dclIWBootstrapD10;
+package dclIWBootstrapXE;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -34,9 +34,9 @@ requires
   vclimg,
   dbrtl,
   inet,
-  IWBootstrapD10,
-  Intraweb_14_D10,
-  dclIntraweb_14_D10;
+  IWBootstrapXE,
+  Intraweb_14_DXE,
+  dclIntraweb_14_DXE;
 
 contains
   IWBSRegister in 'IWBSRegister.pas',

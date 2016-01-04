@@ -2,7 +2,7 @@ unit IWBSCustomEvents;
 
 interface
 
-uses System.Classes, System.StrUtils,
+uses Classes, StrUtils,
      IWApplication, IWControl, IWBSRestServer;
 
 type

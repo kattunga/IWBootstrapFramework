@@ -3,7 +3,7 @@ unit IWBSDropDown;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.StrUtils,
+  SysUtils, Classes, StrUtils,
   IWRenderContext, IWHTMLTag, IWControl,
   IWBSCommon, IWBSButton, IWBSRegionCommon, IWBSRegion;
 

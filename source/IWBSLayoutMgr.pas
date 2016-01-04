@@ -3,7 +3,7 @@ unit IWBSLayoutMgr;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.StrUtils, Vcl.Forms, Vcl.Controls,
+  Classes, SysUtils, StrUtils, Forms, Controls,
   IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag;
 
 type

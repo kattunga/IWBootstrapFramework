@@ -2,7 +2,7 @@ unit IWBSUtils;
 
 interface
 
-uses System.Classes, System.SysUtils, System.StrUtils,
+uses Classes, SysUtils, StrUtils,
      IWApplication;
 
 function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): string;

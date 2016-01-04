@@ -3,7 +3,7 @@ unit IWBSRestServer;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.StrUtils,
+  Classes, SysUtils, StrUtils,
   IWApplication, IW.Content.Base, IW.HTTP.Request, IW.HTTP.Reply;
 
 type

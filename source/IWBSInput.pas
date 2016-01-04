@@ -3,7 +3,7 @@ unit IWBSInput;
 interface
 
 uses
-  System.SysUtils, System.Classes, data.db, System.StrUtils, Vcl.Controls,
+  SysUtils, Classes, db, StrUtils, Controls,
   IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseHTMLControl, IWBaseInterfaces,
   IWCompCheckBox, IWCompRadioButton, IWCompButton, IWDBStdCtrls, IWDBExtCtrls,
   IWBSRegion, IWBSCommon, IWBSCustomInput;

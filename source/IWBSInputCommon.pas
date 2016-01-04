@@ -2,7 +2,8 @@ unit IWBSInputCommon;
 
 interface
 
-uses System.Classes, System.SysUtils, System.SyncObjs, Vcl.Controls, IWVCLBaseControl, IWBSRegion,
+uses Classes, SysUtils, SyncObjs, Controls,
+     IWVCLBaseControl, IWBSRegion,
      IWRenderContext, IWHTMLTag;
 
 function IWBSCreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: TIWHTMLTag; const AHTMLName: string; ASpanDiv: boolean): TIWHTMLTag;

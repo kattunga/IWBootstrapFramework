@@ -3,7 +3,7 @@ unit IWBSButton;
 interface
 
 uses
-  System.SysUtils, System.Classes, data.db, System.StrUtils, Vcl.Controls,
+  SysUtils, Classes, db, StrUtils, Controls,
   IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseInterfaces,
   IWBSCustomControl, IWScriptEvents, IWBSRegion, IWBSCommon, IWBSRegionCommon;
 

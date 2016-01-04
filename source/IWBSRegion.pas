@@ -3,7 +3,7 @@ unit IWBSRegion;
 interface
 
 uses
-  System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, System.StrUtils,
+  SysUtils, Classes, Controls, Forms, StrUtils,
   IWVCLBaseContainer, IWApplication, IWBaseRenderContext,
   IWBaseContainerLayout, IWContainer, IWControl, IWHTMLContainer, IWHTML40Container, IWRegion, IW.Common.Strings,
   IWRenderContext, IWHTMLTag, IWBaseInterfaces, IWXMLTag, IWMarkupLanguageTag, IW.Common.RenderStream,

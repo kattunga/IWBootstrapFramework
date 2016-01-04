@@ -3,7 +3,7 @@ unit IWBSCustomInput;
 interface
 
 uses
-  System.Classes, System.SysUtils, System.StrUtils, Vcl.Controls, Data.db,
+  Classes, SysUtils, StrUtils, Controls, db,
   IWBSCustomControl,
   IWTypes, IWHTMLTag,
   IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces, IWScriptEvents,

@@ -2,7 +2,7 @@ unit IWBSImage;
 
 interface
 
-uses System.Classes, System.SysUtils, System.StrUtils, Vcl.Graphics, Data.Db,
+uses Classes, SysUtils, StrUtils, Graphics, Db,
      IWScriptEvents, IWBaseInterfaces,
      IWRenderContext, IWHTMLTag, IWBSCustomControl, IWCompExtCtrls;
 

@@ -2,7 +2,7 @@ unit IWBSDialogs;
 
 interface
 
-uses System.Classes, System.SysUtils, Vcl.Controls,
+uses Classes, SysUtils, Controls,
      IWControl, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag, IWForm,
      IWBSRegion, IWBSInput, IWBSButton, IWBSControls;
 

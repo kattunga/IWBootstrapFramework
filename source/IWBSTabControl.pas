@@ -3,7 +3,7 @@ unit IWBSTabControl;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.StrUtils,
+  SysUtils, Classes, StrUtils,
   IWApplication, IWBaseRenderContext, IWControl, IWBaseInterfaces,
   IWCompTabControl,
   IWRenderContext, IWHTMLTag, IWBSCommon, IWBSRegionCommon, IWXMLTag, IW.Common.RenderStream, IWBSCustomEvents;

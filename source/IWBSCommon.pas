@@ -6,7 +6,7 @@ interface
 // include in your application: define JsonDataObjects
 // don't enable here, we don't want to include in package
 
-uses System.Classes, System.SysUtils, System.StrUtils, Vcl.Forms,
+uses Classes, SysUtils, StrUtils, Forms,
      {$IFDEF IWBS_JSONDATAOBJECTS}JsonDataObjects, {$ENDIF}
      IWApplication, IWRenderContext, IWControl, IWHTML40Interfaces, IWBaseHTMLInterfaces, IWTypes,
      IWBaseInterfaces, IWHTMLTag, IWBaseRenderContext,

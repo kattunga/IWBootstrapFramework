@@ -1,7 +1,7 @@
 unit IWBSRegionCommon;
 
 interface
-  uses System.Classes, System.SysUtils, Vcl.Forms,
+  uses Classes, SysUtils, Forms,
        IWContainer, IWHTML40Container, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream, IWtypes, IWBaseInterfaces,
        IWBSCommon;
 

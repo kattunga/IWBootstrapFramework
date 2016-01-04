@@ -2,7 +2,7 @@ unit IWBSRegister;
 
 interface
 
-uses System.Classes, System.SysUtils, System.StrUtils, DesignEditors, IWDsnPaintHandlers;
+uses Classes, SysUtils, StrUtils, DesignEditors, IWDsnPaintHandlers;
 
 type
   TGlyphiconEditor = class(TEnumProperty)
@@ -66,7 +66,7 @@ procedure Register;
 
 implementation
 
-uses DesignIntf, Winapi.Windows, Vcl.Forms, Vcl.Dialogs, Vcl.Graphics,
+uses DesignIntf, Windows, Forms, Dialogs, Graphics,
      glyphicons, IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
      IWBSRegion, IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage;

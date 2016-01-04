@@ -2,7 +2,7 @@ unit IWBSControls;
 
 interface
 
-uses System.Classes, System.SysUtils, Data.Db,
+uses Classes, SysUtils, Db,
      IWControl, IWRenderContext, IWMarkupLanguageTag, IWXMLTag, IWHTMLTag,
      IWDBCommon, IWBSCommon,
      IWBSCustomControl;
