@@ -61,6 +61,8 @@ type
     procedure SetDataTarget(const Value: IIWBSContainer);
   protected
     function GetDisplayName: string; override;
+  public
+    procedure Assign(Source: TPersistent); override;
   published
     constructor Create(Collection: TCollection); override;
     property Caption: string read FCaption write FCaption;
@@ -85,6 +87,24 @@ begin
   inherited;
   FHref := '#';
   FTarget := '_self';
+end;
+
+procedure TIWBSDropDownItem.Assign(Source: TPersistent);
+begin
+  if Source is TIWBSDropDownItem then
+    begin
+      Caption := TIWBSDropDownItem(Source).Caption;
+      BSGlyphicon := TIWBSDropDownItem(Source).BSGlyphicon;
+      DataParent := TIWBSDropDownItem(Source).DataParent;
+      DataTarget := TIWBSDropDownItem(Source).DataTarget;
+      Header := TIWBSDropDownItem(Source).Header;
+      Href := TIWBSDropDownItem(Source).Href;
+      Target := TIWBSDropDownItem(Source).Target;
+      OnAsyncClick := TIWBSDropDownItem(Source).OnAsyncClick;
+      DropDownItems.Assign(TIWBSDropDownItem(Source).DropDownItems);
+    end
+  else
+    inherited;
 end;
 
 function TIWBSDropDownItem.GetDisplayName: string;
