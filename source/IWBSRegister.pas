@@ -419,7 +419,7 @@ begin
       th := ControlCanvas.TextHeight('X');
       c := GetGlyphiconChar(TIWBSGlyphicon(Control).BSGlyphicon);
       if c <> '' then
-        ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Height-th) div 2, c);
+        ControlCanvas.TextRect(LRect, LRect.Left, (LRect.Bottom-LRect.Top-th) div 2, c);
     except
     end;
   end;
