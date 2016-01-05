@@ -107,7 +107,7 @@ begin
         AComponent.CustomAsyncEvents.Items[i].RegisterEvent(AContext.WebApplication, LHTMLName);
         AComponent.CustomAsyncEvents.Items[i].ParseParam(LJScript);
         if AComponent.CustomAsyncEvents.Items[i].AutoBind and (AComponent.CustomAsyncEvents.Items[i].EventName <> '') then
-          LJScript.Add('$("#'+LHTMLName+'").off("'+LHTMLName+'").on("'+AComponent.CustomAsyncEvents.Items[i].EventName+'", function('+AComponent.CustomAsyncEvents.Items[i].EventParams+') {'+AComponent.CustomAsyncEvents.Items[i].GetScript+'});');
+          LJScript.Add('$("#'+LHTMLName+'").off("'+AComponent.CustomAsyncEvents.Items[i].EventName+'").on("'+AComponent.CustomAsyncEvents.Items[i].EventName+'", function('+AComponent.CustomAsyncEvents.Items[i].EventParams+') {'+AComponent.CustomAsyncEvents.Items[i].GetScript+'});');
       end;
 
     if AComponent.IsStoredCustomRestEvents then
