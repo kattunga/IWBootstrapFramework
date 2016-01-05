@@ -73,6 +73,21 @@ type
 function GetFieldBlobStream(ADataSet: TDataSet; AField: TBlobField): TStream;
 var
   Size: Longint;
+  GraphicHeader: TGraphicHeader;
+begin
+  Result := ADataSet.CreateBlobStream(AField, bmRead);
+  Size := Result.Size;
+  if Size >= SizeOf(TGraphicHeader) then begin
+    Result.Read(GraphicHeader, SizeOf(GraphicHeader));
+    if (GraphicHeader.Count <> 1) or (GraphicHeader.HType <> $0100) or
+      (GraphicHeader.Size <> Size - SizeOf(GraphicHeader)) then
+      Result.Position := 0;
+  end;
+end;
+{
+function GetFieldBlobStream(ADataSet: TDataSet; AField: TBlobField): TStream;
+var
+  Size: Longint;
   Header: TBytes;
   GraphicHeader: TGraphicHeader;
 begin
@@ -87,6 +102,7 @@ begin
       Result.Position := 0;
   end;
 end;
+}
 {$endregion}
 
 {$region 'TIWBSImage'}
