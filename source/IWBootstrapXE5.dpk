@@ -55,7 +55,9 @@ contains
   IWBSCustomEvents in 'IWBSCustomEvents.pas',
   IWBSGlobal in 'IWBSGlobal.pas',
   IWBSDialogs in 'IWBSDialogs.pas',
-  IWBSDropDown in 'IWBSDropDown.pas';
+  IWBSDropDown in 'IWBSDropDown.pas',
+  IWBSJsonDataObjects in 'IWBSJsonDataObjects.pas',
+  IWBSImageUtils in 'IWBSImageUtils.pas';
 
 end.
 
