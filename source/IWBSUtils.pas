@@ -15,7 +15,7 @@ function IWBSTextToJsParamText(AText: string): string;
 procedure IWBSExecuteAsyncJScript(AWebApplication: TIWApplication; const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 procedure IWBSExecuteAsyncJScript(const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 
-function IWBSexecuteAjaxEventJs(const HtmlName, EventName: string): string;
+function IWBSExecuteAjaxEventJs(const HtmlName, EventName: string): string;
 
 implementation
 
