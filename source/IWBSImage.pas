@@ -59,51 +59,7 @@ implementation
 
 uses IW.Common.System, IW.Common.Strings, IWTypes, IWForm, IWAppCache, IW.CacheStream,
      IWDbCommon, IWURL, IWFilePath, IWGlobal, InCoderMIME,
-     IWBSCommon;
-
-{$region 'FieldBlobStream'}
-// this comes from TBlobField.SaveToStreamPersist, is the only way to directly obtain a valid image without usen a TPicture
-type
-  TGraphicHeader = record
-    Count: Word;                { Fixed at 1 }
-    HType: Word;                { Fixed at $0100 }
-    Size: Longint;              { Size not including header }
-  end;
-
-function GetFieldBlobStream(ADataSet: TDataSet; AField: TBlobField): TStream;
-var
-  Size: Longint;
-  GraphicHeader: TGraphicHeader;
-begin
-  Result := ADataSet.CreateBlobStream(AField, bmRead);
-  Size := Result.Size;
-  if Size >= SizeOf(TGraphicHeader) then begin
-    Result.Read(GraphicHeader, SizeOf(GraphicHeader));
-    if (GraphicHeader.Count <> 1) or (GraphicHeader.HType <> $0100) or
-      (GraphicHeader.Size <> Size - SizeOf(GraphicHeader)) then
-      Result.Position := 0;
-  end;
-end;
-{
-function GetFieldBlobStream(ADataSet: TDataSet; AField: TBlobField): TStream;
-var
-  Size: Longint;
-  Header: TBytes;
-  GraphicHeader: TGraphicHeader;
-begin
-  Result := ADataSet.CreateBlobStream(AField, bmRead);
-  Size := Result.Size;
-  if Size >= SizeOf(TGraphicHeader) then begin
-    SetLength(Header, SizeOf(TGraphicHeader));
-    Result.Read(Header, 0, Length(Header));
-    Move(Header[0], GraphicHeader, SizeOf(TGraphicHeader));
-    if (GraphicHeader.Count <> 1) or (GraphicHeader.HType <> $0100) or
-      (GraphicHeader.Size <> Size - SizeOf(GraphicHeader)) then
-      Result.Position := 0;
-  end;
-end;
-}
-{$endregion}
+     IWBSCommon, IWBSImageUtils;
 
 {$region 'TIWBSImage'}
 constructor TIWBSImage.Create(AOwner: TComponent);
@@ -211,7 +167,7 @@ begin
     if Assigned(FPicture) then
       FPicture.Graphic := nil;
     if (LField is TBlobField) and not LField.IsNull then begin
-      LStream := GetFieldBlobStream(DataSource.DataSet, TBlobField(LField));
+      LStream := IWBSGetFieldBlobStream(DataSource.DataSet, TBlobField(LField));
       try
         if FEmbedBase64 then
           FActiveSrc := 'data:image;base64, '+TIdEncoderMIME.EncodeStream(LStream)
