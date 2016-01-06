@@ -142,9 +142,19 @@ begin
   Doc := Copy(aRequest.PathInfo,i+Length(IWBS_RESTURLBASE), MaxInt);
   if Doc <> '' then
     begin
-      IWBSPerformRestCallback(aSession, Doc, aRequest, aReply, aParams);
-      if aReply.DataType = rtNone then
-        aReply.Code := 200;
+      try
+        IWBSPerformRestCallback(aSession, Doc, aRequest, aReply, aParams);
+        if aReply.DataType = rtNone then
+          aReply.Code := 200;
+      except
+        on E: Exception do begin
+          aReply.ResetReplyType;
+          aReply.Clear;
+          aReply.Code := 500;
+          aReply.ContentType  := 'text/plain';
+          aReply.WriteString(E.Message);
+        end;
+      end;
     end
   else
     aReply.Code := 404;

@@ -2,15 +2,10 @@ unit IWBSCommon;
 
 interface
 
-// if you have JsonDataObjects from https://github.com/ahausladen/JsonDataObjects
-// include in your application: define JsonDataObjects
-// don't enable here, we don't want to include in package
-
 uses Classes, SysUtils, StrUtils, Forms,
-     {$IFDEF IWBS_JSONDATAOBJECTS}JsonDataObjects, {$ENDIF}
      IWApplication, IWRenderContext, IWControl, IWHTML40Interfaces, IWBaseHTMLInterfaces, IWTypes,
      IWBaseInterfaces, IWHTMLTag, IWBaseRenderContext,
-     IWBSCustomEvents;
+     IWBSJsonDataObjects, IWBSCustomEvents;
 
 const
   EOL = #13#10;
@@ -32,14 +27,12 @@ const
 type
 
   TIWBSScriptParams = class(TStringList)
-  {$IFDEF IWBS_JSONDATAOBJECTS}
   private
     function GetJson(const Name: string): TJsonObject;
     procedure SetJson(const Name: string; const Value: TJsonObject);
   public
     constructor Create;
     property Json[const Name: string]: TJsonObject read GetJson write SetJson;
-  {$ENDIF}
   end;
 
 
@@ -449,11 +442,9 @@ begin
 
       i := AComponent.ScriptParams.IndexOf(LParNm);
       if i >= 0 then begin
-        {$IFDEF IWBS_JSONDATAOBJECTS}
         if AComponent.ScriptParams.Objects[i] is TJsonObject then
           Result := ReplaceText(Result, LParam, TJsonObject(AComponent.ScriptParams.Objects[i]).ToJSON)
         else
-        {$ENDIF}
           Result := ReplaceText(Result, LParam, '');
       end;
 
@@ -518,7 +509,6 @@ end;
 {$endregion}
 
 {$region 'TIWBSScriptParams'}
-{$IFDEF IWBS_JSONDATAOBJECTS}
 constructor TIWBSScriptParams.Create;
 begin
   inherited;
@@ -549,7 +539,6 @@ procedure TIWBSScriptParams.SetJson(const Name: string; const Value: TJsonObject
 begin
   Json[Name].Assign(Value);
 end;
-{$ENDIF}
 {$endregion}
 
 end.
