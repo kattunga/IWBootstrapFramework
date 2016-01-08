@@ -41,6 +41,7 @@ end;
 destructor TIWBSLayoutMgr.Destroy;
 begin
   FreeAndNil(FLinkFiles);
+  inherited;
 end;
 
 procedure TIWBSLayoutMgr.AddLinkFile(const AFile: string);
