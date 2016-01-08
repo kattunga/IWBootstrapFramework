@@ -6,40 +6,40 @@
     $.fn.bootstrapDynamicTabs = function () {
 
 		this.each(function () {
-			var $container = $(this);
+			var $horizontalContainer = $(this);
 
 			function DynamicTabs() {
 
-				// Create object
-				var TABS_OBJECT;
-				TABS_OBJECT = this;
-				TABS_OBJECT.tabsHorizontalContainer = $container;
-				TABS_OBJECT.tabsHorizontalContainer.addClass("dynamic-tabs").wrap("<div class='dynamic-tabs-container clearfix'></div>");
+				// create wrapper and menu if first time
+				if ($horizontalContainer.parent('.dynamic-tabs-container').length === 0) {
+
+					// add wrapper
+					$horizontalContainer.addClass("dynamic-tabs").wrap("<div class='dynamic-tabs-container clearfix'></div>");
+
+					// Attach a dropdown to the right of the tabs bar
+					// This will be toggled if tabs can't fit in a given viewport size
+					$horizontalContainer.after(
+						"<div class='nav navbar-nav navbar-right dropdown tabs-dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-menu-hamburger' style='font-size: 1.6em;'/></a><ul class='dropdown-menu' role='menu'><div class='dropdown-header visible-xs'><p class='count'>Tabs</p><button type='button' class='close' data-dismiss='dropdown'><span aria-hidden='true'>&times;</span></button><div class='divider visible-xs'></div></div></ul></div>"
+					);
+				}
 
 				// Mark each tab with a 'tab-id' for easy access
-				var $tabs      = TABS_OBJECT.tabsHorizontalContainer.children('li');
+				var $tabs = $horizontalContainer.children('li');
 				$tabs.each(function (i) {
 					$(this)
 						.addClass("dynamic-tab")
 						.attr("tab-id", i);
 				});
 
-				// Attach a dropdown to the right of the tabs bar
-				// This will be toggled if tabs can't fit in a given viewport size
-				TABS_OBJECT.tabsHorizontalContainer.after(
-					"<div class='nav navbar-nav navbar-right dropdown tabs-dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-menu-hamburger' style='font-size: 1.6em;'/></a><ul class='dropdown-menu' role='menu'><div class='dropdown-header visible-xs'><p class='count'>Tabs</p><button type='button' class='close' data-dismiss='dropdown'><span aria-hidden='true'>&times;</span></button><div class='divider visible-xs'></div></div></ul></div>"
-				);
-				TABS_OBJECT.tabsVerticalContainer = TABS_OBJECT.tabsHorizontalContainer.siblings(".tabs-dropdown").find(".dropdown-menu");
-
 				// Update tabs funtion
 				var updateTabs = function () {
 
 					var i, horizontalTab, tabId, verticalTab, tabWidth, isVisible;
 
-					var availableWidth = TABS_OBJECT.tabsHorizontalContainer.width();
+					var availableWidth = $horizontalContainer.width();
 					var numVisibleHorizontalTabs = 1;
 
-					var activeTab = TABS_OBJECT.tabsHorizontalContainer.find('.active');
+					var activeTab = $horizontalContainer.find('.active');
 					var activeTabIndex = activeTab.index();
 
 					// active tab is always visible
@@ -47,7 +47,7 @@
 					availableWidth = availableWidth - activeTab.outerWidth(true);
 
 					// Determine which tabs to show/hide
-					var $tabs = TABS_OBJECT.tabsHorizontalContainer.children('li');
+					var $tabs = $horizontalContainer.children('li');
 
 					// from active to firt
 					for (i = activeTabIndex - 1; i >= 0; i--) {
@@ -90,27 +90,29 @@
 					// Toggle the Tabs dropdown if there are more tabs than can fit in the tabs horizontal container
 					var numVisibleVerticalTabs = $tabs.length - numVisibleHorizontalTabs;
 					var hasVerticalTabs = (numVisibleVerticalTabs > 0);
-					TABS_OBJECT.tabsHorizontalContainer.siblings(".tabs-dropdown").toggleClass("hidden", !hasVerticalTabs);
+					$horizontalContainer.siblings(".tabs-dropdown").toggleClass("hidden", !hasVerticalTabs);
 				};
 
 				// tabs dropdown event
 				var onDropDow = function () {
 					// Clone each tab into the dropdown
-					TABS_OBJECT.tabsVerticalContainer.html("");
-					TABS_OBJECT.tabsHorizontalContainer.children('li').clone().appendTo(TABS_OBJECT.tabsVerticalContainer);
-					TABS_OBJECT.tabsVerticalContainer.children('li').toggleClass("hidden");
-					TABS_OBJECT.tabsVerticalContainer.children('li').on("click", function (e) {
-						TABS_OBJECT.tabsHorizontalContainer.find("[tab-id=" + $(this).attr("tab-id") + "] a").tab("show");
+					var $verticalContainer = $horizontalContainer.siblings(".tabs-dropdown").find(".dropdown-menu");
+
+					$verticalContainer.html("");
+					$horizontalContainer.children('li').clone().appendTo($verticalContainer);
+					$verticalContainer.children('li').toggleClass("hidden");
+					$verticalContainer.children('li').on("click", function (e) {
+						$horizontalContainer.find("[tab-id=" + $(this).attr("tab-id") + "] a").tab("show");
 						updateTabs();
 					});
 				};
-				TABS_OBJECT.tabsHorizontalContainer.siblings(".tabs-dropdown").on('show.bs.dropdown', onDropDow);
+				$horizontalContainer.siblings(".tabs-dropdown").off('show.bs.dropdown').on('show.bs.dropdown', onDropDow);
 
-				// now update tabs
+				// update tabs
 				updateTabs();
 
 				// Update tabs on window resize
-				$(window).resize(function () {
+				$(window).off("resize.dyntabs").on("resize.dyntabs", function () {
 					updateTabs();
 				});
 			}
