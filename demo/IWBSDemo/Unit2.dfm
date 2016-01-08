@@ -1711,7 +1711,6 @@ object IWForm2: TIWForm2
                     Top = 35
                     Width = 201
                     Height = 25
-                    Cursor = crWait
                     ExtraTagParams.Strings = (
                       '')
                     FriendlyName = 'IWBSInput1'

@@ -8,13 +8,13 @@ uses
   IWCompEdit, Vcl.Forms, IWVCLBaseContainer, IWContainer, IWHTMLContainer,
   IWHTML40Container, IWRegion, IWBSRegion, IWBSCustomControl, IWBSButton,
   IWVCLComponent, IWBaseLayoutComponent, IWBaseContainerLayout,
-  IWContainerLayout, IWBSLayoutMgr, IWBSImage;
+  IWContainerLayout, IWBSLayoutMgr, IWBSImage, IWBSCustomInput, IWBSInput,
+  IWCompMemo;
 
 type
   TIWForm4 = class(TIWAppForm)
-    IWBSLayoutMgr1: TIWBSLayoutMgr;
-    IWBSRegion1: TIWBSRegion;
-    IWBSImage1: TIWBSImage;
+    IWButton1: TIWButton;
+    IWMemo1: TIWMemo;
   public
   end;
 

@@ -46,7 +46,7 @@ type
   // TIWBSButton.DataDismiss
   TIWBSButtonDataDismiss = (bsbdNone, bsbdModal, bsbdAlert);
   // TIWBSButton.AsyncClickProc
-  TIWBSAsyncClickProc = reference to procedure(EventParams: TStringList);
+  TIWBSAsyncEventProc = reference to procedure(Sender: TObject; EventParams: TStringList);
   // TIWBSButton.ButtonType
   TIWBSButtonType = (iwbsbtButton, iwbsbtSubmit, iwbsbtReset);
 
@@ -56,7 +56,7 @@ type
   TIWBSButton = class(TIWBSCustomButton)
   private
     FAnchor: boolean;
-    FAsyncClickProc: TIWBSAsyncClickProc;
+    FAsyncClickProc: TIWBSAsyncEventProc;
     FButtonType: TIWBSButtonType;
     FDataDismiss: TIWBSButtonDataDismiss;
     FDataParent: IIWBSContainer;
@@ -66,7 +66,7 @@ type
     FTarget: string;
 
     procedure DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
-    procedure SetAsyncClickProc(Value: TIWBSAsyncClickProc);
+    procedure SetAsyncClickProc(Value: TIWBSAsyncEventProc);
     function IsHrefStored: Boolean;
     function IsTargetStored: Boolean;
     procedure SetDataTarget(const Value: IIWBSContainer);
@@ -81,7 +81,7 @@ type
     constructor Create(AOwner: TComponent); override;
     // Anonymous procedure that let you execute code when button is pressed without the need of declare an event. @br
     // Usefull when you create buttons at runtime
-    property AsyncClickProc: TIWBSAsyncClickProc read FAsyncClickProc write SetAsyncClickProc;
+    property AsyncClickProc: TIWBSAsyncEventProc read FAsyncClickProc write SetAsyncClickProc;
   published
     // If true it will render an anchor if not a button. (This property should be droped, the condition should be autodetected)
     property Anchor: boolean read FAnchor write FAnchor default False;
@@ -126,7 +126,6 @@ begin
   FButtonStyle := bsbsDefault;
   FGlyphicon := '';
 
-  FCanReceiveFocus := True;
   FNeedsFormTag := True;
   Height := 25;
   Width := 200;
@@ -276,10 +275,10 @@ end;
 
 procedure TIWBSButton.DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
 begin
-  FAsyncClickProc(EventParams);
+  FAsyncClickProc(Sender, EventParams);
 end;
 
-procedure TIWBSButton.SetAsyncClickProc(Value: TIWBSAsyncClickProc);
+procedure TIWBSButton.SetAsyncClickProc(Value: TIWBSAsyncEventProc);
 begin
   FAsyncClickProc := Value;
   OnAsyncClick := DoAsyncClickProc

@@ -7,7 +7,6 @@ object IWForm4: TIWForm4
   AllowPageAccess = True
   ConnectionMode = cmAny
   Background.Fixed = False
-  LayoutMgr = IWBSLayoutMgr1
   HandleTabs = False
   LeftToRight = True
   LockUntilLoaded = True
@@ -16,22 +15,35 @@ object IWForm4: TIWForm4
   XPTheme = True
   DesignLeft = 8
   DesignTop = 8
-  object IWBSRegion1: TIWBSRegion
-    Left = 0
-    Top = 0
-    Width = 555
-    Height = 400
-    Align = alClient
-    object IWBSImage1: TIWBSImage
-      Left = 40
-      Top = 36
-      Width = 333
-      Height = 313
-      FriendlyName = 'IWBSImage1'
-    end
+  object IWButton1: TIWButton
+    Left = 60
+    Top = 156
+    Width = 75
+    Height = 25
+    Caption = 'IWButton1'
+    Color = clBtnFace
+    Font.Color = clNone
+    Font.Size = 10
+    Font.Style = []
+    FriendlyName = 'IWButton1'
+    TabOrder = 0
   end
-  object IWBSLayoutMgr1: TIWBSLayoutMgr
-    Left = 152
-    Top = 140
+  object IWMemo1: TIWMemo
+    Left = 60
+    Top = 200
+    Width = 121
+    Height = 121
+    BGColor = clNone
+    Editable = True
+    Font.Color = clNone
+    Font.Size = 10
+    Font.Style = []
+    InvisibleBorder = False
+    HorizScrollBar = False
+    VertScrollBar = True
+    Required = False
+    TabOrder = 1
+    SubmitOnAsyncEvent = True
+    FriendlyName = 'IWMemo1'
   end
 end

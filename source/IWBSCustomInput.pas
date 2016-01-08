@@ -143,7 +143,6 @@ begin
   FReadOnly := False;
   FRequired := False;
 
-  FCanReceiveFocus := True;
   FNeedsFormTag := True;
   FIsStatic := False;
   FSupportReadOnly := False;

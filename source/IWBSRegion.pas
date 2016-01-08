@@ -915,7 +915,7 @@ end;
 procedure TIWBSModal.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
 begin
   inherited;
-  AScript.Add('$("#'+AHTMLName+'").off("shown.bs.modal").on("shown.bs.modal", function() { $(this).find("[autofocus]").focus(); });');
+  AScript.Add('$("#'+AHTMLName+'").off("shown.bs.modal").on("shown.bs.modal", function() { var elem; elem = $(this).find("[autofocus]"); if (elem.length !== 0) {elem.focus();} else {$(this).find("button:last").focus(); } });');
   if Assigned(FOnAsyncShow) then begin
     AScript.Add('$("#'+AHTMLName+'").off("show.bs.modal").on("show.bs.modal", function(e){ executeAjaxEvent("", null, "'+AHTMLName+'.DoOnAsyncShow", true, null, true); });');
     AContext.WebApplication.RegisterCallBack(AHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);

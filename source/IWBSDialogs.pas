@@ -19,15 +19,20 @@ type
     FBodyControl: TIWBSText;
     FTitleControl: TIWBSLabel;
 
+    FAsyncDismissProc: TIWBSAsyncEventProc;
+
     procedure SetBodyText(const Value: string);
     function GetBodyText: string;
     procedure SetTitleText(const Value: string);
     function GetTitleText: string;
+  protected
+    procedure DoOnAsyncHide(AParams: TStringList); override;
   public
-    constructor Create(AForm: TIWForm; const ATitleText, ABodyText: string; ACloseButton: TIWBSDialogCloseButton = iwbsdcBoth); reintroduce; overload;
-    constructor Create(const ATitleText, ABodyText: string; ACloseButton: TIWBSDialogCloseButton = iwbsdcBoth); reintroduce; overload;
+    constructor Create(AForm: TIWForm; const ATitleText, ABodyText: string; ACloseButton: TIWBSDialogCloseButton = iwbsdcBoth; AAsyncDismissProc: TIWBSAsyncEventProc = nil); reintroduce; overload;
+    constructor Create(const ATitleText, ABodyText: string; ACloseButton: TIWBSDialogCloseButton = iwbsdcBoth; AAsyncDismissProc: TIWBSAsyncEventProc = nil); reintroduce; overload;
+    constructor Create(const ATitleText, ABodyText: string; AAsyncDismissProc: TIWBSAsyncEventProc); reintroduce; overload;
 
-    function AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc = nil): TIWBSButton;
+    function AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncEventProc = nil; ADismiss: boolean = True): TIWBSButton;
 
     function GetHeader: TIWBSRegion;
     function GetBody: TIWBSRegion;
@@ -67,7 +72,7 @@ type
 
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
 
-    function AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc = nil): TIWBSButton;
+    function AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncEventProc = nil): TIWBSButton;
 
     property AlertStyle: TIWBSAlertStyle read FAlertStyle write SetAlertStyle default bsasSuccess;
     property AlertPosition: TIWBSAlertPosition read FAlertPosition write FAlertPosition default bsapRightTop;
@@ -87,7 +92,7 @@ implementation
 uses IWBSRegionCommon, IWApplication, IWBSUtils, IWBSCommon;
 
 {$region 'TIWBSDialog'}
-constructor TIWBSDialog.Create(AForm: TIWForm; const ATitleText, ABodyText: string; ACloseButton: TIWBSDialogCloseButton = iwbsdcBoth);
+constructor TIWBSDialog.Create(AForm: TIWForm; const ATitleText, ABodyText: string; ACloseButton: TIWBSDialogCloseButton = iwbsdcBoth; AAsyncDismissProc: TIWBSAsyncEventProc = nil);
 begin
   inherited Create(AForm);
   Parent := AForm;
@@ -98,6 +103,8 @@ begin
   FContent := TIWBSRegion.Create(Owner);
   FContent.BSRegionType := bsrtModalContent;
   FContent.Parent := Self;
+
+  FAsyncDismissProc := AAsyncDismissProc;
 
   if ACloseButton in [iwbsdcCaption, iwbsdcBoth] then
     with TIWBSButton.Create(Owner) do begin
@@ -116,15 +123,27 @@ begin
     with TIWBSButton.Create(Owner) do begin
       Parent := GetFooter;
       Caption := sIWBSDialogCloseCaption;
-      DataDismiss := bsbdModal;
       Top := 0;
       Left := MaxInt;
+      DataDismiss := bsbdModal;
     end;
 end;
 
-constructor TIWBSDialog.Create(const ATitleText, ABodyText: string; ACloseButton: TIWBSDialogCloseButton = iwbsdcBoth);
+constructor TIWBSDialog.Create(const ATitleText, ABodyText: string; AAsyncDismissProc: TIWBSAsyncEventProc);
 begin
-  Create(TIWForm(GGetWebApplicationThreadVar.ActiveForm), ATitleText, ABodyText, ACloseButton);
+  Create(TIWForm(GGetWebApplicationThreadVar.ActiveForm), ATitleText, ABodyText, iwbsdcBoth, AAsyncDismissProc);
+end;
+
+constructor TIWBSDialog.Create(const ATitleText, ABodyText: string; ACloseButton: TIWBSDialogCloseButton = iwbsdcBoth; AAsyncDismissProc: TIWBSAsyncEventProc = nil);
+begin
+  Create(TIWForm(GGetWebApplicationThreadVar.ActiveForm), ATitleText, ABodyText, ACloseButton, AAsyncDismissProc);
+end;
+
+procedure TIWBSDialog.DoOnAsyncHide(AParams: TStringList);
+begin
+  if Assigned(FAsyncDismissProc) then
+    FAsyncDismissProc(Self, AParams);
+  inherited;
 end;
 
 function TIWBSDialog.GetBodyControl: TIWBSText;
@@ -210,12 +229,25 @@ begin
     GetTitleControl.Caption := Value;
 end;
 
-function TIWBSDialog.AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc = nil): TIWBSButton;
+function TIWBSDialog.AddButton(AParent: TIWBSRegion; const ACaption: string; AAsyncClickProc: TIWBSAsyncEventProc = nil; ADismiss: boolean = True): TIWBSButton;
 begin
   Result := TIWBSButton.Create(Owner);
   Result.Parent := AParent;
   Result.Caption := ACaption;
-  Result.AsyncClickProc := AAsyncClickProc;
+  if Assigned(AAsyncClickProc) then
+    begin
+      Result.AsyncClickProc :=
+        procedure(Sender: TObject; EventParams: TStringList)
+        begin
+          AAsyncClickProc(Sender, EventParams);
+          if ADismiss then begin
+            FAsyncDismissProc := nil;
+            ModalVisible := False;
+          end;
+        end;
+    end
+  else
+    Result.DataDismiss := bsbdModal;
 end;
 {$endregion}
 
@@ -305,7 +337,7 @@ begin
   Free;
 end;
 
-function TIWBSAlert.AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncClickProc = nil): TIWBSButton;
+function TIWBSAlert.AddButton(const ACaption: string; AAsyncClickProc: TIWBSAsyncEventProc = nil): TIWBSButton;
 begin
   Result := TIWBSButton.Create(Owner);
   Result.Parent := Self;
