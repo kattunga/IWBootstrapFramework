@@ -15,7 +15,7 @@ function IWBSTextToJsParamText(AText: string): string;
 procedure IWBSExecuteAsyncJScript(AWebApplication: TIWApplication; const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 procedure IWBSExecuteAsyncJScript(const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 
-function IWBSExecuteAjaxEventJs(const HtmlName, EventName: string): string;
+function IWBSExecuteAjaxEventJs(const HtmlName, EventName: string; const Params: string = ''; ALock: boolean = False): string;
 
 implementation
 
@@ -100,9 +100,12 @@ begin
   IWBSExecuteAsyncJScript(LWebApplication, AScript, AsCDATA, AFirst);
 end;
 
-function IWBSexecuteAjaxEventJs(const HtmlName, EventName: string): string;
+function IWBSexecuteAjaxEventJs(const HtmlName, EventName: string; const Params: string = ''; ALock: boolean = False): string;
 begin
-  Result := format('executeAjaxEvent("",null,"%s",true,null,true)',[HTMLName+EventName]);
+  if ALock then
+    Result := format('ajaxCall("%s","%s", true)',[HTMLName+EventName, Params])
+  else
+    Result := format('ajaxCall("%s","%s")',[HTMLName+EventName, Params]);
 end;
 
 end.
