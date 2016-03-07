@@ -84,6 +84,7 @@ begin
   end;
 
   LInitProcCode := '  IW.initIWCL('+AComponent.HTMLControlImplementation.IWCLParentName+',"'+LHTMLName+'",'+BoolToString(LSubmitOnAsync)+');';
+  LPageContext.AddToIWCLInitProc('//comment '+TimeToStr(now));
   LPageContext.AddToIWCLInitProc(LInitProcCode);
 
   AComponent.ScriptEvents.ClearHooked;
@@ -102,13 +103,15 @@ begin
     if LJScript.Count > 0 then
       LJScript.Text := TIWBSCommon.ReplaceParams(AComponent, LJScript.Text);
 
-    if AComponent.IsStoredCustomAsyncEvents then
+    if AComponent.IsStoredCustomAsyncEvents then begin
       for i := 0 to AComponent.CustomAsyncEvents.Count-1 do begin
         AComponent.CustomAsyncEvents.Items[i].RegisterEvent(AContext.WebApplication, LHTMLName);
         AComponent.CustomAsyncEvents.Items[i].ParseParam(LJScript);
         if AComponent.CustomAsyncEvents.Items[i].AutoBind and (AComponent.CustomAsyncEvents.Items[i].EventName <> '') then
           LJScript.Add('$("#'+LHTMLName+'").off("'+AComponent.CustomAsyncEvents.Items[i].EventName+'").on("'+AComponent.CustomAsyncEvents.Items[i].EventName+'", function('+AComponent.CustomAsyncEvents.Items[i].EventParams+') {'+AComponent.CustomAsyncEvents.Items[i].GetScript+'});');
       end;
+      LJScript.Text := TIWBSCommon.ReplaceParams(AComponent, LJScript.Text);
+    end;
 
     if AComponent.IsStoredCustomRestEvents then
       for i := 0 to AComponent.CustomRestEvents.Count-1 do begin

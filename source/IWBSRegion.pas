@@ -18,6 +18,7 @@ type
     FOldVisible: boolean;
 
     FAsyncRefreshControl: boolean;
+    FRendered: boolean;
     FCustomAsyncEvents: TIWBSCustomAsyncEvents;
     FCustomRestEvents: TIWBSCustomRestEvents;
     FTagType: string;
@@ -277,7 +278,8 @@ end;
 constructor TIWBSCustomRegion.Create(AOwner: TComponent);
 begin
   inherited;
-  FAsyncRefreshControl := True;
+  FAsyncRefreshControl := False;
+  FRendered := False;
   FReleased := False;
   FCss := '';
   FContentSuffix := '';
@@ -361,6 +363,7 @@ end;
 procedure TIWBSCustomRegion.AsyncRemoveControl;
 begin
   TIWBSCommon.AsyncRemoveControl(HTMLName);
+  FRendered := False;
 end;
 
 procedure TIWBSCustomRegion.Release;
@@ -554,10 +557,9 @@ begin
   Result := nil;
   xHTMLName := HTMLName;
 
-  if FAsyncRefreshControl then
+  if FAsyncRefreshControl or not FRendered then
     begin
       TIWBSRegionCommon.CancelChildAsyncRender(Self);
-      DoRender;
       TIWBSCommon.RenderAsync(xHTMLName, Self, AContext);
     end
   else
@@ -608,6 +610,7 @@ begin
   Result := FRegionDiv;
 
   FAsyncRefreshControl := False;
+  FRendered := True;
 end;
 
 procedure TIWBSCustomRegion.RenderScripts(AComponentContext: TIWCompContext);

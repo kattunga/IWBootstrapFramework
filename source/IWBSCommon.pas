@@ -322,12 +322,39 @@ begin
 end;
 
 class procedure TIWBSCommon.RenderAsync(const AHTMLName: string; AControl: IIWBSComponent; AContext: TIWCompContext);
+  function ParentTreeVisibility(AControl: TComponent): boolean;
+  var
+    LContainer: IIWInvisibleControlRenderer;
+    LControl: IIWBaseControl;
+  begin
+    Result := True;
+    LControl := BaseControlInterface(AControl);
+    if LControl <> nil then begin
+      if not LControl.Visible then begin
+        GetIWInterface(LControl.ParentContainer.InterfaceInstance, IIWInvisibleControlRenderer, LContainer);
+        if not LContainer.RenderInvisibleControls then
+          Result := False;
+      end;
+      if Result and (LControl.ParentContainer <> nil) then
+        Result := ParentTreeVisibility(LControl.ParentContainer.InterfaceInstance);
+    end;
+  end;
 var
   LParentContainer: IIWBaseHTMLComponent;
+  LBaseContainer: IIWBaseContainer;
   LParentSl: string;
   LHtmlTag: string;
 begin
-  // get base container
+  // if not visible and parent.RenderInvisibleControls is false, do not render
+  if not ParentTreeVisibility(AControl.InterfaceInstance) then
+    Exit;
+
+  // if baseContainer, DoRender;
+  GetIWInterface(AControl.InterfaceInstance,IIWBaseContainer,LBaseContainer);
+  if LBaseContainer <> nil then
+    LBaseContainer.DoRender;
+
+  // get parent container
   if AControl.ParentContainer.InterfaceInstance is TIWForm then
     LParentSl := 'body'
   else
@@ -337,12 +364,6 @@ begin
         LParentSl := '#'+LParentContainer.HTMLName
       else
         Exit;
-
-      // if not visible and parent.RenderInvisibleControls is false, do not render
-      if not BaseControlInterface(AControl.InterfaceInstance).Visible then
-        if SupportsInterface(AControl.ParentContainer.InterfaceInstance, IIWInvisibleControlRenderer) then
-          if not (AControl.ParentContainer as IIWInvisibleControlRenderer).RenderInvisibleControls then
-            Exit;
     end;
 
   LHtmlTag := RenderHtmlTag(AControl, AContext);

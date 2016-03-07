@@ -18,6 +18,7 @@ type
     FOldVisible: boolean;
 
     FAsyncRefreshControl: boolean;
+    FRendered: boolean;
     FCustomAsyncEvents: TIWBSCustomAsyncEvents;
     FCustomRestEvents: TIWBSCustomRestEvents;
     FTabIndex: Integer;
@@ -185,7 +186,8 @@ uses IW.Common.RenderStream, IWBaseHTMLInterfaces, IWForm, IWBSScriptEvents, IWB
 constructor TIWBSCustomControl.Create(AOwner: TComponent);
 begin
   inherited;
-  FAsyncRefreshControl := True;
+  FAsyncRefreshControl := False;
+  FRendered := False;
   FCustomAsyncEvents := nil;
   FCustomRestEvents := nil;
   FMainID := '';
@@ -234,6 +236,7 @@ end;
 procedure TIWBSCustomControl.AsyncRemoveControl;
 begin
   TIWBSCommon.AsyncRemoveControl(HTMLName);
+  FRendered := False;
 end;
 
 function TIWBSCustomControl.get_HasTabOrder: Boolean;
@@ -398,7 +401,7 @@ begin
   Result := nil;
   xHTMLName := HTMLName;
 
-  if FAsyncRefreshControl then
+  if FAsyncRefreshControl or not FRendered then
     TIWBSCommon.RenderAsync(FMainID, Self, AContext)
   else
     begin
@@ -443,6 +446,7 @@ begin
   IWBSRenderScript(Self, AContext, Result);
   FMainID := Result.Params.Values['id'];
   FAsyncRefreshControl := False;
+  FRendered := True;
 end;
 
 procedure TIWBSCustomControl.RenderScripts(AComponentContext: TIWCompContext);

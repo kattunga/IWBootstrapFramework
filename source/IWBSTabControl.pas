@@ -35,6 +35,7 @@ type
 
     FActivePage: Integer;
     FAsyncRefreshControl: boolean;
+    FRendered: boolean;
     FCustomAsyncEvents: TIWBSCustomAsyncEvents;
     FCustomRestEvents: TIWBSCustomRestEvents;
     FGridOptions: TIWBSGridOptions;
@@ -154,6 +155,8 @@ constructor TIWBSTabControl.Create(AOwner: TComponent);
 begin
   inherited;
   FGridOptions := TIWBSGridOptions.Create;
+  FAsyncRefreshControl := True;
+  FRendered := False;
   FMainID := '';
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
@@ -202,6 +205,7 @@ end;
 procedure TIWBSTabControl.AsyncRemoveControl;
 begin
   TIWBSCommon.AsyncRemoveControl(HTMLName);
+  FRendered := False;
 end;
 
 procedure TIWBSTabControl.SetGridOptions(const Value: TIWBSGridOptions);
@@ -379,7 +383,7 @@ begin
   Result := nil;
   xHTMLName := HTMLName;
 
-  if FAsyncRefreshControl then
+  if FAsyncRefreshControl or not FRendered then
     begin
       TIWBSRegionCommon.CancelChildAsyncRender(Self);
       DoRender;
@@ -513,6 +517,7 @@ begin
   TIWPageContext40(AContext.PageContext).AddToIWCLInitProc('  IW.initIWCL('+HTMLControlImplementation.IWCLName+',"'+xHTMLName+'_input",true);');
 
   FAsyncRefreshControl := False;
+  FRendered := True;
 end;
 
 procedure TIWBSTabControl.RenderScripts(AComponentContext: TIWCompContext);
