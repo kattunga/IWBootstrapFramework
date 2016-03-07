@@ -136,14 +136,14 @@ type
     class procedure ValidateTagName(const AName: string);
   end;
 
-procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
-procedure SetAsyncReadOnly(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
-procedure SetAsyncVisible(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
-procedure SetAsyncClass(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
-procedure SetAsyncStyle(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
-procedure SetAsyncChecked(AContext: TIWCompContext; const HTMLName: string; const Value: boolean; var OldValue: boolean);
-procedure SetAsyncText(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
-procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncDisabled(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
+procedure SetAsyncReadOnly(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
+procedure SetAsyncVisible(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
+procedure SetAsyncClass(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncStyle(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncChecked(AApplication: TIWApplication; const HTMLName: string; const Value: boolean; var OldValue: boolean);
+procedure SetAsyncText(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncHtml(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
 
 implementation
 
@@ -215,67 +215,67 @@ end;
 {$endregion}
 
 {$region 'AsyncRender functions'}
-procedure SetAsyncDisabled(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
+procedure SetAsyncDisabled(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("disabled",'+iif(Value,'true','false')+');');
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("disabled",'+iif(Value,'true','false')+');', False, True);
     OldValue := Value;
   end;
 end;
 
-procedure SetAsyncReadOnly(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
+procedure SetAsyncReadOnly(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("readonly",'+iif(Value,'true','false')+');');
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("readonly",'+iif(Value,'true','false')+');', False, True);
     OldValue := Value;
   end;
 end;
 
-procedure SetAsyncVisible(AContext: TIWCompContext; const HTMLName: string; Value: boolean; var OldValue: boolean);
+procedure SetAsyncVisible(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").css("visibility","'+iif(Value,'','hidden')+'");');
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").css("display","'+iif(Value,'','none')+'");');
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").css("visibility","'+iif(Value,'','hidden')+'");', False, True);
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").css("display","'+iif(Value,'','none')+'");', False, True);
     OldValue := Value;
   end;
 end;
 
-procedure SetAsyncText(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncText(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").val("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");');
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").val("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");', False, True);
     OldValue := Value;
   end;
 end;
 
-procedure SetAsyncHtml(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncHtml(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA('$("#'+HTMLName+'").html("'+IWBSTextToJsParamText(Value)+'");');
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").html("'+IWBSTextToJsParamText(Value)+'");', True, True);
     OldValue := Value;
   end;
 end;
 
-procedure SetAsyncClass(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncClass(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").removeClass().addClass("'+Value+'");');
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").removeClass().addClass("'+Value+'");', False, True);
     OldValue := Value;
   end;
 end;
 
-procedure SetAsyncStyle(AContext: TIWCompContext; const HTMLName: string; const Value: string; var OldValue: string);
+procedure SetAsyncStyle(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("style","'+Value+'");');
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("style","'+Value+'");', False, True);
     OldValue := Value;
   end;
 end;
 
-procedure SetAsyncChecked(AContext: TIWCompContext; const HTMLName: string; const Value: boolean; var OldValue: boolean);
+procedure SetAsyncChecked(AApplication: TIWApplication; const HTMLName: string; const Value: boolean; var OldValue: boolean);
 begin
   if OldValue <> Value then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked",'+iif(Value,'true','false')+');');
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("checked",'+iif(Value,'true','false')+');', False, True);
     OldValue := Value;
   end;
 end;
@@ -291,7 +291,7 @@ end;
 
 class procedure TIWBSCommon.AsyncRemoveControl(const AHTMLName: string);
 begin
-  IWBSExecuteAsyncJScript('AsyncDestroyControl("'+AHTMLName+'");');
+  IWBSExecuteAsyncJScript('AsyncDestroyControl("'+AHTMLName+'");', False, True);
 end;
 
 class procedure TIWBSCommon.DoAfterRender(AControl: TComponent);
@@ -348,6 +348,10 @@ begin
   // if not visible and parent.RenderInvisibleControls is false, do not render
   if not ParentTreeVisibility(AControl.InterfaceInstance) then
     Exit;
+
+  // check if component context is assigned
+  if AContext = nil then
+    raise Exception.Create('Component context not assigned');
 
   // if baseContainer, DoRender;
   GetIWInterface(AControl.InterfaceInstance,IIWBaseContainer,LBaseContainer);

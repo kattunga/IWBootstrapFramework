@@ -6,7 +6,7 @@ uses
   Classes, SysUtils, StrUtils, Controls, db,
   IWBSCustomControl,
   IWTypes, IWHTMLTag,
-  IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces, IWScriptEvents,
+  IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces, IWScriptEvents, IWApplication,
   IWBSCommon;
 
 type
@@ -87,7 +87,7 @@ type
     FTextAlignment: TIWBSTextAlignment;
     FTextCase: TIWBSTextCase;
   protected
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
     procedure InternalRenderCss(var ACss: string); override;
   published
     constructor Create(AOwner: TComponent); override;
@@ -357,13 +357,13 @@ begin
   FTextCase := bstcDefault;
 end;
 
-procedure TIWBSCustomTextInput.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSCustomTextInput.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
   if FIsStatic then
-    SetAsyncHtml(AContext, AHTMLName, FText, FOldText)
+    SetAsyncHtml(AApplication, AHTMLName, FText, FOldText)
   else
-    SetAsyncText(AContext, AHTMLName, FText, FOldText);
+    SetAsyncText(AApplication, AHTMLName, FText, FOldText);
 end;
 
 procedure TIWBSCustomTextInput.InternalRenderCss(var ACss: string);

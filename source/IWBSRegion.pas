@@ -87,6 +87,7 @@ type
     procedure AsyncRefreshControl;
     procedure ResetAsyncRefreshControl;
     procedure AsyncRemoveControl;
+    procedure ApplyAsyncChanges;
     function GetCssString: string;
     function GetRoleString: string; virtual;
     function IsStoredCustomAsyncEvents: Boolean;
@@ -360,9 +361,18 @@ begin
   FAsyncRefreshControl := False;
 end;
 
+procedure TIWBSCustomRegion.ApplyAsyncChanges;
+begin
+  if FAsyncRefreshControl or not FRendered then
+    raise Exception.Create('Cannot apply changes now, control should be full refreshed');
+  RenderAsync(nil);
+  DoRefreshControl := False;
+end;
+
 procedure TIWBSCustomRegion.AsyncRemoveControl;
 begin
   TIWBSCommon.AsyncRemoveControl(HTMLName);
+  FAsyncRefreshControl := False;
   FRendered := False;
 end;
 
@@ -553,6 +563,7 @@ end;
 function TIWBSCustomRegion.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   xHTMLName: string;
+  xApplication: TIWApplication;
 begin
   Result := nil;
   xHTMLName := HTMLName;
@@ -564,9 +575,13 @@ begin
     end
   else
     begin
-      SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-      SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-      SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
+      if AContext = nil then
+        xApplication := GGetWebApplicationThreadVar
+      else
+        xApplication := AContext.WebApplication;
+      SetAsyncClass(xApplication, xHTMLName, RenderCSSClass(nil), FOldCss);
+      SetAsyncStyle(xApplication, xHTMLName, RenderStyle(nil), FOldStyle);
+      SetAsyncVisible(xApplication, FMainID, Visible, FOldVisible);
 
       if Assigned(FOnAfterAsyncChange) then
         FOnAfterAsyncChange(Self);

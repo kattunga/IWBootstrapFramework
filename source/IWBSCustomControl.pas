@@ -3,7 +3,7 @@ unit IWBSCustomControl;
 interface
 
 uses Classes, SysUtils, StrUtils, db,
-     IWControl, IWRenderContext, IWHTMLTag, IWXMLTag, IWDBCommon, IWDBStdCtrls, IWTypes,
+     IWControl, IWRenderContext, IWHTMLTag, IWXMLTag, IWDBCommon, IWDBStdCtrls, IWTypes, IWApplication,
      IWBSCommon, IWBSCustomEvents;
 
 type
@@ -58,7 +58,7 @@ type
     function RenderStyle(AContext: TIWCompContext): string; override;
   protected
     {$hints on}
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); virtual;
+    procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); virtual;
     procedure InternalRenderCss(var ACss: string); virtual;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); virtual;
     procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList); virtual;
@@ -348,7 +348,7 @@ begin
   FStyle.Assign(AValue);
 end;
 
-procedure TIWBSCustomControl.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSCustomControl.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   //
 end;
@@ -397,6 +397,7 @@ function TIWBSCustomControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   xHTMLName: string;
   xInputSelector: string;
+  xApplication: TIWApplication;
 begin
   Result := nil;
   xHTMLName := HTMLName;
@@ -409,12 +410,16 @@ begin
         xInputSelector := FMainID+InputSelector
       else
         xInputSelector := xHTMLName+InputSuffix;
-      SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-      SetAsyncDisabled(AContext, xInputSelector, IsDisabled, FOldDisabled);
-      SetAsyncReadOnly(AContext, xInputSelector, IsReadOnly, FOldReadOnly);
-      SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-      SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
-      InternalRenderAsync(xHTMLName, AContext);
+      if AContext = nil then
+        xApplication := GGetWebApplicationThreadVar
+      else
+        xApplication := AContext.WebApplication;
+      SetAsyncClass(xApplication, xHTMLName, RenderCSSClass(nil), FOldCss);
+      SetAsyncDisabled(xApplication, xInputSelector, IsDisabled, FOldDisabled);
+      SetAsyncReadOnly(xApplication, xInputSelector, IsReadOnly, FOldReadOnly);
+      SetAsyncStyle(xApplication, xHTMLName, RenderStyle(nil), FOldStyle);
+      SetAsyncVisible(xApplication, FMainID, Visible, FOldVisible);
+      InternalRenderAsync(xHTMLName, xApplication);
 
       if Assigned(FOnAfterAsyncChange) then
         FOnAfterAsyncChange(Self);

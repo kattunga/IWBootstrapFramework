@@ -391,9 +391,9 @@ begin
     end
   else
     begin
-      SetAsyncClass(AContext, xHTMLName, RenderCSSClass(AContext), FOldCss);
-      SetAsyncStyle(AContext, xHTMLName, RenderStyle(AContext), FOldStyle);
-      SetAsyncVisible(AContext, FMainID, Visible, FOldVisible);
+      SetAsyncClass(AContext.WebApplication, xHTMLName, RenderCSSClass(AContext), FOldCss);
+      SetAsyncStyle(AContext.WebApplication, xHTMLName, RenderStyle(AContext), FOldStyle);
+      SetAsyncVisible(AContext.WebApplication, FMainID, Visible, FOldVisible);
       if FOldActivePage <> FActivePage then begin
         AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(TabOrderToTabIndex(FActivePage))+']").tab("show");');
         FOldActivePage := FActivePage;

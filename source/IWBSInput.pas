@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, db, StrUtils, Controls,
-  IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseHTMLControl, IWBaseInterfaces,
+  IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseHTMLControl, IWBaseInterfaces, IWApplication,
   IWCompCheckBox, IWCompRadioButton, IWCompButton, IWDBStdCtrls, IWDBExtCtrls,
   IWBSRegion, IWBSCommon, IWBSCustomInput;
 
@@ -47,7 +47,7 @@ type
     FValueUnchecked: string;
   protected
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure SetChecked(AValue: boolean);
     procedure SetName(const AValue: TComponentName); override;
@@ -69,7 +69,7 @@ type
     FValueUnchecked: string;
   protected
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure SetChecked(AValue: boolean);
     procedure SetName(const AValue: TComponentName); override;
@@ -94,7 +94,7 @@ type
     procedure SetSize(AValue: integer);
   protected
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure OnItemsChange(ASender : TObject); override;
     procedure SetItemIndex(AValue: integer); override;
@@ -108,7 +108,7 @@ type
 
   TIWBSRadioGroup = class(TIWBSCustomSelectInput)
   protected
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     function InputSelector: string; override;
     function InputSuffix: string; override;
@@ -303,11 +303,11 @@ begin
     ATextValue := FValueUnchecked;
 end;
 
-procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
   if FText <> FOldText then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked", '+iif(Checked,'true','false')+');');
+    AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked", '+iif(Checked,'true','false')+');');
     FOldText := FText;
   end;
 end;
@@ -390,11 +390,11 @@ begin
     end;
 end;
 
-procedure TIWBSRadioButton.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSRadioButton.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
   if FText <> FOldText then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+InputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
+    AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+InputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
     FOldText := FText;
   end;
 end;
@@ -530,7 +530,7 @@ begin
     end;
 end;
 
-procedure TIWBSSelect.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSSelect.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 var
   LSelectedIdx: string;
   i: integer;
@@ -549,7 +549,7 @@ begin
       end
     else if FItemIndex >= 0 then
       LSelectedIdx := IntToStr(FItemIndex);
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").val(['+LSelectedIdx+']);');
+    AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").val(['+LSelectedIdx+']);');
     FOldText := FText;
   end;
 end;
@@ -605,14 +605,14 @@ begin
   Result := '_INPUT';
 end;
 
-procedure TIWBSRadioGroup.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSRadioGroup.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
   if (FText <> FOldText) then begin
     if FItemIndex >= 0 then
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'_INPUT_'+IntToStr(FItemIndex)+'").prop("checked", true);')
+      AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'_INPUT_'+IntToStr(FItemIndex)+'").prop("checked", true);')
     else
-      AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+' input").prop("checked", false);');
+      AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+' input").prop("checked", false);');
     FOldText := FText;
   end;
 end;

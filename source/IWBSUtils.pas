@@ -67,21 +67,34 @@ begin
   IWBSExecuteJScript(LWebApplication, AScript);
 end;
 }
+
+type
+  TPrevIWXMLTag = class(TIWXMLTag);
+
 procedure IWBSExecuteAsyncJScript(AWebApplication: TIWApplication; const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 var
-  LCallTag: TIWXMLTag;
+  LCallTag: TPrevIWXMLTag;
+  i, j: integer;
 begin
   if Length(AScript) <= 0 then Exit;
 
   if AWebApplication.IsCallBack then begin
     if AFirst then
       begin
-        LCallTag := TIWXMLTag.CreateTag('literal');
+        LCallTag := TPrevIWXMLTag.CreateTag('literal');
         if AsCDATA then
           LCallTag.Contents.AddText('<![CDATA[' + AScript + ']]>')
         else
           LCallTag.Contents.AddText(AScript);
-        TIWCallBackResponseHack(AWebApplication.CallBackResponse).FExecuteTag.Contents.Insert(0,LCallTag);
+        with TIWCallBackResponseHack(AWebApplication.CallBackResponse).FExecuteTag do begin
+          j := 0;
+          for i := 0 to Contents.Count-1 do
+            if Contents.Items[i] is TPrevIWXMLTag then
+              Inc(j)
+            else
+              break;
+          Contents.Insert(j,LCallTag);
+        end;
       end
     else if AsCDATA then
       AWebApplication.CallBackResponse.AddJavaScriptToExecuteAsCDATA(AScript)

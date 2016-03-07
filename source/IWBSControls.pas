@@ -3,7 +3,7 @@ unit IWBSControls;
 interface
 
 uses Classes, SysUtils, Db,
-     IWControl, IWRenderContext, IWMarkupLanguageTag, IWXMLTag, IWHTMLTag,
+     IWControl, IWRenderContext, IWMarkupLanguageTag, IWXMLTag, IWHTMLTag, IWApplication,
      IWDBCommon, IWBSCommon,
      IWBSCustomControl;
 
@@ -19,7 +19,7 @@ type
     function IsTagTypeStored: Boolean;
   protected
     procedure CheckData(AContext: TIWCompContext); override;
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
     procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure SetForControl(const Value: TIWCustomControl);
@@ -46,7 +46,7 @@ type
     procedure SetRawText(const Value: boolean);
   protected
     procedure CheckData(AContext: TIWCompContext); override;
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -115,10 +115,10 @@ begin
     Result := TextToHTML(Caption);
 end;
 
-procedure TIWBSLabel.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSLabel.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
-  SetAsyncHtml(AContext, AHTMLName, RenderLabelText, FOldText);
+  SetAsyncHtml(AApplication, AHTMLName, RenderLabelText, FOldText);
 end;
 
 procedure TIWBSLabel.InternalRenderCss(var ACss: string);
@@ -242,10 +242,10 @@ begin
     Result := TextToHTML(Lines.Text);
 end;
 
-procedure TIWBSText.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSText.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
-  SetAsyncHtml(AContext, AHTMLName, RenderText, FOldText);
+  SetAsyncHtml(AApplication, AHTMLName, RenderText, FOldText);
 end;
 
 procedure TIWBSText.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
