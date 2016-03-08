@@ -78,6 +78,7 @@ type
     procedure RenderScripts(AComponentContext: TIWCompContext); override;
     function RenderStyle(AContext: TIWCompContext): string; override;
     function SupportsInput: Boolean;
+    procedure IWComponentsChanged(AComponent: TComponent); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -276,6 +277,9 @@ end;
 {$endregion}
 
 {$region 'TIWBSCustomRegion'}
+type
+  TIWContainerHack = class(TIWContainer);
+
 constructor TIWBSCustomRegion.Create(AOwner: TComponent);
 begin
   inherited;
@@ -543,6 +547,19 @@ end;
 function TIWBSCustomRegion.SupportsInput: Boolean;
 begin
   Result := False;
+end;
+
+procedure TIWBSCustomRegion.IWComponentsChanged(AComponent: TComponent);
+   procedure NotifyParentContainer(AParent: TWinControl);
+   begin
+     if (AParent is TIWContainer) then
+       TIWContainerHack(AParent).IWComponentsChanged(AComponent)
+     else if AParent.Parent <> nil then
+       NotifyParentContainer(AParent.Parent);
+   end;
+begin
+  if not (csDestroying in ComponentState) and Assigned(Parent) then
+    NotifyParentContainer(Parent);
 end;
 
 procedure TIWBSCustomRegion.InternalRenderCss(var ACss: string);
