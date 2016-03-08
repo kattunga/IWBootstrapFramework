@@ -273,23 +273,26 @@ begin
   if (FOldText <> LText) or (FText <> LText) then begin
     FOldText := LText;
     FText := LText;
-    if CheckDataSource(DataSource, DataField, LField) and LSave then
-      if InEditMode(DataSource.DataSet) and LField.CanModify then
-        begin
-          if Assigned(LField.OnSetText) then
-            LField.Text := LText
-          else
-            if FInputType = bsitNumber then
-              LField.AsFloat := StrToFloat(LText, LFormatSettings)
-            else if FInputType = bsitDateTimeLocal then  // agregar todos los tipos fecha que hay
-              LField.AsDateTime := StrToDateTime(ReplaceStr(LText,'T',' '), LFormatSettings)
+    try
+      if CheckDataSource(DataSource, DataField, LField) and LSave then
+        if InEditMode(DataSource.DataSet) and LField.CanModify then
+          begin
+            if Assigned(LField.OnSetText) then
+              LField.Text := LText
             else
-              LField.AsString := LText;
-        end
-      else
-        raise EIWDataSetNotEditingError.Create(DataSource);
-    CheckData(nil);
-    Invalidate;
+              if FInputType = bsitNumber then
+                LField.AsFloat := StrToFloat(LText, LFormatSettings)
+              else if FInputType = bsitDateTimeLocal then  // agregar todos los tipos fecha que hay
+                LField.AsDateTime := StrToDateTime(ReplaceStr(LText,'T',' '), LFormatSettings)
+              else
+                LField.AsString := LText;
+          end
+        else
+          raise EIWDataSetNotEditingError.Create(DataSource);
+    finally
+      Invalidate;
+      CheckData(nil);
+    end;
   end;
 end;
 
