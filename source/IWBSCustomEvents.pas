@@ -24,7 +24,7 @@ type
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
     // Return the javascript code necessary to execute the callback
-    function GetScript: string;
+    function GetScript(ASemiColon: boolean = True): string;
     // Register the callback in the server. Is for internal use, don't use it.
     procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
     // Search in a script and replace params with same name as EventName with the js code necessary to execute the callback.
@@ -56,6 +56,7 @@ type
     procedure SetItems(I: Integer; const Value: TIWBSCustomAsyncEvent);
   public
     constructor Create(AOwner: TPersistent);
+    function ByName(const AEventName: string): TIWBSCustomAsyncEvent;
     property Items[I: Integer]: TIWBSCustomAsyncEvent read GetItems write SetItems; default;
   end;
 
@@ -137,7 +138,7 @@ begin
     inherited;
 end;
 
-function TIWBSCustomAsyncEvent.GetScript: string;
+function TIWBSCustomAsyncEvent.GetScript(ASemiColon: boolean = True): string;
 var
   LParams, LName: string;
   i: integer;
@@ -152,7 +153,9 @@ begin
   end;
   if LParams = '' then
     LParams := '""';
-  Result := 'executeAjaxEvent('+LParams+', null, "'+TIWBSCustomControl(Collection.Owner).HTMLName+'.'+FEventName+'", true, null, true);';
+  Result := 'ajaxCall("'+TIWBSCustomControl(Collection.Owner).HTMLName+'.'+EventName+'",'+LParams+', true)';
+  if ASemiColon then
+    Result := Result + ';';
 end;
 
 function TIWBSCustomAsyncEvent.IsEventParamsStored: Boolean;
@@ -192,6 +195,24 @@ end;
 procedure TIWBSCustomAsyncEvents.SetItems(I: Integer; const Value: TIWBSCustomAsyncEvent);
 begin
   inherited SetItem(I, Value);
+end;
+
+function TIWBSCustomAsyncEvents.ByName(const AEventName: string): TIWBSCustomAsyncEvent;
+var
+  i: integer;
+begin
+  Result := nil;
+
+  for i := 0 to Count-1 do
+    if Items[i].FEventName = AEventName then begin
+      Result := Items[i];
+      Break;
+    end;
+
+  if Result = nil then begin
+    Result := TIWBSCustomAsyncEvent(Add);
+    Result.FEventName := AEventName;
+  end;
 end;
 {$endregion}
 

@@ -113,12 +113,12 @@ begin
   IWBSExecuteAsyncJScript(LWebApplication, AScript, AsCDATA, AFirst);
 end;
 
-function IWBSexecuteAjaxEventJs(const HtmlName, EventName: string; const Params: string = ''; ALock: boolean = False): string;
+function IWBSExecuteAjaxEventJs(const HtmlName, EventName: string; const Params: string = ''; ALock: boolean = False): string;
 begin
   if ALock then
-    Result := format('ajaxCall("%s","%s", true)',[HTMLName+EventName, Params])
+    Result := format('ajaxCall("%s","%s", true)',[HTMLName+'.'+EventName, Params])
   else
-    Result := format('ajaxCall("%s","%s")',[HTMLName+EventName, Params]);
+    Result := format('ajaxCall("%s","%s")',[HTMLName+'.'+EventName, Params]);
 end;
 
 end.

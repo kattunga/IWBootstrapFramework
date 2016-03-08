@@ -286,6 +286,8 @@ begin
   FAsyncRefreshControl := False;
   FRendered := False;
   FReleased := False;
+  FCustomAsyncEvents := nil;
+  FCustomRestEvents := nil;
   FCss := '';
   FContentSuffix := '';
   FGridOptions := TIWBSGridOptions.Create;
@@ -310,6 +312,8 @@ end;
 
 destructor TIWBSCustomRegion.Destroy;
 begin
+  FreeAndNil(FCustomAsyncEvents);
+  FreeAndNil(FCustomRestEvents);
   FreeAndNil(FGridOptions);
   FreeAndNil(FScript);
   FreeAndNil(FScriptParams);

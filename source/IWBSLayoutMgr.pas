@@ -192,7 +192,6 @@ end;
 
 procedure TIWBSLayoutMgr.Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext);
 var
-  pep: string;
   LTmp: TIWRenderStream;
   LControls: TList;
   i: Integer;

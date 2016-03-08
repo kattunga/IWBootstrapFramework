@@ -86,12 +86,17 @@ type
     // If you are destroying a region is enought to execute this in that region, you don't need to execute it in each child control.
     procedure AsyncRemoveControl;
 
+    // Resturns True if CustomAsyncEvents are defined
     function IsStoredCustomAsyncEvents: Boolean;
+
+    // Resturns True if CustomRestEvents are defined
     function IsStoredCustomRestEvents: Boolean;
+
     // returns a string representing the the JQSelector for this object.
     // @preformatted(IWBSCustomControl.JQSelector > '$(#"htmlname")')
     function JQSelector: string;
 
+    // Set focus on component in an Ajax Callback
     procedure SetFocus;
   published
     // Mainteins a list of TIWBSCustomAsyncEvent. @br
