@@ -116,7 +116,7 @@ type
 
 implementation
 
-uses IW.Common.System, IWResourceStrings, IWBSInputCommon;
+uses IW.Common.System, IWResourceStrings, IWBSInputCommon, IWBSUtils;
 
 {$region 'TIWBSInput'}
 procedure TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
@@ -307,7 +307,7 @@ procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AApplicatio
 begin
   inherited;
   if FText <> FOldText then begin
-    AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'").prop("checked", '+iif(Checked,'true','false')+');');
+    IWBSExecuteAsyncJScript(AApplication, '$("#'+HTMLName+'").prop("checked", '+iif(Checked,'true','false')+');', False, True);
     FOldText := FText;
   end;
 end;
@@ -394,7 +394,7 @@ procedure TIWBSRadioButton.InternalRenderAsync(const AHTMLName: string; AApplica
 begin
   inherited;
   if FText <> FOldText then begin
-    AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+InputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');');
+    IWBSExecuteAsyncJScript(AApplication, '$("#'+HTMLName+InputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');', False, True);
     FOldText := FText;
   end;
 end;
@@ -549,7 +549,7 @@ begin
       end
     else if FItemIndex >= 0 then
       LSelectedIdx := IntToStr(FItemIndex);
-    AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").val(['+LSelectedIdx+']);');
+    IWBSExecuteAsyncJScript(AApplication, '$("#'+AHTMLName+'").val(['+LSelectedIdx+']);', False, True);
     FOldText := FText;
   end;
 end;
@@ -610,9 +610,9 @@ begin
   inherited;
   if (FText <> FOldText) then begin
     if FItemIndex >= 0 then
-      AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'_INPUT_'+IntToStr(FItemIndex)+'").prop("checked", true);')
+      IWBSExecuteAsyncJScript(AApplication, '$("#'+AHTMLName+'_INPUT_'+IntToStr(FItemIndex)+'").prop("checked", true);', False, True)
     else
-      AApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+' input").prop("checked", false);');
+      IWBSExecuteAsyncJScript(AApplication, '$("#'+AHTMLName+' input").prop("checked", false);', False, True);
     FOldText := FText;
   end;
 end;

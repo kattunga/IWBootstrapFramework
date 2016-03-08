@@ -84,7 +84,6 @@ begin
   end;
 
   LInitProcCode := '  IW.initIWCL('+AComponent.HTMLControlImplementation.IWCLParentName+',"'+LHTMLName+'",'+BoolToString(LSubmitOnAsync)+');';
-  LPageContext.AddToIWCLInitProc('//comment '+TimeToStr(now));
   LPageContext.AddToIWCLInitProc(LInitProcCode);
 
   AComponent.ScriptEvents.ClearHooked;

@@ -4,7 +4,7 @@ interface
 
 uses Classes, SysUtils, StrUtils, Graphics, Db,
      IWScriptEvents, IWBaseInterfaces,
-     IWRenderContext, IWHTMLTag, IWBSCustomControl, IWCompExtCtrls;
+     IWRenderContext, IWHTMLTag, IWBSCustomControl, IWCompExtCtrls, IWApplication;
 
 
 type
@@ -33,7 +33,7 @@ type
   protected
     procedure CheckData(AContext: TIWCompContext); override;
     procedure PictureChanged(ASender: TObject);
-    procedure InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext); override;
+    procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
     procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
     procedure InternalRenderStyle(AStyle: TStringList); override;
@@ -59,7 +59,7 @@ implementation
 
 uses IW.Common.System, IW.Common.Strings, IWTypes, IWForm, IWAppCache, IW.CacheStream,
      IWDbCommon, IWURL, IWFilePath, IWGlobal, InCoderMIME,
-     IWBSCommon, IWBSImageUtils;
+     IWBSCommon, IWBSUtils, IWBSImageUtils;
 
 {$region 'TIWBSImage'}
 constructor TIWBSImage.Create(AOwner: TComponent);
@@ -231,11 +231,11 @@ begin
   end;
 end;
 
-procedure TIWBSImage.InternalRenderAsync(const AHTMLName: string; AContext: TIWCompContext);
+procedure TIWBSImage.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
   if FActiveSrc <> FOldSrc then begin
-    AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+AHTMLName+'").attr("src","'+FActiveSrc+'");');
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+AHTMLName+'").attr("src","'+FActiveSrc+'");', False, True);
     FOldSrc := FActiveSrc;
   end;
 end;

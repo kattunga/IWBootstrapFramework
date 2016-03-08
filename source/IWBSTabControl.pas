@@ -379,6 +379,7 @@ end;
 function TIWBSTabControl.RenderAsync(AContext: TIWCompContext): TIWXMLTag;
 var
   xHTMLName: string;
+  xApplication: TIWApplication;
 begin
   Result := nil;
   xHTMLName := HTMLName;
@@ -391,11 +392,15 @@ begin
     end
   else
     begin
-      SetAsyncClass(AContext.WebApplication, xHTMLName, RenderCSSClass(AContext), FOldCss);
-      SetAsyncStyle(AContext.WebApplication, xHTMLName, RenderStyle(AContext), FOldStyle);
-      SetAsyncVisible(AContext.WebApplication, FMainID, Visible, FOldVisible);
+      if AContext = nil then
+        xApplication := GGetWebApplicationThreadVar
+      else
+        xApplication := AContext.WebApplication;
+      SetAsyncClass(xApplication, xHTMLName, RenderCSSClass(AContext), FOldCss);
+      SetAsyncStyle(xApplication, xHTMLName, RenderStyle(AContext), FOldStyle);
+      SetAsyncVisible(xApplication, FMainID, Visible, FOldVisible);
       if FOldActivePage <> FActivePage then begin
-        AContext.WebApplication.CallBackResponse.AddJavaScriptToExecute('$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(TabOrderToTabIndex(FActivePage))+']").tab("show");');
+        IWBSExecuteAsyncJScript(xApplication,'$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(TabOrderToTabIndex(FActivePage))+']").tab("show");', False, True);
         FOldActivePage := FActivePage;
       end;
 
