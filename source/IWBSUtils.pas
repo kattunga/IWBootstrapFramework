@@ -9,13 +9,10 @@ function IWBSGetUniqueComponentName(AOwner: TComponent; const APrefix: string): 
 
 function IWBSTextToJsParamText(AText: string): string;
 
-//procedure IWBSExecuteJScript(AWebApplication: TIWApplication; const AScript: string); overload;
-//procedure IWBSExecuteJScript(const AScript: string); overload;
-
 procedure IWBSExecuteAsyncJScript(AWebApplication: TIWApplication; const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 procedure IWBSExecuteAsyncJScript(const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 
-function IWBSExecuteAjaxEventJs(const HtmlName, EventName: string; const Params: string = ''; ALock: boolean = False): string;
+function IWBSExecuteAjaxEventJs(const AHtmlName, AEventName: string; const AParams: string = ''; ALock: boolean = False): string;
 
 implementation
 
@@ -46,27 +43,6 @@ begin
   Result := ReplaceStr(Result, #10, '\n');
   Result := ReplaceStr(Result, #13, '');
 end;
-{
-procedure IWBSExecuteJScript(AWebApplication: TIWApplication; const AScript: string); overload;
-begin
-  if Length(AScript) <= 0 then Exit;
-
-  if AWebApplication.IsCallBack then
-    AWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript)
-  else
-    HTML40FormInterface(AWebApplication.ActiveForm).PageContext.AddToInitProc(AScript);
-end;
-
-procedure IWBSExecuteJScript(const AScript: string);
-var
-  LWebApplication: TIWApplication;
-begin
-  LWebApplication := GGetWebApplicationThreadVar;
-  if LWebApplication = nil then
-    raise Exception.Create('User session not found');
-  IWBSExecuteJScript(LWebApplication, AScript);
-end;
-}
 
 type
   TPrevIWXMLTag = class(TIWXMLTag);
@@ -113,12 +89,19 @@ begin
   IWBSExecuteAsyncJScript(LWebApplication, AScript, AsCDATA, AFirst);
 end;
 
-function IWBSExecuteAjaxEventJs(const HtmlName, EventName: string; const Params: string = ''; ALock: boolean = False): string;
+function IWBSExecuteAjaxEventJs(const AHtmlName, AEventName: string; const AParams: string = ''; ALock: boolean = False): string;
+var
+  LParams: string;
 begin
-  if ALock then
-    Result := format('ajaxCall("%s","%s", true)',[HTMLName+'.'+EventName, Params])
+  if AParams = '' then
+    LParams := '""'
   else
-    Result := format('ajaxCall("%s","%s")',[HTMLName+'.'+EventName, Params]);
+    LParams := AParams;
+
+  if ALock then
+    Result := format('ajaxCall("%s",%s, true)',[AHTMLName+'.'+AEventName, LParams])
+  else
+    Result := format('ajaxCall("%s",%s)',[AHTMLName+'.'+AEventName, LParams]);
 end;
 
 end.

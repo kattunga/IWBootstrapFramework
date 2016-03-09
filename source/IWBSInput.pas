@@ -274,8 +274,9 @@ end;
 
 procedure TIWBSCheckBox.SetName(const AValue: TComponentName);
 begin
+  if Caption = Name then
+    Caption := AValue;
   inherited;
-  Caption := Name;
 end;
 
 procedure TIWBSCheckBox.SetChecked(AValue: boolean);
@@ -359,8 +360,9 @@ end;
 
 procedure TIWBSRadioButton.SetName(const AValue: TComponentName);
 begin
+  if Caption = Name then
+    Caption := AValue;
   inherited;
-  Caption := Name;
 end;
 
 procedure TIWBSRadioButton.SetChecked(AValue: boolean);
