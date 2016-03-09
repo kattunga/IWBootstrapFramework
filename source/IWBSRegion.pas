@@ -192,7 +192,7 @@ type
   published
     property BSButtonGroupOptions: TIWBSButonGroupOptions read FButtonGroupOptions write SetButtonGroupOptions;
     property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
-    property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtIWBSRegion;
+    property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtNone;
     property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write SetRelativeSize default bsrzDefault;
     property Collapse: boolean read FCollapse write SetCollapse default False;
     property CollapseVisible: boolean read FCollapseVisible write SetCollapseVisible default False;
@@ -755,7 +755,7 @@ begin
   inherited;
   FButtonGroupOptions := TIWBSButonGroupOptions.Create(Self);
   FPanelStyle := bspsDefault;
-  FRegionType := bsrtIWBSRegion;
+  FRegionType := bsrtNone;
   FRelativeSize := bsrzDefault;
 end;
 
