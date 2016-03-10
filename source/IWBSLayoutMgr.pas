@@ -60,7 +60,7 @@ begin
   LDisableCache := ADisableCache;
 
   LFile := ReplaceStr(AFile, '/<iwbspath>/', gIWBSLibPath);
-  if AnsiStartsStr('//', LFile) or AnsiContainsStr('://', LFile) then
+  if AnsiStartsStr('//', LFile) or AnsiContainsStr(LFile,'://') then
     LDisableCache := False
   else
     LFile := TURL.MakeValidFileUrl(AUrlBase, LFile);
