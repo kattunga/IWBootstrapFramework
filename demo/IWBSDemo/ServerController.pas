@@ -65,8 +65,8 @@ begin
 
   gIWBSLibJQueryJs := 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js';
 
-  gIWBSLibBootstrapCss := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css';
-  gIWBSLibBootstrapJs := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js';
+  gIWBSLibBootstrapCss := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
+  gIWBSLibBootstrapJs := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js';
 
   gIWBSLibIWBSCss := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.2/demo/bin/wwwroot/iwbs/iwbs.css';
   gIWBSLibIWBSJs := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.2/demo/bin/wwwroot/iwbs/iwbs.js';

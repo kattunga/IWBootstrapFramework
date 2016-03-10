@@ -28,7 +28,6 @@ object FJQGrid: TFJQGrid
     Align = alClient
     Style.Strings = (
       '')
-    BSRegionType = bsrtNone
     object IWBSRegion1: TIWBSRegion
       Left = 1
       Top = 78

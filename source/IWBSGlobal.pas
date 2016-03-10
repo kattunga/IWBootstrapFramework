@@ -14,8 +14,8 @@ var
   gIWBSLibJQueryJs: string = '/<iwbspath>/jquery-1.11.3.min.js';
 
   // path for bootstrap library (required)
-  gIWBSLibBootstrapCss: string = '/<iwbspath>/bootstrap-3.3.5/css/bootstrap.min.css';
-  gIWBSLibBootstrapJs: string = '/<iwbspath>/bootstrap-3.3.5/js/bootstrap.min.js';
+  gIWBSLibBootstrapCss: string = '/<iwbspath>/bootstrap-3.3.6/css/bootstrap.min.css';
+  gIWBSLibBootstrapJs: string = '/<iwbspath>/bootstrap-3.3.6/js/bootstrap.min.js';
 
   // path for iwbs support files (required)
   gIWBSLibIWBSCss: string = '/<iwbspath>/iwbs.css';
@@ -23,7 +23,7 @@ var
 
   // path for Polyfiller library, it provides full support for html5 to older browsers (optional)
   gIWBSLibPolyFiller: boolean = True;
-  gIWBSLibPolyFillerJs: string = '/<iwbspath>/webshim-1.15.8/js-webshim/minified/polyfiller.js';
+  gIWBSLibPolyFillerJs: string = '/<iwbspath>/webshim-1.15.10/js-webshim/minified/polyfiller.js';
 
   // path for Dynamic Tabs plugin (optional)
   gIWBSLibDynamicTabs: boolean = True;

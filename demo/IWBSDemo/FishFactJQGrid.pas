@@ -62,8 +62,8 @@ begin
   //ClientDataSet1.LoadFromFile('biolife2.cds');
 
   // include third party grid https://github.com/wenzhixin/bootstrap-table
-  IWBSLayoutMgr1.AddLinkFile('https://cdn.rawgit.com/tonytomov/jqGrid/v5.0.1/js/jquery.jqGrid.js');
-  IWBSLayoutMgr1.AddLinkFile('https://cdn.rawgit.com/tonytomov/jqGrid/v5.0.1/css/ui.jqgrid-bootstrap.css');
+  IWBSLayoutMgr1.AddLinkFile('https://cdn.rawgit.com/tonytomov/jqGrid/v5.1.0/js/jquery.jqGrid.min.js');
+  IWBSLayoutMgr1.AddLinkFile('https://cdn.rawgit.com/tonytomov/jqGrid/v5.1.0/css/ui.jqgrid-bootstrap.css');
 
   // configure grid options
   // it's better to use any json object to do this, but for this demo I'll do it by hand

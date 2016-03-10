@@ -1,16 +1,8 @@
 object IWServerController: TIWServerController
   OldCreateOrder = False
-  AuthBeforeNewSession = False
   AppName = 'MyApp'
-  ComInitialization = ciNone
-  Compression.Enabled = True
   Description = 'My IntraWeb Application'
-  DebugHTML = False
   DisplayName = 'IntraWeb Application'
-  Log = loNone
-  EnableImageToolbar = False
-  ExceptionDisplayMode = smAlert
-  PageTransitions = False
   Port = 8087
   RedirectMsgDelay = 0
   ServerResizeTimeout = 0
@@ -20,7 +12,7 @@ object IWServerController: TIWServerController
   SSLOptions.Port = 0
   SSLOptions.SSLVersions = []
   URLBase = '/iwbootstrap/'
-  Version = '14.0.45'
+  Version = '14.0.47'
   AllowMultipleSessionsPerUser = False
   JavaScriptOptions.RenderjQuery = False
   HttpKeepAlive = True
