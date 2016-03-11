@@ -34,6 +34,7 @@ type
 
   TIWBSText = class(TIWBSCustomDbControl)
   private
+    FAutoFormGroup: boolean;
     FLines: TStringList;
     FRawText: boolean;
     FOldText: string;
@@ -52,6 +53,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
+    property AutoFormGroup: boolean read FAutoFormGroup write FAutoFormGroup default False;
     property Lines: TStringList read FLines write SetLines;
     property RawText: boolean read FRawText write SetRawText default False;
     property TagType: string read FTagType write SetTagType stored IsTagTypeStored;
@@ -258,6 +260,9 @@ begin
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('style',ActiveStyle);
   AHTMLTag.Contents.AddText(FOldText);
+
+  if FAutoFormGroup and not (Parent is TIWBSInputGroup) then
+    AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, AHTMLName);
 end;
 
 function TIWBSText.IsTagTypeStored: Boolean;

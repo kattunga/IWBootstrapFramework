@@ -11,7 +11,7 @@ var
   gIWBSLibPath: string = '/iwbs/';
 
   // path for JQuery library (required)
-  gIWBSLibJQueryJs: string = '/<iwbspath>/jquery-1.11.3.min.js';
+  gIWBSLibJQueryJs: string = '/<iwbspath>/jquery-1.12.1.min.js';
 
   // path for bootstrap library (required)
   gIWBSLibBootstrapCss: string = '/<iwbspath>/bootstrap-3.3.6/css/bootstrap.min.css';

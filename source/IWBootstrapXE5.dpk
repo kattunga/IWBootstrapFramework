@@ -57,7 +57,8 @@ contains
   IWBSDialogs in 'IWBSDialogs.pas',
   IWBSDropDown in 'IWBSDropDown.pas',
   IWBSJsonDataObjects in 'IWBSJsonDataObjects.pas',
-  IWBSImageUtils in 'IWBSImageUtils.pas';
+  IWBSImageUtils in 'IWBSImageUtils.pas',
+  IWBSMemoHtml in 'IWBSMemoHtml.pas';
 
 end.
 

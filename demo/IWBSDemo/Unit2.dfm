@@ -6,8 +6,6 @@ object IWForm2: TIWForm2
   RenderInvisibleControls = True
   AllowPageAccess = True
   ConnectionMode = cmAny
-  ExtraHeader.Strings = (
-    '')
   Background.Fixed = False
   LayoutMgr = IWBSLayoutMgr1
   HandleTabs = False

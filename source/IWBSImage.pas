@@ -17,6 +17,7 @@ type
     FOldSrc: string;
 
     FAltText: string;
+    FAutoFormGroup: boolean;
     FEmbedBase64: boolean;
     FImageFile: string;
     FImageOptions: TIWBSImageOptions;
@@ -45,6 +46,7 @@ type
     function GetFixedFilePath: string;
   published
     property AltText: string read FAltText write FAltText;
+    property AutoFormGroup: boolean read FAutoFormGroup write FAutoFormGroup default False;
     property BSImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [iwbsimResponsive];
     property EmbedBase64: boolean read FEmbedBase64 write FEmbedBase64 default False;
     property Enabled default True;
@@ -59,7 +61,7 @@ implementation
 
 uses IW.Common.System, IW.Common.Strings, IWTypes, IWForm, IWAppCache, IW.CacheStream,
      IWDbCommon, IWURL, IWFilePath, IWGlobal, InCoderMIME,
-     IWBSCommon, IWBSUtils, IWBSImageUtils;
+     IWBSCommon, IWBSUtils, IWBSImageUtils, IWBSRegion, IWBSInputCommon;
 
 {$region 'TIWBSImage'}
 constructor TIWBSImage.Create(AOwner: TComponent);
@@ -272,6 +274,9 @@ begin
   end;
   if not Enabled then
     AContext.AddToInitProc('setEnabled("' + HTMLName + '", false);');
+
+  if FAutoFormGroup and not (Parent is TIWBSInputGroup) then
+    AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, AHTMLName);
 end;
 
 procedure TIWBSImage.InternalRenderStyle(AStyle: TStringList);

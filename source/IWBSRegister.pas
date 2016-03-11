@@ -69,7 +69,7 @@ implementation
 uses DesignIntf, Windows, Forms, Dialogs, Graphics,
      glyphicons, IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
-     IWBSRegion, IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage;
+     IWBSRegion, IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage, IWBSMemoHTML;
 
 const
   CNST_DEFAULTFONTNAME = 'Tahoma';
@@ -611,6 +611,7 @@ begin
 
   RegisterComponents('IW BootsTrap', [TIWBSInput]);
   RegisterComponents('IW BootsTrap', [TIWBSMemo]);
+  RegisterComponents('IW BootsTrap', [TIWBSMemoHtml]);
   RegisterComponents('IW BootsTrap', [TIWBSSelect]);
 
   RegisterComponents('IW BootsTrap', [TIWBSCheckBox]);
@@ -663,6 +664,7 @@ initialization
 
   IWRegisterPaintHandler('TIWBSInput',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerCustomInput);
+  IWRegisterPaintHandler('TIWBSMemoHtml',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSSelect',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSCheckBox',TIWBSPaintHandlerCustomCheck);
   IWRegisterPaintHandler('TIWBSRadioButton',TIWBSPaintHandlerCustomCheck);
@@ -696,6 +698,7 @@ finalization
 
   IWUnRegisterPaintHandler('TIWBSInput');
   IWUnRegisterPaintHandler('TIWBSMemo');
+  IWUnRegisterPaintHandler('TIWBSMemoHtml');
   IWUnRegisterPaintHandler('TIWBSSelect');
   IWUnRegisterPaintHandler('TIWBSCheckBox');
   IWUnRegisterPaintHandler('TIWBSRadioButton');

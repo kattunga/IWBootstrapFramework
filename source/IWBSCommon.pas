@@ -345,6 +345,7 @@ var
   LParentSl: string;
   LHtmlTag: string;
 begin
+
   // if not visible and parent.RenderInvisibleControls is false, do not render
   if not ParentTreeVisibility(AControl.InterfaceInstance) then
     Exit;
@@ -373,7 +374,7 @@ begin
   LHtmlTag := RenderHtmlTag(AControl, AContext);
 
   // the creation of the controls is executed as first script in the callback response, so further scripts in callback could reference them
-  IWBSExecuteAsyncJScript(AContext.WebApplication, 'AsyncRenderControl("'+AHTMLName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");', True, True);
+  IWBSExecuteAsyncJScript(AContext.WebApplication, 'AsyncRenderControl("'+AHtmlName+'", "'+LParentSl+'", "'+IWBSTextToJsParamText(LHtmlTag)+'");', True, True);
 
   DoAfterRender(AControl.InterfaceInstance);
 end;

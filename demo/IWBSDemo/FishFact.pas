@@ -13,7 +13,7 @@ uses
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
   MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSImage,
   IWCompTabControl, IWBSTabControl,
-  IW.HTTP.Request, IW.HTTP.Reply;
+  IW.HTTP.Request, IW.HTTP.Reply, IWBSMemoHtml;
 
 type
   TFFishFact = class(TIWAppForm)
@@ -62,13 +62,13 @@ type
     IWBSListbox2: TIWBSSelect;
     IWBSListbox1: TIWBSSelect;
     IWBSCheckBox1: TIWBSCheckBox;
-    IWBSMemo1: TIWBSMemo;
     IWBSRadioGroup1: TIWBSRadioGroup;
     IWBSRegion9: TIWBSRegion;
     IWBSRadioButton1: TIWBSRadioButton;
     IWBSRadioButton2: TIWBSRadioButton;
     IWBSRadioButton3: TIWBSRadioButton;
     IWBSText1: TIWBSText;
+    IWBSMemo1: TIWBSMemoHtml;
     procedure IWFormModuleBaseCreate(Sender: TObject);
     procedure btnEditAsyncClick(Sender: TObject; EventParams: TStringList);
     procedure btnPostAsyncClick(Sender: TObject; EventParams: TStringList);
@@ -90,6 +90,13 @@ uses IWTypes;
 procedure TFFishFact.IWFormModuleBaseCreate(Sender: TObject);
 begin
   //ClientDataSet1.LoadFromFile('biolife2.cds');
+//  IWBSLayoutMgr1.AddLinkFile('https://cdn.rawgit.com/bootstrap-wysiwyg/bootstrap3-wysiwyg/master/dist/bootstrap3-wysihtml5.min.css');
+//  IWBSLayoutMgr1.AddLinkFile('https://cdn.rawgit.com/bootstrap-wysiwyg/bootstrap3-wysiwyg/master/dist/bootstrap3-wysihtml5.all.min.js');
+//  IWBSMemo1.Script.Text := '$("#{%htmlname%}").wysihtml5({ toolbar: { fa: true }});'
+
+//    IWBSLayoutMgr1.AddLinkFile('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css');
+//    IWBSLayoutMgr1.AddLinkFile('http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js');
+//    IWBSMemo1.Script.Text := '$("#{%htmlname%}").summernote({ callbacks: { onChange: function(contents, $editable) { $("#{%htmlname%}").change(); } } });';
 end;
 
 procedure TFFishFact.IWBSButton1AsyncClick(Sender: TObject;

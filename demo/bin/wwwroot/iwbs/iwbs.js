@@ -1,6 +1,25 @@
 /*jslint browser: true*/
 /*global $, webshims*/
 
+// this add support for webshims and jquery >= 1.12.0
+// issue https://github.com/aFarkas/webshim/issues/560
+jQuery.swap = function( elem, options, callback, args ) {
+    var ret, name, old = {};
+    // Remember the old values, and insert the new ones
+    for ( name in options ) {
+            old[ name ] = elem.style[ name ];
+            elem.style[ name ] = options[ name ];
+    }
+
+    ret = callback.apply( elem, args || [] );
+
+    // Revert the old values
+    for ( name in options ) {
+            elem.style[ name ] = old[ name ];
+    }
+    return ret;
+};
+
 $(document).ready(function () {
 	// if library webshims is linked, activate it
 	if (typeof webshims !== "undefined") {
@@ -14,7 +33,12 @@ function AsyncRenderControl(id, parentSelector, htmlTag) {
 		return false;
 	}
 	if (elem === null) {
-		$(parentSelector).append(htmlTag);
+		var scrp = $(parentSelector).children('script');
+		if (scrp.length === 0) {
+			$(parentSelector).append(htmlTag);
+		} else {
+			$(scrp[0]).before(htmlTag);
+		}
 	} else {
 		$("#" + id).replaceWith(htmlTag);
 	}

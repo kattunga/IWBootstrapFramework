@@ -405,12 +405,15 @@ var
   xApplication: TIWApplication;
 begin
   Result := nil;
-  xHTMLName := HTMLName;
 
   if FAsyncRefreshControl or not FRendered then
-    TIWBSCommon.RenderAsync(FMainID, Self, AContext)
+    begin
+      xHTMLName := FMainID;
+      TIWBSCommon.RenderAsync(xHTMLName, Self, AContext);
+    end
   else
     begin
+      xHTMLName := HTMLName;
       if InputSelector <> '' then
         xInputSelector := FMainID+InputSelector
       else

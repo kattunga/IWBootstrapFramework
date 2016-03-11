@@ -19,7 +19,7 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = 8
+  DesignTop = -634
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
@@ -219,17 +219,6 @@ object FFishFact: TFFishFact
             ValueChecked = 'Y'
             ValueUnchecked = 'N'
           end
-          object IWBSMemo1: TIWBSMemo
-            Left = 20
-            Top = 678
-            Width = 317
-            Height = 103
-            FriendlyName = 'IWBSMemo1'
-            DataSource = dsrcMain
-            DataField = 'Notes'
-            Caption = 'Notes'
-            Text = ''
-          end
           object IWBSRadioGroup1: TIWBSRadioGroup
             Left = 20
             Top = 796
@@ -247,6 +236,19 @@ object FFishFact: TFFishFact
               'Option 3=3')
             ItemsHaveValues = True
           end
+          object IWBSMemo1: TIWBSMemoHtml
+            Left = 20
+            Top = 678
+            Width = 317
+            Height = 103
+            FriendlyName = 'IWBSMemo1'
+            Script.Strings = (
+              '')
+            DataSource = dsrcMain
+            DataField = 'Notes'
+            Caption = 'Notes'
+            Text = ''
+          end
           object IWBSRegion6: TIWBSRegion
             Left = 20
             Top = 19
@@ -259,6 +261,8 @@ object FFishFact: TFFishFact
               Width = 250
               Height = 150
               FriendlyName = 'IWBSImage1'
+              Script.Strings = (
+                '')
               DataSource = dsrcMain
               DataField = 'Graphic'
             end
