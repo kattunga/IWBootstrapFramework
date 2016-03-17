@@ -13,6 +13,7 @@ type
     FCallBackParams: TStringList;
     FAutoBind: boolean;
     FEventParams: string;
+    FLock: boolean;
     procedure SetCallBackParams(const Value: TStringList);
     procedure ExecuteCallBack(aParams: TStringList);
     function IsEventParamsStored: Boolean;
@@ -46,6 +47,8 @@ type
     property EventParams: string read FEventParams write FEventParams stored IsEventParamsStored;
     // Mainteins a list of pairs names=values to translate the EventParams to the params pased to the OnAsyncEvent
     property CallBackParams: TStringList read FCallBackParams write SetCallBackParams;
+    // lock screen during async event
+    property Lock: boolean read FLock write FLock default false;
     // Occurs when the defined JQ event is triggered
     property OnAsyncEvent: TIWAsyncEvent read FAsyncEvent write FAsyncEvent;
   end;
@@ -153,7 +156,7 @@ begin
   end;
   if LParams = '' then
     LParams := '""';
-  Result := 'ajaxCall("'+TIWBSCustomControl(Collection.Owner).HTMLName+'.'+EventName+'",'+LParams+', true)';
+  Result := 'ajaxCall("'+TIWBSCustomControl(Collection.Owner).HTMLName+'.'+EventName+'",'+LParams+', '+IfThen(FLock,'true','false')+')';
   if ASemiColon then
     Result := Result + ';';
 end;
