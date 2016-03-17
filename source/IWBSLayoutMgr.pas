@@ -115,12 +115,6 @@ begin
   if gIWBSlibPolyfiller then
     ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibPolyfillerJs, False));
 
-  // Dynamic Tabs
-  if gIWBSLibDynamicTabs then begin
-    ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibDynamicTabsCss));
-    ABuffer.WriteLine(ParseLinkFile(LUrlBase, gIWBSLibDynamicTabsJs));
-  end;
-
   // add global linkfiles
   if gIWBSLinkFiles <> nil then
     for i := 0 to gIWBSLinkFiles.Count-1 do

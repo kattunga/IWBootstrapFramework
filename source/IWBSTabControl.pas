@@ -562,4 +562,8 @@ begin
 end;
 {$endregion}
 
+initialization
+  IWBSAddGlobalLinkFile(gIWBSLibDynamicTabsCss);
+  IWBSAddGlobalLinkFile(gIWBSLibDynamicTabsJs);
+
 end.
