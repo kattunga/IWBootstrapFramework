@@ -1,4 +1,4 @@
-package dclIWBootstrapXE8;
+package IWBootstrapXE7;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -26,20 +26,26 @@ package dclIWBootstrapXE8;
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'IntraWeb Bootstrap Framework'}
-{$DESIGNONLY}
+{$RUNONLY}
 {$IMPLICITBUILD ON}
 
 requires
-  DesignIDE,
+  rtl,
+  vcl,
   vclimg,
-  dbrtl,
   inet,
-  IWBootstrapXE8,
-  Intraweb_14_DXE8,
-  dclIntraweb_14_DXE8;
+  Intraweb_14_DXE7;
 
 contains
-  IWBSRegister in 'IWBSRegister.pas',
-  glyphicons in 'glyphicons.pas';
+  IWBSUtils in 'IWBSUtils.pas',
+  IWBSCommon in 'IWBSCommon.pas',
+  IWBSRegion in 'IWBSRegion.pas',
+  IWBSInput in 'IWBSInput.pas',
+  IWBSLayoutMgr in 'IWBSLayoutMgr.pas',
+  IWBSTabControl in 'IWBSTabControl.pas',
+  IWBSRegionCommon in 'IWBSRegionCommon.pas',
+  IWBSControls in 'IWBSControls.pas';
 
 end.
+
+
