@@ -13,7 +13,10 @@ procedure IWBSExecuteAsyncJScript(AWebApplication: TIWApplication; const AScript
 procedure IWBSExecuteAsyncJScript(const AScript: string; AsCDATA: boolean = False; AFirst: boolean = False); overload;
 
 function IWBSExecuteAjaxEventJs(const AHtmlName, AEventName: string; const AParams: string = ''; ALock: boolean = False): string;
-
+{
+procedure IWBSExecuteJScript(AWebApplication: TIWApplication; const AScript: string); overload;
+procedure IWBSExecuteJScript(const AScript: string); overload;
+}
 implementation
 
 uses IWHTML40Interfaces, IWXMLTag, IWCallBack;
@@ -38,7 +41,8 @@ end;
 
 function IWBSTextToJsParamText(AText: string): string;
 begin
-  Result := ReplaceStr(AText, '"', '\"');
+  Result := ReplaceStr(AText,  '\', '\\');
+  Result := ReplaceStr(Result, '"', '\"');
   Result := ReplaceStr(Result, #39, '\'#39);
   Result := ReplaceStr(Result, #10, '\n');
   Result := ReplaceStr(Result, #13, '');
@@ -103,5 +107,25 @@ begin
   else
     Result := format('ajaxCall("%s",%s)',[AHTMLName+'.'+AEventName, LParams]);
 end;
+{
+procedure IWBSExecuteJScript(AWebApplication: TIWApplication; const AScript: string); overload;
+begin
+  if Length(AScript) <= 0 then Exit;
 
+  if AWebApplication.IsCallBack then
+    AWebApplication.CallBackResponse.AddJavaScriptToExecute(AScript)
+  else
+    HTML40FormInterface(AWebApplication.ActiveForm).PageContext.AddToInitProc(AScript);
+end;
+
+procedure IWBSExecuteJScript(const AScript: string);
+var
+  LWebApplication: TIWApplication;
+begin
+  LWebApplication := GGetWebApplicationThreadVar;
+  if LWebApplication = nil then
+    raise Exception.Create('User session not found');
+  IWBSExecuteJScript(LWebApplication, AScript);
+end;
+}
 end.
