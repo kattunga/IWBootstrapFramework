@@ -172,7 +172,8 @@ begin
     TIWBSCommon.AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
     if FBlockLevel then
       TIWBSCommon.AddCssClass(ACss, 'btn-block');
-    if Parent.ClassName = 'TIWBSNavBar' then
+    //if Parent.ClassName = 'TIWBSNavBar' then
+    if Parent is TIWBSNavBar then
       TIWBSCommon.AddCssClass(ACss, 'navbar-btn');
   end;
 end;
@@ -253,7 +254,7 @@ begin
 
   if Parent is TIWBSInputGroup then
     AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'btn')
-  else if Parent.ClassName = 'TIWBSUnorderedList' then
+  else if Parent is  TIWBSUnorderedList then // Parent.ClassName = 'TIWBSUnorderedList' then
     begin
       xHTMLTag := TIWHTMLTag.CreateTag('li');
       xHTMLTag.Contents.AddTagAsObject(AHTMLtag);
