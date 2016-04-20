@@ -448,6 +448,8 @@ end;
 
 procedure TIWBSSelect.SetItemIndex(AValue: integer);
 begin
+  if not FMultiSelect and (AValue < 0) and (Items.Count > 0) then
+    AValue := 0;
   inherited;
   ResetItemsSelected;
 end;
@@ -479,6 +481,7 @@ begin
       ResetItemsSelected;
       LSelectedVal := TStringList.Create;
       try
+        LSelectedVal.StrictDelimiter := True;
         LSelectedVal.CommaText := FText;
         for i := 0 to LSelectedVal.Count-1 do
           for j := 0 to Items.Count-1 do
@@ -491,6 +494,10 @@ begin
   else
     begin
       FItemIndex := FindValue(FText);
+      if not FMultiSelect and (FItemIndex < 0) and (Items.Count > 0) then begin
+        FItemIndex := 0;
+        FText := IfThen(ItemsHaveValues, Items.ValueFromIndex[FItemIndex], Items[FItemIndex]);
+      end;
       ResetItemsSelected;
     end;
   Invalidate;
@@ -519,6 +526,7 @@ begin
               LSelectedVal.Add(Items[v]);
             FItemsSelected[v] := True;
           end;
+        LSelectedVal.StrictDelimiter := True;
         ATextValue := LSelectedVal.CommaText;
       finally
         LSelectedIdx.Free;
