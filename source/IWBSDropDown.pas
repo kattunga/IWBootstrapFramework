@@ -216,7 +216,7 @@ var
   button: boolean;
   LItemIdx: integer;
 begin
-  button := (AItemIdx < 0) and (Parent.ClassName <> 'TIWBSUnorderedList');
+  button := (AItemIdx < 0) and (not (Parent is TIWBSUnorderedList)); // (Parent.ClassName <> 'TIWBSUnorderedList');
 
   if (AItemIdx < 0) and Parent.ClassNameIs('TIWBSInputGroup') then
     begin
@@ -264,7 +264,8 @@ begin
           if BSButtonSize <> bsszDefault then
             AddClassParam('btn-'+aIWBSSize[BSButtonSize]);
           AddClassParam(aIWBSButtonStyle[BSButtonStyle]);
-          if Parent.ClassName = 'TIWBSNavBar' then
+          if Parent is TIWBSNavBar then
+          //if Parent.ClassName = 'TIWBSNavBar' then
             AddClassParam('navbar-btn');
         end
       else if ADataTarget = nil then

@@ -905,7 +905,8 @@ end;
 
 procedure TIWBSUnorderedList.InternalRenderCss(var ACss: string);
 begin
-  if Parent.ClassName = 'TIWBSNavBar' then
+  if Parent is TIWBSNavBar then
+  //if Parent.ClassName = 'TIWBSNavBar' then
     TIWBSCommon.AddCssClass(ACss, 'nav navbar-nav')
   else
     TIWBSCommon.AddCssClass(ACss, 'list-group');
