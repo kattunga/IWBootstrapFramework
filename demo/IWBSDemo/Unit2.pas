@@ -206,6 +206,7 @@ type
     IWBSButton44: TIWBSButton;
     IWBSButton47: TIWBSButton;
     IWBSLabel5: TIWBSLabel;
+    IWBSText6: TIWBSText;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -232,6 +233,8 @@ type
     procedure IWBSDropDown2DropDownItems1DropDownItems2AsyncClick(
       Sender: TObject; EventParams: TStringList);
     procedure IWBSButton46AsyncClick(Sender: TObject; EventParams: TStringList);
+    procedure IWBSText6CustomAsyncEvents0AsyncEvent(Sender: TObject;
+      EventParams: TStringList);
   public
   end;
 
@@ -457,6 +460,12 @@ begin
       AStream.Free;
     end;
   end;
+end;
+
+procedure TIWForm2.IWBSText6CustomAsyncEvents0AsyncEvent(Sender: TObject;
+  EventParams: TStringList);
+begin
+  TIWBSAlert.Create('You pressed a link');
 end;
 
 initialization

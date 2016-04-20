@@ -1645,6 +1645,27 @@ object IWForm2: TIWForm2
                   Align = alLeft
                   BSGridOptions.GridMDSpan = 4
                   BSRegionType = bsrtColumn
+                  object IWBSText6: TIWBSText
+                    Left = 16
+                    Top = 268
+                    Width = 285
+                    Height = 174
+                    Css = 'jumbotron'
+                    CustomAsyncEvents = <
+                      item
+                        EventName = 'linkclick'
+                        Lock = True
+                        OnAsyncEvent = IWBSText6CustomAsyncEvents0AsyncEvent
+                      end>
+                    FriendlyName = 'IWBSText6'
+                    Script.Strings = (
+                      '$("#{%htmlname%}_link1").click( function() { {%linkclick%} } );')
+                    Lines.Strings = (
+                      
+                        '<a id="{%htmlname%}_link1" href="#">This link has a CustomAsyncE' +
+                        'vent</a>')
+                    RawText = True
+                  end
                   object IWBSRegion18: TIWBSRegion
                     Left = 12
                     Top = 34
