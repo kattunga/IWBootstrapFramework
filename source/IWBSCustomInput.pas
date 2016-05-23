@@ -169,12 +169,16 @@ end;
 
 procedure TIWBSCustomInput.SetAsDateTime(const Value: TDateTime);
 begin
-  if FInputType = bsitDateTimeLocal then
+  if Value = 0 then
+    FText := ''
+  else if FInputType = bsitDateTimeLocal then
     FText := FormatDateTime('yyyy-mm-dd"T"hh:nn', Value)
   else if FInputType = bsitDate then
     FText := FormatDateTime('yyyy-mm-dd', Value)
-  else if FInputType = bsitDate then
-    FText := FormatDateTime('hh:nn', Value);
+  else if FInputType = bsitTime then
+    FText := FormatDateTime('hh:nn', Value)
+  else
+    FText := DateTimeToStr(Value, LFormatSettings);
 end;
 
 function TIWBSCustomInput.GetAsDouble: Double;
@@ -223,7 +227,14 @@ end;
 
 procedure TIWBSCustomInput.SetText(const AValue: TCaption);
 begin
-  FText := AValue;
+  if AValue = '' then
+    FText := AValue
+  else if FInputType in [bsitDateTimeLocal, bsitDate, bsitTime] then
+    SetAsDateTime(StrToDateTime(AValue, LFormatSettings))
+  else if FInputType in [bsitNumber] then
+    SetAsDouble(StrToFloat(AValue, LFormatSettings))
+  else
+    FText := AValue;
   invalidate;
 end;
 

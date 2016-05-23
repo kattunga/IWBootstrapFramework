@@ -1,5 +1,7 @@
 unit IWBSRestServer;
 
+{$i 'IWBootstrap.inc'}
+
 interface
 
 uses
@@ -30,7 +32,12 @@ procedure IWBSRegisterRestServerHandler;
 
 implementation
 
-uses IW.Content.Handlers, IWURL, IWBaseForm, IW.Common.HttpPacket, IW.Parser.UTF8;
+uses IW.Content.Handlers, IWURL, IWBaseForm, IW.Common.HttpPacket,
+    {$IFDEF IW_14_0_53_UP}
+     IW.Parser.Files;
+    {$ELSE}
+     IW.Parser.UTF8;
+    {$ENDIF}
 
 const IWBS_RESTURLBASE = '/$iwbs/';
 
@@ -48,6 +55,7 @@ end;
 {$endregion}
 
 {$region 'RestCallBack functions'}
+
 type TIWCallBacksHack = class(TIWCallBacks)
 protected
   function QualifiedName(AOwnerForm: TComponent; const AName: string): string;
@@ -102,7 +110,12 @@ var
   xPos: Integer;
   LCallBackProc: TObject;
 begin
-  TIWApplicationHack(AApplication).FCallBackProcessing := true;
+
+  {$IFDEF IW_14_0_53_UP}
+  TIWApplicationHack(AApplication).SetSessionFlag(sfCallBackProcessing, True);
+  {$ELSE}
+  TIWApplicationHack(AApplication).FCallBackProcessing := True;
+  {$ENDIF}
   try
     LCallBacks := TIWCallBacksHack(TIWApplicationHack(AApplication).FCallBacks);
 
@@ -122,7 +135,11 @@ begin
         aReply.CodeText := 'Not found';
       end;
   finally
+    {$IFDEF IW_14_0_53_UP}
+    TIWApplicationHack(AApplication).SetSessionFlag(sfCallBackProcessing, False);
+    {$ELSE}
     TIWApplicationHack(AApplication).FCallBackProcessing := false;
+    {$ENDIF}
   end;
 end;
 {$endregion}
