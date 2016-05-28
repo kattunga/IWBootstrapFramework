@@ -36,7 +36,6 @@ begin
 end;
 
 initialization
-  IWBSAddGlobalLinkFile('/<iwbspath>/summernote/dist/summernote.css');
-  IWBSAddGlobalLinkFile('/<iwbspath>/summernote/dist/summernote.js');
+  gIWBSLibSummerNote := True;
 
 end.

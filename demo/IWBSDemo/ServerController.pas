@@ -2,7 +2,7 @@ unit ServerController;
 
 interface
 
-{.$DEFINE CDNS}
+{$DEFINE CDNS}
 {.$DEFINE BOOTSTRAPSELECT}
 
 uses
@@ -63,7 +63,7 @@ begin
   // ATTENTION!!!, this can't be done after this event because global variables are not thread safe
 {$IFDEF CDNS}
 
-  gIWBSLibJQueryJs := 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js';
+  gIWBSLibJQueryJs := 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js';
 
   gIWBSLibBootstrapCss := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
   gIWBSLibBootstrapJs := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js';
@@ -73,8 +73,11 @@ begin
 
   gIWBSLibPolyFillerJs := 'https://cdnjs.cloudflare.com/ajax/libs/webshim/1.15.10/dev/polyfiller.js';
 
-  gIWBSLibDynamicTabsCss := 'http://cdn.rawgit.com/kattunga/Bootstrap-Dynamic-Tabs/v1.0/bootstrap-dynamic-tabs.css';
-  gIWBSLibDynamicTabsJs := 'http://cdn.rawgit.com/kattunga/Bootstrap-Dynamic-Tabs/v1.0/bootstrap-dynamic-tabs.js';
+  gIWBSLibDynamicTabsCss := 'https://cdn.rawgit.com/kattunga/Bootstrap-Dynamic-Tabs/v1.1/bootstrap-dynamic-tabs.css';
+  gIWBSLibDynamicTabsJs := 'https://cdn.rawgit.com/kattunga/Bootstrap-Dynamic-Tabs/v1.1/bootstrap-dynamic-tabs.js';
+
+  gIWBSLibSummerNoteCss := 'https://cdn.rawgit.com/summernote/summernote/v0.8.1/dist/summernote.css';
+  gIWBSLibSummerNoteJs := 'https://cdn.rawgit.com/summernote/summernote/v0.8.1/dist/summernote.js';
 
   // we add a third party plugin to manage selects (https://silviomoreto.github.io/bootstrap-select)
   {$IFDEF BOOTSTRAPSELECT}
@@ -83,7 +86,7 @@ begin
   {$ENDIF}
 
   // custom css for this demo
-  IWBSAddGlobalLinkFile('https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.2/demo/bin/wwwroot/iwbsdemo.css');
+  IWBSAddGlobalLinkFile('https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.5/demo/bin/wwwroot/iwbsdemo.css');
 
 {$ELSE}
 

@@ -4,7 +4,6 @@ object IWServerController: TIWServerController
   Description = 'My IntraWeb Application'
   DisplayName = 'IntraWeb Application'
   Port = 8087
-  RedirectMsgDelay = 0
   ServerResizeTimeout = 0
   ShowLoadingAnimation = True
   SessionTimeout = 4
@@ -12,7 +11,7 @@ object IWServerController: TIWServerController
   SSLOptions.Port = 0
   SSLOptions.SSLVersions = []
   URLBase = '/iwbootstrap/'
-  Version = '14.0.47'
+  Version = '14.0.53'
   AllowMultipleSessionsPerUser = False
   JavaScriptOptions.RenderjQuery = False
   HttpKeepAlive = True

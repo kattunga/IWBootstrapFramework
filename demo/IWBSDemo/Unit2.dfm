@@ -31,7 +31,7 @@ object IWForm2: TIWForm2
       Width = 1082
       Height = 60
       Align = alTop
-      Brand = 'IWBootstrap Framework'
+      Brand = 'IWBootstrap Framework v1.5'
       BrandLink = 'https://github.com/kattunga/IWBootstrapFramework'
       BSFixed = bsnvfxTop
       object IWBSUnorderedList1: TIWBSUnorderedList
@@ -1929,7 +1929,8 @@ object IWForm2: TIWForm2
                     Height = 25
                     FriendlyName = 'IWBSComboBox1'
                     Caption = 'This is a Select (Size = 1)'
-                    Text = ''
+                    Text = 'item 1'
+                    ItemIndex = 0
                     Items.Strings = (
                       'item 1'
                       'item 2'
@@ -1959,7 +1960,8 @@ object IWForm2: TIWForm2
                     Height = 77
                     FriendlyName = 'IWBSListbox1'
                     Caption = 'This is a Select (Size <> 1)'
-                    Text = ''
+                    Text = 'item 1'
+                    ItemIndex = 0
                     Items.Strings = (
                       'item 1'
                       'item 2'

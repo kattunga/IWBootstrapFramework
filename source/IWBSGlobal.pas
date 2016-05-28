@@ -26,9 +26,14 @@ var
   gIWBSLibPolyFillerJs: string = '/<iwbspath>/webshim-1.15.10/js-webshim/minified/polyfiller.js';
 
   // path for Dynamic Tabs plugin (optional)
-  gIWBSLibDynamicTabs: boolean = True;
+  gIWBSLibDynamicTabs: boolean = False;
   gIWBSLibDynamicTabsCss: string = '/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.css';
   gIWBSLibDynamicTabsJs: string = '/<iwbspath>/dyntabs/bootstrap-dynamic-tabs.js';
+
+  // path for Summernote plugin (optional)
+  gIWBSLibSummerNote: boolean = False;
+  gIWBSLibSummerNoteCss: string = '/<iwbspath>/summernote/dist/summernote.css';
+  gIWBSLibSummerNoteJs: string = '/<iwbspath>/summernote/dist/summernote.js';
 
   // configurations for design time grid
   gIWBSRenderingSortMethod: TIWBSRenderingSortMethod = bsrmSortYX;
@@ -55,7 +60,11 @@ procedure IWBSAddGlobalLinkFile(const AFile: string);
 
 implementation
 
-// to add global files should be done only in initialization section, it's not thread safe
+// to add global files should be done in any place before server start working, it's not thread safe
+// in initialization section
+// IWServerController.OnConfig
+// IWServerController.OnCreate
+// etc...
 procedure IWBSAddGlobalLinkFile(const AFile: string);
 begin
   if gIWBSLinkFiles = nil then begin
