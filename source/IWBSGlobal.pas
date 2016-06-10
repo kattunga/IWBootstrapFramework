@@ -67,10 +67,8 @@ implementation
 // etc...
 procedure IWBSAddGlobalLinkFile(const AFile: string);
 begin
-  if gIWBSLinkFiles = nil then begin
+  if gIWBSLinkFiles = nil then
     gIWBSLinkFiles := TStringList.Create;
-    gIWBSLinkFiles.Sorted := True;
-  end;
   if gIWBSLinkFiles.IndexOf(AFile) = -1 then
     gIWBSLinkFiles.Add(AFile);
 end;
