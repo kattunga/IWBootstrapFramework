@@ -13,7 +13,7 @@ uses
   IWBaseLayoutComponent, IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr,
   IWBSInput, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
   IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent,
-  IWBSCustomControl, IW.HTTP.Request, IW.HTTP.Reply, IWCompFileUploader,
+  IWBSCustomControl, IW.HTTP.Request, IW.HTTP.Reply,
   IWBSDropDown;
 
 type

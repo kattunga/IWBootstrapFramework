@@ -252,10 +252,7 @@ begin
             Text := LField.Text
           else if (FInputType = bsitNumber) and (LField.DataType in [ftFloat, ftCurrency, ftBCD, ftFMTBCD, ftExtended]) then
             Text := FloatToStr(LField.AsExtended, LFormatSettings)
-
-          // aca agregar todos los tipos fecha que hay
-
-          else if (FInputType = bsitDateTimeLocal) and (LField.DataType in [ftDate, ftTime, ftDateTime, ftTimeStamp, ftOraTimeStamp]) then
+          else if (FInputType in [bsitDateTimeLocal,bsitDate,bsitTime]) and (LField.DataType in [ftDate, ftTime, ftDateTime, ftTimeStamp, ftOraTimeStamp]) then
             Text := FormatDateTime('yyyy-mm-dd"T"hh:nn',LField.AsDateTime)
           else
             Text := LField.AsString;

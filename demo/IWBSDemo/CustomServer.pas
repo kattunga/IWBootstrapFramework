@@ -3,24 +3,24 @@ unit CustomServer;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, jpeg, ExtCtrls, IWStandAloneServer, InContext, InHeaderList;
+  Windows, ShellApi, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls,
+  IW.Server.HTTPIndy,
+  InContext, InHeaderList, Vcl.Imaging.jpeg;
 
 type
   TFCustomServer = class(TForm)
     Image1: TImage;
     Label1: TLabel;
-    IWStandAloneServer1: TIWStandAloneServer;
     memoLog: TMemo;
-    procedure Image1Click(Sender: TObject);
-    procedure IWStandAloneServer1DebugLog(ASender: TObject; ALog: String);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure Image1Click(Sender: TObject);
   private
+    FHTTP: THTTPServerIndy;
+
     procedure HeadersAvailable(AContext: TInContext; const AUri: string; AHeaders: TInHeaderList; var VContinueProcessing: Boolean);
   public
-  end;
-
-  TIWStandAloneServerHack = class(TIWStandAloneServer)
   end;
 
 var
@@ -31,19 +31,35 @@ implementation
 {$R *.dfm}
 
 uses
-  IW.Server.Indy, IWGlobal, inGlobal;
+  IWServerSession, IWGlobal, inGlobal;
 
 procedure TFCustomServer.FormCreate(Sender: TObject);
 begin
- IWStandAloneServer1.Start(TSaServerIndy);
+  if gSC <> nil then
+    Exit;
+  gAppInit;
+
+  if (not Assigned(gHttpExecuteHook)) then
+    gHttpExecuteHook := IWServerSession.HttpExecute;
+
+  FHTTP := THTTPServerIndy.Create(Self);
+  FHTTP.OnHeadersAvailable := HeadersAvailable;
+  FHTTP.KeepAlive := gSC.HttpKeepAlive;
+
+  // this is for linux (with wine)
+  if GetEnvironmentVariable('SHELL') <> '' then
+    FHTTP.ReuseSocket := rsTrue;
+
+  FHTTP.InitHTTP;
+
   memoLog.Lines.Add('Server started');
   memoLog.Lines.Add('Listening on port: ' + IntToStr(GServerController.Port));
   memoLog.Lines.Add('');
+end;
 
-  TSaServerIndy(TIWStandAloneServerHack(IWStandAloneServer1).FHttpInstance).HTTP.OnHeadersAvailable := HeadersAvailable;
-
-  if GetEnvironmentVariable('SHELL') <> '' then
-    TSaServerIndy(TIWStandAloneServerHack(IWStandAloneServer1).FHttpInstance).HTTP.ReuseSocket := rsTrue;
+procedure TFCustomServer.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(FHTTP);
 end;
 
 procedure TFCustomServer.HeadersAvailable(AContext: TInContext; const AUri: string; AHeaders: TInHeaderList; var VContinueProcessing: Boolean);
@@ -58,14 +74,11 @@ begin
 end;
 
 procedure TFCustomServer.Image1Click(Sender: TObject);
+var
+  LURL: string;
 begin
-  IWStandAloneServer1.Run;
-end;
-
-procedure TFCustomServer.IWStandAloneServer1DebugLog(ASender: TObject;
-  ALog: String);
-begin
-  memoLog.Lines.Add(ALog);
+  LURL := 'http://127.0.0.1'+':' + IntToStr(gSC.Port)+'/$/start';
+  ShellAPI.ShellExecute(0, PChar('open'), PChar(LURL), nil, nil, SW_SHOWNORMAL);
 end;
 
 end.

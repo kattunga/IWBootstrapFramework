@@ -15,6 +15,7 @@ object FCustomServer: TFCustomServer
   OldCreateOrder = False
   ShowHint = True
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   DesignSize = (
     425
     345)
@@ -237,13 +238,5 @@ object FCustomServer: TFCustomServer
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 0
-  end
-  object IWStandAloneServer1: TIWStandAloneServer
-    DebugLog = True
-    RunIn = wbDefault
-    RunSSL = False
-    OnDebugLog = IWStandAloneServer1DebugLog
-    Left = 52
-    Top = 104
   end
 end

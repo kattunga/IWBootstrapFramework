@@ -44,14 +44,12 @@ procedure TFBootstrapFileInput.IWBSButton1AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
   Release;
-//  Application.MainForm.Show;
 end;
 
 procedure TFBootstrapFileInput.IWBSInput1CustomAsyncEvents0AsyncEvent(Sender: TObject; EventParams: TStringList);
 begin
   IWBSRegion5.AsyncRefreshControl;
 end;
-
 
 procedure TFBootstrapFileInput.IWBSInput1CustomRestEvents0RestEvent(
   aApplication: TIWApplication; aRequest: THttpRequest; aReply: THttpReply;
@@ -87,8 +85,8 @@ end;
 procedure TFBootstrapFileInput.IWFormModuleBaseCreate(Sender: TObject);
 begin
   // include third party plugin
-  IWBSLayoutMgr1.AddLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.2.7/css/fileinput.min.css');
-  IWBSLayoutMgr1.AddLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.2.7/js/fileinput.min.js');
+  IWBSLayoutMgr1.AddLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.2/css/fileinput.min.css');
+  IWBSLayoutMgr1.AddLinkFile('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.3.2/js/fileinput.min.js');
 end;
 
 initialization
