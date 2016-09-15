@@ -69,7 +69,8 @@ implementation
 uses DesignIntf, Windows, Forms, Dialogs, Graphics,
      glyphicons, IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
-     IWBSRegion, IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSCommon, IWBSCustomControl, IWBSImage, IWBSMemoHTML;
+     IWBSRegion, IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSNavBar,
+     IWBSCommon, IWBSCustomControl, IWBSImage, IWBSMemoHTML;
 
 const
   CNST_DEFAULTFONTNAME = 'Tahoma';
@@ -605,9 +606,12 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSInputForm]);
   RegisterComponents('IW BootsTrap', [TIWBSInputGroup]);
   RegisterComponents('IW BootsTrap', [TIWBSFormControl]);
-  RegisterComponents('IW BootsTrap', [TIWBSNavBar]);
   RegisterComponents('IW BootsTrap', [TIWBSUnorderedList]);
   RegisterComponents('IW BootsTrap', [TIWBSModal]);
+
+  RegisterComponents('IW BootsTrap', [TIWBSNavBar]);
+  RegisterComponents('IW BootsTrap', [TIWBSNavBarHeader]);
+  RegisterComponents('IW BootsTrap', [TIWBSNavBarCollapse]);
 
   RegisterComponents('IW BootsTrap', [TIWBSInput]);
   RegisterComponents('IW BootsTrap', [TIWBSMemo]);
@@ -658,9 +662,12 @@ initialization
   IWRegisterPaintHandler('TIWBSInputForm',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSInputGroup',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSFormControl',TIWBSPaintHandlerRegion);
-  IWRegisterPaintHandler('TIWBSNavBar',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSUnorderedList',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerRegion);
+
+  IWRegisterPaintHandler('TIWBSNavBar',TIWBSPaintHandlerRegion);
+  IWRegisterPaintHandler('TIWBSNavBarHeader',TIWBSPaintHandlerRegion);
+  IWRegisterPaintHandler('TIWBSNavBarCollapse',TIWBSPaintHandlerRegion);
 
   IWRegisterPaintHandler('TIWBSInput',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerCustomInput);
@@ -692,9 +699,12 @@ finalization
   IWUnRegisterPaintHandler('TIWBSInputForm');
   IWUnRegisterPaintHandler('TIWBSInputGroup');
   IWUnRegisterPaintHandler('TIWBSFormControl');
-  IWUnRegisterPaintHandler('TIWBSNavBar');
   IWUnRegisterPaintHandler('TIWBSUnorderedList');
   IWUnRegisterPaintHandler('TIWBSModal');
+
+  IWUnRegisterPaintHandler('TIWBSNavBar');
+  IWUnRegisterPaintHandler('TIWBSNavBarHeader');
+  IWUnRegisterPaintHandler('TIWBSNavBarCollapse');
 
   IWUnRegisterPaintHandler('TIWBSInput');
   IWUnRegisterPaintHandler('TIWBSMemo');

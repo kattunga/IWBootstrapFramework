@@ -114,8 +114,6 @@ object FBootstrapFileInput: TFBootstrapFileInput
       Width = 1048
       Height = 77
       Align = alTop
-      Brand = 'Bootstrap FileInput'
-      BrandLink = 'http://plugins.krajee.com/file-input'
       BSInverse = True
       object IWBSButton1: TIWBSButton
         Left = 516

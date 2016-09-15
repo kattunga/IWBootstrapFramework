@@ -35,7 +35,6 @@ object FBootstrapTable: TFBootstrapTable
     Align = alClient
     Style.Strings = (
       '')
-    BSRegionType = bsrtNone
     object IWBSRegion1: TIWBSRegion
       Left = 1
       Top = 78
@@ -169,8 +168,6 @@ object FBootstrapTable: TFBootstrapTable
       Width = 750
       Height = 77
       Align = alTop
-      Brand = 'BT from wenzhixin'
-      BrandLink = 'http://bootstrap-table.wenzhixin.net.cn'
       BSInverse = True
       object IWBSButton1: TIWBSButton
         Left = 516
@@ -192,66 +189,7 @@ object FBootstrapTable: TFBootstrapTable
     Top = 24
   end
   object ClientDataSet1: TClientDataSet
-    Active = True
-    Aggregates = <>
-    FieldDefs = <
-      item
-        Name = 'Species No'
-        DataType = ftFloat
-      end
-      item
-        Name = 'Notes'
-        DataType = ftMemo
-        Size = 50
-      end
-      item
-        Name = 'Length_In'
-        DataType = ftFloat
-      end
-      item
-        Name = 'Length (cm)'
-        DataType = ftFloat
-      end
-      item
-        Name = 'Species Name'
-        DataType = ftString
-        Size = 40
-      end
-      item
-        Name = 'Common_Name'
-        DataType = ftString
-        Size = 30
-      end
-      item
-        Name = 'Category'
-        DataType = ftString
-        Size = 15
-      end
-      item
-        Name = 'Graphic'
-        DataType = ftGraphic
-      end
-      item
-        Name = 'FoundDate'
-        DataType = ftDateTime
-      end
-      item
-        Name = 'Option'
-        DataType = ftString
-        Size = 1
-      end
-      item
-        Name = 'Check'
-        DataType = ftString
-        Size = 20
-      end>
-    IndexDefs = <>
-    IndexName = 'DEFAULT_ORDER'
-    Params = <>
-    StoreDefs = True
-    Left = 232
-    Top = 28
-    Data = {
+    PersistDataPacket.Data = {
       96DA10009619E0BD01000000180000000B001C00000003000000AF020A537065
       63696573204E6F0800040000000000054E6F74657304004B0000000200075355
       42545950450200490005005465787400055749445448020002003200094C656E
@@ -34769,6 +34707,65 @@ object FBootstrapTable: TFBootstrapTable
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000038809A5E5964E9CC4201310159}
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'Species No'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Notes'
+        DataType = ftMemo
+        Size = 50
+      end
+      item
+        Name = 'Length_In'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Length (cm)'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Species Name'
+        DataType = ftString
+        Size = 40
+      end
+      item
+        Name = 'Common_Name'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'Category'
+        DataType = ftString
+        Size = 15
+      end
+      item
+        Name = 'Graphic'
+        DataType = ftGraphic
+      end
+      item
+        Name = 'FoundDate'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'Option'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'Check'
+        DataType = ftString
+        Size = 20
+      end>
+    IndexDefs = <>
+    IndexName = 'DEFAULT_ORDER'
+    Params = <>
+    StoreDefs = True
+    Left = 232
+    Top = 28
     object ClientDataSet1SpeciesNo: TFloatField
       FieldName = 'Species No'
       Origin = 'DBDEMOS."biolife.DB".Species No'

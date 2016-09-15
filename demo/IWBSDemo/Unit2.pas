@@ -14,7 +14,7 @@ uses
   IWBSInput, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
   IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent,
   IWBSCustomControl, IW.HTTP.Request, IW.HTTP.Reply,
-  IWBSDropDown;
+  IWBSDropDown, IWBSNavBar;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -174,19 +174,16 @@ type
     IWBSButton42: TIWBSButton;
     IWBSRegion40: TIWBSRegion;
     IWBSNavBar1: TIWBSNavBar;
-    IWBSUnorderedList1: TIWBSUnorderedList;
     IWBSButton41: TIWBSButton;
     IWBSRegion29: TIWBSRegion;
     IWBSLabel3: TIWBSLabel;
     IWBSInputForm5: TIWBSInputForm;
     IWBSButton45: TIWBSButton;
     IWBSText2: TIWBSText;
-    IWBSButton46: TIWBSButton;
     IWBSInput26: TIWBSFile;
     IWBSInputGroup8: TIWBSInputGroup;
     IWBSInput27: TIWBSInput;
     IWBSDropDown1: TIWBSDropDown;
-    IWBSDropDown2: TIWBSDropDown;
     IWBSButton36: TIWBSButton;
     IWBSRegion4: TIWBSRegion;
     IWBSRegion38: TIWBSRegion;
@@ -207,6 +204,13 @@ type
     IWBSButton47: TIWBSButton;
     IWBSLabel5: TIWBSLabel;
     IWBSText6: TIWBSText;
+    IWBSNavBarHeader1: TIWBSNavBarHeader;
+    IWBSButton48: TIWBSButton;
+    IWBSNavBarCollapse1: TIWBSNavBarCollapse;
+    IWBSUnorderedList1: TIWBSUnorderedList;
+    IWBSButton46: TIWBSButton;
+    IWBSDropDown2: TIWBSDropDown;
+    IWBSButton49: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -226,11 +230,11 @@ type
     procedure IWBSButton30AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSDropDown2DropDownItems0AsyncClick(Sender: TObject;
       EventParams: TStringList);
-    procedure IWBSDropDown2DropDownItems1DropDownItems0AsyncClick(
+    procedure AsyncClickBootstrapTable(
       Sender: TObject; EventParams: TStringList);
-    procedure IWBSDropDown2DropDownItems1DropDownItems1AsyncClick(
+    procedure AsyncClickJQGrid(
       Sender: TObject; EventParams: TStringList);
-    procedure IWBSDropDown2DropDownItems1DropDownItems2AsyncClick(
+    procedure AsyncClickBootstrapFileInput(
       Sender: TObject; EventParams: TStringList);
     procedure IWBSButton46AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSText6CustomAsyncEvents0AsyncEvent(Sender: TObject;
@@ -412,7 +416,7 @@ begin
   end;
 end;
 
-procedure TIWForm2.IWBSDropDown2DropDownItems1DropDownItems0AsyncClick(
+procedure TIWForm2.AsyncClickBootstrapTable(
   Sender: TObject; EventParams: TStringList);
 begin
   with TFBootstrapTable.Create(WebApplication) do begin
@@ -421,7 +425,7 @@ begin
   end;
 end;
 
-procedure TIWForm2.IWBSDropDown2DropDownItems1DropDownItems1AsyncClick(
+procedure TIWForm2.AsyncClickJQGrid(
   Sender: TObject; EventParams: TStringList);
 begin
   with TFJQGrid.Create(WebApplication) do begin
@@ -430,7 +434,7 @@ begin
   end;
 end;
 
-procedure TIWForm2.IWBSDropDown2DropDownItems1DropDownItems2AsyncClick(
+procedure TIWForm2.AsyncClickBootstrapFileInput(
   Sender: TObject; EventParams: TStringList);
 begin
   with TFBootstrapFileInput.Create(WebApplication) do begin

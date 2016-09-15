@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, db, StrUtils, Controls,
   IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseInterfaces,
-  IWBSCustomControl, IWScriptEvents, IWBSRegion, IWBSCommon, IWBSRegionCommon;
+  IWBSCustomControl, IWScriptEvents, IWBSRegion, IWBSCommon, IWBSRegionCommon, IWBSNavbar;
 
 type
   // TIWBSCustomButton.BSButtonStyle
@@ -27,7 +27,7 @@ type
   published
     // Boostrap Block Level Button @br
     // http://getbootstrap.com/css/#buttons-sizes
-    property BSBlockLevel: boolean read FBlockLevel write SetBlockLevel;
+    property BSBlockLevel: boolean read FBlockLevel write SetBlockLevel default False;
     // Boostrap Button Size @br
     // http://getbootstrap.com/css/#buttons-sizes
     property BSButtonSize: TIWBSSize read FButtonSize write FButtonSize default bsszDefault;
@@ -39,8 +39,6 @@ type
     property BSGlyphicon: string read FGlyphicon write SetGlyphicon;
     // Button Caption
     property Caption;
-    // Rendered tabindex tag if true and gIWBSEnableTabIndex = true. @br
-    // http://www.w3schools.com/tags/att_global_tabindex.asp
   end;
 
   // TIWBSButton.DataDismiss
@@ -74,6 +72,7 @@ type
     procedure SetHref(const Value: string);
     procedure SetTarget(const Value: string);
     procedure SetDataDismiss(const Value: TIWBSButtonDataDismiss);
+    function GetDataToggle: string;
   protected
     procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
@@ -83,7 +82,7 @@ type
     // Usefull when you create buttons at runtime
     property AsyncClickProc: TIWBSAsyncEventProc read FAsyncClickProc write SetAsyncClickProc;
   published
-    // If true it will render an anchor if not a button. (This property should be droped, the condition should be autodetected)
+    // If true it will render an anchor, if not a button. (This property should be droped, the condition should be autodetected)
     property Anchor: boolean read FAnchor write FAnchor default False;
     // Button type
     property ButtonType: TIWBSButtonType read FButtonType write FButtonType default iwbsbtButton;
@@ -98,6 +97,8 @@ type
     // http://www.w3schools.com/bootstrap/bootstrap_modal.asp @br
     // http://www.w3schools.com/bootstrap/bootstrap_collapse.asp
     property DataTarget: IIWBSContainer read FDataTarget write SetDataTarget;
+
+    property DataToggle: string read GetDataToggle;
     // acceskey tag atribute @br
     // http://www.w3schools.com/tags/att_global_accesskey.asp
     property HotKey: string read FHotkey write FHotKey;
@@ -165,17 +166,22 @@ end;
 procedure TIWBSButton.InternalRenderCss(var ACss: string);
 begin
   inherited;
-  if not FAnchor then begin
-    TIWBSCommon.AddCssClass(ACss, 'btn');
-    if FButtonSize <> bsszDefault then
-      TIWBSCommon.AddCssClass(ACss, 'btn-'+aIWBSSize[FButtonSize]);
-    TIWBSCommon.AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
-    if FBlockLevel then
-      TIWBSCommon.AddCssClass(ACss, 'btn-block');
-    //if Parent.ClassName = 'TIWBSNavBar' then
-    if Parent is TIWBSNavBar then
-      TIWBSCommon.AddCssClass(ACss, 'navbar-btn');
-  end;
+
+  if (FDataTarget <> nil) and (FDataTarget.InterfaceInstance is TIWBSNavBarCollapse) then
+    begin
+      TIWBSCommon.AddCssClass(ACss, 'navbar-toggle');
+    end
+  else if not FAnchor then
+    begin
+      TIWBSCommon.AddCssClass(ACss, 'btn');
+      if FButtonSize <> bsszDefault then
+        TIWBSCommon.AddCssClass(ACss, 'btn-'+aIWBSSize[FButtonSize]);
+      TIWBSCommon.AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
+      if FBlockLevel then
+        TIWBSCommon.AddCssClass(ACss, 'btn-block');
+      if Parent is TIWBSNavBarBase then
+        TIWBSCommon.AddCssClass(ACss, 'navbar-btn');
+    end;
 end;
 
 procedure TIWBSButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
@@ -192,61 +198,86 @@ begin
     AHTMLTag.AddStringParam('id', AHTMLName);
     AHTMLTag.AddClassParam(ActiveCss);
 
-    if FDataDismiss <> bsbdNone then
-      AHTMLTag.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
-
-    if FAnchor or (FButtonType = iwbsbtButton) then
-      begin
-        if FAnchor and (FDataTarget = nil) then
-          AHTMLTag.AddStringParam('href', FHref);
-        if not FAnchor then
-          AHTMLTag.AddStringParam('type', 'button');
-        if FDataTarget <> nil then begin
-          if FAnchor then
-            AHTMLTag.AddStringParam('href', '#'+FDataTarget.HTMLName)
-          else
-            AHTMLTag.AddStringParam('data-target', '#'+FDataTarget.HTMLName);
-          if FDataParent <> nil then
-            AHTMLTag.AddStringParam('data-parent', '#'+FDataParent.HTMLName);
-          if (FDataTarget.InterfaceInstance is TIWBSModal) then
-            AHTMLTag.AddStringParam('data-toggle', 'modal')
-          else if (FDataTarget.InterfaceInstance is TIWBSRegion) and TIWBSRegion(FDataTarget.InterfaceInstance).Collapse then
-            AHTMLTag.AddStringParam('data-toggle', 'collapse');
-        end;
-      end
-    else if FButtonType = iwbsbtSubmit then
-      AHTMLTag.AddStringParam('type', 'submit')
-    else if FButtonType = iwbsbtReset then
-      AHTMLTag.AddStringParam('type', 'reset');
+    // button type
+    if not FAnchor then
+      if FButtonType = iwbsbtButton then
+        AHTMLTag.AddStringParam('type', 'button')
+      else if FButtonType = iwbsbtSubmit then
+        AHTMLTag.AddStringParam('type', 'submit')
+      else if FButtonType = iwbsbtReset then
+        AHTMLTag.AddStringParam('type', 'reset');
 
     if ShowHint and (Hint <> '') then
       AHTMLTag.AddStringParam('title', Hint);
+
     if IsDisabled then
       AHTMLTag.Add('disabled');
-    s := TextToHTML(Caption);
-    if FHotKey <> '' then begin
-      AHTMLTag.AddStringParam('accesskey', FHotKey);
-      s := StringReplace(s, FHotKey, '<u>' + FHotKey + '</u>', [rfIgnoreCase]);
-    end;
-    if FButtonStyle = bsbsClose then
-      AHTMLTag.AddStringParam('aria-label', 'Close');
+
     AHTMLTag.AddStringParam('style', ActiveStyle);
 
     if TabIndex <> 0 then
       AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
 
+    // caption
+    s := TextToHTML(Caption);
+
+    // hotkey
+    if FHotKey <> '' then begin
+      AHTMLTag.AddStringParam('accesskey', FHotKey);
+      s := StringReplace(s, FHotKey, '<u>' + FHotKey + '</u>', [rfIgnoreCase]);
+    end;
+
+    // glyphicon
     if FGlyphicon <> '' then
       with AHTMLTag.Contents.AddTag('span') do begin
         AddClassParam('glyphicon glyphicon-'+FGlyphicon);
         AddBoolParam('aria-hidden',true);
-        s := ' '+s;
+        s := ' ' + s;
+      end;
+
+    // close button
+    if (FButtonStyle = bsbsClose) then begin
+      AHTMLTag.AddStringParam('aria-label', 'Close');
+      if (s = '') and (FGlyphicon = '') then
+        s := '&times;';
+    end;
+
+    // data-dismiss
+    if FDataDismiss <> bsbdNone then
+      AHTMLTag.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
+
+    // datatarget / href
+    if FDataTarget = nil then
+      begin
+        if FAnchor then begin
+          AHTMLTag.AddStringParam('href', FHref);
+          AHTMLTag.AddStringParam('target', FTarget);
+        end;
+      end
+    else
+      begin
+        if FAnchor then
+          AHTMLTag.AddStringParam('href', '#'+FDataTarget.HTMLName)
+        else
+          AHTMLTag.AddStringParam('data-target', '#'+FDataTarget.HTMLName);
+
+        if FDataParent <> nil then
+          AHTMLTag.AddStringParam('data-parent', '#'+FDataParent.HTMLName);
+
+        AHTMLTag.AddStringParam('data-toggle', DataToggle);
+
+        // draw a menu button if no caption and no glyphicon
+        if (s = '') and (FGlyphicon = '') then begin
+          AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
+          AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
+          AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
+        end;
       end;
 
     // caption after glyphicon
-    if (FButtonStyle = bsbsClose) and (s = '') and (FGlyphicon = '') then
-      AHTMLTag.Contents.AddText('&times;')
-    else
+    if s <> '' then
       AHTMLTag.Contents.AddText(s);
+
   except
     FreeAndNil(AHTMLTag);
     raise;
@@ -254,7 +285,7 @@ begin
 
   if Parent is TIWBSInputGroup then
     AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'btn')
-  else if Parent is  TIWBSUnorderedList then // Parent.ClassName = 'TIWBSUnorderedList' then
+  else if Parent is  TIWBSUnorderedList then
     begin
       xHTMLTag := TIWHTMLTag.CreateTag('li');
       xHTMLTag.Contents.AddTagAsObject(AHTMLtag);
@@ -277,6 +308,18 @@ end;
 procedure TIWBSButton.DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
 begin
   FAsyncClickProc(Sender, EventParams);
+end;
+
+function TIWBSButton.GetDataToggle: string;
+begin
+  if (FDataTarget = nil) then
+    Result := ''
+  else if (FDataTarget.InterfaceInstance is TIWBSModal) then
+    Result := 'modal'
+  else if (FDataTarget.InterfaceInstance is TIWBSRegion) and TIWBSRegion(FDataTarget.InterfaceInstance).Collapse then
+    Result := 'collapse'
+  else if (FDataTarget.InterfaceInstance is TIWBSNavBarCollapse) then
+    Result := 'collapse';
 end;
 
 procedure TIWBSButton.SetAsyncClickProc(Value: TIWBSAsyncEventProc);

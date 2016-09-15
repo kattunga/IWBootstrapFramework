@@ -21,10 +21,8 @@ type
     FRendered: boolean;
     FCustomAsyncEvents: TIWBSCustomAsyncEvents;
     FCustomRestEvents: TIWBSCustomRestEvents;
-    FTagType: string;
     FCss: string;
     FGridOptions: TIWBSGridOptions;
-    FRegionDiv: TIWHTMLTag;
     FScript: TStringList;
     FScriptInsideTag: boolean;
     FScriptParams: TIWBSScriptParams;
@@ -59,6 +57,9 @@ type
     procedure set_ScriptEvents(const Value: TIWScriptEvents);
     procedure SetAfterRender(const Value: TNotifyEvent);
   protected
+    FTagType: string;
+    FRegionDiv: TIWHTMLTag;
+
     {$hints off}
     function get_Visible: Boolean; override;
     procedure set_Visible(Value: Boolean); override;
@@ -198,28 +199,6 @@ type
     property CollapseVisible: boolean read FCollapseVisible write SetCollapseVisible default False;
   end;
 
-  TIWBSNavBarFixed = (bsnvfxNone, bsnvfxTop, bsnvfxBottom);
-
-  TIWBSNavBar = class(TIWBSCustomRegion)
-  private
-    FBrand: string;
-    FBrandLink: string;
-    FFluid: boolean;
-    FFixed: TIWBSNavBarFixed;
-    FInverse: boolean;
-  protected
-    procedure InternalRenderCss(var ACss: string); override;
-  public
-    constructor Create(AOwner: TComponent); override;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
-  published
-    property Brand: string read FBrand write FBrand;
-    property BrandLink: string read FBrandLink write FBrandLink;
-    property BSFluid: boolean read FFluid write FFluid default False;
-    property BSInverse: boolean read FInverse write FInverse default False;
-    property BSFixed: TIWBSNavBarFixed read FFixed write FFixed default bsnvfxNone;
-  end;
-
   TIWBSUnorderedList = class(TIWBSCustomRegion)
   protected
     procedure InternalRenderCss(var ACss: string); override;
@@ -262,7 +241,7 @@ function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
 implementation
 
 uses IWForm, IWUtils, IW.Common.System, IWContainerLayout, IWBaseHTMLControl, IWBaseHTMLInterfaces,
-     IWBSUtils, IWBSInputCommon, IWBSScriptEvents, IWBSGlobal;
+     IWBSUtils, IWBSInputCommon, IWBSScriptEvents, IWBSGlobal, IWBSNavBar;
 
 {$region 'help functions'}
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -842,60 +821,6 @@ begin
 end;
 {$endregion}
 
-{$region 'TIWBSNavBar'}
-constructor TIWBSNavBar.Create(AOwner: TComponent);
-begin
-  inherited;
-  FFluid := False;
-  FFixed := bsnvfxNone;
-  FInverse := False;
-  FTagType := 'nav';
-end;
-
-procedure TIWBSNavBar.InternalRenderCss(var ACss: string);
-begin
-  TIWBSCommon.AddCssClass(ACss, 'navbar navbar-'+iif(FInverse,'inverse', 'default'));
-  if FFixed = bsnvfxTop then
-    TIWBSCommon.AddCssClass(ACss, 'navbar-fixed-top')
-  else if FFixed = bsnvfxBottom then
-    TIWBSCommon.AddCssClass(ACss, ' navbar-fixed-bottom');
-end;
-
-function TIWBSNavBar.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
-var
-  xHTMLName: string;
-begin
-  xHTMLName := HTMLName+'_body';
-
-  Result := Inherited;
-  with Result.Contents.AddTag('div') do begin
-    AddClassParam('container'+iif(FFluid, '-fluid'));
-    with Contents.AddTag('div') do begin
-      AddClassParam('navbar-header');
-      with Contents.AddTag('a') do begin
-        AddClassParam('navbar-brand');
-        AddStringParam('href',iif(FBrandLink <> '', FBrandLink, '#'));
-        AddStringParam('target','_blank');
-        Contents.AddText(FBrand);
-      end;
-      with Contents.AddTag('button') do begin
-        AddStringParam('type','button');
-        AddClassParam('navbar-toggle');
-        AddStringParam('data-toggle','collapse');
-        AddStringParam('data-target','#'+xHTMLName);
-        Contents.AddTag('span').AddClassParam('icon-bar');
-        Contents.AddTag('span').AddClassParam('icon-bar');
-        Contents.AddTag('span').AddClassParam('icon-bar');
-      end;
-    end;
-    FRegionDiv := Contents.AddTag('div');
-    FRegionDiv.AddClassParam('collapse');
-    FRegionDiv.AddClassParam('navbar-collapse');
-    FRegionDiv.AddStringParam('id',xHTMLName);
-  end;
-end;
-{$endregion}
-
 {$region 'TIWBSUnorderedList'}
 constructor TIWBSUnorderedList.Create(AOwner: TComponent);
 begin
@@ -905,8 +830,7 @@ end;
 
 procedure TIWBSUnorderedList.InternalRenderCss(var ACss: string);
 begin
-  if Parent is TIWBSNavBar then
-  //if Parent.ClassName = 'TIWBSNavBar' then
+  if Parent is TIWBSNavBarBase then
     TIWBSCommon.AddCssClass(ACss, 'nav navbar-nav')
   else
     TIWBSCommon.AddCssClass(ACss, 'list-group');

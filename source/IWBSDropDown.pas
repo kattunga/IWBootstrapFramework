@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, StrUtils,
   IWRenderContext, IWHTMLTag, IWControl,
-  IWBSCommon, IWBSButton, IWBSRegionCommon, IWBSRegion;
+  IWBSCommon, IWBSButton, IWBSRegionCommon, IWBSRegion, IWBSNavbar;
 
 type
   // Bootstrap DropDown @br
@@ -264,8 +264,7 @@ begin
           if BSButtonSize <> bsszDefault then
             AddClassParam('btn-'+aIWBSSize[BSButtonSize]);
           AddClassParam(aIWBSButtonStyle[BSButtonStyle]);
-          if Parent is TIWBSNavBar then
-          //if Parent.ClassName = 'TIWBSNavBar' then
+          if Parent is TIWBSNavBarBase then
             AddClassParam('navbar-btn');
         end
       else if ADataTarget = nil then

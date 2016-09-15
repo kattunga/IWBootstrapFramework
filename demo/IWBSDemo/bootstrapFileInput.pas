@@ -13,7 +13,7 @@ uses
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
   MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSImage,
   IWCompTabControl, IWBSTabControl,
-  IW.HTTP.Request, IW.HTTP.Reply, IWApplication;
+  IW.HTTP.Request, IW.HTTP.Reply, IWApplication, IWBSNavBar;
 
 type
   TFBootstrapFileInput = class(TIWAppForm)

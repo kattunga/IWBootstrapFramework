@@ -58,7 +58,8 @@ contains
   IWBSDropDown in 'IWBSDropDown.pas',
   IWBSJsonDataObjects in 'IWBSJsonDataObjects.pas',
   IWBSImageUtils in 'IWBSImageUtils.pas',
-  IWBSMemoHtml in 'IWBSMemoHtml.pas';
+  IWBSMemoHtml in 'IWBSMemoHtml.pas',
+  IWBSNavBar in 'IWBSNavBar.pas';
 
 end.
 
