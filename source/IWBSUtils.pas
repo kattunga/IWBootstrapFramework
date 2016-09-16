@@ -19,7 +19,7 @@ procedure IWBSExecuteJScript(const AScript: string); overload;
 }
 implementation
 
-uses IWHTML40Interfaces, IWXMLTag, IWCallBack;
+uses IWXMLTag, IWCallBack;
 
 type
   TIWCallBackResponseHack = class(TIWCallBackResponse);

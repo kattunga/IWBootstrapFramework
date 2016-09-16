@@ -19,7 +19,7 @@ object FFishFact: TFFishFact
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -634
+  DesignTop = 8
   object IWBSRegion1: TIWBSRegion
     Left = 0
     Top = 0
@@ -42,7 +42,6 @@ object FFishFact: TFFishFact
         Css = 'pull-right'
         FriendlyName = 'IWBSButton1'
         OnAsyncClick = IWBSButton1AsyncClick
-        BSBlockLevel = False
         Caption = 'Switch to Standard Demo'
       end
       object IWText1: TIWBSText
@@ -182,7 +181,8 @@ object FFishFact: TFFishFact
             DataSource = dsrcMain
             DataField = 'Option'
             Caption = 'Option'
-            Text = ''
+            Text = '1'
+            ItemIndex = 0
             Items.Strings = (
               'Option 1=1'
               'Option 2=2'
@@ -198,7 +198,8 @@ object FFishFact: TFFishFact
             DataSource = dsrcMain
             DataField = 'Option'
             Caption = 'Option'
-            Text = ''
+            Text = '1'
+            ItemIndex = 0
             Items.Strings = (
               'Option 1=1'
               'Option 2=2'
@@ -290,12 +291,11 @@ object FFishFact: TFFishFact
             Width = 449
             Height = 51
             BSRegionType = bsrtPageHeader
-            object IWBSRegion5: TIWBSRegion
+            object IWBSRegion5: TIWBSButtonGroup
               Left = 3
               Top = 3
               Width = 333
               Height = 42
-              BSRegionType = bsrtButtonGroup
               object btnEdit: TIWBSButton
                 Left = 200
                 Top = 14
@@ -305,7 +305,6 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 FriendlyName = 'btnEdit'
                 OnAsyncClick = btnEditAsyncClick
-                BSBlockLevel = False
                 BSGlyphicon = 'edit'
               end
               object btnPost: TIWBSButton
@@ -317,7 +316,6 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnPostAsyncClick
-                BSBlockLevel = False
                 BSGlyphicon = 'check'
               end
               object btnCancel: TIWBSButton
@@ -329,7 +327,6 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnCancelAsyncClick
-                BSBlockLevel = False
                 BSGlyphicon = 'remove'
               end
               object btnFirst: TIWBSButton
@@ -341,7 +338,6 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnFirstAsyncClick
-                BSBlockLevel = False
                 BSGlyphicon = 'fast-backward'
               end
               object btnPrior: TIWBSButton
@@ -353,7 +349,6 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnPriorAsyncClick
-                BSBlockLevel = False
                 BSGlyphicon = 'backward'
               end
               object btnNext: TIWBSButton
@@ -365,7 +360,6 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnNextAsyncClick
-                BSBlockLevel = False
                 BSGlyphicon = 'forward'
               end
               object btnLast: TIWBSButton
@@ -377,7 +371,6 @@ object FFishFact: TFFishFact
                 LockOnAsyncEvents = [aeClick]
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnLastAsyncClick
-                BSBlockLevel = False
                 BSGlyphicon = 'fast-forward'
               end
             end
@@ -457,66 +450,7 @@ object FFishFact: TFFishFact
     Top = 112
   end
   object ClientDataSet1: TClientDataSet
-    Active = True
-    Aggregates = <>
-    FieldDefs = <
-      item
-        Name = 'Species No'
-        DataType = ftFloat
-      end
-      item
-        Name = 'Notes'
-        DataType = ftMemo
-        Size = 50
-      end
-      item
-        Name = 'Length_In'
-        DataType = ftFloat
-      end
-      item
-        Name = 'Length (cm)'
-        DataType = ftFloat
-      end
-      item
-        Name = 'Species Name'
-        DataType = ftString
-        Size = 40
-      end
-      item
-        Name = 'Common_Name'
-        DataType = ftString
-        Size = 30
-      end
-      item
-        Name = 'Category'
-        DataType = ftString
-        Size = 15
-      end
-      item
-        Name = 'Graphic'
-        DataType = ftGraphic
-      end
-      item
-        Name = 'FoundDate'
-        DataType = ftDateTime
-      end
-      item
-        Name = 'Option'
-        DataType = ftString
-        Size = 1
-      end
-      item
-        Name = 'Check'
-        DataType = ftString
-        Size = 20
-      end>
-    IndexDefs = <>
-    IndexName = 'DEFAULT_ORDER'
-    Params = <>
-    StoreDefs = True
-    Left = 492
-    Top = 180
-    Data = {
+    PersistDataPacket.Data = {
       96DA10009619E0BD01000000180000000B001C00000003000000AF020A537065
       63696573204E6F0800040000000000054E6F74657304004B0000000200075355
       42545950450200490005005465787400055749445448020002003200094C656E
@@ -35034,6 +34968,65 @@ object FFishFact: TFFishFact
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000038809A5E5964E9CC4201310159}
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'Species No'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Notes'
+        DataType = ftMemo
+        Size = 50
+      end
+      item
+        Name = 'Length_In'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Length (cm)'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Species Name'
+        DataType = ftString
+        Size = 40
+      end
+      item
+        Name = 'Common_Name'
+        DataType = ftString
+        Size = 30
+      end
+      item
+        Name = 'Category'
+        DataType = ftString
+        Size = 15
+      end
+      item
+        Name = 'Graphic'
+        DataType = ftGraphic
+      end
+      item
+        Name = 'FoundDate'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'Option'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'Check'
+        DataType = ftString
+        Size = 20
+      end>
+    IndexDefs = <>
+    IndexName = 'DEFAULT_ORDER'
+    Params = <>
+    StoreDefs = True
+    Left = 492
+    Top = 180
     object ClientDataSet1SpeciesNo: TFloatField
       FieldName = 'Species No'
       Origin = 'DBDEMOS."biolife.DB".Species No'

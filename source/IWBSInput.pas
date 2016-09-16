@@ -4,9 +4,9 @@ interface
 
 uses
   SysUtils, Classes, db, StrUtils, Controls,
-  IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseHTMLControl, IWBaseInterfaces, IWApplication,
-  IWCompCheckBox, IWCompRadioButton, IWCompButton, IWDBStdCtrls, IWDBExtCtrls,
-  IWBSRegion, IWBSCommon, IWBSCustomInput;
+  IWRenderContext, IWHTMLTag, IWBaseHTMLControl, IWApplication,
+
+  IWBSCommon, IWBSCustomInput;
 
 type
 
@@ -116,7 +116,7 @@ type
 
 implementation
 
-uses IW.Common.System, IWResourceStrings, IWBSInputCommon, IWBSUtils;
+uses IW.Common.System, IWBSInputCommon, IWBSInputForm, IWBSUtils;
 
 {$region 'TIWBSInput'}
 procedure TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);

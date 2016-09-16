@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, StrUtils,
   IWRenderContext, IWHTMLTag, IWControl,
-  IWBSCommon, IWBSButton, IWBSRegionCommon, IWBSRegion, IWBSNavbar;
+  IWBSCommon, IWBSButton;
 
 type
   // Bootstrap DropDown @br
@@ -79,7 +79,7 @@ type
 
 implementation
 
-uses IW.Common.System;
+uses IW.Common.System, IWBSModal, IWBSRegion, IWBSCustomRegion, IWBSNavbar;
 
 {$region 'TIWBSDropDownItem'}
 constructor TIWBSDropDownItem.Create(Collection: TCollection);
@@ -216,7 +216,7 @@ var
   button: boolean;
   LItemIdx: integer;
 begin
-  button := (AItemIdx < 0) and (not (Parent is TIWBSUnorderedList)); // (Parent.ClassName <> 'TIWBSUnorderedList');
+  button := (AItemIdx < 0) and (not (Parent is TIWBSUnorderedList));
 
   if (AItemIdx < 0) and Parent.ClassNameIs('TIWBSInputGroup') then
     begin
@@ -292,7 +292,7 @@ begin
               AddStringParam('data-parent', '#'+ADataParent.HTMLName);
             if (ADataTarget.InterfaceInstance is TIWBSModal) then
               AddStringParam('data-toggle', 'modal')
-            else if (ADataTarget.InterfaceInstance is TIWBSRegion) and TIWBSRegion(ADataTarget.InterfaceInstance).Collapse then
+            else if (ADataTarget.InterfaceInstance is TIWBSCustomRegion) and TIWBSCustomRegion(ADataTarget.InterfaceInstance).Collapse then
               AddStringParam('data-toggle', 'collapse');
           end;
         end;

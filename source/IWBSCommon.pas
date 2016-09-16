@@ -148,7 +148,7 @@ procedure SetAsyncHtml(AApplication: TIWApplication; const HTMLName: string; con
 implementation
 
 uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm,
-     IWBSUtils, IWBSCustomControl, IWBSRegionCommon, IWBSGlobal;
+     IWBSUtils, IWBSRegionCommon, IWBSGlobal;
 
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create;

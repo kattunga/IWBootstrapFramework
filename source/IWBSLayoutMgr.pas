@@ -27,9 +27,9 @@ type
 implementation
 
 uses
-  IWBaseForm, IWGlobal, IWHTML40Interfaces, IWTypes, IWHTMLContainer, IWBaseInterfaces, IWBaseControl, IWLists, IWURL,
-  IWRegion, IW.Common.Strings, IWMimeTypes, IWApplication,
-  IWBSGlobal, IWBSRegionCommon, IWBSCommon, IWBSTabControl;
+  IWBaseForm, IWGlobal, IWHTML40Interfaces, IWBaseInterfaces, IWLists, IWURL,
+  IWMimeTypes, IWApplication,
+  IWBSGlobal, IWBSCommon, IWBSTabControl;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin

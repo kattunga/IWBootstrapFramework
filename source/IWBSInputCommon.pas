@@ -3,8 +3,8 @@ unit IWBSInputCommon;
 interface
 
 uses Classes, SysUtils, SyncObjs, Controls,
-     IWVCLBaseControl, IWBSRegion,
-     IWRenderContext, IWHTMLTag;
+     IWBSRegion, IWBSInputForm,
+     IWHTMLTag;
 
 function IWBSCreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: TIWHTMLTag; const AHTMLName: string; ASpanDiv: boolean): TIWHTMLTag;
 function IWBSCreateInputFormGroup(AControl, AParent: TControl; ATag: TIWHTMLTag; const ACaption, AHTMLName: string): TIWHTMLTag;
@@ -13,14 +13,16 @@ function IWBSCreateInputGroupAddOn(ATag: TIWHTMLTag; const AHTMLName, css: strin
 
 implementation
 
-uses IWBSRegionCommon, IWBaseHTMLControl;
+uses IWBaseHTMLControl;
 
 {$region 'FormGroup functions'}
 function IWBSCreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: TIWHTMLTag; const AHTMLName: string; ASpanDiv: boolean): TIWHTMLTag;
 var
   LSpanDiv: TIWHTMLTag;
 begin
-  if (AParentForm <> nil) and not ((AParent is TIWBSRegion) and (TIWBSRegion(AParent).BSRegionType in [bsrtFormGroup,bsrtButtonGroup])) then
+  if (AParentForm <> nil) and
+     not ((AParent is TIWBSRegion) and (TIWBSRegion(AParent).BSRegionType = bsrtFormGroup)) and
+     not (AParent is TIWBSButtonGroup) then
     begin
       Result := TIWHTMLTag.CreateTag('div');
       Result.AddClassParam('form-group');

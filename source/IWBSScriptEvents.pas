@@ -9,7 +9,7 @@ procedure IWBSRenderScript(AComponent: IIWBSComponent; AContext: TIWCompContext;
 
 implementation
 
-uses IW.Common.Strings, IWBaseInterfaces, IWBSGlobal, IWBSCustomEvents;
+uses IW.Common.Strings, IWBaseInterfaces, IWBSCustomEvents;
 
 type
   TIWBSScriptEvents = class(IWScriptEvents.TIWScriptEvents)

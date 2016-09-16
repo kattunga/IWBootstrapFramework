@@ -185,7 +185,7 @@ type
 
 implementation
 
-uses IW.Common.RenderStream, IWBaseHTMLInterfaces, IWForm, IWBSScriptEvents, IWBSGlobal, IWBSUtils;
+uses IWBaseHTMLInterfaces, IWBSScriptEvents, IWBSGlobal, IWBSUtils;
 
 {$region 'TIWBSCustomControl'}
 constructor TIWBSCustomControl.Create(AOwner: TComponent);

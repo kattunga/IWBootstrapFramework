@@ -2,7 +2,7 @@ unit IWBSCustomEvents;
 
 interface
 
-uses Classes, StrUtils,
+uses Classes, SysUtils, StrUtils,
      IWApplication, IWControl, IWBSRestServer;
 
 type
@@ -39,14 +39,14 @@ type
     // or you can add in the script property:
     // @preformatted($("#{%htmlname%}").on("api.event.name", function(event, param1, param2) { {%eventname%} });)
     property AutoBind: boolean read FAutoBind write FAutoBind default False;
+    // Mainteins a list of pairs names=values to translate the EventParams to the params pased to the OnAsyncEvent
+    property CallBackParams: TStringList read FCallBackParams write SetCallBackParams;
     // Specifies the event name, if AutoBind = True, the EventName should be exactly the name of the jQuery event,
     // if AutoBind = False you can set any name here and use the correct one when you manually register it. @br
     property EventName: string read FEventName write SetEventName;
     // Specifies a list of comma separated names of params that the event will pass to the callback function. @br
     // This params names are defined in the api of the object you are using.
     property EventParams: string read FEventParams write FEventParams stored IsEventParamsStored;
-    // Mainteins a list of pairs names=values to translate the EventParams to the params pased to the OnAsyncEvent
-    property CallBackParams: TStringList read FCallBackParams write SetCallBackParams;
     // lock screen during async event
     property Lock: boolean read FLock write FLock default false;
     // Occurs when the defined JQ event is triggered
@@ -100,9 +100,10 @@ constructor TIWBSCustomAsyncEvent.Create(Collection: TCollection);
 begin
   inherited;
   FAutoBind := False;
+  FCallBackParams := TStringList.Create;
   FEventName := '';
   FEventParams := 'event';
-  FCallBackParams := TStringList.Create;
+  FAsyncEvent := nil;
 end;
 
 destructor TIWBSCustomAsyncEvent.Destroy;
@@ -132,9 +133,11 @@ procedure TIWBSCustomAsyncEvent.Assign(Source: TPersistent);
 begin
   if Source is TIWBSCustomAsyncEvent then
     begin
+      AutoBind := TIWBSCustomAsyncEvent(Source).AutoBind;
+      CallBackParams.Assign(TIWBSCustomAsyncEvent(Source).CallBackParams);
       EventName := TIWBSCustomAsyncEvent(Source).EventName;
       EventParams := TIWBSCustomAsyncEvent(Source).EventParams;
-      CallBackParams.Assign(TIWBSCustomAsyncEvent(Source).CallBackParams);
+      Lock := TIWBSCustomAsyncEvent(Source).Lock;
       OnAsyncEvent := TIWBSCustomAsyncEvent(Source).OnAsyncEvent;
     end
   else

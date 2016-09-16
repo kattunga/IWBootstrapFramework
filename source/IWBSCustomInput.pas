@@ -5,8 +5,8 @@ interface
 uses
   Classes, SysUtils, StrUtils, Controls, db,
   IWBSCustomControl,
-  IWTypes, IWHTMLTag,
-  IWXMLTag, IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces, IWScriptEvents, IWApplication,
+  IWHTMLTag,
+  IWRenderContext, IWBaseInterfaces, IWHTML40Interfaces, IWScriptEvents, IWApplication,
   IWBSCommon;
 
 type
@@ -126,7 +126,7 @@ type
 implementation
 
 uses
-  IWBaseForm, IWDBCommon, IWDBStdCtrls, IWForm, IWMarkupLanguageTag;
+  IWDBCommon, IWDBStdCtrls;
 
 var
   LFormatSettings: TFormatSettings;

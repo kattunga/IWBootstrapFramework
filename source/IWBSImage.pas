@@ -3,9 +3,7 @@ unit IWBSImage;
 interface
 
 uses Classes, SysUtils, StrUtils, Graphics, Db,
-     IWScriptEvents, IWBaseInterfaces,
-     IWRenderContext, IWHTMLTag, IWBSCustomControl, IWCompExtCtrls, IWApplication;
-
+     IWRenderContext, IWHTMLTag, IWBSCustomControl, IWApplication;
 
 type
   TIWBSImageOption = (iwbsimResponsive, iwbsimCircle, iwbsimRounded, iwbsimThumbnail);
@@ -59,9 +57,9 @@ type
 
 implementation
 
-uses IW.Common.System, IW.Common.Strings, IWTypes, IWForm, IWAppCache, IW.CacheStream,
+uses IWTypes, IWForm, IWAppCache, IW.CacheStream,
      IWDbCommon, IWURL, IWFilePath, IWGlobal, InCoderMIME,
-     IWBSCommon, IWBSUtils, IWBSImageUtils, IWBSRegion, IWBSInputCommon;
+     IWBSCommon, IWBSUtils, IWBSImageUtils, IWBSInputCommon, IWBSInputForm;
 
 {$region 'TIWBSImage'}
 constructor TIWBSImage.Create(AOwner: TComponent);
@@ -252,6 +250,7 @@ begin
     TIWBSCommon.AddCssClass(ACss, 'img-rounded');
   if iwbsimThumbnail in FImageOptions then
     TIWBSCommon.AddCssClass(ACss, 'img-thumbnail');
+  inherited;
 end;
 
 procedure TIWBSImage.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);

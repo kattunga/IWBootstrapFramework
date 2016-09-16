@@ -2,7 +2,8 @@ unit IWBSGlobal;
 
 interface
 
-uses Classes, SysUtils, IWHTMLTag, IWBSLayoutMgr;
+uses
+  Classes, SysUtils, IWBSLayoutMgr;
 
 // ATENTION!!!!, Global files should only be modified in TIWServerController.OnConfig event, they are not Thread Safe.
 // only boolean vars (for enable/disable plugins) could be changed anytime, because boleans vars work with attomic read/write

@@ -13,7 +13,7 @@ uses
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
   MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSImage,
   IWCompTabControl, IWBSTabControl,
-  IW.HTTP.Request, IW.HTTP.Reply, IWBSMemoHtml;
+  IW.HTTP.Request, IW.HTTP.Reply, IWBSMemoHtml, IWBSInputForm, IWBSCustomRegion;
 
 type
   TFFishFact = class(TIWAppForm)
@@ -43,7 +43,7 @@ type
     IWBSRegion4: TIWBSRegion;
     IWBSLabel1: TIWBSLabel;
     IWBSRegion7: TIWBSRegion;
-    IWBSRegion5: TIWBSRegion;
+    IWBSRegion5: TIWBSButtonGroup;
     btnEdit: TIWBSButton;
     btnPost: TIWBSButton;
     btnCancel: TIWBSButton;

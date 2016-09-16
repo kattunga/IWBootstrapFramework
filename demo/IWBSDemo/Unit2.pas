@@ -14,7 +14,7 @@ uses
   IWBSInput, IWBSControls, IWDBStdCtrls, IWDBExtCtrls,
   IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent,
   IWBSCustomControl, IW.HTTP.Request, IW.HTTP.Reply,
-  IWBSDropDown, IWBSNavBar;
+  IWBSDropDown, IWBSNavBar, IWBSModal, IWBSInputForm, IWBSCustomRegion;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -25,22 +25,22 @@ type
     IWBSRegion8: TIWBSRegion;
     IWBSRegion10: TIWBSRegion;
     IWBSBtnToolBar1: TIWBSRegion;
-    IWBSBtnGroup1: TIWBSRegion;
+    IWBSBtnGroup1: TIWBSButtonGroup;
     IWBSButton1: TIWBSButton;
     IWBSButton2: TIWBSButton;
     IWBSButton3: TIWBSButton;
     IWBSButton4: TIWBSButton;
-    IWBSBtnGroup2: TIWBSRegion;
+    IWBSBtnGroup2: TIWBSButtonGroup;
     IWBSButton5: TIWBSButton;
     IWBSButton6: TIWBSButton;
     IWBSButton7: TIWBSButton;
     IWBSButton8: TIWBSButton;
-    IWBSBtnGroup3: TIWBSRegion;
+    IWBSBtnGroup3: TIWBSButtonGroup;
     IWBSButton9: TIWBSButton;
     IWBSButton10: TIWBSButton;
     IWBSButton11: TIWBSButton;
     IWBSButton12: TIWBSButton;
-    IWBSBtnGroup4: TIWBSRegion;
+    IWBSBtnGroup4: TIWBSButtonGroup;
     IWBSButton13: TIWBSButton;
     IWBSButton14: TIWBSButton;
     IWBSButton15: TIWBSButton;

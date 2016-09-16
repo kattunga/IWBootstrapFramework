@@ -6,7 +6,7 @@ uses
   SysUtils, Classes, StrUtils,
   IWApplication, IWBaseRenderContext, IWControl, IWBaseInterfaces,
   IWCompTabControl,
-  IWRenderContext, IWHTMLTag, IWBSCommon, IWBSRegionCommon, IWXMLTag, IW.Common.RenderStream, IWBSCustomEvents;
+  IWRenderContext, IWHTMLTag, IWBSCommon, IWBSRegionCommon, IWXMLTag, IWBSCustomEvents;
 
 type
   TIWBSTabOptions = class(TPersistent)

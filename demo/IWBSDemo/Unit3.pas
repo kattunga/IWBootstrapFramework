@@ -8,7 +8,7 @@ uses
   IWHTML40Container, IWBaseComponent, IWBaseHTMLComponent,
   IWBaseHTML40Component, IWCompExtCtrls, IWBSRegion, IWCompEdit, IWBSInput,
   IWCompLabel, IWVCLBaseControl, IWBaseControl, IWBaseHTMLControl, IWControl,
-  IWCompButton, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSControls;
+  IWCompButton, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSControls, IWBSModal;
 
 type
   TIWFrame3 = class(TFrame)

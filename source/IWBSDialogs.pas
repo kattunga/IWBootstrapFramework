@@ -3,8 +3,8 @@ unit IWBSDialogs;
 interface
 
 uses Classes, SysUtils, Controls,
-     IWControl, IWRenderContext, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag, IWForm,
-     IWBSRegion, IWBSInput, IWBSButton, IWBSControls;
+     IWControl, IWRenderContext, IWBaseRenderContext, IWHTMLTag, IWForm,
+     IWBSCustomRegion, IWBSRegion, IWBSModal, IWBSButton, IWBSControls;
 
 type
   TIWBSDialogCloseButton = (iwbsdcNone, iwbsdcCaption, iwbsdcFooter, iwbsdcBoth);
@@ -89,7 +89,7 @@ var
 
 implementation
 
-uses IWBSRegionCommon, IWApplication, IWBSUtils, IWBSCommon;
+uses IWApplication, IWBSUtils, IWBSCommon;
 
 {$region 'TIWBSDialog'}
 constructor TIWBSDialog.Create(AForm: TIWForm; const ATitleText, ABodyText: string; ACloseButton: TIWBSDialogCloseButton = iwbsdcBoth; AAsyncDismissProc: TIWBSAsyncEventProc = nil);
@@ -321,7 +321,8 @@ begin
   if FFade then
     TIWBSCommon.AddCssClass(ACss, 'fade in');
   if FAlertPosition <> bsapDefault then
-    TIWBSCommon.AddCssClass(ACss, 'flyover flyover-' + aIWBSAlertPosition[FAlertPosition])
+    TIWBSCommon.AddCssClass(ACss, 'flyover flyover-' + aIWBSAlertPosition[FAlertPosition]);
+  inherited;
 end;
 
 function TIWBSAlert.GetCloseScript: string;

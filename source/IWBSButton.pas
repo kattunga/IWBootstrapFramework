@@ -4,8 +4,8 @@ interface
 
 uses
   SysUtils, Classes, db, StrUtils, Controls,
-  IWRenderContext, IWHTMLTag, IWXMLTag, IWBaseInterfaces,
-  IWBSCustomControl, IWScriptEvents, IWBSRegion, IWBSCommon, IWBSRegionCommon, IWBSNavbar;
+  IWRenderContext, IWHTMLTag, IWBaseInterfaces,
+  IWBSCustomControl, IWBSCommon;
 
 type
   // TIWBSCustomButton.BSButtonStyle
@@ -117,7 +117,7 @@ const
 
 implementation
 
-uses IW.Common.System, IWBSInputCommon;
+uses IW.Common.System, IWBSInputCommon, IWBSInputForm, IWBSModal, IWBSCustomRegion, IWBSRegion, IWBSNavbar;
 
 {$region 'TIWBSCustomButton'}
 constructor TIWBSCustomButton.Create(AOwner: TComponent);
@@ -316,7 +316,7 @@ begin
     Result := ''
   else if (FDataTarget.InterfaceInstance is TIWBSModal) then
     Result := 'modal'
-  else if (FDataTarget.InterfaceInstance is TIWBSRegion) and TIWBSRegion(FDataTarget.InterfaceInstance).Collapse then
+  else if (FDataTarget.InterfaceInstance is TIWBSCustomRegion) and TIWBSCustomRegion(FDataTarget.InterfaceInstance).Collapse then
     Result := 'collapse'
   else if (FDataTarget.InterfaceInstance is TIWBSNavBarCollapse) then
     Result := 'collapse';

@@ -59,7 +59,10 @@ contains
   IWBSJsonDataObjects in 'IWBSJsonDataObjects.pas',
   IWBSImageUtils in 'IWBSImageUtils.pas',
   IWBSMemoHtml in 'IWBSMemoHtml.pas',
-  IWBSNavBar in 'IWBSNavBar.pas';
+  IWBSNavBar in 'IWBSNavBar.pas',
+  IWBSCustomRegion in 'IWBSCustomRegion.pas',
+  IWBSInputForm in 'IWBSInputForm.pas',
+  IWBSModal in 'IWBSModal.pas';
 
 end.
 

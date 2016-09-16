@@ -4,21 +4,20 @@ object IWFrame3: TIWFrame3
   Width = 689
   Height = 544
   TabOrder = 0
-  object IWBSModal1: TIWBSModal
-    Left = 3
-    Top = 3
-    Width = 674
-    Height = 526
-    RenderInvisibleControls = True
+  object IWFrameRegion: TIWBSModal
+    Left = 0
+    Top = 0
+    Width = 689
+    Height = 544
     TabOrder = 0
+    Align = alClient
     ModalVisible = True
     DestroyOnHide = True
     object IWBSRegion1: TIWBSRegion
       Left = 1
       Top = 1
-      Width = 672
-      Height = 524
-      RenderInvisibleControls = True
+      Width = 687
+      Height = 542
       Align = alClient
       BSRegionType = bsrtModalContent
       object IWBSRegion2: TIWBSRegion
@@ -26,7 +25,6 @@ object IWFrame3: TIWFrame3
         Top = 100
         Width = 601
         Height = 325
-        RenderInvisibleControls = True
         BSRegionType = bsrtModalBody
         object IWBSInput1: TIWBSInput
           Left = 24
@@ -53,7 +51,8 @@ object IWFrame3: TIWFrame3
           Height = 25
           FriendlyName = 'IWBSSelect1'
           Caption = ''
-          Text = ''
+          Text = 'item 1'
+          ItemIndex = 0
           Items.Strings = (
             'item 1'
             'item 2'
@@ -66,7 +65,6 @@ object IWFrame3: TIWFrame3
           Width = 265
           Height = 25
           FriendlyName = 'IWBSButton1'
-          BSBlockLevel = False
           Caption = 'IWBSButton1'
         end
         object IWLabel4: TIWBSLabel
@@ -83,7 +81,6 @@ object IWFrame3: TIWFrame3
         Top = 34
         Width = 601
         Height = 60
-        RenderInvisibleControls = True
         BSRegionType = bsrtModalHeader
         object IWBSButton199: TIWBSButton
           Left = 16
@@ -99,7 +96,6 @@ object IWFrame3: TIWFrame3
           StyleRenderOptions.RenderPadding = False
           StyleRenderOptions.RenderBorder = False
           FriendlyName = 'IWBSButton199'
-          BSBlockLevel = False
           BSButtonStyle = bsbsClose
           DataDismiss = bsbdModal
         end
@@ -119,7 +115,6 @@ object IWFrame3: TIWFrame3
         Top = 436
         Width = 601
         Height = 60
-        RenderInvisibleControls = True
         BSRegionType = bsrtModalFooter
         object IWLabel1: TIWBSLabel
           Left = 24

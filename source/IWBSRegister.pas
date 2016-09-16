@@ -69,7 +69,8 @@ implementation
 uses DesignIntf, Windows, Forms, Dialogs, Graphics,
      glyphicons, IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
-     IWBSRegion, IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSNavBar,
+     IWBSCustomRegion, IWBSRegion, IWBSInputForm, IWBSModal,
+     IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSNavBar,
      IWBSCommon, IWBSCustomControl, IWBSImage, IWBSMemoHTML;
 
 const
@@ -609,6 +610,8 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSUnorderedList]);
   RegisterComponents('IW BootsTrap', [TIWBSModal]);
 
+  RegisterComponents('IW BootsTrap', [TIWBSButtonGroup]);
+
   RegisterComponents('IW BootsTrap', [TIWBSNavBar]);
   RegisterComponents('IW BootsTrap', [TIWBSNavBarHeader]);
   RegisterComponents('IW BootsTrap', [TIWBSNavBarCollapse]);
@@ -665,6 +668,8 @@ initialization
   IWRegisterPaintHandler('TIWBSUnorderedList',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerRegion);
 
+  IWRegisterPaintHandler('TIWBSButtonGroup',TIWBSPaintHandlerRegion);
+
   IWRegisterPaintHandler('TIWBSNavBar',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSNavBarHeader',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSNavBarCollapse',TIWBSPaintHandlerRegion);
@@ -701,6 +706,8 @@ finalization
   IWUnRegisterPaintHandler('TIWBSFormControl');
   IWUnRegisterPaintHandler('TIWBSUnorderedList');
   IWUnRegisterPaintHandler('TIWBSModal');
+
+  IWUnRegisterPaintHandler('TIWBSButtonGroup');
 
   IWUnRegisterPaintHandler('TIWBSNavBar');
   IWUnRegisterPaintHandler('TIWBSNavBarHeader');

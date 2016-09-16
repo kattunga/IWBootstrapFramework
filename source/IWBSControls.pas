@@ -3,7 +3,7 @@ unit IWBSControls;
 interface
 
 uses Classes, SysUtils, Db,
-     IWControl, IWRenderContext, IWMarkupLanguageTag, IWXMLTag, IWHTMLTag, IWApplication,
+     IWControl, IWRenderContext, IWMarkupLanguageTag, IWHTMLTag, IWApplication,
      IWDBCommon, IWBSCommon,
      IWBSCustomControl;
 
@@ -85,7 +85,7 @@ type
 
 implementation
 
-uses IW.Common.System, IWBSInput, IWBSRegion, IWBSInputCommon, IWBSCustomEvents, IWBSRegionCommon;
+uses IW.Common.System, IWBSRegion, IWBSInputCommon, IWBSCustomEvents, IWBSInputForm;
 
 {$region 'TIWBSLabel'}
 constructor TIWBSLabel.Create(AOwner: TComponent);

@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, StrUtils,
-  IWRenderContext, IWHTMLTag, IWBSRegion, IWBSCommon;
+  IWRenderContext, IWHTMLTag, IWBSCustomRegion, IWBSCommon;
 
 type
 
@@ -60,6 +60,7 @@ begin
     TIWBSCommon.AddCssClass(ACss, 'navbar-fixed-top')
   else if FFixed = bsnvfxBottom then
     TIWBSCommon.AddCssClass(ACss, ' navbar-fixed-bottom');
+  inherited;
 end;
 
 function TIWBSNavBar.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
@@ -75,6 +76,7 @@ end;
 procedure TIWBSNavBarHeader.InternalRenderCss(var ACss: string);
 begin
   TIWBSCommon.AddCssClass(ACss, 'navbar-header');
+  inherited;
 end;
 
 { TIWBSNavBarCollapse }
@@ -83,18 +85,7 @@ procedure TIWBSNavBarCollapse.InternalRenderCss(var ACss: string);
 begin
   TIWBSCommon.AddCssClass(ACss, 'navbar-collapse');
   TIWBSCommon.AddCssClass(ACss, 'collapse');
+  inherited;
 end;
-
-{
-      with Contents.AddTag('button') do begin
-        AddStringParam('type','button');
-        AddClassParam('navbar-toggle');
-        AddStringParam('data-toggle','collapse');
-        AddStringParam('data-target','#'+xHTMLName);
-        Contents.AddTag('span').AddClassParam('icon-bar');
-        Contents.AddTag('span').AddClassParam('icon-bar');
-        Contents.AddTag('span').AddClassParam('icon-bar');
-      end;
-}
 
 end.
