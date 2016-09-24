@@ -79,7 +79,7 @@ type
 
 implementation
 
-uses IW.Common.System, IWBSModal, IWBSRegion, IWBSCustomRegion, IWBSNavbar;
+uses IW.Common.System, IWBSModal, IWBSCustomRegion, IWBSNavbar, IWBSList, IWBSButtonGroup, IWBSInputForm;
 
 {$region 'TIWBSDropDownItem'}
 constructor TIWBSDropDownItem.Create(Collection: TCollection);
@@ -216,9 +216,9 @@ var
   button: boolean;
   LItemIdx: integer;
 begin
-  button := (AItemIdx < 0) and (not (Parent is TIWBSUnorderedList));
+  button := (AItemIdx < 0) and (not (Parent is TIWBSList));
 
-  if (AItemIdx < 0) and Parent.ClassNameIs('TIWBSInputGroup') then
+  if (AItemIdx < 0) and (Parent is TIWBSInputGroup) then
     begin
       result := TIWHTMLTag.CreateTag('span');
       Result.AddClassParam('input-group-btn');
@@ -246,7 +246,9 @@ begin
     // items
     result.AddStringParam('id', AHTMLName+iif(AItemIdx >= 0, IntToStr(AItemIdx)));
     if ADropDownItems <> nil then begin
-      if FDropUp then
+      if Parent is TIWBSButtonGroup then
+        Result.AddClassParam('btn-group')
+      else if FDropUp then
         Result.AddClassParam('dropup')
       else
         Result.AddClassParam('dropdown');

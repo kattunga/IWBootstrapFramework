@@ -3,7 +3,7 @@ unit IWBSInputCommon;
 interface
 
 uses Classes, SysUtils, SyncObjs, Controls,
-     IWBSRegion, IWBSInputForm,
+     IWBSRegion, IWBSInputForm, IWBSButtonGroup,
      IWHTMLTag;
 
 function IWBSCreateFormGroup(AParent: TControl; AParentForm: TIWBSInputForm; ATag: TIWHTMLTag; const AHTMLName: string; ASpanDiv: boolean): TIWHTMLTag;

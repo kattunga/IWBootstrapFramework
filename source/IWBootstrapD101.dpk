@@ -43,7 +43,6 @@ contains
   IWBSInput in 'IWBSInput.pas',
   IWBSLayoutMgr in 'IWBSLayoutMgr.pas',
   IWBSTabControl in 'IWBSTabControl.pas',
-  IWBSRegionCommon in 'IWBSRegionCommon.pas',
   IWBSControls in 'IWBSControls.pas',
   IWBSCustomInput in 'IWBSCustomInput.pas',
   IWBSInputCommon in 'IWBSInputCommon.pas',
@@ -62,7 +61,10 @@ contains
   IWBSNavBar in 'IWBSNavBar.pas',
   IWBSCustomRegion in 'IWBSCustomRegion.pas',
   IWBSInputForm in 'IWBSInputForm.pas',
-  IWBSModal in 'IWBSModal.pas';
+  IWBSModal in 'IWBSModal.pas',
+  IWBSList in 'IWBSList.pas',
+  IWBSDeprecated in 'IWBSDeprecated.pas',
+  IWBSButtonGroup in 'IWBSButtonGroup.pas';
 
 end.
 

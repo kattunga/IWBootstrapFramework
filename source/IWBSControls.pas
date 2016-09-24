@@ -8,15 +8,26 @@ uses Classes, SysUtils, Db,
      IWBSCustomControl;
 
 type
+  TIWBSLabelStyle = (bslsNone, bslsDefault, bslsPrimary, bslsSuccess, bslsInfo, bslsWarning, bslsDanger, bslsBadget);
+
+const
+  aIWBSLabelStyle: array[bslsNone..bslsBadget] of string = ('', 'default', 'primary', 'success', 'info', 'warning', 'danger', 'badge');
+
+type
   TIWBSLabel = class(TIWBSCustomDbControl)
   private
+    FCaption: string;
     FForControl: TIWCustomControl;
     FRawText: boolean;
     FOldText: string;
     FTagType: string;
+    FLabelStyle: TIWBSLabelStyle;
     function  RenderLabelText: string;
     procedure SetTagType(const Value: string);
     function IsTagTypeStored: Boolean;
+    procedure SetLabelStyle(const Value: TIWBSLabelStyle);
+    procedure SetCaption(const Value: string);
+    procedure SetRawText(const Value: boolean);
   protected
     procedure CheckData(AContext: TIWCompContext); override;
     procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
@@ -26,9 +37,10 @@ type
   public
     constructor Create(AOwner: TComponent); override;
   published
-    property Caption;
+    property Caption: string read FCaption write SetCaption;
     property ForControl: TIWCustomControl read FForControl write SetForControl;
-    property RawText: boolean read FRawText write FRawText default False;
+    property BSLabelStyle: TIWBSLabelStyle read FLabelStyle write SetLabelStyle default bslsNone;
+    property RawText: boolean read FRawText write SetRawText default False;
     property TagType: string read FTagType write SetTagType stored IsTagTypeStored;
   end;
 
@@ -45,6 +57,7 @@ type
     function IsTagTypeStored: Boolean;
     procedure SetTagType(const Value: string);
     procedure SetRawText(const Value: boolean);
+    procedure SetAutoFormGroup(const Value: boolean);
   protected
     procedure CheckData(AContext: TIWCompContext); override;
     procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
@@ -53,7 +66,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property AutoFormGroup: boolean read FAutoFormGroup write FAutoFormGroup default False;
+    property AutoFormGroup: boolean read FAutoFormGroup write SetAutoFormGroup default False;
     property Lines: TStringList read FLines write SetLines;
     property RawText: boolean read FRawText write SetRawText default False;
     property TagType: string read FTagType write SetTagType stored IsTagTypeStored;
@@ -85,7 +98,7 @@ type
 
 implementation
 
-uses IW.Common.System, IWBSRegion, IWBSInputCommon, IWBSCustomEvents, IWBSInputForm;
+uses IW.Common.System, IWBSRegion, IWBSInputCommon, IWBSCustomEvents, IWBSInputForm, IWBSList;
 
 {$region 'TIWBSLabel'}
 constructor TIWBSLabel.Create(AOwner: TComponent);
@@ -97,9 +110,28 @@ begin
   Width := 200;
 end;
 
+procedure TIWBSLabel.SetCaption(const Value: string);
+begin
+  FCaption := Value;
+  Invalidate;
+end;
+
 procedure TIWBSLabel.SetForControl(const Value: TIWCustomControl);
 begin
   FForControl := Value;
+  AsyncRefreshControl;
+end;
+
+procedure TIWBSLabel.SetLabelStyle(const Value: TIWBSLabelStyle);
+begin
+  FLabelStyle := Value;
+  Invalidate;
+end;
+
+procedure TIWBSLabel.SetRawText(const Value: boolean);
+begin
+  FRawText := Value;
+  Invalidate;
 end;
 
 procedure TIWBSLabel.SetTagType(const Value: string);
@@ -111,7 +143,7 @@ end;
 
 function TIWBSLabel.RenderLabelText: string;
 begin
-  if RawText then
+  if FRawText then
     Result := Caption
   else
     Result := TextToHTML(Caption);
@@ -126,11 +158,30 @@ end;
 procedure TIWBSLabel.InternalRenderCss(var ACss: string);
 begin
   inherited;
-  if Parent is TIWBSRegion then
-    if TIWBSRegion(Parent).BSRegionType = bsrtModalHeader then
-      TIWBSCommon.AddCssClass(ACss, 'modal-title')
-    else if TIWBSRegion(Parent).BSRegionType = bsrtPanelHeading then
-      TIWBSCommon.AddCssClass(ACss, 'panel-title');
+
+  if FLabelStyle <> bslsNone then
+    TIWBSCommon.AddCssClass(ACss, aIWBSLabelStyle[FLabelStyle]);
+
+  if Parent is TIWBSList then
+    begin
+      TIWBSCommon.AddCssClass(ACss, 'list-group-item');
+      if FLabelStyle in [bslsSuccess,bslsInfo,bslsWarning,bslsDanger] then
+        TIWBSCommon.AddCssClass(ACss, 'list-group-item-'+aIWBSLabelStyle[FLabelStyle])
+    end
+  else
+    begin
+      if FLabelStyle in [bslsDefault..bslsDanger] then
+        TIWBSCommon.AddCssClass(ACss, 'label label-'+aIWBSLabelStyle[FLabelStyle])
+      else if FLabelStyle = bslsBadget then
+        TIWBSCommon.AddCssClass(ACss, aIWBSLabelStyle[FLabelStyle]);
+      if Parent is TIWBSRegion then
+        begin
+          if TIWBSRegion(Parent).BSRegionType = bsrtModalHeader then
+            TIWBSCommon.AddCssClass(ACss, 'modal-title')
+          else if TIWBSRegion(Parent).BSRegionType = bsrtPanelHeading then
+            TIWBSCommon.AddCssClass(ACss, 'panel-title');
+        end;
+    end;
 end;
 
 procedure TIWBSLabel.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
@@ -143,8 +194,14 @@ begin
       AHTMLTag := TIWHTMLTag.CreateTag('label');
       AHTMLTag.AddStringParam('for', ForControl.HTMLName);
     end
+  else if Parent is TIWBSList then
+    begin
+      AHTMLTag := TIWHTMLTag.CreateTag('li');
+    end
   else
-    AHTMLTag := TIWHTMLTag.CreateTag(FTagType);
+    begin
+      AHTMLTag := TIWHTMLTag.CreateTag(FTagType);
+    end;
   AHTMLTag.AddStringParam('id', HTMLName);
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('style',ActiveStyle);
@@ -193,6 +250,12 @@ begin
     AsyncRefreshControl;
 end;
 
+procedure TIWBSText.SetAutoFormGroup(const Value: boolean);
+begin
+  FAutoFormGroup := Value;
+  AsyncRefreshControl;
+end;
+
 procedure TIWBSText.SetLines(const AValue: TStringList);
 begin
   FLines.Assign(AValue);
@@ -201,7 +264,7 @@ end;
 procedure TIWBSText.SetRawText(const Value: boolean);
 begin
   FRawText := Value;
-  AsyncRefreshControl;
+  Invalidate;
 end;
 
 procedure TIWBSText.SetTagType(const Value: string);
@@ -216,7 +279,7 @@ var
   i: integer;
   LLines: TStringList;
 begin
-  if RawText then
+  if FRawText then
     begin
       LLines := TStringList.Create;
       try

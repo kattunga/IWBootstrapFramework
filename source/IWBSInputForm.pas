@@ -11,7 +11,7 @@ uses
 type
   TIWBSFormType = (bsftInline, bsftHorizontal, bsftVertical);
 
-  TIWBSFormEncType = (iwbsfeDefault, iwbsfeMultipart, iwbsfeText);
+  TIWBSFormEncType = (bsfeDefault, bsfeMultipart, bsfeText);
 
   TIWBSInputFormSubmitEvent = procedure(aRequest: THttpRequest; aParams: TStrings) of object;
 
@@ -39,6 +39,8 @@ type
     FFormOptions: TIWBSFormOptions;
     FOnSubmit: TIWBSInputFormSubmitEvent;
     procedure DoSubmit(aApplication: TIWApplication; aRequest: THttpRequest; aReply: THttpReply; aParams: TStrings);
+    procedure SetEncType(const Value: TIWBSFormEncType);
+    procedure SetFormType(const Value: TIWBSFormType);
   protected
     procedure InternalRenderCss(var ACss: string); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
@@ -47,9 +49,9 @@ type
     destructor Destroy; override;
     function GetRoleString: string; override;
   published
-    property BSFormType: TIWBSFormType read FFormType write FFormType default bsftVertical;
+    property BSFormType: TIWBSFormType read FFormType write SetFormType default bsftVertical;
     property BSFormOptions: TIWBSFormOptions read FFormOptions write FFormOptions;
-    property EncType: TIWBSFormEncType read FEncType write FEncType default iwbsfeDefault;
+    property EncType: TIWBSFormEncType read FEncType write SetEncType default bsfeDefault;
     property OnSubmit: TIWBSInputFormSubmitEvent read FOnSubmit write FOnSubmit;
   end;
 
@@ -57,23 +59,26 @@ type
   private
     FCaption: string;
     FRelativeSize: TIWBSRelativeSize;
+    procedure SetCaption(const Value: string);
+    procedure SetRelativeSize(const Value: TIWBSRelativeSize);
   protected
     procedure InternalRenderCss(var ACss: string); override;
   public
     constructor Create(AOwner: TComponent); override;
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
-    property Caption: string read FCaption write FCaption;
-    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write FRelativeSize default bsrzDefault;
+    property Caption: string read FCaption write SetCaption;
+    property BSRelativeSize: TIWBSRelativeSize read FRelativeSize write SetRelativeSize default bsrzDefault;
   end;
 
   TIWBSFormControl = class(TIWBSCustomRegion)
   private
     FCaption: string;
+    procedure SetCaption(const Value: string);
   public
     function RenderHTML(AContext: TIWCompContext): TIWHTMLTag; override;
   published
-    property Caption: string read FCaption write FCaption;
+    property Caption: string read FCaption write SetCaption;
   end;
 
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -148,10 +153,10 @@ end;
 constructor TIWBSInputForm.Create(AOwner: TComponent);
 begin
   inherited;
-  FEncType := iwbsfeDefault;
+  FEncType := bsfeDefault;
   FFormOptions := TIWBSFormOptions.Create;
   FFormType := bsftVertical;
-  FTagType := 'form'
+  FTagName := 'form'
 end;
 
 destructor TIWBSInputForm.Destroy;
@@ -194,15 +199,27 @@ begin
   if Assigned(FOnSubmit) then
     begin
       Result.AddStringParam('method', 'post');
-      if FEncType = iwbsfeMultipart then
+      if FEncType = bsfeMultipart then
         Result.AddStringParam('enctype', 'multipart/form-data')
-      else if FEncType = iwbsfeText then
+      else if FEncType = bsfeText then
         Result.AddStringParam('enctype', 'text/plain');
-      Result.AddStringParam('action', IWBSRegisterRestCallBack(AContext.WebApplication, HTMLName+'.FormSubmit', DoSubmit, (FEncType = iwbsfeMultipart)));
+      Result.AddStringParam('action', IWBSRegisterRestCallBack(AContext.WebApplication, HTMLName+'.FormSubmit', DoSubmit, (FEncType = bsfeMultipart)));
     end
   else
     Result.AddStringParam('onSubmit', 'return FormDefaultSubmit();');
 end;
+procedure TIWBSInputForm.SetEncType(const Value: TIWBSFormEncType);
+begin
+  FEncType := Value;
+  Invalidate;
+end;
+
+procedure TIWBSInputForm.SetFormType(const Value: TIWBSFormType);
+begin
+  FFormType := Value;
+  Invalidate;
+end;
+
 {$endregion}
 
 {$region 'TIWBSInputGroup'}
@@ -225,6 +242,18 @@ begin
   Result := inherited;
   Result := IWBSCreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
 end;
+procedure TIWBSInputGroup.SetCaption(const Value: string);
+begin
+  FCaption := Value;
+  Invalidate;
+end;
+
+procedure TIWBSInputGroup.SetRelativeSize(const Value: TIWBSRelativeSize);
+begin
+  FRelativeSize := Value;
+  Invalidate;
+end;
+
 {$endregion}
 
 {$region 'TIWBSFormControl'}
@@ -235,5 +264,11 @@ begin
 end;
 {$endregion}
 
+
+procedure TIWBSFormControl.SetCaption(const Value: string);
+begin
+  FCaption := Value;
+  Invalidate;
+end;
 
 end.

@@ -444,6 +444,7 @@ begin
   inherited;
   SetLength(FItemsSelected, Items.Count);
   ResetItemsSelected;
+  AsyncRefreshControl;
 end;
 
 procedure TIWBSSelect.SetItemIndex(AValue: integer);

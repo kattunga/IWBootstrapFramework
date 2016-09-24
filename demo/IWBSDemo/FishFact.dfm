@@ -26,6 +26,7 @@ object FFishFact: TFFishFact
     Width = 752
     Height = 1180
     Align = alClient
+    Text = ''
     BSRegionType = bsrtContainer
     object IWBSRegion8: TIWBSRegion
       Left = 1
@@ -33,6 +34,7 @@ object FFishFact: TFFishFact
       Width = 750
       Height = 61
       Align = alTop
+      Text = ''
       BSRegionType = bsrtRow
       object IWBSButton1: TIWBSButton
         Left = 495
@@ -62,6 +64,7 @@ object FFishFact: TFFishFact
       Width = 750
       Height = 1117
       Align = alClient
+      Text = ''
       BSRegionType = bsrtRow
       object IWBSRegion3: TIWBSRegion
         Left = 1
@@ -69,6 +72,7 @@ object FFishFact: TFFishFact
         Width = 748
         Height = 1115
         Align = alClient
+        Text = ''
         BSRegionType = bsrtColumn
         object IWBSInputForm1: TIWBSInputForm
           Left = 15
@@ -76,6 +80,7 @@ object FFishFact: TFFishFact
           Width = 695
           Height = 1059
           BSGridOptions.GridMDSpan = 8
+          Text = ''
           BSFormType = bsftHorizontal
           BSFormOptions.CaptionsSize.GridMDSpan = 4
           BSFormOptions.InputsSize.GridMDSpan = 8
@@ -255,6 +260,7 @@ object FFishFact: TFFishFact
             Top = 19
             Width = 381
             Height = 195
+            Text = ''
             BSRegionType = bsrtPageHeader
             object IWBSImage1: TIWBSImage
               Left = 19
@@ -272,6 +278,7 @@ object FFishFact: TFFishFact
               Top = 167
               Width = 333
               Height = 25
+              Text = ''
               object IWBSLabel1: TIWBSLabel
                 Left = 16
                 Top = 3
@@ -290,12 +297,14 @@ object FFishFact: TFFishFact
             Top = 228
             Width = 449
             Height = 51
+            Text = ''
             BSRegionType = bsrtPageHeader
             object IWBSRegion5: TIWBSButtonGroup
               Left = 3
               Top = 3
               Width = 333
               Height = 42
+              Text = ''
               object btnEdit: TIWBSButton
                 Left = 200
                 Top = 14
@@ -306,6 +315,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'btnEdit'
                 OnAsyncClick = btnEditAsyncClick
                 BSGlyphicon = 'edit'
+                Caption = ''
               end
               object btnPost: TIWBSButton
                 Left = 243
@@ -317,6 +327,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnPostAsyncClick
                 BSGlyphicon = 'check'
+                Caption = ''
               end
               object btnCancel: TIWBSButton
                 Left = 286
@@ -328,6 +339,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnCancelAsyncClick
                 BSGlyphicon = 'remove'
+                Caption = ''
               end
               object btnFirst: TIWBSButton
                 Left = 3
@@ -339,6 +351,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnFirstAsyncClick
                 BSGlyphicon = 'fast-backward'
+                Caption = ''
               end
               object btnPrior: TIWBSButton
                 Left = 46
@@ -350,6 +363,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnPriorAsyncClick
                 BSGlyphicon = 'backward'
+                Caption = ''
               end
               object btnNext: TIWBSButton
                 Left = 89
@@ -361,6 +375,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnNextAsyncClick
                 BSGlyphicon = 'forward'
+                Caption = ''
               end
               object btnLast: TIWBSButton
                 Left = 132
@@ -372,6 +387,7 @@ object FFishFact: TFFishFact
                 FriendlyName = 'IWBSButton1'
                 OnAsyncClick = btnLastAsyncClick
                 BSGlyphicon = 'fast-forward'
+                Caption = ''
               end
             end
           end
@@ -380,6 +396,7 @@ object FFishFact: TFFishFact
             Top = 892
             Width = 317
             Height = 117
+            Text = ''
             BSRegionType = bsrtFormGroup
             object IWBSRadioButton1: TIWBSRadioButton
               Left = 19
@@ -35078,6 +35095,6 @@ object FFishFact: TFFishFact
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
     Left = 490
-    Top = 50
+    Top = 58
   end
 end

@@ -4,8 +4,7 @@ interface
 
 uses
   SysUtils, Classes, Controls, StrUtils,
-
-  IWBSCommon, IWBSRegionCommon,
+  IWBSCommon,
   IWBSCustomregion;
 
 type
@@ -20,6 +19,7 @@ type
                      bsrtJumbotron, bsrtPageHeader,
                      bsrtWell, bsrtWellLarge, bsrtWellSmall,
                      bsrtButtonToolbar,
+                     bsrtListGroup,
                      bsrtModalContent, bsrtModalHeader, bsrtModalBody, bsrtModalFooter,
                      bsrtPanelGroup, bsrtPanel, bsrtPanelBody, bsrtPanelHeading, bsrtPanelFooter);
 
@@ -30,16 +30,25 @@ const
                      'jumbotron', 'page-header',
                      'well', 'well well-lg', 'well well-sm',
                      'btn-toolbar',
+                     'list-group',
                      'modal-content', 'modal-header', 'modal-body', 'modal-footer',
                      'panel-group', 'panel', 'panel-body', 'panel-heading', 'panel-footer');
+
+type
+  TIWBSRegionTagType = (bsttDiv, bsttH1, bsttH2, bsttH3, bsttH4, bsttH5, bsttH6, bsttP);
+
+const
+  aIWBSRegionTagType: array[bsttDiv..bsttP] of string = ('div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p');
 
 type
   TIWBSRegion = class(TIWBSCustomRegion)
   private
     FPanelStyle: TIWBSPanelStyle;
     FRegionType: TIWBSRegionType;
+    FTagType: TIWBSRegionTagType;
     procedure SetRegionType(AValue: TIWBSRegionType);
     procedure SetPanelStyle(AValue: TIWBSPanelStyle);
+    procedure SetTagType(const Value: TIWBSRegionTagType);
   protected
     procedure InternalRenderCss(var ACss: string); override;
   public
@@ -48,35 +57,11 @@ type
   published
     property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
     property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtNone;
-  end;
-
-  TIWBSUnorderedList = class(TIWBSCustomRegion)
-  protected
-    procedure InternalRenderCss(var ACss: string); override;
-  public
-    constructor Create(AOwner: TComponent); override;
-  end;
-
-  TIWBSButtonGroup = class(TIWBSCustomRegion)
-  private
-    FButtonGroupOptions: TIWBSButonGroupOptions;
-    procedure SetButtonGroupOptions(AValue: TIWBSButonGroupOptions);
-  protected
-    procedure InternalRenderCss(var ACss: string); override;
-  public
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
-    function GetRoleString: string; override;
-  published
-    property BSButtonGroupOptions: TIWBSButonGroupOptions read FButtonGroupOptions write SetButtonGroupOptions;
+    property TagType: TIWBSRegionTagType read FTagType write SetTagType default bsttDiv;
   end;
 
 implementation
 
-uses
-  IWBSNavBar;
-
-{$region 'TIWBSRegion'}
 constructor TIWBSRegion.Create(AOwner: TComponent);
 begin
   inherited;
@@ -108,66 +93,17 @@ begin
   Invalidate;
 end;
 
+procedure TIWBSRegion.SetTagType(const Value: TIWBSRegionTagType);
+begin
+  FTagType := Value;
+  FTagName := aIWBSRegionTagType[Value];
+  AsyncRefreshControl;
+end;
+
 procedure TIWBSRegion.SetPanelStyle(AValue: TIWBSPanelStyle);
 begin
   FPanelStyle := AValue;
   Invalidate;
 end;
-{$endregion}
-
-{$region 'TIWBSUnorderedList'}
-constructor TIWBSUnorderedList.Create(AOwner: TComponent);
-begin
-  inherited;
-  FTagType := 'ul';
-end;
-
-procedure TIWBSUnorderedList.InternalRenderCss(var ACss: string);
-begin
-  if Parent is TIWBSNavBarBase then
-    TIWBSCommon.AddCssClass(ACss, 'nav navbar-nav')
-  else
-    TIWBSCommon.AddCssClass(ACss, 'list-group');
-
-  inherited;
-end;
-{$endregion}
-
-{$region 'TIWBSButtonGroup'}
-constructor TIWBSButtonGroup.Create(AOwner: TComponent);
-begin
-  inherited;
-  FButtonGroupOptions := TIWBSButonGroupOptions.Create(Self);
-end;
-
-destructor TIWBSButtonGroup.Destroy;
-begin
-  FreeAndNil(FButtonGroupOptions);
-  inherited;
-end;
-
-function TIWBSButtonGroup.GetRoleString: string;
-begin
-  Result := 'group';
-end;
-
-procedure TIWBSButtonGroup.InternalRenderCss(var ACss: string);
-begin
-  ACss := 'btn-group';
-  if FButtonGroupOptions.Vertical then
-    ACss := ACss + '-vertical';
-  if FButtonGroupOptions.Size <> bsszDefault then
-    ACss := ACss + ' btn-group-'+aIWBSSize[FButtonGroupOptions.Size];
-  if FButtonGroupOptions.Justified then
-    ACss := ACss + ' btn-group-justified';
-  inherited;
-end;
-
-procedure TIWBSButtonGroup.SetButtonGroupOptions(AValue: TIWBSButonGroupOptions);
-begin
-  FButtonGroupOptions.Assign(AValue);
-  Invalidate;
-end;
-{$endregion}
 
 end.

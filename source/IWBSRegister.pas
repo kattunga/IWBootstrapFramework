@@ -2,7 +2,7 @@ unit IWBSRegister;
 
 interface
 
-uses Classes, SysUtils, StrUtils, DesignEditors, IWDsnPaintHandlers;
+uses Classes, SysUtils, StrUtils, DesignEditors, DesignIntf, IWDsnPaintHandlers;
 
 type
   TGlyphiconEditor = class(TEnumProperty)
@@ -66,12 +66,12 @@ procedure Register;
 
 implementation
 
-uses DesignIntf, Windows, Forms, Dialogs, Graphics,
+uses Windows, Forms, Dialogs, Graphics,
      glyphicons, IWBaseControl,
      IWBSLayoutMgr, IWBSControls, IWBSCustomInput,
      IWBSCustomRegion, IWBSRegion, IWBSInputForm, IWBSModal,
-     IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSNavBar,
-     IWBSCommon, IWBSCustomControl, IWBSImage, IWBSMemoHTML;
+     IWBSInput, IWBSButton, IWBSDropDown, IWBSTabControl, IWBSNavBar, IWBSList, IWBSDeprecated,
+     IWBSCommon, IWBSCustomControl, IWBSImage, IWBSMemoHTML, IWBSButtonGroup;
 
 const
   CNST_DEFAULTFONTNAME = 'Tahoma';
@@ -124,11 +124,43 @@ begin
   SetStrValue(Value);
 end;
 
+procedure DrawGlyphicon(ACanvas: TCanvas; var ARect: TRect; AGlyphicon, AFallBackTo: string; ARight: boolean = False);
+var
+  c: string;
+begin
+  ACanvas.Font.Name := CNST_GLYPHICONSFONT;
+  if AGlyphicon <> '' then
+    c := GetGlyphiconChar(AGlyphicon, AFallBackTo);
+  if c <> '' then
+    if ARight then
+      begin
+        DrawTextEx(ACanvas.Handle, PChar(c), Length(c), ARect, DT_SINGLELINE+DT_VCENTER+DT_RIGHT, nil);
+        Dec(ARect.Right, ACanvas.TextWidth(c)+4);
+      end
+    else
+      begin
+        DrawTextEx(ACanvas.Handle, PChar(c), Length(c), ARect, DT_SINGLELINE+DT_VCENTER, nil);
+        Inc(ARect.Left, ACanvas.TextWidth(c)+4);
+      end;
+end;
+
+procedure DrawControlName(ACanvas: TCanvas; ARect: TRect; const AName: string);
+begin
+  ACanvas.Font.Name := CNST_PROPORTIONALFONT;
+  ACanvas.Font.Color := clGray;
+  ACanvas.Font.Size := 8;
+  ACanvas.Font.Style := [fsItalic];
+  DrawTextEx(ACanvas.Handle, PChar(AName), Length(AName), ARect, DT_SINGLELINE+DT_VCENTER, nil);
+  ACanvas.Font.Style := [];
+end;
+
 procedure TIWBSPaintHandlerRegion.Paint;
 var
   LRect : TRect;
   s: string;
   w: integer;
+  LLines: string;
+  LScript: string;
 begin
   LRect := Rect(0, 0, Control.Width, Control.Height);
   ControlCanvas.Brush.Color := clWhite;
@@ -138,16 +170,51 @@ begin
   with TIWBSCustomRegion(Control) do begin
     ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
     ControlCanvas.Font.Color := clGray;
+
+    // draw css classes
     s := GetCssString;
     if Control is TIWBSFormControl then begin
       if s <> '' then
         s := ' '+s;
       s := 'form-control'+s;
     end;
-    s := Name+' ['+s+']';
+    s := '['+s+']';
+    if not RawText then
+      s := '<'+TagType+'> ' + s;
+    s := Name+' '+s;
     w := ControlCanvas.TextWidth(s);
     LRect := Rect(Control.ClientWidth-w-10, 2, Control.Width, Control.Height);
     ControlCanvas.TextRect(LRect,s,[]);
+
+    // draw embeded text and script
+    ControlCanvas.Font.Size := 10;
+    ControlCanvas.Font.Color := clBlack;
+
+    LLines := Text;
+
+    if RawText then
+      begin
+        ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
+        if Script.Count > 0 then
+          LScript := #13#10'<script>'#13#10+Script.Text+'</script>'
+        else
+          LScript := '';
+        LLines := '<'+TagType+'>'+IfThen(LLines <> '',#13#10+LLines);
+        if ScriptInsideTag then
+          LLines := LLines+LScript;
+        LLines := LLines+#13#10'</'+TagType+'>';
+        if not ScriptInsideTag then
+          LLines := LLines+LScript;
+      end
+    else
+      begin
+        ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+      end;
+
+    if LLines <> '' then begin
+      LRect := Rect(10, 18, Control.Width-10, Control.Height-3);
+      ControlCanvas.TextRect(LRect,LLines,[]);
+    end;
   end;
 end;
 
@@ -260,26 +327,6 @@ begin
   end;
 end;
 
-procedure DrawGlyphicon(ACanvas: TCanvas; var ARect: TRect; AGlyphicon, AFallBackTo: string; ARight: boolean = False);
-var
-  c: string;
-begin
-  ACanvas.Font.Name := CNST_GLYPHICONSFONT;
-  if AGlyphicon <> '' then
-    c := GetGlyphiconChar(AGlyphicon, AFallBackTo);
-  if c <> '' then
-    if ARight then
-      begin
-        DrawTextEx(ACanvas.Handle, PChar(c), Length(c), ARect, DT_SINGLELINE+DT_VCENTER+DT_RIGHT, nil);
-        Dec(ARect.Right, ACanvas.TextWidth(c)+4);
-      end
-    else
-      begin
-        DrawTextEx(ACanvas.Handle, PChar(c), Length(c), ARect, DT_SINGLELINE+DT_VCENTER, nil);
-        Inc(ARect.Left, ACanvas.TextWidth(c)+4);
-      end;
-end;
-
 procedure TIWBSPaintHandlerCustomButton.Paint;
 var
   LRect : TRect;
@@ -376,6 +423,9 @@ begin
         DrawGlyphicon(ControlCanvas,LRect,BSGlyphicon,'', True)
       else
         DrawGlyphicon(ControlCanvas,LRect,'chevron-down', 'V', True);
+
+    if not (Control is TIWBSDropDown) and (BSGlyphicon = '') and (s = '') then
+      DrawControlName(ControlCanvas, LRect, Name);
   end;
 end;
 
@@ -470,7 +520,7 @@ begin
     ControlCanvas.Rectangle(LRect);
 
     if RawText then
-      ControlCanvas.Font.Name := 'Courier New'
+      ControlCanvas.Font.Name := CNST_PROPORTIONALFONT
     else
       ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
     ControlCanvas.Font.Size := 10;
@@ -504,7 +554,7 @@ end;
 procedure TIWBSPaintHandlerLabel.Paint;
 var
   LRect: TRect;
-  s: string;
+  lCaption: string;
 begin
   with TIWBSLabel(Control) do begin
     LRect := Rect(0, 0, Control.Width, Control.Height);
@@ -514,11 +564,14 @@ begin
     ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
     ControlCanvas.Font.Size := 10;
     ControlCanvas.Font.Color := clBlack;
+    lCaption := Caption;
 
-    s := DataField;
-    if s = '' then
-      s := Caption;
-    ControlCanvas.TextRect(LRect,s,[])
+    if DataField <> '' then
+      DrawControlName(ControlCanvas, LRect, DataField)
+    else if lCaption <> '' then
+      ControlCanvas.TextRect(LRect,lCaption,[])
+    else
+      DrawControlName(ControlCanvas, LRect, Name);
   end;
 end;
 
@@ -610,6 +663,8 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSUnorderedList]);
   RegisterComponents('IW BootsTrap', [TIWBSModal]);
 
+  RegisterComponents('IW BootsTrap', [TIWBSList]);
+
   RegisterComponents('IW BootsTrap', [TIWBSButtonGroup]);
 
   RegisterComponents('IW BootsTrap', [TIWBSNavBar]);
@@ -627,16 +682,16 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSRadioGroup]);
 
   RegisterComponents('IW BootsTrap', [TIWBSButton]);
-  RegisterPropertyEditor(TypeInfo(string), TIWBSButton,'BSGlyphicon', TGlyphiconEditor);
+  RegisterPropertyEditor(TypeInfo(string), TIWBSButton, 'BSGlyphicon', TGlyphiconEditor);
 
   RegisterComponents('IW BootsTrap', [TIWBSDropDown]);
-  RegisterPropertyEditor(TypeInfo(string), TIWBSDropDown,'BSGlyphicon', TGlyphiconEditor);
+  RegisterPropertyEditor(TypeInfo(string), TIWBSDropDown, 'BSGlyphicon', TGlyphiconEditor);
 
   RegisterComponents('IW BootsTrap', [TIWBSLabel]);
   RegisterComponents('IW BootsTrap', [TIWBSText]);
 
   RegisterComponents('IW BootsTrap', [TIWBSGlyphicon]);
-  RegisterPropertyEditor(TypeInfo(string), TIWBSGlyphicon,'BSGlyphicon', TGlyphiconEditor);
+  RegisterPropertyEditor(TypeInfo(string), TIWBSGlyphicon, 'BSGlyphicon', TGlyphiconEditor);
 
   RegisterComponents('IW BootsTrap', [TIWBSImage]);
 
@@ -667,6 +722,8 @@ initialization
   IWRegisterPaintHandler('TIWBSFormControl',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSUnorderedList',TIWBSPaintHandlerRegion);
   IWRegisterPaintHandler('TIWBSModal',TIWBSPaintHandlerRegion);
+
+  IWRegisterPaintHandler('TIWBSList',TIWBSPaintHandlerRegion);
 
   IWRegisterPaintHandler('TIWBSButtonGroup',TIWBSPaintHandlerRegion);
 
@@ -706,6 +763,8 @@ finalization
   IWUnRegisterPaintHandler('TIWBSFormControl');
   IWUnRegisterPaintHandler('TIWBSUnorderedList');
   IWUnRegisterPaintHandler('TIWBSModal');
+
+  IWUnRegisterPaintHandler('TIWBSList');
 
   IWUnRegisterPaintHandler('TIWBSButtonGroup');
 

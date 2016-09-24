@@ -136,6 +136,14 @@ type
     class procedure ValidateTagName(const AName: string);
   end;
 
+  TIWBSRegionCommon = class
+  public
+    class procedure CancelChildAsyncRender(AControl: TComponent);
+    class procedure DisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
+    class procedure PrepareChildComponentsForRender(AContainer: IIWBaseContainer);
+    class procedure RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+  end;
+
 procedure SetAsyncDisabled(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
 procedure SetAsyncReadOnly(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
 procedure SetAsyncVisible(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
@@ -147,8 +155,9 @@ procedure SetAsyncHtml(AApplication: TIWApplication; const HTMLName: string; con
 
 implementation
 
-uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm,
-     IWBSUtils, IWBSRegionCommon, IWBSGlobal;
+uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm, IWRegion,
+     IWBSUtils, IWBSGlobal, IWMarkupLanguageTag, IWHTML40Container,
+     IWBSLayoutMgr;
 
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create;
@@ -531,6 +540,135 @@ begin
   if not AnsiContainsStr(LStyle, 'display:') then
     LStyle := LStyle +  'display: none;';
   AParams.Values['style'] := LStyle;
+end;
+{$endregion}
+
+{$region 'THackCustomRegion'}
+type
+  THackTIWHTML40Container = class(TIWHTML40Container)
+  private
+    procedure CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+  end;
+
+procedure THackTIWHTML40Container.CallInheritedRenderComponents(AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+begin
+  inherited RenderComponents(AContainerContext, APageContext);
+end;
+{$endregion}
+
+{$region 'TIWBSRegionCommon'}
+class procedure TIWBSRegionCommon.DisableRenderOptions(StyleRenderOptions: TIWStyleRenderOptions);
+begin
+  StyleRenderOptions.RenderAbsolute := False;
+  StyleRenderOptions.RenderBorder := False;
+  StyleRenderOptions.RenderFont := False;
+  StyleRenderOptions.RenderPadding := False;
+  StyleRenderOptions.RenderPosition := False;
+  StyleRenderOptions.RenderSize := False;
+  StyleRenderOptions.RenderZIndex := False;
+end;
+
+class procedure TIWBSRegionCommon.PrepareChildComponentsForRender(AContainer: IIWBaseContainer);
+var
+  i: integer;
+  LComponent: TComponent;
+  LFrameRegion: TComponent;
+  LRegion: TIWRegion;
+  LBaseControl: IIWBaseControl;
+  LHTML40Control: IIWHTML40Control;
+begin
+  for i := 0 to AContainer.IWComponentsCount - 1 do begin
+
+    LComponent := AContainer.Component[i];
+
+    // TFrame
+    if LComponent is TFrame then
+      begin
+        LFrameRegion := TFrame(LComponent).FindComponent('IWFrameRegion');
+        if LFrameRegion is TIWRegion then begin
+          LRegion := TIWRegion(LFrameRegion);
+          if LRegion.LayoutMgr = nil then
+            LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer.InterfaceInstance);
+          LRegion.LayoutMgr.SetContainer(LRegion);
+          PrepareChildComponentsForRender(LRegion);
+        end;
+     end
+
+    // tab pages of TIWBSTabControl are still TIWTabPage
+    else if LComponent.ClassName = 'TIWTabPage' then
+      begin
+        LRegion := TIWRegion(LComponent);
+        if LRegion.LayoutMgr = nil then
+          LRegion.LayoutMgr := TIWBSLayoutMgr.Create(AContainer.InterfaceInstance);
+        LRegion.LayoutMgr.SetContainer(LRegion);
+        PrepareChildComponentsForRender(LRegion);
+      end;
+
+    // disable child StyleRenderOptions
+    LBaseControl := BaseControlInterface(LComponent);
+    if Assigned(LBaseControl) then begin
+      LHTML40Control := HTML40ControlInterface(AContainer.Component[i]);
+      DisableRenderOptions(LHTML40Control.StyleRenderOptions);
+    end;
+
+    // execute global OnRender hook
+    if Assigned(gIWBSOnRender) then
+      gIWBSOnRender(LComponent);
+  end;
+end;
+
+class procedure TIWBSRegionCommon.RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
+var
+  LBuffer: TIWRenderStream;
+  LContentTag: TIWBinaryElement;
+  i, j: integer;
+begin
+  PrepareChildComponentsForRender(AContainer);
+  AContainer.ContainerContext := AContainerContext;
+  LBuffer := TIWRenderStream.Create(True, True);
+  try
+    THackTIWHTML40Container(AContainer.InterfaceInstance).CallInheritedRenderComponents(AContainerContext, APageContext);
+    THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.ProcessControls(AContainerContext, TIWBaseHTMLPageContext(APageContext));
+    THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.Process(LBuffer, AContainerContext, APageContext);
+
+    // insert content before scripts
+    LContentTag := TIWBinaryElement.Create(nil);
+    LContentTag.Buffer.Stream.CopyFrom(LBuffer.Stream, 0);
+    j := -1;
+    for i := 0 to AContainer.RegionDiv.Contents.Count-1 do
+      if AContainer.RegionDiv.Contents.Items[i] is TIWMarkupLanguageTag then
+        if TIWMarkupLanguageTag(AContainer.RegionDiv.Contents.Items[i]).Tag = 'script' then
+          j := i;
+    if j >= 0 then
+      AContainer.RegionDiv.Contents.Insert(j, LContentTag)
+    else
+      AContainer.RegionDiv.Contents.Add(LContentTag);
+  finally
+    THackTIWHTML40Container(AContainer.InterfaceInstance).LayoutMgr.SetContainer(nil);
+    FreeAndNil(LBuffer);
+  end;
+end;
+
+class procedure TIWBSRegionCommon.CancelChildAsyncRender(AControl: TComponent);
+var
+  i: integer;
+  LComponent: IIWBSComponent;
+  LContainer: IIWBaseContainer;
+begin
+  AControl.GetInterface(IIWBSComponent, LComponent);
+  if LComponent <> nil then
+    LComponent.ResetAsyncRefreshControl;
+
+  if AControl is TFrame then
+    for i := 0 to AControl.ComponentCount-1 do
+      CancelChildAsyncRender(AControl.Components[i])
+  else
+    begin
+      AControl.GetInterface(IIWBaseContainer, LContainer);
+      if LContainer <> nil then
+        for i := 0 to LContainer.IWComponentsCount-1 do
+          CancelChildAsyncRender(LContainer.Component[i])
+    end;
 end;
 {$endregion}
 

@@ -6,7 +6,7 @@ uses Classes, SysUtils, StrUtils, Graphics, Db,
      IWRenderContext, IWHTMLTag, IWBSCustomControl, IWApplication;
 
 type
-  TIWBSImageOption = (iwbsimResponsive, iwbsimCircle, iwbsimRounded, iwbsimThumbnail);
+  TIWBSImageOption = (bsimResponsive, bsimCircle, bsimRounded, bsimThumbnail);
   TIWBSImageOptions = set of TIWBSImageOption;
 
   TIWBSImage = class(TIWBSCustomDbControl)
@@ -45,7 +45,7 @@ type
   published
     property AltText: string read FAltText write FAltText;
     property AutoFormGroup: boolean read FAutoFormGroup write FAutoFormGroup default False;
-    property BSImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [iwbsimResponsive];
+    property BSImageOptions: TIWBSImageOptions read FImageOptions write FImageOptions default [bsimResponsive];
     property EmbedBase64: boolean read FEmbedBase64 write FEmbedBase64 default False;
     property Enabled default True;
     property ImageFile: string read FImageFile write SetImageFile;
@@ -67,7 +67,7 @@ begin
   inherited;
   FAltText := '';
   ImageFile := '';
-  FImageOptions := [iwbsimResponsive];
+  FImageOptions := [bsimResponsive];
   ImageSrc := '';
   FMimeType := '';
   FPicture := nil;
@@ -242,13 +242,13 @@ end;
 
 procedure TIWBSImage.InternalRenderCss(var ACss: string);
 begin
-  if iwbsimResponsive in FImageOptions then
+  if bsimResponsive in FImageOptions then
     TIWBSCommon.AddCssClass(ACss, 'img-responsive');
-  if iwbsimCircle in FImageOptions then
+  if bsimCircle in FImageOptions then
     TIWBSCommon.AddCssClass(ACss, 'img-circle');
-  if iwbsimRounded in FImageOptions then
+  if bsimRounded in FImageOptions then
     TIWBSCommon.AddCssClass(ACss, 'img-rounded');
-  if iwbsimThumbnail in FImageOptions then
+  if bsimThumbnail in FImageOptions then
     TIWBSCommon.AddCssClass(ACss, 'img-thumbnail');
   inherited;
 end;

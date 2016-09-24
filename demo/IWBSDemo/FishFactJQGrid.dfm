@@ -171,7 +171,6 @@ object FJQGrid: TFJQGrid
         Css = 'navbar-btn navbar-right'
         FriendlyName = 'IWBSButton1'
         OnAsyncClick = IWBSButton1AsyncClick
-        BSBlockLevel = False
         BSGlyphicon = 'arrow-left'
         Caption = 'Switch to Standard Demo'
       end

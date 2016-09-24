@@ -50,7 +50,7 @@ begin
   FFluid := False;
   FFixed := bsnvfxNone;
   FInverse := False;
-  FTagType := 'nav';
+  FTagName := 'nav';
 end;
 
 procedure TIWBSNavBar.InternalRenderCss(var ACss: string);

@@ -12,7 +12,7 @@ uses
   IWBaseContainerLayout, IWContainerLayout, IWBSLayoutMgr, IWBSControls,
   Vcl.Graphics, IWCompCheckbox, IWCompListbox, IWCompText, IWHTMLControls,
   MidasLib, IWBSCustomInput, IWBSButton, IWBSCustomControl, IWBSImage,
-  IWCompTabControl, IWBSTabControl,
+  IWCompTabControl, IWBSTabControl, IWBSButtonGroup,
   IW.HTTP.Request, IW.HTTP.Reply, IWBSMemoHtml, IWBSInputForm, IWBSCustomRegion;
 
 type

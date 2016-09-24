@@ -5,9 +5,9 @@ interface
 uses
   SysUtils, Classes, Controls, Forms, StrUtils,
   IWApplication, IWBaseRenderContext,
-  IWContainer, IWControl, IWHTMLContainer, IWHTML40Container, IWRegion,
+  IWContainer, IWControl, IWHTMLContainer, IWHTML40Container, IWRegion, IWBaseHTMLControl,
   IWRenderContext, IWHTMLTag, IWBaseInterfaces, IWXMLTag,
-  IWBSCommon, IWBSRegionCommon, IWBSLayoutMgr, IWScriptEvents, IWBSCustomEvents;
+  IWBSCommon, IWBSLayoutMgr, IWScriptEvents, IWBSCustomEvents;
 
 type
   TIWBSCustomRegion = class(TIWCustomRegion, IIWBSComponent, IIWBSContainer)
@@ -28,9 +28,12 @@ type
     FScriptParams: TIWBSScriptParams;
     FStyle: TStringList;
     FReleased: boolean;
+    FText: string;
 
     FCollapseVisible: boolean;
     FCollapse: boolean;
+
+    FRawText: boolean;
 
     FOnAfterRender: TNotifyEvent;
     FOnAfterAsyncChange: TNotifyEvent;
@@ -38,6 +41,8 @@ type
     function HTMLControlImplementation: TIWHTMLControlImplementation;
     function IsScriptEventsStored: Boolean; virtual;
     function RegionDiv: TIWHTMLTag;
+
+    function  RenderText: string;
 
     procedure OnScriptChange(ASender : TObject);
     procedure OnStyleChange(ASender : TObject);
@@ -60,10 +65,12 @@ type
     procedure SetAfterRender(const Value: TNotifyEvent);
     procedure SetCollapse(const Value: boolean);
     procedure SetCollapseVisible(const Value: boolean);
+    procedure SetRawText(const Value: boolean);
+    procedure SetText(const Value: string);
   protected
     FContentSuffix: string;
     FRegionDiv: TIWHTMLTag;
-    FTagType: string;
+    FTagName: string;
 
     {$hints off}
     function get_Visible: Boolean; override;
@@ -101,6 +108,8 @@ type
     function IsStoredCustomRestEvents: Boolean;
     function JQSelector: string;
     procedure SetFocus; override;
+
+    property TagType: string read FTagName;
   published
     property Align;
     property BSGridOptions: TIWBSGridOptions read FGridOptions write SetGridOptions;
@@ -112,12 +121,14 @@ type
     property CollapseVisible: boolean read FCollapseVisible write SetCollapseVisible default False;
     property ExtraTagParams;
     property LayoutMgr;
+    property RawText: boolean read FRawText write SetRawText default False;
     property RenderInvisibleControls default True;
     property ScriptEvents: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;
     property Script: TStringList read GetScript write SetScript;
     property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag default True;
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
     property Style: TStringList read GetStyle write SetStyle;
+    property Text: string read FText write SetText;
     property ZIndex default 0;
 
     // Occurs after component is rendered.
@@ -157,7 +168,7 @@ begin
   FStyle := TStringList.Create;
   FStyle.OnChange := OnStyleChange;
   FStyle.NameValueSeparator := ':';
-  FTagType := 'div';
+  FTagName := 'div';
 
   ClipRegion := False;
   RenderInvisibleControls := True;
@@ -208,6 +219,12 @@ begin
   inherited;
   if (Parent is TFrame) and (Name <> 'IWFrameRegion') and (Parent.FindComponent('IWFrameRegion') = nil) then
     Name := 'IWFrameRegion';
+end;
+
+procedure TIWBSCustomRegion.SetRawText(const Value: boolean);
+begin
+  FRawText := Value;
+  AsyncRefreshControl;
 end;
 
 function TIWBSCustomRegion.JQSelector: string;
@@ -390,6 +407,12 @@ begin
   FStyle.Assign(AValue);
 end;
 
+procedure TIWBSCustomRegion.SetText(const Value: string);
+begin
+  FText := TrimRight(Value);
+  AsyncRefreshControl;
+end;
+
 function TIWBSCustomRegion.ContainerPrefix: string;
 begin
   if Owner is TFrame then
@@ -507,11 +530,14 @@ begin
   FOldStyle := RenderStyle(AContext);
   FOldVisible := Visible;
 
-  FRegionDiv := TIWHTMLTag.CreateTag(FTagType);
+  FRegionDiv := TIWHTMLTag.CreateTag(FTagName);
   FRegionDiv.AddStringParam('id',HTMLName);
   FRegionDiv.AddClassParam(FOldCss);
   FRegionDiv.AddStringParam('role',GetRoleString);
   FRegionDiv.AddStringParam('style',RenderStyle(AContext));
+
+  if FText <> '' then
+    FRegionDiv.Contents.AddText(RenderText);
 
   IWBSRenderScript(Self, AContext, FRegionDiv);
   FMainID := FRegionDiv.Params.Values['id'];
@@ -530,6 +556,39 @@ end;
 function TIWBSCustomRegion.RenderStyle(AContext: TIWCompContext): string;
 begin
   Result := TIWBSCommon.RenderStyle(Self);
+end;
+
+function TIWBSCustomRegion.RenderText: string;
+var
+  i: integer;
+  LLines: TStringList;
+begin
+  if RawText then
+    begin
+      LLines := TStringList.Create;
+      try
+        LLines.Text := FText;
+
+        // replace params before custom events
+        LLines.Text := TIWBSCommon.ReplaceParams(Self, LLines.Text);
+
+        // replace inner events calls
+        if IsStoredCustomAsyncEvents then
+          for i := 0 to CustomAsyncEvents.Count-1 do
+            TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParam(LLines);
+
+        // replace inner events calls
+        if IsStoredCustomRestEvents then
+          for i := 0 to CustomRestEvents.Count-1 do
+            TIWBSCustomRestEvent(CustomRestEvents.Items[i]).ParseParam(LLines);
+
+        Result := LLines.Text;
+      finally
+        LLines.Free;
+      end;
+    end
+  else
+    Result := TIWBaseHTMLControl.TextToHTML(FText);
 end;
 
 end.
