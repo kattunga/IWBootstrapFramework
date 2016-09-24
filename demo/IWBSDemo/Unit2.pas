@@ -142,10 +142,6 @@ type
     IWBSButton46: TIWBSButton;
     IWBSDropDown2: TIWBSDropDown;
     IWBSButton49: TIWBSButton;
-    IWBSRegion23: TIWBSRegion;
-    IWBSButton53: TIWBSButton;
-    IWBSButton54: TIWBSButton;
-    IWBSButton55: TIWBSButton;
     IWTabControl21Page7: TIWTabPage;
     IWTabControl21Page8: TIWTabPage;
     IWBSList3: TIWBSList;

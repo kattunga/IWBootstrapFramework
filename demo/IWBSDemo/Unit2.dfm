@@ -16,7 +16,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = 8
+  DesignTop = -368
   object IWBSRegion40: TIWBSRegion
     Left = 0
     Top = 0
@@ -2546,38 +2546,6 @@ object IWForm2: TIWForm2
                           '<h3>Form Layout</h3>')
                         RawText = True
                       end
-                    end
-                  end
-                  object IWBSRegion23: TIWBSRegion
-                    Left = 20
-                    Top = 672
-                    Width = 281
-                    Height = 213
-                    Text = ''
-                    BSRegionType = bsrtListGroup
-                    object IWBSButton53: TIWBSButton
-                      Left = 40
-                      Top = 56
-                      Width = 200
-                      Height = 25
-                      FriendlyName = 'IWBSButton50'
-                      Caption = 'IWBSButton50'
-                    end
-                    object IWBSButton54: TIWBSButton
-                      Left = 39
-                      Top = 101
-                      Width = 200
-                      Height = 25
-                      FriendlyName = 'IWBSButton50'
-                      Caption = 'IWBSButton50'
-                    end
-                    object IWBSButton55: TIWBSButton
-                      Left = 38
-                      Top = 140
-                      Width = 200
-                      Height = 25
-                      FriendlyName = 'IWBSButton50'
-                      Caption = 'IWBSButton50'
                     end
                   end
                 end
