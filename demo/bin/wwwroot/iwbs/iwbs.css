@@ -1,3 +1,25 @@
+/**** weel bg **********/
+.well-primary {
+	color: #fff;
+	background-color: #337ab7;	
+}
+
+.well-success {
+	background-color: #dff0d8;
+}
+
+.well-info {
+	background-color: #d9edf7;
+}
+
+.well-warning {
+	background-color: #fcf8e3;	
+}
+	
+.well-danger {
+	background-color: #f2dede;	
+}
+
 /**** alerts ***********/
 .flyover {
 	position: fixed;

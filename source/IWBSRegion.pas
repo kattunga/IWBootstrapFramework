@@ -8,10 +8,10 @@ uses
   IWBSCustomregion;
 
 type
-  TIWBSPanelStyle = (bspsDefault, bspsPrimary, bspsSuccess, bspsInfo, bspsWarning, bspsDanger);
+  TIWBSRegionBack = (bsrbDefault, bsrbPrimary, bsrbSuccess, bsrbInfo, bsrbWarning, bsrbDanger);
 
 const
-  aIWBSPanelStyle: array[bspsDefault..bspsDanger] of string = ('panel-default', 'panel-primary', 'panel-success', 'panel-info', 'panel-warning', 'panel-danger');
+  aIWBSRegionBack: array[bsrbDefault..bsrbDanger] of string = ('default', 'primary', 'success', 'info', 'warning', 'danger');
 
 type
   TIWBSRegionType = (bsrtNone, bsrtContainer, bsrtContainerFluid, bsrtRow, bsrtColumn,
@@ -43,38 +43,34 @@ const
 type
   TIWBSRegion = class(TIWBSCustomRegion)
   private
-    FPanelStyle: TIWBSPanelStyle;
+    FBackground: TIWBSRegionBack;
     FRegionType: TIWBSRegionType;
     FTagType: TIWBSRegionTagType;
     procedure SetRegionType(AValue: TIWBSRegionType);
-    procedure SetPanelStyle(AValue: TIWBSPanelStyle);
+    procedure SetBackground(AValue: TIWBSRegionBack);
     procedure SetTagType(const Value: TIWBSRegionTagType);
   protected
     procedure InternalRenderCss(var ACss: string); override;
   public
-    constructor Create(AOwner: TComponent); override;
     function GetRoleString: string; override;
   published
-    property BSPanelStyle: TIWBSPanelStyle read FPanelStyle write SetPanelStyle default bspsDefault;
+    property BSBackground: TIWBSRegionBack read FBackground write SetBackground default bsrbDefault;
     property BSRegionType: TIWBSRegionType read FRegionType write SetRegionType default bsrtNone;
     property TagType: TIWBSRegionTagType read FTagType write SetTagType default bsttDiv;
   end;
 
 implementation
 
-constructor TIWBSRegion.Create(AOwner: TComponent);
-begin
-  inherited;
-  FPanelStyle := bspsDefault;
-  FRegionType := bsrtNone;
-end;
-
 procedure TIWBSRegion.InternalRenderCss(var ACss: string);
 begin
   TIWBSCommon.AddCssClass(ACss, aIWBSRegionType[FRegionType]);
 
-  if FRegionType = bsrtPanel then
-    TIWBSCommon.AddCssClass(ACss, aIWBSPanelStyle[FPanelStyle]);
+  if (FRegionType = bsrtPanel) then
+    TIWBSCommon.AddCssClass(ACss, 'panel-'+aIWBSRegionBack[FBackground])
+  else if (FRegionType in [bsrtWell, bsrtWellLarge, bsrtWellSmall]) and (FBackground <> bsrbDefault) then
+    TIWBSCommon.AddCssClass(ACss, 'well-'+aIWBSRegionBack[FBackground])
+  else
+    TIWBSCommon.AddCssClass(ACss, 'bg-'+aIWBSRegionBack[FBackground]);
 
   inherited;
 end;
@@ -100,9 +96,9 @@ begin
   AsyncRefreshControl;
 end;
 
-procedure TIWBSRegion.SetPanelStyle(AValue: TIWBSPanelStyle);
+procedure TIWBSRegion.SetBackground(AValue: TIWBSRegionBack);
 begin
-  FPanelStyle := AValue;
+  FBackground := AValue;
   Invalidate;
 end;
 

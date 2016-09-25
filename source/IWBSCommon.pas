@@ -116,8 +116,8 @@ type
 
 implementation
 
-uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm, IWRegion,
-     IWBSUtils, IWBSGlobal, IWMarkupLanguageTag, IWHTML40Container,
+uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm, IWRegion, IWMarkupLanguageTag, IWHTML40Container,
+     IWBSUtils, IWBSGlobal, IWBSNavBar,
      IWBSLayoutMgr;
 
 {$region 'TIWBSGridOptions'}
@@ -134,6 +134,8 @@ function TIWBSGridOptions.GetClassString(ACustomXsOffset, ACustomSmOffset, ACust
       s := s + ' ';
     s := s + Value;
   end;
+var
+  lNavBar: boolean;
 begin
   Result := '';
   if ACustomXsOffset+FGridXsOffset > 0 then
@@ -199,11 +201,19 @@ begin
   else if FVisibilityPr = bsgvHidden then
     AddCssValue(Result, 'hidden-print');
 
-  if FFloat = bsgfLeft then
-    AddCssValue(Result, 'pull-left')
-  else if FFloat = bsgfRight then
-    AddCssValue(Result, 'pull-right');
-
+  if FFloat <> bsgfNone then begin
+    lNavBar := (FOwner.ParentContainer <> nil) and (FOwner.ParentContainer.InterfaceInstance is TIWBSNavBarBase);
+    if FFloat = bsgfLeft then
+      if lNavBar then
+        AddCssValue(Result, 'navbar-left')
+      else
+        AddCssValue(Result, 'pull-left')
+    else if FFloat = bsgfRight then
+      if lNavBar then
+        AddCssValue(Result, 'navbar-right')
+      else
+        AddCssValue(Result, 'pull-right');
+  end;
 end;
 
 procedure TIWBSGridOptions.SetFloat(const Value: TIWBSGridFloat);

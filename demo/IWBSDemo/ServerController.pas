@@ -2,7 +2,7 @@ unit ServerController;
 
 interface
 
-{$DEFINE CDNS}
+{.$DEFINE CDNS}
 {.$DEFINE BOOTSTRAPSELECT}
 
 uses
@@ -63,13 +63,13 @@ begin
   // ATTENTION!!!, this can't be done after this event because global variables are not thread safe
 {$IFDEF CDNS}
 
-  gIWBSLibJQueryJs := 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js';
+  gIWBSLibJQueryJs := 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js';
 
-  gIWBSLibBootstrapCss := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css';
-  gIWBSLibBootstrapJs := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js';
+  gIWBSLibBootstrapCss := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
+  gIWBSLibBootstrapJs := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js';
 
-  gIWBSLibIWBSCss := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.2/demo/bin/wwwroot/iwbs/iwbs.css';
-  gIWBSLibIWBSJs := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.2/demo/bin/wwwroot/iwbs/iwbs.js';
+  gIWBSLibIWBSCss := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.5/demo/bin/wwwroot/iwbs/iwbs.css';
+  gIWBSLibIWBSJs := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v1.5/demo/bin/wwwroot/iwbs/iwbs.js';
 
   gIWBSLibPolyFillerJs := 'https://cdnjs.cloudflare.com/ajax/libs/webshim/1.15.10/dev/polyfiller.js';
 

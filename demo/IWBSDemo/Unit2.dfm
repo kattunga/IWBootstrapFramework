@@ -16,7 +16,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -462
+  DesignTop = 8
   object IWBSRegion40: TIWBSRegion
     Left = 0
     Top = 0
@@ -74,7 +74,7 @@ object IWForm2: TIWForm2
           Top = 26
           Width = 602
           Height = 54
-          Css = 'navbar-right'
+          BSGridOptions.Float = bsgfRight
           Text = ''
           BSListType = bsltNav
           object IWBSButton46: TIWBSButton
@@ -1496,413 +1496,6 @@ object IWForm2: TIWForm2
                 BSRegionType = bsrtWell
               end
             end
-            object IWTabControl21Page0: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1392
-              Height = 1454
-              RenderInvisibleControls = True
-              TabOrder = 0
-              Title = 'Form Controls'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSRegion25: TIWBSRegion
-                Left = 0
-                Top = 0
-                Width = 1392
-                Height = 1305
-                Align = alTop
-                Style.Strings = (
-                  'margin: 1em')
-                Text = ''
-                BSRegionType = bsrtRow
-                object IWBSRegion2: TIWBSRegion
-                  Left = 1
-                  Top = 1
-                  Width = 334
-                  Height = 1303
-                  Align = alLeft
-                  BSGridOptions.GridMdSpan = 4
-                  Text = ''
-                  BSRegionType = bsrtColumn
-                  object IWBSRegion18: TIWBSRegion
-                    Left = 12
-                    Top = 34
-                    Width = 245
-                    Height = 195
-                    Text = ''
-                    BSRegionType = bsrtWellLarge
-                    object IWBSInputForm3: TIWBSInputForm
-                      Left = 4
-                      Top = 24
-                      Width = 234
-                      Height = 159
-                      Text = ''
-                      object LstFormType: TIWBSRadioGroup
-                        Left = 10
-                        Top = 47
-                        Width = 128
-                        Height = 64
-                        FriendlyName = 'LstFormType'
-                        Caption = ''
-                        Text = 'form-vertical'
-                        ItemIndex = 0
-                        Items.Strings = (
-                          'form-vertical'
-                          'form-horizontal'
-                          'form-inline')
-                      end
-                      object IWBSButton35: TIWBSButton
-                        Left = 10
-                        Top = 122
-                        Width = 127
-                        Height = 25
-                        RenderSize = False
-                        StyleRenderOptions.RenderSize = False
-                        FriendlyName = 'IWBSButton20'
-                        OnAsyncClick = IWBSButton35AsyncClick
-                        Caption = 'Apply change'
-                      end
-                      object IWText2: TIWBSText
-                        Left = 10
-                        Top = 16
-                        Width = 201
-                        Height = 19
-                        FriendlyName = 'IWText2'
-                        Lines.Strings = (
-                          '<h3>Form Layout</h3>')
-                        RawText = True
-                      end
-                    end
-                  end
-                end
-                object IWBSInputForm2: TIWBSInputForm
-                  Left = 335
-                  Top = 1
-                  Width = 1056
-                  Height = 1303
-                  Align = alClient
-                  BSGridOptions.GridMdSpan = 8
-                  Text = ''
-                  BSFormOptions.CaptionsSize.GridMdSpan = 4
-                  BSFormOptions.InputsSize.GridMdSpan = 8
-                  object IWBSInput1: TIWBSInput
-                    Left = 12
-                    Top = 35
-                    Width = 201
-                    Height = 25
-                    ExtraTagParams.Strings = (
-                      '')
-                    FriendlyName = 'IWBSInput1'
-                    Caption = 'Input Type Text'
-                    Text = ''
-                    BSTextAlignment = bstaCenter
-                    PlaceHolder = 'Name'
-                  end
-                  object IWBSInput2: TIWBSInput
-                    Left = 12
-                    Top = 220
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Numer'
-                    Text = ''
-                    PlaceHolder = 'Amount'
-                    InputType = bsitNumber
-                  end
-                  object IWBSInput3: TIWBSInput
-                    Left = 12
-                    Top = 62
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Password'
-                    Text = ''
-                    PlaceHolder = 'Password'
-                    InputType = bsitPassword
-                  end
-                  object IWBSMemo2: TIWBSMemo
-                    Left = 12
-                    Top = 447
-                    Width = 435
-                    Height = 121
-                    FriendlyName = 'IWBSMemo2'
-                    Caption = 'This is a Memo'
-                    Text = ''
-                    BSTextAlignment = bstaRight
-                    BSTextCase = bstcUppercase
-                    PlaceHolder = 'This is a text area with right align and uppercase'
-                  end
-                  object IWBSButton20: TIWBSButton
-                    Left = 12
-                    Top = 4
-                    Width = 326
-                    Height = 25
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSButton20'
-                    OnAsyncClick = IWBSButton20AsyncClick
-                    BSGlyphicon = 'check'
-                    Caption = 'Ajax Click (see input values in memo)'
-                  end
-                  object IWBSInput7: TIWBSInput
-                    Left = 12
-                    Top = 113
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Date'
-                    Text = ''
-                    PlaceHolder = 'Date'
-                    InputType = bsitDate
-                  end
-                  object IWBSInput14: TIWBSInput
-                    Left = 12
-                    Top = 89
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type DateTimeLocal'
-                    Text = ''
-                    PlaceHolder = 'DateTimeLocal'
-                    InputType = bsitDateTimeLocal
-                  end
-                  object IWBSInput15: TIWBSInput
-                    Left = 12
-                    Top = 139
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Month'
-                    Text = ''
-                    PlaceHolder = 'Month'
-                    InputType = bsitMonth
-                  end
-                  object IWBSInput16: TIWBSInput
-                    Left = 12
-                    Top = 166
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Time'
-                    Text = ''
-                    PlaceHolder = 'Time'
-                    InputType = bsitTime
-                  end
-                  object IWBSInput17: TIWBSInput
-                    Left = 12
-                    Top = 193
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput3'
-                    Caption = 'Input Type Week'
-                    Text = ''
-                    PlaceHolder = 'Week'
-                    InputType = bsitWeek
-                  end
-                  object IWBSInput18: TIWBSInput
-                    Left = 12
-                    Top = 244
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Email'
-                    Text = ''
-                    PlaceHolder = 'Email'
-                    InputType = bsitEmail
-                  end
-                  object IWBSInput19: TIWBSInput
-                    Left = 12
-                    Top = 270
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Url'
-                    Text = ''
-                    PlaceHolder = 'home page'
-                    InputType = bsitUrl
-                  end
-                  object IWBSInput20: TIWBSInput
-                    Left = 12
-                    Top = 297
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Search'
-                    Text = ''
-                    PlaceHolder = 'Search'
-                    InputType = bsitSearch
-                  end
-                  object IWBSInput21: TIWBSInput
-                    Left = 12
-                    Top = 324
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Tel'
-                    Text = ''
-                    PlaceHolder = 'Telephone'
-                    InputType = bsitTel
-                  end
-                  object IWBSInput22: TIWBSInput
-                    Left = 12
-                    Top = 351
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input Type Color'
-                    Text = ''
-                    PlaceHolder = 'Pick a Color'
-                    InputType = bsitColor
-                  end
-                  object IWBSInput13: TIWBSInput
-                    Left = 12
-                    Top = 382
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSInput2'
-                    Caption = 'Input NonEditableAsLabel'
-                    Editable = False
-                    NonEditableAsLabel = True
-                    Text = 'This is a static text'
-                    PlaceHolder = 'Pick a Color'
-                  end
-                  object IWBSRadioGroup1: TIWBSRadioGroup
-                    Left = 15
-                    Top = 932
-                    Width = 237
-                    Height = 125
-                    FriendlyName = 'IWBSRadioGroup1'
-                    Caption = 'This is a radio group'
-                    Text = 'item 1'
-                    ItemIndex = 0
-                    Items.Strings = (
-                      'item 1'
-                      'item 2'
-                      'item 3'
-                      'item 4')
-                  end
-                  object IWBSComboBox2: TIWBSSelect
-                    Left = 15
-                    Top = 755
-                    Width = 291
-                    Height = 25
-                    FriendlyName = 'IWBSComboBox1'
-                    Caption = 'This is a Select (Size = 1)'
-                    Text = 'item 1'
-                    ItemIndex = 0
-                    Items.Strings = (
-                      'item 1'
-                      'item 2'
-                      'item 3'
-                      'item 4')
-                  end
-                  object IWBSListbox2: TIWBSSelect
-                    Left = 14
-                    Top = 575
-                    Width = 291
-                    Height = 82
-                    FriendlyName = 'IWBSListbox1'
-                    Caption = 'This is a ListBox with multi select'
-                    Text = ''
-                    Items.Strings = (
-                      'item 1'
-                      'item 2'
-                      'item 3'
-                      'item 4')
-                    MultiSelect = True
-                    Size = 4
-                  end
-                  object IWBSListbox3: TIWBSSelect
-                    Left = 15
-                    Top = 663
-                    Width = 291
-                    Height = 77
-                    FriendlyName = 'IWBSListbox1'
-                    Caption = 'This is a Select (Size <> 1)'
-                    Text = 'item 1'
-                    ItemIndex = 0
-                    Items.Strings = (
-                      'item 1'
-                      'item 2'
-                      'item 3'
-                      'item 4')
-                    Size = 0
-                  end
-                  object IWBSCheckBox1: TIWBSCheckBox
-                    Left = 12
-                    Top = 416
-                    Width = 201
-                    Height = 25
-                    FriendlyName = 'IWBSCheckBox1'
-                    Caption = 'IWBSCheckBox1'
-                    Text = 'false'
-                    ValueChecked = 'true'
-                    ValueUnchecked = 'false'
-                  end
-                  object IWBSRegion1: TIWBSRegion
-                    Left = 15
-                    Top = 799
-                    Width = 237
-                    Height = 121
-                    Text = ''
-                    BSRegionType = bsrtFormGroup
-                    object IWBSRadioButton6: TIWBSRadioButton
-                      Left = 8
-                      Top = 12
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSRadioButton6'
-                      Caption = 'Radio Button 1'
-                      Text = 'true'
-                      Checked = True
-                      Group = 'group1'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object IWBSRadioButton7: TIWBSRadioButton
-                      Left = 8
-                      Top = 40
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSRadioButton6'
-                      Caption = 'Radio Button 2'
-                      Text = 'false'
-                      Group = 'group1'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object IWBSRadioButton8: TIWBSRadioButton
-                      Left = 8
-                      Top = 65
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSRadioButton6'
-                      Caption = 'Radio Button 3'
-                      Text = 'false'
-                      Group = 'group1'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object IWBSRadioButton9: TIWBSRadioButton
-                      Left = 8
-                      Top = 92
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'IWBSRadioButton6'
-                      Caption = 'Radio Button 4'
-                      Text = 'false'
-                      Group = 'group1'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                  end
-                end
-              end
-            end
             object IWTabControl21Page11: TIWTabPage
               Left = 0
               Top = 20
@@ -2028,272 +1621,6 @@ object IWForm2: TIWForm2
                     FriendlyName = 'IWBSButton38'
                     Caption = 'Close Modal by data-dismiss'
                     DataDismiss = bsbdModal
-                  end
-                end
-              end
-            end
-            object IWTabControl21Page10: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1392
-              Height = 1454
-              RenderInvisibleControls = True
-              TabOrder = 10
-              Title = 'Panels / Accordion'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSRegion19: TIWBSRegion
-                Left = 13
-                Top = 51
-                Width = 698
-                Height = 268
-                Text = ''
-                BSPanelStyle = bspsPrimary
-                BSRegionType = bsrtPanel
-                object IWBSRegion20: TIWBSRegion
-                  Left = 8
-                  Top = 22
-                  Width = 681
-                  Height = 80
-                  Text = ''
-                  BSRegionType = bsrtPanelHeading
-                  object IWBSLabel5: TIWBSLabel
-                    Left = 25
-                    Top = 28
-                    Width = 278
-                    Height = 25
-                    FriendlyName = 'IWBSLabel5'
-                    Caption = 'this is panel title'
-                    TagType = 'h4'
-                  end
-                end
-                object IWBSRegion21: TIWBSRegion
-                  Left = 8
-                  Top = 193
-                  Width = 681
-                  Height = 60
-                  Text = ''
-                  BSRegionType = bsrtPanelFooter
-                  object IWText9: TIWBSText
-                    Left = 24
-                    Top = 20
-                    Width = 269
-                    Height = 22
-                    FriendlyName = 'IWText9'
-                    Lines.Strings = (
-                      '<h2>this is panel footer</h2>')
-                    RawText = True
-                  end
-                end
-                object IWBSRegion22: TIWBSRegion
-                  Left = 8
-                  Top = 108
-                  Width = 681
-                  Height = 79
-                  Text = ''
-                  BSRegionType = bsrtPanelBody
-                  object IWText6: TIWBSText
-                    Left = 155
-                    Top = 37
-                    Width = 269
-                    Height = 22
-                    FriendlyName = 'IWText6'
-                    Lines.Strings = (
-                      '<h2>this is panel body</h2>')
-                    RawText = True
-                  end
-                end
-              end
-              object IWBSRegion66: TIWBSRegion
-                Left = 13
-                Top = 8
-                Width = 581
-                Height = 37
-                Text = 'Panel'
-                BSRegionType = bsrtPageHeader
-                TagType = bsttH2
-              end
-              object IWBSRegion67: TIWBSRegion
-                Left = 13
-                Top = 329
-                Width = 698
-                Height = 37
-                Text = 'Accordion'
-                BSRegionType = bsrtPageHeader
-                TagType = bsttH2
-              end
-              object IWBSRegion4: TIWBSRegion
-                Left = 13
-                Top = 372
-                Width = 698
-                Height = 849
-                Text = ''
-                BSRegionType = bsrtPanelGroup
-                object IWBSRegion38: TIWBSRegion
-                  Left = 22
-                  Top = 22
-                  Width = 659
-                  Height = 255
-                  Text = ''
-                  BSRegionType = bsrtPanel
-                  object IWBSRegion39: TIWBSRegion
-                    Left = 20
-                    Top = 24
-                    Width = 621
-                    Height = 81
-                    Text = ''
-                    BSRegionType = bsrtPanelHeading
-                    object IWBSButton43: TIWBSButton
-                      Left = 20
-                      Top = 28
-                      Width = 200
-                      Height = 25
-                      FriendlyName = 'IWBSButton43'
-                      Caption = 'Collapsible Group Item #1'
-                      DataParent = IWBSRegion4
-                      DataTarget = IWBSRegion42
-                    end
-                  end
-                  object IWBSRegion42: TIWBSRegion
-                    Left = 19
-                    Top = 108
-                    Width = 622
-                    Height = 121
-                    Collapse = True
-                    CollapseVisible = True
-                    Text = ''
-                    BSRegionType = bsrtPanelBody
-                    object IWBSText3: TIWBSText
-                      Left = 12
-                      Top = 40
-                      Width = 593
-                      Height = 76
-                      FriendlyName = 'IWBSText3'
-                      Lines.Strings = (
-                        
-                          'Anim pariatur cliche reprehenderit, enim eiusmod high life accus' +
-                          'amus terry richardson ad squid. 3 wolf moon officia aute, non cu' +
-                          'pidatat skateboard dolor brunch. Food truck quinoa nesciunt labo' +
-                          'rum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird o' +
-                          'n it squid single-origin coffee nulla assumenda shoreditch et. N' +
-                          'ihil anim keffiyeh helvetica, craft beer labore wes anderson cre' +
-                          'd nesciunt sapiente ea proident. Ad vegan excepteur butcher vice' +
-                          ' lomo. Leggings occaecat craft beer farm-to-table, raw denim aes' +
-                          'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
-                          'us labore sustainable VHS.')
-                    end
-                  end
-                end
-                object IWBSRegion43: TIWBSRegion
-                  Left = 22
-                  Top = 289
-                  Width = 659
-                  Height = 255
-                  Text = ''
-                  BSRegionType = bsrtPanel
-                  object IWBSRegion44: TIWBSRegion
-                    Left = 20
-                    Top = 24
-                    Width = 621
-                    Height = 81
-                    Text = ''
-                    BSRegionType = bsrtPanelHeading
-                    object IWBSButton44: TIWBSButton
-                      Left = 24
-                      Top = 32
-                      Width = 200
-                      Height = 25
-                      FriendlyName = 'IWBSButton43'
-                      Caption = 'Collapsible Group Item #2'
-                      DataParent = IWBSRegion4
-                      DataTarget = IWBSRegion46
-                    end
-                  end
-                  object IWBSRegion46: TIWBSRegion
-                    Left = 19
-                    Top = 108
-                    Width = 622
-                    Height = 121
-                    Collapse = True
-                    Text = ''
-                    BSRegionType = bsrtPanelBody
-                    object IWBSText4: TIWBSText
-                      Left = 12
-                      Top = 40
-                      Width = 593
-                      Height = 76
-                      FriendlyName = 'IWBSText3'
-                      Lines.Strings = (
-                        
-                          'Anim pariatur cliche reprehenderit, enim eiusmod high life accus' +
-                          'amus terry richardson ad squid. 3 wolf moon officia aute, non cu' +
-                          'pidatat skateboard dolor brunch. Food truck quinoa nesciunt labo' +
-                          'rum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird o' +
-                          'n it squid single-origin coffee nulla assumenda shoreditch et. N' +
-                          'ihil anim keffiyeh helvetica, craft beer labore wes anderson cre' +
-                          'd nesciunt sapiente ea proident. Ad vegan excepteur butcher vice' +
-                          ' lomo. Leggings occaecat craft beer farm-to-table, raw denim aes' +
-                          'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
-                          'us labore sustainable VHS.')
-                    end
-                  end
-                end
-                object IWBSRegion47: TIWBSRegion
-                  Left = 22
-                  Top = 558
-                  Width = 659
-                  Height = 255
-                  Text = ''
-                  BSRegionType = bsrtPanel
-                  object IWBSRegion48: TIWBSRegion
-                    Left = 20
-                    Top = 24
-                    Width = 621
-                    Height = 81
-                    Text = ''
-                    BSRegionType = bsrtPanelHeading
-                    object IWBSButton47: TIWBSButton
-                      Left = 12
-                      Top = 20
-                      Width = 200
-                      Height = 25
-                      FriendlyName = 'IWBSButton43'
-                      Caption = 'Collapsible Group Item #3'
-                      DataParent = IWBSRegion4
-                      DataTarget = IWBSRegion50
-                    end
-                  end
-                  object IWBSRegion50: TIWBSRegion
-                    Left = 19
-                    Top = 108
-                    Width = 622
-                    Height = 121
-                    Collapse = True
-                    Text = ''
-                    BSRegionType = bsrtPanelBody
-                    object IWBSText5: TIWBSText
-                      Left = 12
-                      Top = 40
-                      Width = 593
-                      Height = 76
-                      FriendlyName = 'IWBSText3'
-                      Lines.Strings = (
-                        
-                          'Anim pariatur cliche reprehenderit, enim eiusmod high life accus' +
-                          'amus terry richardson ad squid. 3 wolf moon officia aute, non cu' +
-                          'pidatat skateboard dolor brunch. Food truck quinoa nesciunt labo' +
-                          'rum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird o' +
-                          'n it squid single-origin coffee nulla assumenda shoreditch et. N' +
-                          'ihil anim keffiyeh helvetica, craft beer labore wes anderson cre' +
-                          'd nesciunt sapiente ea proident. Ad vegan excepteur butcher vice' +
-                          ' lomo. Leggings occaecat craft beer farm-to-table, raw denim aes' +
-                          'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
-                          'us labore sustainable VHS.')
-                      RawText = True
-                    end
                   end
                 end
               end
@@ -2873,6 +2200,272 @@ object IWForm2: TIWForm2
                 end
               end
             end
+            object IWTabControl21Page10: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1392
+              Height = 1454
+              RenderInvisibleControls = True
+              TabOrder = 10
+              Title = 'Panels / Accordion'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSRegion19: TIWBSRegion
+                Left = 13
+                Top = 51
+                Width = 698
+                Height = 268
+                Text = ''
+                BSBackground = bsrbPrimary
+                BSRegionType = bsrtPanel
+                object IWBSRegion20: TIWBSRegion
+                  Left = 8
+                  Top = 22
+                  Width = 681
+                  Height = 80
+                  Text = ''
+                  BSRegionType = bsrtPanelHeading
+                  object IWBSLabel5: TIWBSLabel
+                    Left = 25
+                    Top = 28
+                    Width = 278
+                    Height = 25
+                    FriendlyName = 'IWBSLabel5'
+                    Caption = 'this is panel title'
+                    TagType = 'h4'
+                  end
+                end
+                object IWBSRegion21: TIWBSRegion
+                  Left = 8
+                  Top = 193
+                  Width = 681
+                  Height = 60
+                  Text = ''
+                  BSRegionType = bsrtPanelFooter
+                  object IWText9: TIWBSText
+                    Left = 24
+                    Top = 20
+                    Width = 269
+                    Height = 22
+                    FriendlyName = 'IWText9'
+                    Lines.Strings = (
+                      '<h2>this is panel footer</h2>')
+                    RawText = True
+                  end
+                end
+                object IWBSRegion22: TIWBSRegion
+                  Left = 8
+                  Top = 108
+                  Width = 681
+                  Height = 79
+                  Text = ''
+                  BSRegionType = bsrtPanelBody
+                  object IWText6: TIWBSText
+                    Left = 155
+                    Top = 37
+                    Width = 269
+                    Height = 22
+                    FriendlyName = 'IWText6'
+                    Lines.Strings = (
+                      '<h2>this is panel body</h2>')
+                    RawText = True
+                  end
+                end
+              end
+              object IWBSRegion66: TIWBSRegion
+                Left = 13
+                Top = 8
+                Width = 581
+                Height = 37
+                Text = 'Panel'
+                BSRegionType = bsrtPageHeader
+                TagType = bsttH2
+              end
+              object IWBSRegion67: TIWBSRegion
+                Left = 13
+                Top = 329
+                Width = 698
+                Height = 37
+                Text = 'Accordion'
+                BSRegionType = bsrtPageHeader
+                TagType = bsttH2
+              end
+              object IWBSRegion4: TIWBSRegion
+                Left = 13
+                Top = 372
+                Width = 698
+                Height = 849
+                Text = ''
+                BSRegionType = bsrtPanelGroup
+                object IWBSRegion38: TIWBSRegion
+                  Left = 22
+                  Top = 22
+                  Width = 659
+                  Height = 255
+                  Text = ''
+                  BSRegionType = bsrtPanel
+                  object IWBSRegion39: TIWBSRegion
+                    Left = 20
+                    Top = 24
+                    Width = 621
+                    Height = 81
+                    Text = ''
+                    BSRegionType = bsrtPanelHeading
+                    object IWBSButton43: TIWBSButton
+                      Left = 20
+                      Top = 28
+                      Width = 200
+                      Height = 25
+                      FriendlyName = 'IWBSButton43'
+                      Caption = 'Collapsible Group Item #1'
+                      DataParent = IWBSRegion4
+                      DataTarget = IWBSRegion42
+                    end
+                  end
+                  object IWBSRegion42: TIWBSRegion
+                    Left = 19
+                    Top = 108
+                    Width = 622
+                    Height = 121
+                    Collapse = True
+                    CollapseVisible = True
+                    Text = ''
+                    BSRegionType = bsrtPanelBody
+                    object IWBSText3: TIWBSText
+                      Left = 12
+                      Top = 40
+                      Width = 593
+                      Height = 76
+                      FriendlyName = 'IWBSText3'
+                      Lines.Strings = (
+                        
+                          'Anim pariatur cliche reprehenderit, enim eiusmod high life accus' +
+                          'amus terry richardson ad squid. 3 wolf moon officia aute, non cu' +
+                          'pidatat skateboard dolor brunch. Food truck quinoa nesciunt labo' +
+                          'rum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird o' +
+                          'n it squid single-origin coffee nulla assumenda shoreditch et. N' +
+                          'ihil anim keffiyeh helvetica, craft beer labore wes anderson cre' +
+                          'd nesciunt sapiente ea proident. Ad vegan excepteur butcher vice' +
+                          ' lomo. Leggings occaecat craft beer farm-to-table, raw denim aes' +
+                          'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
+                          'us labore sustainable VHS.')
+                    end
+                  end
+                end
+                object IWBSRegion43: TIWBSRegion
+                  Left = 22
+                  Top = 289
+                  Width = 659
+                  Height = 255
+                  Text = ''
+                  BSRegionType = bsrtPanel
+                  object IWBSRegion44: TIWBSRegion
+                    Left = 20
+                    Top = 24
+                    Width = 621
+                    Height = 81
+                    Text = ''
+                    BSRegionType = bsrtPanelHeading
+                    object IWBSButton44: TIWBSButton
+                      Left = 24
+                      Top = 32
+                      Width = 200
+                      Height = 25
+                      FriendlyName = 'IWBSButton43'
+                      Caption = 'Collapsible Group Item #2'
+                      DataParent = IWBSRegion4
+                      DataTarget = IWBSRegion46
+                    end
+                  end
+                  object IWBSRegion46: TIWBSRegion
+                    Left = 19
+                    Top = 108
+                    Width = 622
+                    Height = 121
+                    Collapse = True
+                    Text = ''
+                    BSRegionType = bsrtPanelBody
+                    object IWBSText4: TIWBSText
+                      Left = 12
+                      Top = 40
+                      Width = 593
+                      Height = 76
+                      FriendlyName = 'IWBSText3'
+                      Lines.Strings = (
+                        
+                          'Anim pariatur cliche reprehenderit, enim eiusmod high life accus' +
+                          'amus terry richardson ad squid. 3 wolf moon officia aute, non cu' +
+                          'pidatat skateboard dolor brunch. Food truck quinoa nesciunt labo' +
+                          'rum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird o' +
+                          'n it squid single-origin coffee nulla assumenda shoreditch et. N' +
+                          'ihil anim keffiyeh helvetica, craft beer labore wes anderson cre' +
+                          'd nesciunt sapiente ea proident. Ad vegan excepteur butcher vice' +
+                          ' lomo. Leggings occaecat craft beer farm-to-table, raw denim aes' +
+                          'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
+                          'us labore sustainable VHS.')
+                    end
+                  end
+                end
+                object IWBSRegion47: TIWBSRegion
+                  Left = 22
+                  Top = 558
+                  Width = 659
+                  Height = 255
+                  Text = ''
+                  BSRegionType = bsrtPanel
+                  object IWBSRegion48: TIWBSRegion
+                    Left = 20
+                    Top = 24
+                    Width = 621
+                    Height = 81
+                    Text = ''
+                    BSRegionType = bsrtPanelHeading
+                    object IWBSButton47: TIWBSButton
+                      Left = 12
+                      Top = 20
+                      Width = 200
+                      Height = 25
+                      FriendlyName = 'IWBSButton43'
+                      Caption = 'Collapsible Group Item #3'
+                      DataParent = IWBSRegion4
+                      DataTarget = IWBSRegion50
+                    end
+                  end
+                  object IWBSRegion50: TIWBSRegion
+                    Left = 19
+                    Top = 108
+                    Width = 622
+                    Height = 121
+                    Collapse = True
+                    Text = ''
+                    BSRegionType = bsrtPanelBody
+                    object IWBSText5: TIWBSText
+                      Left = 12
+                      Top = 40
+                      Width = 593
+                      Height = 76
+                      FriendlyName = 'IWBSText3'
+                      Lines.Strings = (
+                        
+                          'Anim pariatur cliche reprehenderit, enim eiusmod high life accus' +
+                          'amus terry richardson ad squid. 3 wolf moon officia aute, non cu' +
+                          'pidatat skateboard dolor brunch. Food truck quinoa nesciunt labo' +
+                          'rum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird o' +
+                          'n it squid single-origin coffee nulla assumenda shoreditch et. N' +
+                          'ihil anim keffiyeh helvetica, craft beer labore wes anderson cre' +
+                          'd nesciunt sapiente ea proident. Ad vegan excepteur butcher vice' +
+                          ' lomo. Leggings occaecat craft beer farm-to-table, raw denim aes' +
+                          'thetic synth nesciunt you probably haven'#39't heard of them accusam' +
+                          'us labore sustainable VHS.')
+                      RawText = True
+                    end
+                  end
+                end
+              end
+            end
             object IWTabControl21Page12: TIWTabPage
               Left = 0
               Top = 20
@@ -2902,7 +2495,7 @@ object IWForm2: TIWForm2
                 Height = 50
                 BSGridOptions.VisibilityXs = bsgvBlock
                 Text = 'This text is shown only on an EXTRA SMALL screen.'
-                TagType = bsttH3
+                TagType = bsttH4
               end
               object IWBSRegion79: TIWBSRegion
                 Left = 20
@@ -2911,7 +2504,7 @@ object IWForm2: TIWForm2
                 Height = 50
                 BSGridOptions.VisibilitySm = bsgvBlock
                 Text = 'This text is shown only on a SMALL screen.'
-                TagType = bsttH3
+                TagType = bsttH4
               end
               object IWBSRegion80: TIWBSRegion
                 Left = 20
@@ -2920,7 +2513,7 @@ object IWForm2: TIWForm2
                 Height = 50
                 BSGridOptions.VisibilityMd = bsgvBlock
                 Text = 'This text is shown only on a MEDIUM screen.'
-                TagType = bsttH3
+                TagType = bsttH4
               end
               object IWBSRegion81: TIWBSRegion
                 Left = 20
@@ -2929,7 +2522,7 @@ object IWForm2: TIWForm2
                 Height = 50
                 BSGridOptions.VisibilityLg = bsgvBlock
                 Text = 'This text is shown only on a LARGE screen.'
-                TagType = bsttH3
+                TagType = bsttH4
               end
               object IWBSRegion82: TIWBSRegion
                 Left = 19
@@ -2939,7 +2532,7 @@ object IWForm2: TIWForm2
                 BSGridOptions.VisibilityXs = bsgvBlock
                 BSGridOptions.VisibilityLg = bsgvBlock
                 Text = 'This text is shown only on a EXTRA SMALL and LARGE screen.'
-                TagType = bsttH3
+                TagType = bsttH4
               end
               object IWBSRegion83: TIWBSRegion
                 Left = 20
@@ -2948,7 +2541,7 @@ object IWForm2: TIWForm2
                 Height = 50
                 BSGridOptions.VisibilityXs = bsgvHidden
                 Text = 'This text is hidden on an EXTRA SMALL screen.'
-                TagType = bsttH3
+                TagType = bsttH4
               end
               object IWBSRegion84: TIWBSRegion
                 Left = 19
@@ -2965,9 +2558,10 @@ object IWForm2: TIWForm2
                   BSGridOptions.VisibilitySm = bsgvBlock
                   BSGridOptions.VisibilityMd = bsgvInline
                   BSGridOptions.VisibilityLg = bsgvInline
-                  Css = 'bg-warning'
                   Text = 'This regions are display:inline'
-                  TagType = bsttH3
+                  BSBackground = bsrbDanger
+                  BSRegionType = bsrtWellSmall
+                  TagType = bsttH4
                 end
                 object IWBSRegion87: TIWBSRegion
                   Left = 14
@@ -2978,9 +2572,10 @@ object IWForm2: TIWForm2
                   BSGridOptions.VisibilitySm = bsgvBlock
                   BSGridOptions.VisibilityMd = bsgvInline
                   BSGridOptions.VisibilityLg = bsgvInline
-                  Css = 'bg-warning'
                   Text = ' in medium an large screens'
-                  TagType = bsttH3
+                  BSBackground = bsrbDanger
+                  BSRegionType = bsrtWellSmall
+                  TagType = bsttH4
                 end
                 object IWBSRegion88: TIWBSRegion
                   Left = 15
@@ -2991,9 +2586,10 @@ object IWForm2: TIWForm2
                   BSGridOptions.VisibilitySm = bsgvBlock
                   BSGridOptions.VisibilityMd = bsgvInline
                   BSGridOptions.VisibilityLg = bsgvInline
-                  Css = 'bg-warning'
                   Text = ' but display:block in small and xmall screens'
-                  TagType = bsttH3
+                  BSBackground = bsrbDanger
+                  BSRegionType = bsrtWellSmall
+                  TagType = bsttH4
                 end
               end
               object IWBSRegion85: TIWBSRegion
@@ -3012,7 +2608,7 @@ object IWForm2: TIWForm2
                 Height = 50
                 BSGridOptions.VisibilityPrint = bsgvBlock
                 Text = 'This text is shown only in print view'
-                TagType = bsttH3
+                TagType = bsttH4
               end
               object IWBSRegion90: TIWBSRegion
                 Left = 19
@@ -3021,7 +2617,7 @@ object IWForm2: TIWForm2
                 Height = 50
                 BSGridOptions.VisibilityPrint = bsgvHidden
                 Text = 'This text is hidden in print view'
-                TagType = bsttH3
+                TagType = bsttH4
               end
               object IWBSRegion91: TIWBSRegion
                 Left = 19
@@ -3045,6 +2641,9 @@ object IWForm2: TIWForm2
                   Height = 56
                   BSGridOptions.Float = bsgfLeft
                   Text = 'This float Left'
+                  BSBackground = bsrbPrimary
+                  BSRegionType = bsrtWellSmall
+                  TagType = bsttH4
                 end
                 object IWBSRegion94: TIWBSRegion
                   Left = 475
@@ -3053,6 +2652,416 @@ object IWForm2: TIWForm2
                   Height = 56
                   BSGridOptions.Float = bsgfRight
                   Text = 'This float Rigth'
+                  BSBackground = bsrbPrimary
+                  BSRegionType = bsrtWellSmall
+                  TagType = bsttH4
+                end
+              end
+            end
+            object IWTabControl21Page0: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1392
+              Height = 1454
+              RenderInvisibleControls = True
+              TabOrder = 0
+              Title = 'Form Controls'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSRegion25: TIWBSRegion
+                Left = 0
+                Top = 0
+                Width = 1392
+                Height = 1305
+                Align = alTop
+                Style.Strings = (
+                  'margin: 1em')
+                Text = ''
+                BSRegionType = bsrtRow
+                object IWBSRegion2: TIWBSRegion
+                  Left = 1
+                  Top = 1
+                  Width = 334
+                  Height = 1303
+                  Align = alLeft
+                  BSGridOptions.GridMdSpan = 4
+                  Text = ''
+                  BSRegionType = bsrtColumn
+                  object IWBSRegion18: TIWBSRegion
+                    Left = 12
+                    Top = 34
+                    Width = 245
+                    Height = 195
+                    Text = ''
+                    BSRegionType = bsrtWellLarge
+                    object IWBSInputForm3: TIWBSInputForm
+                      Left = 4
+                      Top = 24
+                      Width = 234
+                      Height = 159
+                      Text = ''
+                      object LstFormType: TIWBSRadioGroup
+                        Left = 10
+                        Top = 47
+                        Width = 128
+                        Height = 64
+                        FriendlyName = 'LstFormType'
+                        Caption = ''
+                        Text = 'form-vertical'
+                        ItemIndex = 0
+                        Items.Strings = (
+                          'form-vertical'
+                          'form-horizontal'
+                          'form-inline')
+                      end
+                      object IWBSButton35: TIWBSButton
+                        Left = 10
+                        Top = 122
+                        Width = 127
+                        Height = 25
+                        RenderSize = False
+                        StyleRenderOptions.RenderSize = False
+                        FriendlyName = 'IWBSButton20'
+                        OnAsyncClick = IWBSButton35AsyncClick
+                        Caption = 'Apply change'
+                      end
+                      object IWText2: TIWBSText
+                        Left = 10
+                        Top = 16
+                        Width = 201
+                        Height = 19
+                        FriendlyName = 'IWText2'
+                        Lines.Strings = (
+                          '<h3>Form Layout</h3>')
+                        RawText = True
+                      end
+                    end
+                  end
+                end
+                object IWBSInputForm2: TIWBSInputForm
+                  Left = 335
+                  Top = 1
+                  Width = 1056
+                  Height = 1303
+                  Align = alClient
+                  BSGridOptions.GridMdSpan = 8
+                  Text = ''
+                  BSFormOptions.CaptionsSize.GridMdSpan = 4
+                  BSFormOptions.InputsSize.GridMdSpan = 8
+                  object IWBSInput1: TIWBSInput
+                    Left = 12
+                    Top = 35
+                    Width = 201
+                    Height = 25
+                    ExtraTagParams.Strings = (
+                      '')
+                    FriendlyName = 'IWBSInput1'
+                    Caption = 'Input Type Text'
+                    Text = ''
+                    BSTextAlignment = bstaCenter
+                    PlaceHolder = 'Name'
+                  end
+                  object IWBSInput2: TIWBSInput
+                    Left = 12
+                    Top = 220
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Numer'
+                    Text = ''
+                    PlaceHolder = 'Amount'
+                    InputType = bsitNumber
+                  end
+                  object IWBSInput3: TIWBSInput
+                    Left = 12
+                    Top = 62
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Password'
+                    Text = ''
+                    PlaceHolder = 'Password'
+                    InputType = bsitPassword
+                  end
+                  object IWBSMemo2: TIWBSMemo
+                    Left = 12
+                    Top = 447
+                    Width = 435
+                    Height = 121
+                    FriendlyName = 'IWBSMemo2'
+                    Caption = 'This is a Memo'
+                    Text = ''
+                    BSTextAlignment = bstaRight
+                    BSTextCase = bstcUppercase
+                    PlaceHolder = 'This is a text area with right align and uppercase'
+                  end
+                  object IWBSButton20: TIWBSButton
+                    Left = 12
+                    Top = 4
+                    Width = 326
+                    Height = 25
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSButton20'
+                    OnAsyncClick = IWBSButton20AsyncClick
+                    BSGlyphicon = 'check'
+                    Caption = 'Ajax Click (see input values in memo)'
+                  end
+                  object IWBSInput7: TIWBSInput
+                    Left = 12
+                    Top = 113
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Date'
+                    Text = ''
+                    PlaceHolder = 'Date'
+                    InputType = bsitDate
+                  end
+                  object IWBSInput14: TIWBSInput
+                    Left = 12
+                    Top = 89
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type DateTimeLocal'
+                    Text = ''
+                    PlaceHolder = 'DateTimeLocal'
+                    InputType = bsitDateTimeLocal
+                  end
+                  object IWBSInput15: TIWBSInput
+                    Left = 12
+                    Top = 139
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Month'
+                    Text = ''
+                    PlaceHolder = 'Month'
+                    InputType = bsitMonth
+                  end
+                  object IWBSInput16: TIWBSInput
+                    Left = 12
+                    Top = 166
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Time'
+                    Text = ''
+                    PlaceHolder = 'Time'
+                    InputType = bsitTime
+                  end
+                  object IWBSInput17: TIWBSInput
+                    Left = 12
+                    Top = 193
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput3'
+                    Caption = 'Input Type Week'
+                    Text = ''
+                    PlaceHolder = 'Week'
+                    InputType = bsitWeek
+                  end
+                  object IWBSInput18: TIWBSInput
+                    Left = 12
+                    Top = 244
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Email'
+                    Text = ''
+                    PlaceHolder = 'Email'
+                    InputType = bsitEmail
+                  end
+                  object IWBSInput19: TIWBSInput
+                    Left = 12
+                    Top = 270
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Url'
+                    Text = ''
+                    PlaceHolder = 'home page'
+                    InputType = bsitUrl
+                  end
+                  object IWBSInput20: TIWBSInput
+                    Left = 12
+                    Top = 297
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Search'
+                    Text = ''
+                    PlaceHolder = 'Search'
+                    InputType = bsitSearch
+                  end
+                  object IWBSInput21: TIWBSInput
+                    Left = 12
+                    Top = 324
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Tel'
+                    Text = ''
+                    PlaceHolder = 'Telephone'
+                    InputType = bsitTel
+                  end
+                  object IWBSInput22: TIWBSInput
+                    Left = 12
+                    Top = 351
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input Type Color'
+                    Text = ''
+                    PlaceHolder = 'Pick a Color'
+                    InputType = bsitColor
+                  end
+                  object IWBSInput13: TIWBSInput
+                    Left = 12
+                    Top = 382
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSInput2'
+                    Caption = 'Input NonEditableAsLabel'
+                    Editable = False
+                    NonEditableAsLabel = True
+                    Text = 'This is a static text'
+                    PlaceHolder = 'Pick a Color'
+                  end
+                  object IWBSRadioGroup1: TIWBSRadioGroup
+                    Left = 15
+                    Top = 932
+                    Width = 237
+                    Height = 125
+                    FriendlyName = 'IWBSRadioGroup1'
+                    Caption = 'This is a radio group'
+                    Text = 'item 1'
+                    ItemIndex = 0
+                    Items.Strings = (
+                      'item 1'
+                      'item 2'
+                      'item 3'
+                      'item 4')
+                  end
+                  object IWBSComboBox2: TIWBSSelect
+                    Left = 15
+                    Top = 755
+                    Width = 291
+                    Height = 25
+                    FriendlyName = 'IWBSComboBox1'
+                    Caption = 'This is a Select (Size = 1)'
+                    Text = 'item 1'
+                    ItemIndex = 0
+                    Items.Strings = (
+                      'item 1'
+                      'item 2'
+                      'item 3'
+                      'item 4')
+                  end
+                  object IWBSListbox2: TIWBSSelect
+                    Left = 14
+                    Top = 575
+                    Width = 291
+                    Height = 82
+                    FriendlyName = 'IWBSListbox1'
+                    Caption = 'This is a ListBox with multi select'
+                    Text = ''
+                    Items.Strings = (
+                      'item 1'
+                      'item 2'
+                      'item 3'
+                      'item 4')
+                    MultiSelect = True
+                    Size = 4
+                  end
+                  object IWBSListbox3: TIWBSSelect
+                    Left = 15
+                    Top = 663
+                    Width = 291
+                    Height = 77
+                    FriendlyName = 'IWBSListbox1'
+                    Caption = 'This is a Select (Size <> 1)'
+                    Text = 'item 1'
+                    ItemIndex = 0
+                    Items.Strings = (
+                      'item 1'
+                      'item 2'
+                      'item 3'
+                      'item 4')
+                    Size = 0
+                  end
+                  object IWBSCheckBox1: TIWBSCheckBox
+                    Left = 12
+                    Top = 416
+                    Width = 201
+                    Height = 25
+                    FriendlyName = 'IWBSCheckBox1'
+                    Caption = 'IWBSCheckBox1'
+                    Text = 'false'
+                    ValueChecked = 'true'
+                    ValueUnchecked = 'false'
+                  end
+                  object IWBSRegion1: TIWBSRegion
+                    Left = 15
+                    Top = 799
+                    Width = 237
+                    Height = 121
+                    Text = ''
+                    BSRegionType = bsrtFormGroup
+                    object IWBSRadioButton6: TIWBSRadioButton
+                      Left = 8
+                      Top = 12
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSRadioButton6'
+                      Caption = 'Radio Button 1'
+                      Text = 'true'
+                      Checked = True
+                      Group = 'group1'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object IWBSRadioButton7: TIWBSRadioButton
+                      Left = 8
+                      Top = 40
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSRadioButton6'
+                      Caption = 'Radio Button 2'
+                      Text = 'false'
+                      Group = 'group1'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object IWBSRadioButton8: TIWBSRadioButton
+                      Left = 8
+                      Top = 65
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSRadioButton6'
+                      Caption = 'Radio Button 3'
+                      Text = 'false'
+                      Group = 'group1'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object IWBSRadioButton9: TIWBSRadioButton
+                      Left = 8
+                      Top = 92
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'IWBSRadioButton6'
+                      Caption = 'Radio Button 4'
+                      Text = 'false'
+                      Group = 'group1'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                  end
                 end
               end
             end
@@ -3062,7 +3071,7 @@ object IWForm2: TIWForm2
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
-    Left = 876
-    Top = 199
+    Left = 860
+    Top = 203
   end
 end
