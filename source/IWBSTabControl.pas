@@ -396,9 +396,9 @@ begin
         xApplication := GGetWebApplicationThreadVar
       else
         xApplication := AContext.WebApplication;
-      SetAsyncClass(xApplication, xHTMLName, RenderCSSClass(AContext), FOldCss);
-      SetAsyncStyle(xApplication, xHTMLName, RenderStyle(AContext), FOldStyle);
-      SetAsyncVisible(xApplication, FMainID, Visible, FOldVisible);
+      TIWBSCommon.SetAsyncClass(xApplication, xHTMLName, RenderCSSClass(AContext), FOldCss);
+      TIWBSCommon.SetAsyncStyle(xApplication, xHTMLName, RenderStyle(AContext), FOldStyle);
+      TIWBSCommon.SetAsyncVisible(xApplication, FMainID, Visible, FOldVisible);
       if FOldActivePage <> FActivePage then begin
         IWBSExecuteAsyncJScript(xApplication,'$("#'+HTMLName+'_tabs a[tabindex='+IntToStr(TabOrderToTabIndex(FActivePage))+']").tab("show");', False, True);
         FOldActivePage := FActivePage;

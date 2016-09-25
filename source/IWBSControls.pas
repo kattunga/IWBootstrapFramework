@@ -152,7 +152,7 @@ end;
 procedure TIWBSLabel.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
-  SetAsyncHtml(AApplication, AHTMLName, RenderLabelText, FOldText);
+  TIWBSCommon.SetAsyncHtml(AApplication, AHTMLName, RenderLabelText, FOldText);
 end;
 
 procedure TIWBSLabel.InternalRenderCss(var ACss: string);
@@ -310,7 +310,7 @@ end;
 procedure TIWBSText.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
-  SetAsyncHtml(AApplication, AHTMLName, RenderText, FOldText);
+  TIWBSCommon.SetAsyncHtml(AApplication, AHTMLName, RenderText, FOldText);
 end;
 
 procedure TIWBSText.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);

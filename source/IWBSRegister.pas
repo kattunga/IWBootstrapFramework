@@ -169,7 +169,9 @@ begin
 
   with TIWBSCustomRegion(Control) do begin
     ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
+    ControlCanvas.Font.Size := 10;
     ControlCanvas.Font.Color := clGray;
+    ControlCanvas.Font.Style := [];
 
     // draw css classes
     s := GetCssString;
@@ -187,11 +189,7 @@ begin
     ControlCanvas.TextRect(LRect,s,[]);
 
     // draw embeded text and script
-    ControlCanvas.Font.Size := 10;
-    ControlCanvas.Font.Color := clBlack;
-
     LLines := Text;
-
     if RawText then
       begin
         ControlCanvas.Font.Name := CNST_PROPORTIONALFONT;
@@ -209,10 +207,21 @@ begin
     else
       begin
         ControlCanvas.Font.Name := CNST_DEFAULTFONTNAME;
+        if Control is TIWBSRegion then
+          case TIWBSRegion(Control).TagType of
+            bsttDiv, bsttP: ControlCanvas.Font.Height := -12;
+            bsttH1: ControlCanvas.Font.Height := -36;
+            bsttH2: ControlCanvas.Font.Height := -30;
+            bsttH3: ControlCanvas.Font.Height := -24;
+            bsttH4: ControlCanvas.Font.Height := -18;
+            bsttH5: ControlCanvas.Font.Height := -14;
+            bsttH6: ControlCanvas.Font.Height := -12;
+          end;
       end;
 
     if LLines <> '' then begin
       LRect := Rect(10, 18, Control.Width-10, Control.Height-3);
+      ControlCanvas.Font.Color := clBlack;
       ControlCanvas.TextRect(LRect,LLines,[]);
     end;
   end;

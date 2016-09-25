@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, Controls, StrUtils,
-  IWApplication, IWRenderContext, IWHTMLTag, IW.HTTP.Request, IW.HTTP.Reply,
+  IWApplication, IWRenderContext, IWHTMLTag, IW.HTTP.Request, IW.HTTP.Reply, IWBaseInterfaces,
   IWBSCommon, IWBSRestServer,
   IWBSCustomregion;
 
@@ -23,7 +23,7 @@ type
     procedure SetCaptionsSize(const Value: TIWBSGridOptions);
     procedure SetInputsSize(const Value: TIWBSGridOptions);
   public
-    constructor Create;
+    constructor Create(AOwner: IIWBaseControl);
     destructor Destroy; override;
     function GetOffsetClassString: string;
     procedure Assign(Source: TPersistent); override;
@@ -101,10 +101,10 @@ end;
 {$endregion}
 
 {$region 'TIWBSFormOptions'}
-constructor TIWBSFormOptions.Create;
+constructor TIWBSFormOptions.Create(AOwner: IIWBaseControl);
 begin
-  FCaptionsSize := TIWBSGridOptions.Create(nil);
-  FInputsSize := TIWBSGridOptions.Create(nil);
+  FCaptionsSize := TIWBSGridOptions.Create(AOwner);
+  FInputsSize := TIWBSGridOptions.Create(AOwner);
 end;
 
 destructor TIWBSFormOptions.Destroy;
@@ -150,7 +150,7 @@ constructor TIWBSInputForm.Create(AOwner: TComponent);
 begin
   inherited;
   FEncType := bsfeDefault;
-  FFormOptions := TIWBSFormOptions.Create;
+  FFormOptions := TIWBSFormOptions.Create(Self);
   FFormType := bsftVertical;
   FTagName := 'form'
 end;

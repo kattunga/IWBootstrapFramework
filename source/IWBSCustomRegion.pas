@@ -503,9 +503,9 @@ begin
         xApplication := GGetWebApplicationThreadVar
       else
         xApplication := AContext.WebApplication;
-      SetAsyncClass(xApplication, xHTMLName, RenderCSSClass(nil), FOldCss);
-      SetAsyncStyle(xApplication, xHTMLName, RenderStyle(nil), FOldStyle);
-      SetAsyncVisible(xApplication, FMainID, Visible, FOldVisible);
+      TIWBSCommon.SetAsyncClass(xApplication, xHTMLName, RenderCSSClass(nil), FOldCss);
+      TIWBSCommon.SetAsyncStyle(xApplication, xHTMLName, RenderStyle(nil), FOldStyle);
+      TIWBSCommon.SetAsyncVisible(xApplication, FMainID, Visible, FOldVisible);
 
       if Assigned(FOnAfterAsyncChange) then
         FOnAfterAsyncChange(Self);

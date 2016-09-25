@@ -372,9 +372,9 @@ procedure TIWBSCustomTextInput.InternalRenderAsync(const AHTMLName: string; AApp
 begin
   inherited;
   if FIsStatic then
-    SetAsyncHtml(AApplication, AHTMLName, FText, FOldText)
+    TIWBSCommon.SetAsyncHtml(AApplication, AHTMLName, FText, FOldText)
   else
-    SetAsyncText(AApplication, AHTMLName, FText, FOldText);
+    TIWBSCommon.SetAsyncText(AApplication, AHTMLName, FText, FOldText);
 end;
 
 procedure TIWBSCustomTextInput.InternalRenderCss(var ACss: string);

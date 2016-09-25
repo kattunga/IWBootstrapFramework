@@ -317,6 +317,10 @@ type
     IWBSRegion88: TIWBSRegion;
     IWBSRegion89: TIWBSRegion;
     IWBSRegion90: TIWBSRegion;
+    IWBSRegion91: TIWBSRegion;
+    IWBSRegion92: TIWBSRegion;
+    IWBSRegion93: TIWBSRegion;
+    IWBSRegion94: TIWBSRegion;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);

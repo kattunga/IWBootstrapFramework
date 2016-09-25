@@ -16,7 +16,7 @@ object IWForm2: TIWForm2
   XPTheme = True
   KeepAlive = True
   DesignLeft = 8
-  DesignTop = -586
+  DesignTop = -462
   object IWBSRegion40: TIWBSRegion
     Left = 0
     Top = 0
@@ -569,7 +569,7 @@ object IWForm2: TIWForm2
                 Top = 13
                 Width = 849
                 Height = 640
-                BSGridOptions.GridMDSpan = 6
+                BSGridOptions.GridMdSpan = 6
                 Text = ''
                 object IWBSInputGroup1: TIWBSInputGroup
                   Left = 33
@@ -998,7 +998,7 @@ object IWForm2: TIWForm2
                 Top = 5
                 Width = 561
                 Height = 637
-                BSGridOptions.GridSMSpan = 6
+                BSGridOptions.GridSmSpan = 6
                 Style.Strings = (
                   'margin: 1em')
                 Text = ''
@@ -1525,7 +1525,7 @@ object IWForm2: TIWForm2
                   Width = 334
                   Height = 1303
                   Align = alLeft
-                  BSGridOptions.GridMDSpan = 4
+                  BSGridOptions.GridMdSpan = 4
                   Text = ''
                   BSRegionType = bsrtColumn
                   object IWBSRegion18: TIWBSRegion
@@ -1585,10 +1585,10 @@ object IWForm2: TIWForm2
                   Width = 1056
                   Height = 1303
                   Align = alClient
-                  BSGridOptions.GridMDSpan = 8
+                  BSGridOptions.GridMdSpan = 8
                   Text = ''
-                  BSFormOptions.CaptionsSize.GridMDSpan = 4
-                  BSFormOptions.InputsSize.GridMDSpan = 8
+                  BSFormOptions.CaptionsSize.GridMdSpan = 4
+                  BSFormOptions.InputsSize.GridMdSpan = 8
                   object IWBSInput1: TIWBSInput
                     Left = 12
                     Top = 35
@@ -2888,79 +2888,79 @@ object IWForm2: TIWForm2
               Color = clWebWHITE
               object IWBSRegion23: TIWBSRegion
                 Left = 21
-                Top = 28
-                Width = 581
-                Height = 43
+                Top = 25
+                Width = 803
+                Height = 59
                 Text = 'Showing and Hiding'
                 BSRegionType = bsrtPageHeader
                 TagType = bsttH2
               end
               object IWBSRegion78: TIWBSRegion
-                Left = 21
-                Top = 81
-                Width = 581
-                Height = 43
+                Left = 20
+                Top = 108
+                Width = 803
+                Height = 50
                 BSGridOptions.VisibilityXs = bsgvBlock
                 Text = 'This text is shown only on an EXTRA SMALL screen.'
                 TagType = bsttH3
               end
               object IWBSRegion79: TIWBSRegion
-                Left = 21
-                Top = 132
-                Width = 581
-                Height = 43
+                Left = 20
+                Top = 159
+                Width = 803
+                Height = 50
                 BSGridOptions.VisibilitySm = bsgvBlock
                 Text = 'This text is shown only on a SMALL screen.'
                 TagType = bsttH3
               end
               object IWBSRegion80: TIWBSRegion
-                Left = 21
-                Top = 181
-                Width = 581
-                Height = 43
+                Left = 20
+                Top = 208
+                Width = 803
+                Height = 50
                 BSGridOptions.VisibilityMd = bsgvBlock
                 Text = 'This text is shown only on a MEDIUM screen.'
                 TagType = bsttH3
               end
               object IWBSRegion81: TIWBSRegion
-                Left = 21
-                Top = 234
-                Width = 581
-                Height = 43
+                Left = 20
+                Top = 261
+                Width = 803
+                Height = 50
                 BSGridOptions.VisibilityLg = bsgvBlock
                 Text = 'This text is shown only on a LARGE screen.'
                 TagType = bsttH3
               end
               object IWBSRegion82: TIWBSRegion
-                Left = 20
-                Top = 287
-                Width = 581
-                Height = 43
+                Left = 19
+                Top = 314
+                Width = 803
+                Height = 50
                 BSGridOptions.VisibilityXs = bsgvBlock
                 BSGridOptions.VisibilityLg = bsgvBlock
                 Text = 'This text is shown only on a EXTRA SMALL and LARGE screen.'
                 TagType = bsttH3
               end
               object IWBSRegion83: TIWBSRegion
-                Left = 21
-                Top = 343
-                Width = 581
-                Height = 43
+                Left = 20
+                Top = 370
+                Width = 803
+                Height = 50
                 BSGridOptions.VisibilityXs = bsgvHidden
                 Text = 'This text is hidden on an EXTRA SMALL screen.'
                 TagType = bsttH3
               end
               object IWBSRegion84: TIWBSRegion
-                Left = 21
-                Top = 576
+                Left = 19
+                Top = 610
                 Width = 949
-                Height = 177
+                Height = 206
                 Text = ''
                 object IWBSRegion86: TIWBSRegion
                   Left = 14
                   Top = 22
                   Width = 875
-                  Height = 43
+                  Height = 50
                   BSGridOptions.VisibilityXs = bsgvBlock
                   BSGridOptions.VisibilitySm = bsgvBlock
                   BSGridOptions.VisibilityMd = bsgvInline
@@ -2971,9 +2971,9 @@ object IWForm2: TIWForm2
                 end
                 object IWBSRegion87: TIWBSRegion
                   Left = 14
-                  Top = 73
+                  Top = 89
                   Width = 875
-                  Height = 43
+                  Height = 50
                   BSGridOptions.VisibilityXs = bsgvBlock
                   BSGridOptions.VisibilitySm = bsgvBlock
                   BSGridOptions.VisibilityMd = bsgvInline
@@ -2983,10 +2983,10 @@ object IWForm2: TIWForm2
                   TagType = bsttH3
                 end
                 object IWBSRegion88: TIWBSRegion
-                  Left = 14
-                  Top = 122
+                  Left = 15
+                  Top = 150
                   Width = 875
-                  Height = 43
+                  Height = 50
                   BSGridOptions.VisibilityXs = bsgvBlock
                   BSGridOptions.VisibilitySm = bsgvBlock
                   BSGridOptions.VisibilityMd = bsgvInline
@@ -2997,31 +2997,63 @@ object IWForm2: TIWForm2
                 end
               end
               object IWBSRegion85: TIWBSRegion
-                Left = 21
-                Top = 527
-                Width = 581
-                Height = 43
+                Left = 19
+                Top = 540
+                Width = 803
+                Height = 64
                 Text = 'Block vs Inline'
                 BSRegionType = bsrtPageHeader
                 TagType = bsttH2
               end
               object IWBSRegion89: TIWBSRegion
-                Left = 21
-                Top = 399
-                Width = 581
-                Height = 43
+                Left = 20
+                Top = 426
+                Width = 803
+                Height = 50
                 BSGridOptions.VisibilityPrint = bsgvBlock
                 Text = 'This text is shown only in print view'
                 TagType = bsttH3
               end
               object IWBSRegion90: TIWBSRegion
-                Left = 20
-                Top = 452
-                Width = 581
-                Height = 43
+                Left = 19
+                Top = 479
+                Width = 803
+                Height = 50
                 BSGridOptions.VisibilityPrint = bsgvHidden
                 Text = 'This text is hidden in print view'
                 TagType = bsttH3
+              end
+              object IWBSRegion91: TIWBSRegion
+                Left = 19
+                Top = 831
+                Width = 581
+                Height = 55
+                Text = 'Quick Floats'
+                BSRegionType = bsrtPageHeader
+                TagType = bsttH2
+              end
+              object IWBSRegion92: TIWBSRegion
+                Left = 19
+                Top = 891
+                Width = 950
+                Height = 84
+                Text = ''
+                object IWBSRegion93: TIWBSRegion
+                  Left = 16
+                  Top = 17
+                  Width = 300
+                  Height = 56
+                  BSGridOptions.Float = bsgfLeft
+                  Text = 'This float Left'
+                end
+                object IWBSRegion94: TIWBSRegion
+                  Left = 475
+                  Top = 17
+                  Width = 300
+                  Height = 56
+                  BSGridOptions.Float = bsgfRight
+                  Text = 'This float Rigth'
+                end
               end
             end
           end

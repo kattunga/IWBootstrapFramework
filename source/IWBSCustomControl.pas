@@ -422,11 +422,11 @@ begin
         xApplication := GGetWebApplicationThreadVar
       else
         xApplication := AContext.WebApplication;
-      SetAsyncClass(xApplication, xHTMLName, RenderCSSClass(nil), FOldCss);
-      SetAsyncDisabled(xApplication, xInputSelector, IsDisabled, FOldDisabled);
-      SetAsyncReadOnly(xApplication, xInputSelector, IsReadOnly, FOldReadOnly);
-      SetAsyncStyle(xApplication, xHTMLName, RenderStyle(nil), FOldStyle);
-      SetAsyncVisible(xApplication, FMainID, Visible, FOldVisible);
+      TIWBSCommon.SetAsyncClass(xApplication, xHTMLName, RenderCSSClass(nil), FOldCss);
+      TIWBSCommon.SetAsyncDisabled(xApplication, xInputSelector, IsDisabled, FOldDisabled);
+      TIWBSCommon.SetAsyncReadOnly(xApplication, xInputSelector, IsReadOnly, FOldReadOnly);
+      TIWBSCommon.SetAsyncStyle(xApplication, xHTMLName, RenderStyle(nil), FOldStyle);
+      TIWBSCommon.SetAsyncVisible(xApplication, FMainID, Visible, FOldVisible);
       InternalRenderAsync(xHTMLName, xApplication);
 
       if Assigned(FOnAfterAsyncChange) then

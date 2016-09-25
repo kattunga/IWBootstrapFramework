@@ -26,9 +26,11 @@ const
 
 type
   TIWBSGridVisibility = (bsgvDefault, bsgvBlock, bsgvInline, bsgvInlineBlock, bsgvHidden);
+  TIWBSGridFloat = (bsgfNone, bsgfLeft, bsgfRight);
 
   TIWBSGridOptions = class(TPersistent)
   private
+    FFloat: TIWBSGridFloat;
     FOwner: IIWBaseControl;
     FGridXsOffset: integer;
     FGridXsSpan: integer;
@@ -48,6 +50,15 @@ type
     procedure SetVisibilityPr(const Value: TIWBSGridVisibility);
     procedure SetVisibilitySm(const Value: TIWBSGridVisibility);
     procedure SetVisibilityXs(const Value: TIWBSGridVisibility);
+    procedure SetFloat(const Value: TIWBSGridFloat);
+    procedure SetGridLGOffset(const Value: integer);
+    procedure SetGridLGspan(const Value: integer);
+    procedure SetGridMDOffset(const Value: integer);
+    procedure SetGridMdSpan(const Value: integer);
+    procedure SetGridSmOffset(const Value: integer);
+    procedure SetGridSmSpan(const Value: integer);
+    procedure SetGridXsOffset(const Value: integer);
+    procedure SetGridXsSpan(const Value: integer);
   public
     constructor Create(AOwner: IIWBaseControl); virtual;
 
@@ -55,14 +66,15 @@ type
     function GetClassString(ACustomXsOffset, ACustomSmOffset, ACustomMdOffset, ACustomLgOffset: integer): string; overload;
     function GetClassString: string; overload;
   published
-    property GridXsOffset: integer read FGridXsOffset write FGridXsOffset default 0;
-    property GridXsSpan: integer read FGridXsSpan write FGridXsSpan default 0;
-    property GridSmOffset: integer read FGridSmOffset write FGridSmOffset default 0;
-    property GridSmSpan: integer read FGridSmSpan write FGridSmSpan default 0;
-    property GridMdOffset: integer read FGridMDOffset write FGridMDOffset default 0;
-    property GridMdSpan: integer read FGridMdSpan write FGridMdSpan default 0;
-    property GridLgOffset: integer read FGridLGOffset write FGridLGOffset default 0;
-    property GridLgSpan: integer read FGridLGspan write FGridLGspan default 0;
+    property Float: TIWBSGridFloat read FFloat write SetFloat default bsgfNone;
+    property GridXsOffset: integer read FGridXsOffset write SetGridXsOffset default 0;
+    property GridXsSpan: integer read FGridXsSpan write SetGridXsSpan default 0;
+    property GridSmOffset: integer read FGridSmOffset write SetGridSmOffset default 0;
+    property GridSmSpan: integer read FGridSmSpan write SetGridSmSpan default 0;
+    property GridMdOffset: integer read FGridMDOffset write SetGridMDOffset default 0;
+    property GridMdSpan: integer read FGridMdSpan write SetGridMdSpan default 0;
+    property GridLgOffset: integer read FGridLGOffset write SetGridLGOffset default 0;
+    property GridLgSpan: integer read FGridLGspan write SetGridLGspan default 0;
     property VisibilityXs: TIWBSGridVisibility read FVisibilityXs write SetVisibilityXs default bsgvDefault;
     property VisibilitySm: TIWBSGridVisibility read FVisibilitySm write SetVisibilitySm default bsgvDefault;
     property VisibilityMd: TIWBSGridVisibility read FVisibilityMd write SetVisibilityMd default bsgvDefault;
@@ -82,6 +94,15 @@ type
     class procedure SetNotVisible(AParams: TStrings);
     class procedure ValidateParamName(const AName: string);
     class procedure ValidateTagName(const AName: string);
+
+    class procedure SetAsyncDisabled(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
+    class procedure SetAsyncReadOnly(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
+    class procedure SetAsyncVisible(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
+    class procedure SetAsyncClass(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+    class procedure SetAsyncStyle(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+    class procedure SetAsyncChecked(AApplication: TIWApplication; const HTMLName: string; const Value: boolean; var OldValue: boolean);
+    class procedure SetAsyncText(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+    class procedure SetAsyncHtml(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
   end;
 
   TIWBSRegionCommon = class
@@ -92,14 +113,6 @@ type
     class procedure RenderComponents(AContainer: IIWBSContainer; AContainerContext: TIWContainerContext; APageContext: TIWBasePageContext);
   end;
 
-procedure SetAsyncDisabled(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
-procedure SetAsyncReadOnly(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
-procedure SetAsyncVisible(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
-procedure SetAsyncClass(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
-procedure SetAsyncStyle(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
-procedure SetAsyncChecked(AApplication: TIWApplication; const HTMLName: string; const Value: boolean; var OldValue: boolean);
-procedure SetAsyncText(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
-procedure SetAsyncHtml(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
 
 implementation
 
@@ -110,6 +123,7 @@ uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm, IWRegi
 {$region 'TIWBSGridOptions'}
 constructor TIWBSGridOptions.Create(AOwner: IIWBaseControl);
 begin
+  inherited Create;
   FOwner := AOwner;
 end;
 
@@ -184,31 +198,96 @@ begin
     AddCssValue(Result, 'visible-print-inline-block')
   else if FVisibilityPr = bsgvHidden then
     AddCssValue(Result, 'hidden-print');
+
+  if FFloat = bsgfLeft then
+    AddCssValue(Result, 'pull-left')
+  else if FFloat = bsgfRight then
+    AddCssValue(Result, 'pull-right');
+
+end;
+
+procedure TIWBSGridOptions.SetFloat(const Value: TIWBSGridFloat);
+begin
+  FFloat := Value;
+  FOwner.Invalidate;
+end;
+
+procedure TIWBSGridOptions.SetGridLGOffset(const Value: integer);
+begin
+  FGridLGOffset := Value;
+  FOwner.Invalidate;
+end;
+
+procedure TIWBSGridOptions.SetGridLGspan(const Value: integer);
+begin
+  FGridLGspan := Value;
+  FOwner.Invalidate;
+end;
+
+procedure TIWBSGridOptions.SetGridMDOffset(const Value: integer);
+begin
+  FGridMDOffset := Value;
+  FOwner.Invalidate;
+end;
+
+procedure TIWBSGridOptions.SetGridMdSpan(const Value: integer);
+begin
+  FGridMdSpan := Value;
+  FOwner.Invalidate;
+end;
+
+procedure TIWBSGridOptions.SetGridSmOffset(const Value: integer);
+begin
+  FGridSmOffset := Value;
+  FOwner.Invalidate;
+end;
+
+procedure TIWBSGridOptions.SetGridSmSpan(const Value: integer);
+begin
+  FGridSmSpan := Value;
+  FOwner.Invalidate;
+end;
+
+procedure TIWBSGridOptions.SetGridXsOffset(const Value: integer);
+begin
+  FGridXsOffset := Value;
+  FOwner.Invalidate;
+end;
+
+procedure TIWBSGridOptions.SetGridXsSpan(const Value: integer);
+begin
+  FGridXsSpan := Value;
+  FOwner.Invalidate;
 end;
 
 procedure TIWBSGridOptions.SetVisibilityLg(const Value: TIWBSGridVisibility);
 begin
   FVisibilityLg := Value;
+  FOwner.Invalidate;
 end;
 
 procedure TIWBSGridOptions.SetVisibilityMd(const Value: TIWBSGridVisibility);
 begin
   FVisibilityMd := Value;
+  FOwner.Invalidate;
 end;
 
 procedure TIWBSGridOptions.SetVisibilityPr(const Value: TIWBSGridVisibility);
 begin
   FVisibilityPr := Value;
+  FOwner.Invalidate;
 end;
 
 procedure TIWBSGridOptions.SetVisibilitySm(const Value: TIWBSGridVisibility);
 begin
   FVisibilitySm := Value;
+  FOwner.Invalidate;
 end;
 
 procedure TIWBSGridOptions.SetVisibilityXs(const Value: TIWBSGridVisibility);
 begin
   FVisibilityXs := Value;
+  FOwner.Invalidate;
 end;
 
 function TIWBSGridOptions.GetClassString: string;
@@ -231,73 +310,6 @@ begin
     end
   else
     inherited;
-end;
-{$endregion}
-
-{$region 'AsyncRender functions'}
-procedure SetAsyncDisabled(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
-begin
-  if OldValue <> Value then begin
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("disabled",'+iif(Value,'true','false')+');', False, True);
-    OldValue := Value;
-  end;
-end;
-
-procedure SetAsyncReadOnly(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
-begin
-  if OldValue <> Value then begin
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("readonly",'+iif(Value,'true','false')+');', False, True);
-    OldValue := Value;
-  end;
-end;
-
-procedure SetAsyncVisible(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
-begin
-  if OldValue <> Value then begin
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").css("visibility","'+iif(Value,'','hidden')+'");', False, True);
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").css("display","'+iif(Value,'','none')+'");', False, True);
-    OldValue := Value;
-  end;
-end;
-
-procedure SetAsyncText(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
-begin
-  if OldValue <> Value then begin
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").val("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");', False, True);
-    OldValue := Value;
-  end;
-end;
-
-procedure SetAsyncHtml(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
-begin
-  if OldValue <> Value then begin
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").html("'+IWBSTextToJsParamText(Value)+'");', True, True);
-    OldValue := Value;
-  end;
-end;
-
-procedure SetAsyncClass(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
-begin
-  if OldValue <> Value then begin
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").removeClass().addClass("'+Value+'");', False, True);
-    OldValue := Value;
-  end;
-end;
-
-procedure SetAsyncStyle(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
-begin
-  if OldValue <> Value then begin
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("style","'+Value+'");', False, True);
-    OldValue := Value;
-  end;
-end;
-
-procedure SetAsyncChecked(AApplication: TIWApplication; const HTMLName: string; const Value: boolean; var OldValue: boolean);
-begin
-  if OldValue <> Value then begin
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("checked",'+iif(Value,'true','false')+');', False, True);
-    OldValue := Value;
-  end;
 end;
 {$endregion}
 
@@ -551,6 +563,71 @@ begin
   if not AnsiContainsStr(LStyle, 'display:') then
     LStyle := LStyle +  'display: none;';
   AParams.Values['style'] := LStyle;
+end;
+
+class procedure TIWBSCommon.SetAsyncDisabled(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
+begin
+  if OldValue <> Value then begin
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("disabled",'+iif(Value,'true','false')+');', False, True);
+    OldValue := Value;
+  end;
+end;
+
+class procedure TIWBSCommon.SetAsyncReadOnly(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
+begin
+  if OldValue <> Value then begin
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("readonly",'+iif(Value,'true','false')+');', False, True);
+    OldValue := Value;
+  end;
+end;
+
+class procedure TIWBSCommon.SetAsyncVisible(AApplication: TIWApplication; const HTMLName: string; Value: boolean; var OldValue: boolean);
+begin
+  if OldValue <> Value then begin
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").css("visibility","'+iif(Value,'','hidden')+'");', False, True);
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").css("display","'+iif(Value,'','none')+'");', False, True);
+    OldValue := Value;
+  end;
+end;
+
+class procedure TIWBSCommon.SetAsyncText(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+begin
+  if OldValue <> Value then begin
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").val("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");', False, True);
+    OldValue := Value;
+  end;
+end;
+
+class procedure TIWBSCommon.SetAsyncHtml(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+begin
+  if OldValue <> Value then begin
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").html("'+IWBSTextToJsParamText(Value)+'");', True, True);
+    OldValue := Value;
+  end;
+end;
+
+class procedure TIWBSCommon.SetAsyncClass(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+begin
+  if OldValue <> Value then begin
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").removeClass().addClass("'+Value+'");', False, True);
+    OldValue := Value;
+  end;
+end;
+
+class procedure TIWBSCommon.SetAsyncStyle(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
+begin
+  if OldValue <> Value then begin
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("style","'+Value+'");', False, True);
+    OldValue := Value;
+  end;
+end;
+
+class procedure TIWBSCommon.SetAsyncChecked(AApplication: TIWApplication; const HTMLName: string; const Value: boolean; var OldValue: boolean);
+begin
+  if OldValue <> Value then begin
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").prop("checked",'+iif(Value,'true','false')+');', False, True);
+    OldValue := Value;
+  end;
 end;
 {$endregion}
 
