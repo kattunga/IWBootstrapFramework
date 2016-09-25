@@ -3,7 +3,7 @@ unit IWBSScriptEvents;
 interface
 
 uses Classes, SysUtils, StrUtils,
-     IWScriptEvents, IWRenderContext, IWHTMLTag, IWHTML40Interfaces, IWBSCommon;
+     IWScriptEvents, IWRenderContext, IWHTMLTag, IWHTML40Interfaces, IWBSCommon, IWBSCommonInterfaces;
 
 procedure IWBSRenderScript(AComponent: IIWBSComponent; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 

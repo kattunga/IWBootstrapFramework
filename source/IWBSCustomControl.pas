@@ -4,7 +4,7 @@ interface
 
 uses Classes, SysUtils, StrUtils, db,
      IWControl, IWRenderContext, IWHTMLTag, IWXMLTag, IWDBCommon, IWDBStdCtrls, IWTypes, IWApplication,
-     IWBSCommon, IWBSCustomEvents;
+     IWBSCommon, IWBSCommonInterfaces, IWBSCustomEvents;
 
 type
   // Base class for IWBS controls

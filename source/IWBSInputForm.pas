@@ -103,8 +103,8 @@ end;
 {$region 'TIWBSFormOptions'}
 constructor TIWBSFormOptions.Create;
 begin
-  FCaptionsSize := TIWBSGridOptions.Create;
-  FInputsSize := TIWBSGridOptions.Create;
+  FCaptionsSize := TIWBSGridOptions.Create(nil);
+  FInputsSize := TIWBSGridOptions.Create(nil);
 end;
 
 destructor TIWBSFormOptions.Destroy;
@@ -126,15 +126,11 @@ end;
 
 function TIWBSFormOptions.GetOffsetClassString: string;
 begin
-  Result := FCaptionsSize.GetGridClassString(
-    FCaptionsSize.GridXSOffset+FCaptionsSize.GridXSSpan+FInputsSize.GridXSOffset,
-    FCaptionsSize.GridSMOffset+FCaptionsSize.GridSMSpan+FInputsSize.GridSMOffset,
-    FCaptionsSize.GridMDOffset+FCaptionsSize.GridMDSpan+FInputsSize.GridMDOffset,
-    FCaptionsSize.GridLGOffset+FCaptionsSize.GridLGSpan+FInputsSize.GridLGOffset,
-    FInputsSize.GridXSSpan,
-    FInputsSize.GridSMSpan,
-    FInputsSize.GridMDSpan,
-    FInputsSize.GridLGSpan);
+  Result := FInputsSize.GetClassString(
+    FCaptionsSize.GridXSOffset+FCaptionsSize.GridXSSpan,
+    FCaptionsSize.GridSMOffset+FCaptionsSize.GridSMSpan,
+    FCaptionsSize.GridMDOffset+FCaptionsSize.GridMDSpan,
+    FCaptionsSize.GridLGOffset+FCaptionsSize.GridLGSpan);
 end;
 
 procedure TIWBSFormOptions.Assign(Source: TPersistent);
@@ -263,7 +259,6 @@ begin
   Result := IWBSCreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
 end;
 {$endregion}
-
 
 procedure TIWBSFormControl.SetCaption(const Value: string);
 begin

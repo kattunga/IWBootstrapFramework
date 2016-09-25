@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, StrUtils,
   IWRenderContext, IWHTMLTag, IWControl,
-  IWBSCommon, IWBSButton;
+  IWBSCommon, IWBSCommonInterfaces, IWBSButton;
 
 type
   // Bootstrap DropDown @br

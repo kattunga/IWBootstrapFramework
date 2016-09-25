@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, db, StrUtils, Controls,
   IWRenderContext, IWHTMLTag, IWBaseInterfaces,
-  IWBSCustomControl, IWBSCommon;
+  IWBSCustomControl, IWBSCommon, IWBSCommonInterfaces;
 
 type
   // TIWBSCustomButton.BSButtonStyle

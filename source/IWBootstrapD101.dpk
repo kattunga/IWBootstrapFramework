@@ -64,7 +64,8 @@ contains
   IWBSModal in 'IWBSModal.pas',
   IWBSList in 'IWBSList.pas',
   IWBSDeprecated in 'IWBSDeprecated.pas',
-  IWBSButtonGroup in 'IWBSButtonGroup.pas';
+  IWBSButtonGroup in 'IWBSButtonGroup.pas',
+  IWBSCommonInterfaces in 'IWBSCommonInterfaces.pas';
 
 end.
 

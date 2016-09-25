@@ -5,7 +5,7 @@ interface
 uses Classes, SysUtils, StrUtils, Forms,
      IWApplication, IWRenderContext, IWControl, IWHTML40Interfaces, IWBaseHTMLInterfaces, IWTypes,
      IWBaseInterfaces, IWHTMLTag, IWBaseRenderContext,
-     IWBSJsonDataObjects, IWBSCustomEvents;
+     IWBSJsonDataObjects, IWBSCommonInterfaces;
 
 const
   EOL = #13#10;
@@ -25,101 +25,49 @@ const
   aIWBSResizeDirection: array[bsrdDefault..bsrdHorizontal] of string = ('', 'none', 'both', 'vertical', 'horizontal');
 
 type
-
-  TIWBSScriptParams = class(TStringList)
-  private
-    function GetJson(const Name: string): TJsonObject;
-    procedure SetJson(const Name: string; const Value: TJsonObject);
-  public
-    constructor Create;
-    property Json[const Name: string]: TJsonObject read GetJson write SetJson;
-  end;
-
+  TIWBSGridVisibility = (bsgvDefault, bsgvBlock, bsgvInline, bsgvInlineBlock, bsgvHidden);
 
   TIWBSGridOptions = class(TPersistent)
   private
-    FGridXSOffset: integer;
-    FGridXSSpan: integer;
-    FGridSMOffset: integer;
-    FGridSMSpan: integer;
+    FOwner: IIWBaseControl;
+    FGridXsOffset: integer;
+    FGridXsSpan: integer;
+    FGridSmOffset: integer;
+    FGridSmSpan: integer;
     FGridMDOffset: integer;
-    FGridMDSpan: integer;
+    FGridMdSpan: integer;
     FGridLGOffset: integer;
-    FGridLGSpan: integer;
+    FGridLGspan: integer;
+    FVisibilityXs: TIWBSGridVisibility;
+    FVisibilitySm: TIWBSGridVisibility;
+    FVisibilityMd: TIWBSGridVisibility;
+    FVisibilityLg: TIWBSGridVisibility;
+    FVisibilityPr: TIWBSGridVisibility;
+    procedure SetVisibilityLg(const Value: TIWBSGridVisibility);
+    procedure SetVisibilityMd(const Value: TIWBSGridVisibility);
+    procedure SetVisibilityPr(const Value: TIWBSGridVisibility);
+    procedure SetVisibilitySm(const Value: TIWBSGridVisibility);
+    procedure SetVisibilityXs(const Value: TIWBSGridVisibility);
   public
-    constructor Create;
-    function GetClassString: string;
+    constructor Create(AOwner: IIWBaseControl); virtual;
+
     procedure Assign(Source: TPersistent); override;
-    class function GetGridClassString(AGridXSOffset, AGridSMOffset, AGridMDOffset, AGridLGOffset, AGridXSSpan, AGridSMSpan, AGridMDSpan, AGridLGSpan: integer): string;
+    function GetClassString(ACustomXsOffset, ACustomSmOffset, ACustomMdOffset, ACustomLgOffset: integer): string; overload;
+    function GetClassString: string; overload;
   published
-    property GridXSOffset: integer read FGridXSOffset write FGridXSOffset default 0;
-    property GridXSSpan: integer read FGridXSSpan write FGridXSSpan default 0;
-    property GridSMOffset: integer read FGridSMOffset write FGridSMOffset default 0;
-    property GridSMSpan: integer read FGridSMSpan write FGridSMSpan default 0;
-    property GridMDOffset: integer read FGridMDOffset write FGridMDOffset default 0;
-    property GridMDSpan: integer read FGridMDSpan write FGridMDSpan default 0;
-    property GridLGOffset: integer read FGridLGOffset write FGridLGOffset default 0;
-    property GridLGSpan: integer read FGridLGSpan write FGridLGSpan default 0;
-  end;
-
-  IIWBSComponent = interface(IIWHTML40Control)
-    ['{12925CB3-58EC-4B56-B032-478892548906}']
-    procedure AsyncRemoveControl;
-    procedure AsyncRefreshControl;
-    procedure InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
-    procedure InternalRenderStyle(AStyle: TStringList);
-    function HTMLControlImplementation: TIWHTMLControlImplementation;
-    function JQSelector: string;
-    function ParentContainer: IIWBaseContainer;
-    procedure ResetAsyncRefreshControl;
-    procedure SetFocus;
-
-    function GetCustomAsyncEvents: TIWBSCustomAsyncEvents;
-    procedure SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);
-    function IsStoredCustomAsyncEvents: Boolean;
-    function GetCustomRestEvents: TIWBSCustomRestEvents;
-    procedure SetCustomRestEvents(const Value: TIWBSCustomRestEvents);
-    function IsStoredCustomRestEvents: Boolean;
-
-    function GetAfterRender: TNotifyEvent;
-    procedure SetAfterRender(const Value: TNotifyEvent);
-
-    function GetScript: TStringList;
-    procedure SetScript(const AValue: TStringList);
-    function GetScriptInsideTag: boolean;
-    procedure SetScriptInsideTag(const AValue: boolean);
-    function GetScriptParams: TIWBSScriptParams;
-    procedure SetScriptParams(const AValue: TIWBSScriptParams);
-    function GetStyle: TStringList;
-    procedure SetStyle(const AValue: TStringList);
-    function get_Visible: Boolean;
-    procedure set_Visible(Value: Boolean);
-
-    property Cursor: TIWCursor read get_WebCursor write set_WebCursor;
-    property CustomAsyncEvents: TIWBSCustomAsyncEvents read GetCustomAsyncEvents write SetCustomAsyncEvents;
-    property CustomRestEvents: TIWBSCustomRestEvents read GetCustomRestEvents write SetCustomRestEvents;
-    property Script: TStringList read GetScript write SetScript;
-    property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag;
-    property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
-    property Style: TStringList read GetStyle write SetStyle;
-    property Visible: boolean read get_Visible write set_Visible;
-
-    property OnAfterRender: TNotifyEvent read GetAfterRender write SetAfterRender;
-  end;
-
-  IIWBSContainer = interface(IIWBaseContainer)
-    ['{819FB21E-8204-450F-8778-3DEB56FDB062}']
-    function InitContainerContext(AWebApplication: TIWApplication): TIWContainerContext;
-    function ParentContainer: IIWBaseContainer;
-    function RegionDiv: TIWHTMLTag;
-    function RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
-
-    function get_ContainerContext: TIWContainerContext;
-    procedure set_ContainerContext(const AContainerContext: TIWContainerContext);
-    function get_HTMLName: String;
-
-    property ContainerContext: TIWContainerContext read get_ContainerContext write set_ContainerContext;
-    property HTMLName: string read get_HTMLName;
+    property GridXsOffset: integer read FGridXsOffset write FGridXsOffset default 0;
+    property GridXsSpan: integer read FGridXsSpan write FGridXsSpan default 0;
+    property GridSmOffset: integer read FGridSmOffset write FGridSmOffset default 0;
+    property GridSmSpan: integer read FGridSmSpan write FGridSmSpan default 0;
+    property GridMdOffset: integer read FGridMDOffset write FGridMDOffset default 0;
+    property GridMdSpan: integer read FGridMdSpan write FGridMdSpan default 0;
+    property GridLgOffset: integer read FGridLGOffset write FGridLGOffset default 0;
+    property GridLgSpan: integer read FGridLGspan write FGridLGspan default 0;
+    property VisibilityXs: TIWBSGridVisibility read FVisibilityXs write SetVisibilityXs default bsgvDefault;
+    property VisibilitySm: TIWBSGridVisibility read FVisibilitySm write SetVisibilitySm default bsgvDefault;
+    property VisibilityMd: TIWBSGridVisibility read FVisibilityMd write SetVisibilityMd default bsgvDefault;
+    property VisibilityLg: TIWBSGridVisibility read FVisibilityLg write SetVisibilityLg default bsgvDefault;
+    property VisibilityPrint: TIWBSGridVisibility read FVisibilityPr write SetVisibilityPr default bsgvDefault;
   end;
 
   TIWBSCommon = class
@@ -160,19 +108,12 @@ uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm, IWRegi
      IWBSLayoutMgr;
 
 {$region 'TIWBSGridOptions'}
-constructor TIWBSGridOptions.Create;
+constructor TIWBSGridOptions.Create(AOwner: IIWBaseControl);
 begin
-  FGridXSOffset := 0;
-  FGridXSSpan   := 0;
-  FGridSMOffset := 0;
-  FGridSMSpan   := 0;
-  FGridMDOffset := 0;
-  FGridMDSpan   := 0;
-  FGridLGOffset := 0;
-  FGridLGSpan   := 0;
+  FOwner := AOwner;
 end;
 
-class function TIWBSGridOptions.GetGridClassString(AGridXSOffset, AGridSMOffset, AGridMDOffset, AGridLGOffset, AGridXSSpan, AGridSMSpan, AGridMDSpan, AGridLGSpan: integer): string;
+function TIWBSGridOptions.GetClassString(ACustomXsOffset, ACustomSmOffset, ACustomMdOffset, ACustomLgOffset: integer): string;
   procedure AddCssValue(var s: string; const Value: string);
   begin
     if s <> '' then
@@ -181,28 +122,98 @@ class function TIWBSGridOptions.GetGridClassString(AGridXSOffset, AGridSMOffset,
   end;
 begin
   Result := '';
-  if AGridXSOffset > 0 then
-    AddCssValue(Result, 'col-xs-offset-'+IntToStr(AGridXSOffset));
-  if AGridSMOffset > 0 then
-    AddCssValue(Result, 'col-sm-offset-'+IntToStr(AGridSMOffset));
-  if AGridMDOffset > 0 then
-    AddCssValue(Result, 'col-md-offset-'+IntToStr(AGridMDOffset));
-  if AGridLGOffset > 0 then
-    AddCssValue(Result, 'col-lg-offset-'+IntToStr(AGridLGOffset));
+  if ACustomXsOffset+FGridXsOffset > 0 then
+    AddCssValue(Result, 'col-xs-offset-'+IntToStr(ACustomXsOffset+FGridXsOffset));
+  if ACustomSmOffset+FGridSmOffset > 0 then
+    AddCssValue(Result, 'col-sm-offset-'+IntToStr(ACustomSmOffset+FGridSmOffset));
+  if ACustomMdOffset+FGridMDOffset > 0 then
+    AddCssValue(Result, 'col-md-offset-'+IntToStr(ACustomMdOffset+FGridMDOffset));
+  if ACustomLgOffset+FGridLGOffset > 0 then
+    AddCssValue(Result, 'col-lg-offset-'+IntToStr(ACustomLgOffset+FGridLGOffset));
 
-  if (AGridXSSpan > 0) then
-    AddCssValue(Result, 'col-xs-'+IntToStr(AGridXSSpan));
-  if (AGridSMSpan > 0) then
-    AddCssValue(Result, 'col-sm-'+IntToStr(AGridSMSpan));
-  if (AGridMDSpan > 0) then
-    AddCssValue(Result, 'col-md-'+IntToStr(AGridMDSpan));
-  if (AGridLGSpan > 0) then
-    AddCssValue(Result, 'col-lg-'+IntToStr(AGridLGSpan));
+  if (FGridXsSpan > 0) then
+    AddCssValue(Result, 'col-xs-'+IntToStr(FGridXsSpan));
+  if (FGridSmSpan > 0) then
+    AddCssValue(Result, 'col-sm-'+IntToStr(FGridSmSpan));
+  if (FGridMdSpan > 0) then
+    AddCssValue(Result, 'col-md-'+IntToStr(FGridMdSpan));
+  if (FGridLGspan > 0) then
+    AddCssValue(Result, 'col-lg-'+IntToStr(FGridLGspan));
+
+  if FVisibilityXs = bsgvBlock then
+    AddCssValue(Result, 'visible-xs-block')
+  else if FVisibilityXs = bsgvInline then
+    AddCssValue(Result, 'visible-xs-inline')
+  else if FVisibilityXs = bsgvInlineBlock then
+    AddCssValue(Result, 'visible-xs-inline-block')
+  else if FVisibilityXs = bsgvHidden then
+    AddCssValue(Result, 'hidden-xs');
+
+  if FVisibilitySm = bsgvBlock then
+    AddCssValue(Result, 'visible-sm-block')
+  else if FVisibilitySm = bsgvInline then
+    AddCssValue(Result, 'visible-sm-inline')
+  else if FVisibilitySm = bsgvInlineBlock then
+    AddCssValue(Result, 'visible-sm-inline-block')
+  else if FVisibilitySm = bsgvHidden then
+    AddCssValue(Result, 'hidden-sm');
+
+  if FVisibilityMd = bsgvBlock then
+    AddCssValue(Result, 'visible-md-block')
+  else if FVisibilityMd = bsgvInline then
+    AddCssValue(Result, 'visible-md-inline')
+  else if FVisibilityMd = bsgvInlineBlock then
+    AddCssValue(Result, 'visible-md-inline-block')
+  else if FVisibilityMd = bsgvHidden then
+    AddCssValue(Result, 'hidden-md');
+
+  if FVisibilityLg = bsgvBlock then
+    AddCssValue(Result, 'visible-lg-block')
+  else if FVisibilityLg = bsgvInline then
+    AddCssValue(Result, 'visible-lg-inline')
+  else if FVisibilityLg = bsgvInlineBlock then
+    AddCssValue(Result, 'visible-lg-inline-block')
+  else if FVisibilityLg = bsgvHidden then
+    AddCssValue(Result, 'hidden-lg');
+
+  if FVisibilityPr = bsgvBlock then
+    AddCssValue(Result, 'visible-print-block')
+  else if FVisibilityPr = bsgvInline then
+    AddCssValue(Result, 'visible-print-inline')
+  else if FVisibilityPr = bsgvInlineBlock then
+    AddCssValue(Result, 'visible-print-inline-block')
+  else if FVisibilityPr = bsgvHidden then
+    AddCssValue(Result, 'hidden-print');
+end;
+
+procedure TIWBSGridOptions.SetVisibilityLg(const Value: TIWBSGridVisibility);
+begin
+  FVisibilityLg := Value;
+end;
+
+procedure TIWBSGridOptions.SetVisibilityMd(const Value: TIWBSGridVisibility);
+begin
+  FVisibilityMd := Value;
+end;
+
+procedure TIWBSGridOptions.SetVisibilityPr(const Value: TIWBSGridVisibility);
+begin
+  FVisibilityPr := Value;
+end;
+
+procedure TIWBSGridOptions.SetVisibilitySm(const Value: TIWBSGridVisibility);
+begin
+  FVisibilitySm := Value;
+end;
+
+procedure TIWBSGridOptions.SetVisibilityXs(const Value: TIWBSGridVisibility);
+begin
+  FVisibilityXs := Value;
 end;
 
 function TIWBSGridOptions.GetClassString: string;
 begin
-  Result := GetGridClassString(FGridXSOffset, FGridSMOffset, FGridMDOffset, FGridLGOffset, FGridXSSpan, FGridSMSpan, FGridMDSpan, FGridLGSpan);
+  Result := GetClassString(0, 0, 0, 0);
 end;
 
 procedure TIWBSGridOptions.Assign(Source: TPersistent);
@@ -669,39 +680,6 @@ begin
         for i := 0 to LContainer.IWComponentsCount-1 do
           CancelChildAsyncRender(LContainer.Component[i])
     end;
-end;
-{$endregion}
-
-{$region 'TIWBSScriptParams'}
-constructor TIWBSScriptParams.Create;
-begin
-  inherited;
-  Duplicates := dupError;
-  OwnsObjects := True;
-end;
-
-function TIWBSScriptParams.GetJson(const Name: string): TJsonObject;
-var
-  i: integer;
-begin
-  i := IndexOf(Name);
-  if i < 0 then
-    begin
-      Result := TJsonObject.Create;
-      AddObject(Name, Result);
-    end
-  else if Objects[i] = nil then
-    begin
-      Result := TJsonObject.Create;
-      Objects[i] := Result;
-    end
-  else
-    Result := TJsonObject(Objects[i]);
-end;
-
-procedure TIWBSScriptParams.SetJson(const Name: string; const Value: TJsonObject);
-begin
-  Json[Name].Assign(Value);
 end;
 {$endregion}
 

@@ -7,7 +7,7 @@ uses
   IWApplication, IWBaseRenderContext,
   IWContainer, IWControl, IWHTMLContainer, IWHTML40Container, IWRegion, IWBaseHTMLControl,
   IWRenderContext, IWHTMLTag, IWBaseInterfaces, IWXMLTag,
-  IWBSCommon, IWBSLayoutMgr, IWScriptEvents, IWBSCustomEvents;
+  IWBSCommon, IWBSCommonInterfaces, IWBSLayoutMgr, IWScriptEvents, IWBSCustomEvents;
 
 type
   TIWBSCustomRegion = class(TIWCustomRegion, IIWBSComponent, IIWBSContainer)
@@ -67,6 +67,7 @@ type
     procedure SetCollapseVisible(const Value: boolean);
     procedure SetRawText(const Value: boolean);
     procedure SetText(const Value: string);
+    procedure SetCss(const Value: string);
   protected
     FContentSuffix: string;
     FRegionDiv: TIWHTMLTag;
@@ -116,7 +117,7 @@ type
     property ClipRegion default False;
     property CustomAsyncEvents: TIWBSCustomAsyncEvents read GetCustomAsyncEvents write SetCustomAsyncEvents stored IsStoredCustomAsyncEvents;
     property CustomRestEvents: TIWBSCustomRestEvents read GetCustomRestEvents write SetCustomRestEvents stored IsStoredCustomRestEvents;
-    property Css: string read FCss write FCss;
+    property Css: string read FCss write SetCss;
     property Collapse: boolean read FCollapse write SetCollapse default False;
     property CollapseVisible: boolean read FCollapseVisible write SetCollapseVisible default False;
     property ExtraTagParams;
@@ -158,7 +159,7 @@ begin
   FCustomRestEvents := nil;
   FCss := '';
   FContentSuffix := '';
-  FGridOptions := TIWBSGridOptions.Create;
+  FGridOptions := TIWBSGridOptions.Create(Self);
   FMainID := '';
   FScript := TStringList.Create;
   FScript.OnChange := OnScriptChange;
@@ -344,6 +345,12 @@ end;
 procedure TIWBSCustomRegion.SetCollapseVisible(const Value: boolean);
 begin
   FCollapseVisible := Value;
+  Invalidate;
+end;
+
+procedure TIWBSCustomRegion.SetCss(const Value: string);
+begin
+  FCss := Value;
   Invalidate;
 end;
 

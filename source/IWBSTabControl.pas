@@ -6,7 +6,7 @@ uses
   SysUtils, Classes, StrUtils,
   IWApplication, IWBaseRenderContext, IWControl, IWBaseInterfaces,
   IWCompTabControl,
-  IWRenderContext, IWHTMLTag, IWBSCommon, IWXMLTag, IWBSCustomEvents;
+  IWRenderContext, IWHTMLTag, IWBSCommon, IWBSCommonInterfaces, IWXMLTag, IWBSCustomEvents;
 
 type
   TIWBSTabOptions = class(TPersistent)
@@ -154,7 +154,7 @@ end;
 constructor TIWBSTabControl.Create(AOwner: TComponent);
 begin
   inherited;
-  FGridOptions := TIWBSGridOptions.Create;
+  FGridOptions := TIWBSGridOptions.Create(Self);
   FAsyncRefreshControl := True;
   FRendered := False;
   FMainID := '';

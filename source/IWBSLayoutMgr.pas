@@ -29,7 +29,7 @@ implementation
 uses
   IWBaseForm, IWGlobal, IWHTML40Interfaces, IWBaseInterfaces, IWLists, IWURL,
   IWMimeTypes, IWApplication,
-  IWBSGlobal, IWBSCommon, IWBSTabControl;
+  IWBSGlobal, IWBSCommon, IWBSCommonInterfaces, IWBSTabControl;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
 begin
