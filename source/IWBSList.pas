@@ -8,10 +8,10 @@ uses
   IWBSCommon, IWBSCustomregion, IWBSCustomControl;
 
 type
-  TIWBSListType = (bsltNone, bsltGroup, bsltInline, bsltNav, bsltPager, bsltPagination, bsltPaginationLg, bsltPaginationSm, bsltBreadcrumb);
+  TIWBSListType = (bsltNone, bsltDropDownMenu, bsltGroup, bsltInline, bsltNav, bsltPager, bsltPagination, bsltPaginationLg, bsltPaginationSm, bsltBreadcrumb);
 
 const
-  aIWBSListType: array [bsltNone..bsltBreadcrumb] of string = ('', 'list-group', 'list-inline', 'nav navbar-nav', 'pager', 'pagination', 'pagination pagination-lg', 'pagination pagination-sm', 'breadcrumb');
+  aIWBSListType: array [bsltNone..bsltBreadcrumb] of string = ('', 'dropdown-menu', 'list-group', 'list-inline', 'nav navbar-nav', 'pager', 'pagination', 'pagination pagination-lg', 'pagination pagination-sm', 'breadcrumb');
 
 type
   TIWBSList = class(TIWBSCustomRegion)
@@ -32,7 +32,7 @@ type
 implementation
 
 uses
-  IWBSNavBar;
+  IWBSNavBar, IWBSRegion;
 
 constructor TIWBSList.Create(AOwner: TComponent);
 begin
@@ -58,8 +58,10 @@ end;
 procedure TIWBSList.SetParent(AParent: TWinControl);
 begin
   inherited;
-  if AParent is TIWBSNavBarBase then
-    FListType := bsltNav;
+  if (AParent is TIWBSNavBarBase) then
+    FListType := bsltNav
+  else if (AParent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtDropDown) then
+    FListType := bsltDropDownMenu;
 end;
 
 class procedure TIWBSList.WrapItem(AControl: TIWBSCustomControl; var AHTMLTag: TIWHTMLTag);

@@ -209,8 +209,11 @@ begin
       TIWBSCommon.AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
       if FBlockLevel then
         TIWBSCommon.AddCssClass(ACss, 'btn-block');
-      if Parent is TIWBSNavBarBase then
-        TIWBSCommon.AddCssClass(ACss, 'navbar-btn');
+
+      if (Parent is TIWBSNavBarBase) then
+        TIWBSCommon.AddCssClass(ACss, 'navbar-btn')
+      else if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtDropDown) then
+        TIWBSCommon.AddCssClass(ACss, 'dropdown-toggle');
     end;
 end;
 
@@ -307,8 +310,6 @@ begin
         if FDataParent <> nil then
           AHTMLTag.AddStringParam('data-parent', '#'+FDataParent.HTMLName);
 
-        AHTMLTag.AddStringParam('data-toggle', DataToggle);
-
         // draw a menu button if no caption and no glyphicon
         if (s = '') and (FGlyphicon = '') then begin
           AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
@@ -316,6 +317,9 @@ begin
           AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
         end;
       end;
+
+    // datatoggle
+    AHTMLTag.AddStringParam('data-toggle', DataToggle);
 
     // caption after glyphicon
     if s <> '' then
@@ -375,7 +379,9 @@ end;
 
 function TIWBSButton.GetDataToggle: string;
 begin
-  if (FDataTarget = nil) then
+  if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtDropDown) then
+    Result := 'dropdown'
+  else if (FDataTarget = nil) then
     Result := ''
   else if (FDataTarget.InterfaceInstance is TIWBSModal) then
     Result := 'modal'

@@ -117,7 +117,7 @@ type
 implementation
 
 uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm, IWRegion, IWMarkupLanguageTag, IWHTML40Container,
-     IWBSUtils, IWBSGlobal, IWBSNavBar,
+     IWBSUtils, IWBSGlobal, IWBSNavBar, IWBSList,
      IWBSLayoutMgr;
 
 {$region 'TIWBSGridOptions'}
@@ -202,7 +202,7 @@ begin
     AddCssValue(Result, 'hidden-print');
 
   if FFloat <> bsgfNone then begin
-    lNavBar := (FOwner.ParentContainer <> nil) and (FOwner.ParentContainer.InterfaceInstance is TIWBSNavBarBase);
+    lNavBar := (FOwner is TIWBSList) and (TIWBSList(FOwner).BSListType = TIWBSListType.bsltNav);
     if FFloat = bsgfLeft then
       if lNavBar then
         AddCssValue(Result, 'navbar-left')

@@ -15,6 +15,7 @@ const
 
 type
   TIWBSRegionType = (bsrtNone, bsrtContainer, bsrtContainerFluid, bsrtRow, bsrtColumn,
+                     bsrtDropDown, bsrtDropDownMenu,
                      bsrtFormGroup,
                      bsrtJumbotron, bsrtPageHeader,
                      bsrtWell, bsrtWellLarge, bsrtWellSmall,
@@ -26,6 +27,7 @@ type
 const
   aIWBSRegionType: array [bsrtNone..bsrtPanelFooter] of string =
                     ('', 'container', 'container-fluid', 'row', 'column',
+                     'dropdown', 'dropdown-menu',
                      'form-group',
                      'jumbotron', 'page-header',
                      'well', 'well well-lg', 'well well-sm',
@@ -61,6 +63,8 @@ type
 
 implementation
 
+uses IWBSNavBar;
+
 procedure TIWBSRegion.InternalRenderCss(var ACss: string);
 begin
   TIWBSCommon.AddCssClass(ACss, aIWBSRegionType[FRegionType]);
@@ -69,8 +73,10 @@ begin
     TIWBSCommon.AddCssClass(ACss, 'panel-'+aIWBSRegionBack[FBackground])
   else if (FRegionType in [bsrtWell, bsrtWellLarge, bsrtWellSmall]) and (FBackground <> bsrbDefault) then
     TIWBSCommon.AddCssClass(ACss, 'well-'+aIWBSRegionBack[FBackground])
-  else
-    TIWBSCommon.AddCssClass(ACss, 'bg-'+aIWBSRegionBack[FBackground]);
+  else if (FBackground <> bsrbDefault)  then
+    TIWBSCommon.AddCssClass(ACss, 'bg-'+aIWBSRegionBack[FBackground])
+  else if (Parent is TIWBSNavBar) then
+    TIWBSCommon.AddCssClass(ACss, 'navbar-btn');
 
   inherited;
 end;
