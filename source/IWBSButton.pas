@@ -291,7 +291,7 @@ begin
         if lAnchor then begin
           AHTMLTag.AddStringParam('href', FHref);
           if FTarget = '' then
-            if FHref = '#' then
+            if AnsiStartsStr('#', FHref) then
               lTarget := '_self'
             else
               lTarget := '_blank'
