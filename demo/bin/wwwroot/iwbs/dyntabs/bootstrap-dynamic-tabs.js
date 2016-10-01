@@ -19,7 +19,7 @@
 					// Attach a dropdown to the right of the tabs bar
 					// This will be toggled if tabs can't fit in a given viewport size
 					$horizontalContainer.after(
-						"<div class='nav navbar-nav navbar-right dropdown tabs-dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-menu-hamburger' style='font-size: 1.6em;'/></a><ul class='dropdown-menu' role='menu'><div class='dropdown-header visible-xs'><p class='count'>Tabs</p><button type='button' class='close' data-dismiss='dropdown'><span aria-hidden='true'>&times;</span></button><div class='divider visible-xs'></div></div></ul></div>"
+						"<div class='nav navbar-nav navbar-right dropdown tabs-dropdown'><a href='#' class='btn btn-default dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-th' style='font-size: 1.6em;'/></a><ul class='dropdown-menu' role='menu'><div class='dropdown-header visible-xs'><p class='count'>Tabs</p><button type='button' class='close' data-dismiss='dropdown'><span aria-hidden='true'>&times;</span></button><div class='divider visible-xs'></div></div></ul></div>"
 					);
 				}
 
@@ -99,11 +99,19 @@
 					var $verticalContainer = $horizontalContainer.siblings(".tabs-dropdown").find(".dropdown-menu");
 
 					$verticalContainer.html("");
-					$horizontalContainer.children('li').clone().appendTo($verticalContainer);
-					$verticalContainer.children('li').toggleClass("hidden");
-					$verticalContainer.children('li').on("click", function (e) {
-						$horizontalContainer.find("[tab-id=" + $(this).attr("tab-id") + "] a").tab("show");
-						updateTabs();
+					
+					$horizontalContainer.children('li').each( function (index, element) {
+						var htab = document.createElement("li");
+
+						$(htab).append('<a href="#">'+$(element).children('a').html()+'</a>');
+						$(htab).children('a').children('*').remove();
+						$(htab).toggleClass('active',$(element).hasClass('active'));
+						$(htab).attr("tab-id", index);
+						$(htab).on("click", function (e) {
+							$horizontalContainer.find("[tab-id=" + $(this).attr("tab-id") + "] a").tab("show");
+					    	updateTabs();
+					    });
+						$verticalContainer.append(htab);
 					});
 				};
 				$horizontalContainer.siblings(".tabs-dropdown").off('show.bs.dropdown').on('show.bs.dropdown', onDropDow);
