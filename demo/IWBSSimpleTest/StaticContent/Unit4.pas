@@ -9,12 +9,19 @@ uses
   IWHTML40Container, IWRegion, IWBSRegion, IWBSCustomControl, IWBSButton,
   IWVCLComponent, IWBaseLayoutComponent, IWBaseContainerLayout,
   IWContainerLayout, IWBSLayoutMgr, IWBSImage, IWBSCustomInput, IWBSInput,
-  IWCompMemo;
+  IWCompMemo, IWBSList, IWBSNavBar, IWBSCustomRegion;
 
 type
   TIWForm4 = class(TIWAppForm)
-    IWButton1: TIWButton;
-    IWMemo1: TIWMemo;
+    IWBSRegion1: TIWBSRegion;
+    IWBSNavBar1: TIWBSNavBar;
+    IWBSList1: TIWBSList;
+    IWBSRegion2: TIWBSRegion;
+    IWBSLayoutMgr1: TIWBSLayoutMgr;
+    IWBSButton1: TIWBSButton;
+    IWBSButton2: TIWBSButton;
+    IWBSButton3: TIWBSButton;
+    IWBSButton4: TIWBSButton;
   public
   end;
 
