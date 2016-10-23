@@ -10,6 +10,7 @@ uses
 type
   TIWServerController = class(TIWServerControllerBase)
     procedure IWServerControllerBaseNewSession(ASession: TIWApplication);
+    procedure IWServerControllerBaseConfig(Sender: TObject);
 
   private
     
@@ -25,18 +26,21 @@ implementation
 {$R *.dfm}
 
 uses
-  IWInit, IWGlobal;
+  IWInit, IWGlobal, IWBSGlobal;
 
 function IWServerController: TIWServerController;
 begin
   Result := TIWServerController(GServerController);
 end;
 
-
-
 function UserSession: TIWUserSession;
 begin
   Result := TIWUserSession(WebApplication.Data);
+end;
+
+procedure TIWServerController.IWServerControllerBaseConfig(Sender: TObject);
+begin
+  IWBSLibSetCDNS;
 end;
 
 procedure TIWServerController.IWServerControllerBaseNewSession(

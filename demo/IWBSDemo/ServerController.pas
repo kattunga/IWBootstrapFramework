@@ -63,21 +63,7 @@ begin
   // ATTENTION!!!, this can't be done after this event because global variables are not thread safe
 {$IFDEF CDNS}
 
-  gIWBSLibJQueryJs := 'https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js';
-
-  gIWBSLibBootstrapCss := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
-  gIWBSLibBootstrapJs := 'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js';
-
-  gIWBSLibIWBSCss := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v2.0beta2/demo/bin/wwwroot/iwbs/iwbs.css';
-  gIWBSLibIWBSJs := 'https://cdn.rawgit.com/kattunga/IWBootstrapFramework/v2.0beta2/demo/bin/wwwroot/iwbs/iwbs.js';
-
-  gIWBSLibPolyFillerJs := 'https://cdnjs.cloudflare.com/ajax/libs/webshim/1.15.10/dev/polyfiller.js';
-
-  gIWBSLibDynamicTabsCss := 'https://cdn.rawgit.com/kattunga/Bootstrap-Dynamic-Tabs/v1.1/bootstrap-dynamic-tabs.css';
-  gIWBSLibDynamicTabsJs := 'https://cdn.rawgit.com/kattunga/Bootstrap-Dynamic-Tabs/v1.1/bootstrap-dynamic-tabs.js';
-
-  gIWBSLibSummerNoteCss := 'https://cdn.rawgit.com/summernote/summernote/v0.8.2/dist/summernote.css';
-  gIWBSLibSummerNoteJs := 'https://cdn.rawgit.com/summernote/summernote/v0.8.2/dist/summernote.js';
+  IWBSLibSetCDNS;
 
   // we add a third party plugin to manage selects (https://silviomoreto.github.io/bootstrap-select)
   {$IFDEF BOOTSTRAPSELECT}
