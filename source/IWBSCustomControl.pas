@@ -11,11 +11,6 @@ type
   TIWBSCustomControl = class(TIWCustomControl, IIWBSComponent)
   private
     FMainID: string;
-    FOldCss: string;
-    FOldDisabled: boolean;
-    FOldReadOnly: boolean;
-    FOldStyle: string;
-    FOldVisible: boolean;
 
     FAsyncRefreshControl: boolean;
     FRendered: boolean;
@@ -47,6 +42,12 @@ type
     function GetAfterRender: TNotifyEvent;
     procedure SetAfterRender(const Value: TNotifyEvent);
   protected
+    FOldCss: string;
+    FOldDisabled: boolean;
+    FOldReadOnly: boolean;
+    FOldStyle: string;
+    FOldVisible: boolean;
+
     {$hints off}
     function get_HasTabOrder: Boolean; override;
     function getTabOrder: TIWTabOrder; override;
@@ -123,9 +124,9 @@ type
     // @preformatted(IWBSCustomControl.ScriptEvents.Values['object.custom.event'] := 'function (param1, param2, param3) { your javascript code... }';
     property ScriptEvents;
     // Specifies if the script will be rendered inside the control tag or not. @br
-    // If true (default) the script will be rendered inside the tag. @br
+    // If true the script will be rendered inside the tag. @br
     // If false a new div will be created to surround the control and the script will be rendered in this div, outside the control tag. @br
-    // this sometimes is necessary when plugins will change the content of the control tag.
+    // this is necessary script can't be placed inside the tag, for example in input controls.
     property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag default True;
     // Params that will be replaced in scripts and in some controls content, for example in TIWBSText. @br
     // Params are specified in scripts as: {%param%}.

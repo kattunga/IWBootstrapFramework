@@ -117,7 +117,7 @@ type
 implementation
 
 uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm, IWRegion, IWMarkupLanguageTag, IWHTML40Container,
-     IWBSUtils, IWBSGlobal, IWBSNavBar, IWBSList,
+     IWBSUtils, IWBSGlobal, IWBSNavBar, IWBSCustomRegion,
      IWBSLayoutMgr;
 
 {$region 'TIWBSGridOptions'}
@@ -202,7 +202,7 @@ begin
     AddCssValue(Result, 'hidden-print');
 
   if FFloat <> bsgfNone then begin
-    lNavBar := (FOwner is TIWBSList) and (TIWBSList(FOwner).BSListType = TIWBSListType.bsltNav);
+    lNavBar := (FOwner is TIWBSCustomRegion);
     if FFloat = bsgfLeft then
       if lNavBar then
         AddCssValue(Result, 'navbar-left')
@@ -603,7 +603,7 @@ end;
 class procedure TIWBSCommon.SetAsyncText(AApplication: TIWApplication; const HTMLName: string; const Value: string; var OldValue: string);
 begin
   if OldValue <> Value then begin
-    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").val("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");', False, True);
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+HTMLName+'").val("'+TIWBaseHTMLControl.TextToJSStringLiteral(Value)+'");', True, True);
     OldValue := Value;
   end;
 end;

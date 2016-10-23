@@ -86,7 +86,7 @@ function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
 implementation
 
 uses
-  IWBSInputCommon;
+  IWBSInputCommon, IWBSNavBar;
 
 {$region 'help functions'}
 function IWBSFindParentInputForm(AParent: TControl): TIWBSInputForm;
@@ -167,6 +167,8 @@ begin
     TIWBSCommon.AddCssClass(ACss, 'form-inline')
   else if FFormType = bsftHorizontal then
     TIWBSCommon.AddCssClass(ACss, 'form-horizontal');
+  if (Parent is TIWBSNavBarBase) then
+    TIWBSCommon.AddCssClass(ACss, 'navbar-form');
   inherited;
 end;
 

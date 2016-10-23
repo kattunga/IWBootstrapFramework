@@ -104,7 +104,7 @@
 						var htab = document.createElement("li");
 
 						$(htab).append('<a href="#">'+$(element).children('a').html()+'</a>');
-						$(htab).children('a').children('*').remove();
+					//	$(htab).children('a').children('*').remove();
 						$(htab).toggleClass('active',$(element).hasClass('active'));
 						$(htab).attr("tab-id", index);
 						$(htab).on("click", function (e) {

@@ -39,23 +39,6 @@
 		padding-bottom:10px;
 	}
 	
-	.dynamic-tabs-container .tabs-dropdown .dropdown-menu .dropdown-header {
-		position: fixed;
-		left: 21px;
-		right: 21px;
-		background: #FFF;
-		margin-top: -50px;
-		padding-top: 18px;
-		border-radius: 4px 4px 0 0;
-	}
-    .dynamic-tabs-container .tabs-dropdown .dropdown-menu .close {
-		position: absolute;
-		top: 14px;
-		right: 20px;
-	}
-	.dynamic-tabs-container .tabs-dropdown .dropdown-menu .divider {
-		margin: 0;
-	}
 	.dynamic-tab {
 		width: 100%;
 	}

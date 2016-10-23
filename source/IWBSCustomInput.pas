@@ -77,6 +77,7 @@ type
     property FriendlyName;
     property NonEditableAsLabel default False;
     property ScriptEvents;
+    property ScriptInsideTag default False;
     property SubmitOnAsyncEvent default True;
     property Text: TCaption read GetText write SetText;
   end;
@@ -147,6 +148,7 @@ begin
   FIsStatic := False;
   FSupportReadOnly := False;
 
+  ScriptInsideTag := False;
   Height := 25;
   Width := 121;
 end;

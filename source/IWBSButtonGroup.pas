@@ -29,6 +29,8 @@ type
 
 implementation
 
+uses IWBSNavBar;
+
 constructor TIWBSButtonGroup.Create(AOwner: TComponent);
 begin
   inherited;
@@ -44,13 +46,16 @@ end;
 
 procedure TIWBSButtonGroup.InternalRenderCss(var ACss: string);
 begin
-  ACss := 'btn-group';
   if FVertical then
-    ACss := ACss + '-vertical';
+    TIWBSCommon.AddCssClass(ACss, 'btn-group-vertical')
+  else
+    TIWBSCommon.AddCssClass(ACss, 'btn-group');
   if FSize <> bsszDefault then
-    ACss := ACss + ' btn-group-'+aIWBSSize[FSize];
+    TIWBSCommon.AddCssClass(ACss, 'btn-group-'+aIWBSSize[FSize]);
   if FJustified then
-    ACss := ACss + ' btn-group-justified';
+    TIWBSCommon.AddCssClass(ACss, 'btn-group-justified');
+  if Parent is TIWBSNavBarBase then
+    TIWBSCommon.AddCssClass(ACss, 'navbar-btn');
   inherited;
 end;
 

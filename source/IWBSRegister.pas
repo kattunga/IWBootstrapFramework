@@ -2,13 +2,26 @@ unit IWBSRegister;
 
 interface
 
-uses Classes, SysUtils, StrUtils, DesignEditors, DesignIntf, IWDsnPaintHandlers;
+uses Classes, SysUtils, StrUtils, DesignEditors, DesignIntf, IWDsnPaintHandlers, StrEdit;
 
 type
   TGlyphiconEditor = class(TEnumProperty)
   public
     function GetValue: string; override;
     procedure GetValues(Proc: TGetStrProc); override;
+    procedure SetValue(const Value: string); override;
+  end;
+
+  TIWBSStringProperty = class(TStringListProperty)
+  private
+    FStrings: TStrings;
+  protected
+    function GetStrings: TStrings; override;
+    procedure SetStrings(const Value: TStrings); override;
+  public
+    destructor Destroy; override;
+    function GetAttributes: TPropertyAttributes; override;
+    function GetValue: string; override;
     procedure SetValue(const Value: string); override;
   end;
 
@@ -661,6 +674,42 @@ begin
   end;
 end;
 
+{ TCaptionEditorOld }
+
+destructor TIWBSStringProperty.Destroy;
+begin
+  FreeAndNil(FStrings);
+  inherited;
+end;
+
+function TIWBSStringProperty.GetAttributes: TPropertyAttributes;
+begin
+  Result := inherited GetAttributes - [paReadOnly];
+end;
+
+function TIWBSStringProperty.GetStrings: TStrings;
+begin
+  if FStrings = nil then
+    FStrings := TStringList.Create;
+  FStrings.Text := GetStrValue;
+  Result := FStrings;
+end;
+
+function TIWBSStringProperty.GetValue: string;
+begin
+  Result := GetStrValue;
+end;
+
+procedure TIWBSStringProperty.SetStrings(const Value: TStrings);
+begin
+  SetStrValue(TrimRight(Value.Text));
+end;
+
+procedure TIWBSStringProperty.SetValue(const Value: string);
+begin
+  SetStrValue(Value);
+end;
+
 procedure Register;
 begin
   RegisterComponents('IW BootsTrap', [TIWBSLayoutMgr]);
@@ -691,10 +740,7 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSRadioGroup]);
 
   RegisterComponents('IW BootsTrap', [TIWBSButton]);
-  RegisterPropertyEditor(TypeInfo(string), TIWBSButton, 'BSGlyphicon', TGlyphiconEditor);
-
   RegisterComponents('IW BootsTrap', [TIWBSDropDown]);
-  RegisterPropertyEditor(TypeInfo(string), TIWBSDropDown, 'BSGlyphicon', TGlyphiconEditor);
 
   RegisterComponents('IW BootsTrap', [TIWBSLabel]);
   RegisterComponents('IW BootsTrap', [TIWBSText]);
@@ -707,6 +753,10 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSFile]);
 
   RegisterComponents('IW BootsTrap', [TIWBSTabControl]);
+
+  RegisterPropertyEditor(TypeInfo(string), TIWBSCustomRegion, 'Text', TIWBSStringProperty);
+  RegisterPropertyEditor(TypeInfo(string), TIWBSCustomButton, 'BSGlyphicon', TGlyphiconEditor);
+  RegisterPropertyEditor(TypeInfo(string), TIWBSCustomButton, 'Caption', TIWBSStringProperty);
 
   UnlistPublishedProperty(TIWBSCustomControl, 'SkinId');
   UnlistPublishedProperty(TIWBSCustomControl, 'StyleRenderOptions');
@@ -749,6 +799,7 @@ initialization
   IWRegisterPaintHandler('TIWBSRadioGroup',TIWBSPaintHandlerRadioGroup);
 
   IWRegisterPaintHandler('TIWBSButton',TIWBSPaintHandlerCustomButton);
+
   IWRegisterPaintHandler('TIWBSDropDown',TIWBSPaintHandlerCustomButton);
 
   IWRegisterPaintHandler('TIWBSLabel',TIWBSPaintHandlerLabel);

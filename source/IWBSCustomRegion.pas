@@ -549,6 +549,9 @@ begin
   IWBSRenderScript(Self, AContext, FRegionDiv);
   FMainID := FRegionDiv.Params.Values['id'];
 
+  if gIWBSAttributeCmpName <> '' then
+    FRegionDiv.Params.Values[gIWBSAttributeCmpName] := name;
+
   Result := FRegionDiv;
 
   FAsyncRefreshControl := False;

@@ -24,10 +24,6 @@ object IWForm4: TIWForm4
     Align = alClient
     Text = ''
     BSRegionType = bsrtContainer
-    ExplicitLeft = 88
-    ExplicitTop = 144
-    ExplicitWidth = 60
-    ExplicitHeight = 60
     object IWBSNavBar1: TIWBSNavBar
       Left = 1
       Top = 1
@@ -337,10 +333,6 @@ object IWForm4: TIWForm4
         ' government officials and industry executives, who see both Mr. ' +
         'Wang and China as threats to Hollywood'#8217's dominance in entertainm' +
         'ent as a business and a cultural force.'#13#10'</p>'
-      ExplicitLeft = 80
-      ExplicitTop = 140
-      ExplicitWidth = 60
-      ExplicitHeight = 60
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr

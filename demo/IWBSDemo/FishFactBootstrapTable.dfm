@@ -35,12 +35,14 @@ object FBootstrapTable: TFBootstrapTable
     Align = alClient
     Style.Strings = (
       '')
+    Text = ''
     object IWBSRegion1: TIWBSRegion
       Left = 1
       Top = 78
       Width = 750
       Height = 1101
       Align = alClient
+      Text = ''
       BSRegionType = bsrtContainer
       object IWBSRegion2: TIWBSRegion
         Left = 1
@@ -48,6 +50,7 @@ object FBootstrapTable: TFBootstrapTable
         Width = 748
         Height = 1099
         Align = alClient
+        Text = ''
         BSRegionType = bsrtRow
         object IWBSRegion3: TIWBSRegion
           Left = 1
@@ -55,6 +58,7 @@ object FBootstrapTable: TFBootstrapTable
           Width = 746
           Height = 1097
           Align = alClient
+          Text = ''
           BSRegionType = bsrtColumn
           object IWText1: TIWBSText
             Left = 10
@@ -82,30 +86,30 @@ object FBootstrapTable: TFBootstrapTable
             CustomAsyncEvents = <
               item
                 AutoBind = True
-                EventName = 'click-cell.bs.table'
-                EventParams = 'elem, field, value, row'
                 CallBackParams.Strings = (
                   'field=field'
                   'value=value'
                   'row=row.field0')
+                EventName = 'click-cell.bs.table'
+                EventParams = 'elem, field, value, row'
                 OnAsyncEvent = DbTableCustomAsyncEvents0AsyncEvent
               end
               item
-                EventName = 'click.like'
                 CallBackParams.Strings = (
                   'row=row.field0')
+                EventName = 'click.like'
                 OnAsyncEvent = DbTableCustomAsyncEvents1AsyncEvent
               end
               item
-                EventName = 'click.edit'
                 CallBackParams.Strings = (
                   'row=row.field0')
+                EventName = 'click.edit'
                 OnAsyncEvent = DbTableCustomAsyncEvents2AsyncEvent
               end
               item
-                EventName = 'click.remove'
                 CallBackParams.Strings = (
                   'row=row.field0')
+                EventName = 'click.remove'
                 OnAsyncEvent = DbTableCustomAsyncEvents3AsyncEvent
               end>
             CustomRestEvents = <
@@ -168,6 +172,7 @@ object FBootstrapTable: TFBootstrapTable
       Width = 750
       Height = 77
       Align = alTop
+      Text = ''
       BSInverse = True
       object IWBSButton1: TIWBSButton
         Left = 516
@@ -177,7 +182,6 @@ object FBootstrapTable: TFBootstrapTable
         Css = 'navbar-btn navbar-right'
         FriendlyName = 'IWBSButton1'
         OnAsyncClick = IWBSButton1AsyncClick
-        BSBlockLevel = False
         BSGlyphicon = 'arrow-left'
         Caption = 'Switch to Standard Demo'
       end
@@ -34764,7 +34768,7 @@ object FBootstrapTable: TFBootstrapTable
     IndexName = 'DEFAULT_ORDER'
     Params = <>
     StoreDefs = True
-    Left = 232
+    Left = 236
     Top = 28
     object ClientDataSet1SpeciesNo: TFloatField
       FieldName = 'Species No'

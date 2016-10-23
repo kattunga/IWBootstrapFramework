@@ -57,6 +57,10 @@ var
   // global link files to include in every page
   gIWBSLinkFiles: TStringList = nil;
 
+  // render a custom attribute on every control with the component name as value
+  // this help to easy find controls in javascript
+  gIWBSAttributeCmpName: string = '';  // for example: data-cmp-name
+
 procedure IWBSAddGlobalLinkFile(const AFile: string);
 
 implementation

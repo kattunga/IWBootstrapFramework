@@ -11,7 +11,7 @@ uses
 type
   TIWBSRestServer = class(TContentBase)
   protected
-    function Execute(aRequest: THttpRequest; aReply: THttpReply; const aPathname: string; aSession: TIWApplication; aParams: TStrings): boolean; override;
+    function Execute(aRequest: THttpRequest; aReply: THttpReply; const aPathname: string; aSession: TIWApplication; aParams: TStrings): Boolean; override;
   public
     constructor Create; override;
   end;

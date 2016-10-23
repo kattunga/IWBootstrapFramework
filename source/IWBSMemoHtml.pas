@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, StrUtils,
-  IWRenderContext, IWApplication, IWBSInput;
+  IWRenderContext, IWApplication, IWBaseHTMLControl, IWBSInput;
 
 type
   TIWBSMemoHtml = class(TIWBSMemo)
@@ -18,9 +18,18 @@ implementation
 uses IWBSGlobal, IWBSUtils;
 
 procedure TIWBSMemoHtml.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
+var
+  lTextChang, lEnabChang: boolean;
 begin
+  lTextChang := (FText <> FOldText);
+  lEnabChang := (IsDisabled <> FOldDisabled) or (IsReadOnly <> FOldReadOnly);
+
   inherited;
-  IWBSExecuteAsyncJScript(AApplication,'$("#'+AHTMLName+'").summernote("'+IfThen(IsReadOnly or IsDisabled, 'disable', 'enable')+'");', False, True);
+
+  if lTextChang then
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+AHTMLName+'").summernote("code", "'+TIWBaseHTMLControl.TextToJSStringLiteral(Text)+'");', True, True);
+  if lEnabChang then
+    IWBSExecuteAsyncJScript(AApplication,'$("#'+AHTMLName+'").summernote("'+IfThen(IsReadOnly or IsDisabled, 'disable', 'enable')+'");', False, True);
 end;
 
 procedure TIWBSMemoHtml.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);

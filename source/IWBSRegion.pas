@@ -76,7 +76,10 @@ begin
   else if (FBackground <> bsrbDefault)  then
     TIWBSCommon.AddCssClass(ACss, 'bg-'+aIWBSRegionBack[FBackground])
   else if (Parent is TIWBSNavBar) then
-    TIWBSCommon.AddCssClass(ACss, 'navbar-btn');
+    if TagType = bsttDiv then
+      TIWBSCommon.AddCssClass(ACss, 'navbar-btn')
+    else
+      TIWBSCommon.AddCssClass(ACss, 'navbar-text');
 
   inherited;
 end;
