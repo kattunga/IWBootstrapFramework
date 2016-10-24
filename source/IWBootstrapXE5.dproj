@@ -87,7 +87,6 @@
         <DCCReference Include="IWBSInput.pas"/>
         <DCCReference Include="IWBSLayoutMgr.pas"/>
         <DCCReference Include="IWBSTabControl.pas"/>
-        <DCCReference Include="IWBSRegionCommon.pas"/>
         <DCCReference Include="IWBSControls.pas"/>
         <DCCReference Include="IWBSCustomInput.pas"/>
         <DCCReference Include="IWBSInputCommon.pas"/>
