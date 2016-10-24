@@ -93,11 +93,11 @@ begin
     AComponent.HookEvents(LPageContext, AComponent.ScriptEvents);
     AComponent.HintEvents(AHTMLTag);
 
-    LJScript.AddStrings(AComponent.Script);
-
     RenderScriptEvents(LHTMLName, AComponent.ScriptEvents, LPageContext, LJScript);
 
     AComponent.InternalRenderScript(AContext, LHTMLName, LJScript);
+
+    LJScript.AddStrings(AComponent.Script);
 
     if LJScript.Count > 0 then
       LJScript.Text := TIWBSCommon.ReplaceParams(AComponent, LJScript.Text);

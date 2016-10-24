@@ -12,7 +12,6 @@ uses
 type
   TIWBSCustomRegion = class(TIWCustomRegion, IIWBSComponent, IIWBSContainer)
   private
-    FMainID: string;
     FOldCss: string;
     FOldStyle: string;
     FOldVisible: boolean;
@@ -69,7 +68,7 @@ type
     procedure SetText(const Value: string);
     procedure SetCss(const Value: string);
   protected
-    FContentSuffix: string;
+    FMainID: string;
     FRegionDiv: TIWHTMLTag;
     FTagName: string;
 
@@ -158,7 +157,6 @@ begin
   FCustomAsyncEvents := nil;
   FCustomRestEvents := nil;
   FCss := '';
-  FContentSuffix := '';
   FGridOptions := TIWBSGridOptions.Create(Self);
   FMainID := '';
   FScript := TStringList.Create;
@@ -254,7 +252,7 @@ end;
 
 procedure TIWBSCustomRegion.AsyncRemoveControl;
 begin
-  TIWBSCommon.AsyncRemoveControl(HTMLName);
+  TIWBSCommon.AsyncRemoveControl(FMainID);
   FAsyncRefreshControl := False;
   FRendered := False;
 end;

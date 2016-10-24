@@ -11,6 +11,7 @@ uses
 type
   TIWBSModal = class(TIWBSCustomRegion)
   private
+    FWrapperSuffix: string;
     FDestroyOnHide: boolean;
     FDialogSize: TIWBSSize;
     FFade: boolean;
@@ -51,7 +52,7 @@ begin
   FDialogSize := bsszDefault;
   FFade := false;
   FModalVisible := false;
-  FContentSuffix := '_dialog'
+  FWrapperSuffix := '_wrp';
 end;
 
 destructor TIWBSModal.Destroy;
@@ -62,9 +63,9 @@ end;
 
 procedure TIWBSModal.InternalRenderCss(var ACss: string);
 begin
-  TIWBSCommon.AddCssClass(ACss, 'modal');
-  if FFade then
-    TIWBSCommon.AddCssClass(ACss, 'fade');
+  TIWBSCommon.AddCssClass(ACss, 'modal-dialog');
+  if FDialogSize in [bsszLg,bsszSm] then
+    TIWBSCommon.AddCssClass(ACss, 'modal-'+aIWBSSize[FDialogSize]);
   inherited;
 end;
 
@@ -75,44 +76,43 @@ end;
 
 function TIWBSModal.GetShowScript: string;
 begin
-  Result := '$("#'+HTMLName+'").modal({backdrop: "static", "keyboard": true});';
+  Result := '$("#'+HTMLName+FWrapperSuffix+'").modal({backdrop: "static", "keyboard": true});';
 end;
 
 function TIWBSModal.GetHideScript: string;
 begin
-  Result := '$("#'+HTMLName+'").modal("hide");';
+  Result := '$("#'+HTMLName+FWrapperSuffix+'").modal("hide");';
 end;
 
 procedure TIWBSModal.InternalRenderScript(AContext: TIWCompContext; const AHTMLName: string; AScript: TStringList);
 begin
-  inherited;
-  AScript.Add('$("#'+AHTMLName+'").off("shown.bs.modal").on("shown.bs.modal", function() { var elem; elem = $(this).find("[autofocus]"); if (elem.length !== 0) {elem.focus();} else {$(this).find("button:last").focus(); } });');
+  AScript.Add('$("#'+AHTMLName+FWrapperSuffix+'").off("shown.bs.modal").on("shown.bs.modal", function() { var elem; elem = $(this).find("[autofocus]"); if (elem.length !== 0) {elem.focus();} else {$(this).find("button:last").focus(); } });');
   if Assigned(FOnAsyncShow) then begin
-    AScript.Add('$("#'+AHTMLName+'").off("show.bs.modal").on("show.bs.modal", function(e){ executeAjaxEvent("", null, "'+AHTMLName+'.DoOnAsyncShow", true, null, true); });');
+    AScript.Add('$("#'+AHTMLName+FWrapperSuffix+'").off("show.bs.modal").on("show.bs.modal", function(e){ executeAjaxEvent("", null, "'+AHTMLName+'.DoOnAsyncShow", true, null, true); });');
     AContext.WebApplication.RegisterCallBack(AHTMLName+'.DoOnAsyncShow', DoOnAsyncShow);
   end;
-  AScript.Add('$("#'+AHTMLName+'").off("hidden.bs.modal").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+AHTMLName+'.DoOnAsyncHide", true, null, true); });');
+  AScript.Add('$("#'+AHTMLName+FWrapperSuffix+'").off("hidden.bs.modal").on("hidden.bs.modal", function(e){ executeAjaxEvent("", null, "'+AHTMLName+'.DoOnAsyncHide", true, null, true); });');
   AContext.WebApplication.RegisterCallBack(AHTMLName+'.DoOnAsyncHide', DoOnAsyncHide);
   if FModalVisible then
     AScript.Add(GetShowScript);
+  inherited;
 end;
 
 function TIWBSModal.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
-  LCss: string;
-  xHTMLName: string;
+  lCss: string;
 begin
-  xHTMLName := HTMLName;
-
   Result := inherited;
 
-  // container
-  FRegionDiv := Result.Contents.AddTag('div');
-  FRegionDiv.AddStringParam('id',xHTMLName+FContentSuffix);
-  LCss := 'modal-dialog';
-  if FDialogSize in [bsszLg,bsszSm] then
-    LCss := LCss + ' modal-'+aIWBSSize[FDialogSize];
-  FRegionDiv.AddClassParam(LCss);
+  FMainID := HTMLName+FWrapperSuffix;
+
+  Result := TIWHTMLTag.CreateTag('div');
+  Result.Contents.AddTagAsObject(FRegionDiv);
+  Result.AddStringParam('id', FMainID);
+  lCss := 'modal';
+  if FFade then
+    TIWBSCommon.AddCssClass(lCss, 'fade');
+  Result.AddClassParam(LCss);
 end;
 
 procedure TIWBSModal.SetModalVisible(AValue: boolean);
