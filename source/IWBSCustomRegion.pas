@@ -2,6 +2,8 @@ unit IWBSCustomRegion;
 
 interface
 
+{$Include IWBootstrap.inc}
+
 uses
   SysUtils, Classes, Controls, Forms, StrUtils,
   IWApplication, IWBaseRenderContext,
@@ -38,7 +40,6 @@ type
     FOnAfterAsyncChange: TNotifyEvent;
 
     function HTMLControlImplementation: TIWHTMLControlImplementation;
-    function IsScriptEventsStored: Boolean; virtual;
     function RegionDiv: TIWHTMLTag;
 
     function  RenderText: string;
@@ -58,15 +59,18 @@ type
     procedure SetStyle(const AValue: TStringList);
     function GetScriptInsideTag: boolean;
     procedure SetScriptInsideTag(const Value: boolean);
-    function get_ScriptEvents: TIWScriptEvents;
     function GetAfterRender: TNotifyEvent;
-    procedure set_ScriptEvents(const Value: TIWScriptEvents);
     procedure SetAfterRender(const Value: TNotifyEvent);
     procedure SetCollapse(const Value: boolean);
     procedure SetCollapseVisible(const Value: boolean);
     procedure SetRawText(const Value: boolean);
     procedure SetText(const Value: string);
     procedure SetCss(const Value: string);
+    {$IFNDEF IW_14_1_0_UP}
+    function IsScriptEventsStored: Boolean; virtual;
+    function get_ScriptEvents: TIWScriptEvents;
+    procedure set_ScriptEvents(const Value: TIWScriptEvents);
+    {$ENDIF}
   protected
     FMainID: string;
     FRegionDiv: TIWHTMLTag;
@@ -123,7 +127,7 @@ type
     property LayoutMgr;
     property RawText: boolean read FRawText write SetRawText default False;
     property RenderInvisibleControls default True;
-    property ScriptEvents: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored;
+    property ScriptEvents {$IFNDEF IW_14_1_0_UP}: TIWScriptEvents read get_ScriptEvents write set_ScriptEvents stored IsScriptEventsStored {$ENDIF};
     property Script: TStringList read GetScript write SetScript;
     property ScriptInsideTag: boolean read GetScriptInsideTag write SetScriptInsideTag default True;
     property ScriptParams: TIWBSScriptParams read GetScriptParams write SetScriptParams;
@@ -171,7 +175,7 @@ begin
 
   ClipRegion := False;
   RenderInvisibleControls := True;
-  set_ZIndex(0);
+  ZIndex := 0;
 
   if name = '' then
     name := IWBSGetUniqueComponentName(Owner, Copy(ClassName,2,MaxInt));
@@ -188,10 +192,22 @@ begin
   inherited;
 end;
 
+{$IFNDEF IW_14_1_0_UP}
 function TIWBSCustomRegion.get_ScriptEvents: TIWScriptEvents;
 begin
   Result := inherited get_ScriptEvents;
 end;
+
+procedure TIWBSCustomRegion.set_ScriptEvents(const Value: TIWScriptEvents);
+begin
+  inherited set_ScriptEvents(Value);
+end;
+
+function TIWBSCustomRegion.IsScriptEventsStored: Boolean;
+begin
+  Result := ScriptEvents.Count > 0;
+end;
+{$ENDIF}
 
 function TIWBSCustomRegion.get_Visible: Boolean;
 begin
@@ -199,11 +215,6 @@ begin
     Result := Parent.Visible
   else
     Result := inherited;
-end;
-
-procedure TIWBSCustomRegion.set_ScriptEvents(const Value: TIWScriptEvents);
-begin
-  inherited set_ScriptEvents(Value);
 end;
 
 procedure TIWBSCustomRegion.set_Visible(Value: Boolean);
@@ -277,11 +288,6 @@ end;
 procedure TIWBSCustomRegion.SetFocus;
 begin
   IWBSExecuteAsyncJScript(JQSelector+'.focus()');
-end;
-
-function TIWBSCustomRegion.IsScriptEventsStored: Boolean;
-begin
-  Result := ScriptEvents.Count > 0;
 end;
 
 function TIWBSCustomRegion.GetRoleString: string;

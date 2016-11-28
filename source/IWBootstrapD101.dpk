@@ -28,7 +28,8 @@ package IWBootstrapD101;
 {$DESCRIPTION 'IntraWeb Bootstrap Framework'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}
-
+{$WARN UNIT_DEPRECATED OFF}
+{$WARN SYMBOL_DEPRECATED OFF}
 requires
   rtl,
   vcl,
@@ -58,16 +59,11 @@ contains
   IWBSJsonDataObjects in 'IWBSJsonDataObjects.pas',
   IWBSImageUtils in 'IWBSImageUtils.pas',
   IWBSMemoHtml in 'IWBSMemoHtml.pas',
-  IWBSNavBar in 'IWBSNavBar.pas',
-  IWBSCustomRegion in 'IWBSCustomRegion.pas',
-  IWBSInputForm in 'IWBSInputForm.pas',
   IWBSModal in 'IWBSModal.pas',
   IWBSList in 'IWBSList.pas',
-  IWBSDeprecated in 'IWBSDeprecated.pas',
   IWBSButtonGroup in 'IWBSButtonGroup.pas',
+  IWBSInputForm in 'IWBSInputForm.pas',
+  IWBSNavBar in 'IWBSNavBar.pas',
+  IWBSCustomRegion in 'IWBSCustomRegion.pas',
   IWBSCommonInterfaces in 'IWBSCommonInterfaces.pas';
-
 end.
-
-
-

@@ -102,10 +102,7 @@ function TIWBSModal.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 var
   lCss: string;
 begin
-  Result := inherited;
-
   FMainID := HTMLName+FWrapperSuffix;
-
   Result := TIWHTMLTag.CreateTag('div');
   Result.Contents.AddTagAsObject(FRegionDiv);
   Result.AddStringParam('id', FMainID);

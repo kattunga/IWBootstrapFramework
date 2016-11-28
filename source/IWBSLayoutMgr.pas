@@ -2,9 +2,12 @@ unit IWBSLayoutMgr;
 
 interface
 
+{$Include IWBootstrap.inc}
+
 uses
   Classes, SysUtils, StrUtils, Forms, Controls,
-  IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext, IW.Common.RenderStream, IWHTMLTag;
+  IWContainerLayout, IWRenderContext, IWBaseHTMLInterfaces, IWBaseRenderContext,
+  IW.Common.RenderStream, IWHTMLTag;
 
 type
 
@@ -27,8 +30,8 @@ type
 implementation
 
 uses
-  IWBaseForm, IWGlobal, IWHTML40Interfaces, IWBaseInterfaces, IWLists, IWURL,
-  IWMimeTypes, IWApplication,
+  IWBaseForm, IWGlobal, IWHTML40Interfaces, IWBaseInterfaces, IWURL, IWMimeTypes, IWApplication,
+  {$IFNDEF IW_14_1_0_UP} IWLists, {$ELSE} IW.Common.Lists, {$ENDIF}
   IWBSGlobal, IWBSCommon, IWBSCommonInterfaces, IWBSTabControl;
 
 constructor TIWBSLayoutMgr.Create(AOnwer: TComponent);
