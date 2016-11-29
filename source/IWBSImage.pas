@@ -272,7 +272,7 @@ begin
     AHTMLTag.AddIntegerParam('height', Height);
   end;
   if not Enabled then
-    AContext.AddToInitProc('setEnabled("' + HTMLName + '", false);');
+    AContext.AddToInitProc('setEnabled("' + AHTMLName + '", false);');
 
   if FAutoFormGroup and not (Parent is TIWBSInputGroup) then
     AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, AHTMLTag, Caption, AHTMLName);

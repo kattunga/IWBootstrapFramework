@@ -148,7 +148,6 @@ begin
   FIsStatic := False;
   FSupportReadOnly := False;
 
-  ScriptInsideTag := False;
   Height := 25;
   Width := 121;
 end;
@@ -335,6 +334,8 @@ procedure TIWBSCustomInput.InternalRenderHTML(const AHTMLName: string; AContext:
 begin
   inherited;
   FOldText := FText;
+
+
 end;
 
 procedure TIWBSCustomInput.SetCaption(const AValue: string);

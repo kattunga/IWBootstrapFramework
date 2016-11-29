@@ -25,11 +25,11 @@ type
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
     // Return the javascript code necessary to execute the callback
-    function GetScript(ASemiColon: boolean = True): string;
+    function GetScript(const AHTMLName: string; ASemiColon: boolean = True): string;
     // Register the callback in the server. Is for internal use, don't use it.
     procedure RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
     // Search in a script and replace params with same name as EventName with the js code necessary to execute the callback.
-    procedure ParseParam(AScript: TStringList);
+    procedure ParseParam(const AHTMLName: string; AScript: TStringList);
   published
     // Specifies if the delphi event will be automatically binded to the jQuery control with the EventName specified.
     // If true, the event will be automatically attached to the rendered object. @br
@@ -144,7 +144,7 @@ begin
     inherited;
 end;
 
-function TIWBSCustomAsyncEvent.GetScript(ASemiColon: boolean = True): string;
+function TIWBSCustomAsyncEvent.GetScript(const AHTMLName: string; ASemiColon: boolean = True): string;
 var
   LParams, LName: string;
   i: integer;
@@ -159,7 +159,7 @@ begin
   end;
   if LParams = '' then
     LParams := '""';
-  Result := 'ajaxCall("'+TIWBSCustomControl(Collection.Owner).HTMLName+'.'+EventName+'",'+LParams+', '+IfThen(FLock,'true','false')+')';
+  Result := 'ajaxCall("'+AHTMLName+'.'+EventName+'",'+LParams+', '+IfThen(FLock,'true','false')+')';
   if ASemiColon then
     Result := Result + ';';
 end;
@@ -180,10 +180,10 @@ begin
   AApplication.RegisterCallBack(AComponentName+'.'+FEventName, ExecuteCallBack);
 end;
 
-procedure TIWBSCustomAsyncEvent.ParseParam(AScript: TStringList);
+procedure TIWBSCustomAsyncEvent.ParseParam(const AHTMLName: string; AScript: TStringList);
 begin
   if AScript.Count > 0 then
-    AScript.Text := ReplaceStr(AScript.Text,'{%'+FEventName+'%}',GetScript);
+    AScript.Text := ReplaceStr(AScript.Text,'{%'+FEventName+'%}',GetScript(AHTMLName));
 end;
 {$endregion}
 

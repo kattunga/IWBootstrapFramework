@@ -83,7 +83,7 @@ begin
   InputForm := IWBSFindParentInputForm(AParent);
   Result := TIWHTMLTag.CreateTag('div');
   try
-    Result.AddStringParam('id', AHTMLName+'_FG');
+    Result.AddStringParam('id', AHTMLName+'_CB');
     if (InputForm <> nil) and (InputForm.BSFormType = bsftInline) then
       Result.AddClassParam(ACss+'-inline')
     else

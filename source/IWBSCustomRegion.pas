@@ -576,9 +576,12 @@ function TIWBSCustomRegion.RenderText: string;
 var
   i: integer;
   LLines: TStringList;
+  lHTMLName: string;
 begin
   if RawText then
     begin
+      lHTMLName := HTMLName;
+
       LLines := TStringList.Create;
       try
         LLines.Text := FText;
@@ -589,7 +592,7 @@ begin
         // replace inner events calls
         if IsStoredCustomAsyncEvents then
           for i := 0 to CustomAsyncEvents.Count-1 do
-            TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParam(LLines);
+            TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParam(lHTMLName, LLines);
 
         // replace inner events calls
         if IsStoredCustomRestEvents then

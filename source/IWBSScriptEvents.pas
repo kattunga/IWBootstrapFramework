@@ -105,9 +105,9 @@ begin
     if AComponent.IsStoredCustomAsyncEvents then begin
       for i := 0 to AComponent.CustomAsyncEvents.Count-1 do begin
         AComponent.CustomAsyncEvents.Items[i].RegisterEvent(AContext.WebApplication, LHTMLName);
-        AComponent.CustomAsyncEvents.Items[i].ParseParam(LJScript);
+        AComponent.CustomAsyncEvents.Items[i].ParseParam(LHTMLName, LJScript);
         if AComponent.CustomAsyncEvents.Items[i].AutoBind and (AComponent.CustomAsyncEvents.Items[i].EventName <> '') then
-          LJScript.Add('$("#'+LHTMLName+'").off("'+AComponent.CustomAsyncEvents.Items[i].EventName+'").on("'+AComponent.CustomAsyncEvents.Items[i].EventName+'", function('+AComponent.CustomAsyncEvents.Items[i].EventParams+') {'+AComponent.CustomAsyncEvents.Items[i].GetScript+'});');
+          LJScript.Add('$("#'+LHTMLName+'").off("'+AComponent.CustomAsyncEvents.Items[i].EventName+'").on("'+AComponent.CustomAsyncEvents.Items[i].EventName+'", function('+AComponent.CustomAsyncEvents.Items[i].EventParams+') {'+AComponent.CustomAsyncEvents.Items[i].GetScript(LHTMLName)+'});');
       end;
       LJScript.Text := TIWBSCommon.ReplaceParams(AComponent, LJScript.Text);
     end;

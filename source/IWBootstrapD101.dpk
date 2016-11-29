@@ -28,8 +28,7 @@ package IWBootstrapD101;
 {$DESCRIPTION 'IntraWeb Bootstrap Framework'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}
-{$WARN UNIT_DEPRECATED OFF}
-{$WARN SYMBOL_DEPRECATED OFF}
+
 requires
   rtl,
   vcl,
@@ -65,5 +64,7 @@ contains
   IWBSInputForm in 'IWBSInputForm.pas',
   IWBSNavBar in 'IWBSNavBar.pas',
   IWBSCustomRegion in 'IWBSCustomRegion.pas',
-  IWBSCommonInterfaces in 'IWBSCommonInterfaces.pas';
+  IWBSCommonInterfaces in 'IWBSCommonInterfaces.pas',
+  IWBSDeprecated in 'IWBSDeprecated.pas';
+
 end.

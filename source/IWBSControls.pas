@@ -202,13 +202,13 @@ begin
     begin
       AHTMLTag := TIWHTMLTag.CreateTag(FTagType);
     end;
-  AHTMLTag.AddStringParam('id', HTMLName);
+  AHTMLTag.AddStringParam('id', AHTMLName);
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('style',ActiveStyle);
   AHTMLTag.Contents.AddText(FOldText);
 
   if Parent is TIWBSInputGroup then
-    AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, HTMLName, 'addon');
+    AHTMLTag := IWBSCreateInputGroupAddOn(AHTMLTag, AHTMLName, 'addon');
 end;
 
 function TIWBSLabel.IsTagTypeStored: Boolean;
@@ -278,9 +278,12 @@ function TIWBSText.RenderText: string;
 var
   i: integer;
   LLines: TStringList;
+  lHTMLName: string;
 begin
   if FRawText then
     begin
+      lHTMLName := HTMLName;
+
       LLines := TStringList.Create;
       try
         LLines.Assign(FLines);
@@ -291,7 +294,7 @@ begin
         // replace inner events calls
         if IsStoredCustomAsyncEvents then
           for i := 0 to CustomAsyncEvents.Count-1 do
-            TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParam(LLines);
+            TIWBSCustomAsyncEvent(CustomAsyncEvents.Items[i]).ParseParam(lHTMLName, LLines);
 
         // replace inner events calls
         if IsStoredCustomRestEvents then
@@ -319,7 +322,7 @@ begin
   FOldText := RenderText;
 
   AHTMLTag := TIWHTMLTag.CreateTag(FTagType);
-  AHTMLTag.AddStringParam('id', HTMLName);
+  AHTMLTag.AddStringParam('id', AHTMLName);
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('style',ActiveStyle);
   AHTMLTag.Contents.AddText(FOldText);
