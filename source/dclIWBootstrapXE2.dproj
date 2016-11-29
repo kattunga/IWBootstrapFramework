@@ -1,13 +1,13 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{CD83096B-2583-4462-B79D-EE0FF82291E6}</ProjectGuid>
-        <MainSource>IWBootstrapXE5.dpk</MainSource>
+        <ProjectGuid>{784717EE-4FAA-402E-9962-42C09CA1ED2B}</ProjectGuid>
+        <MainSource>dclIWBootstrapXE2.dpk</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Package</AppType>
-        <FrameworkType>VCL</FrameworkType>
-        <ProjectVersion>18.1</ProjectVersion>
+        <FrameworkType>None</FrameworkType>
+        <ProjectVersion>15.3</ProjectVersion>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -15,6 +15,11 @@
     </PropertyGroup>
     <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
         <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
@@ -35,81 +40,61 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <SanitizedProjectName>IWBootstrapXE5</SanitizedProjectName>
-        <DCC_DcuOutput>.\XE5\$(Platform)\$(Config)</DCC_DcuOutput>
-        <RuntimeOnlyPackage>true</RuntimeOnlyPackage>
-        <DCC_Description>IntraWeb Bootstrap Framework</DCC_Description>
-        <VerInfo_Locale>11274</VerInfo_Locale>
         <DCC_N>false</DCC_N>
-        <GenPackage>true</GenPackage>
-        <DCC_F>false</DCC_F>
+        <DCC_S>false</DCC_S>
         <DCC_K>false</DCC_K>
         <DCC_E>false</DCC_E>
-        <DCC_S>false</DCC_S>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=;CFBundleName=;CFBundleDisplayName=;UIDeviceFamily=;CFBundleIdentifier=;CFBundleVersion=;CFBundlePackageType=;CFBundleSignature=;CFBundleAllowMixedLocalizations=;UISupportedInterfaceOrientations=;CFBundleExecutable=;CFBundleResourceSpecification=;LSRequiresIPhoneOS=;CFBundleInfoDictionaryVersion=;CFBundleDevelopmentRegion=;package=;label=;versionCode=;versionName=;persistent=;restoreAnyVersion=;installLocation=;largeHeap=;theme=</VerInfo_Keys>
-        <DCC_ImageBase>00400000</DCC_ImageBase>
+        <VerInfo_Locale>11274</VerInfo_Locale>
+        <GenPackage>true</GenPackage>
         <GenDll>true</GenDll>
-        <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_ImageBase>00400000</DCC_ImageBase>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_F>false</DCC_F>
+        <DCC_DebugInformation>true</DCC_DebugInformation>
+        <DCC_Description>IntraWeb Bootstrap Framework</DCC_Description>
+        <DesignOnlyPackage>true</DesignOnlyPackage>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=;CFBundleName=;CFBundleDisplayName=;UIDeviceFamily=;CFBundleIdentifier=;CFBundleVersion=;CFBundlePackageType=;CFBundleSignature=;CFBundleAllowMixedLocalizations=;UISupportedInterfaceOrientations=;CFBundleExecutable=;CFBundleResourceSpecification=;LSRequiresIPhoneOS=;CFBundleInfoDictionaryVersion=;CFBundleDevelopmentRegion=;package=;label=;versionCode=;versionName=;persistent=;restoreAnyVersion=;installLocation=;largeHeap=;theme=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-        <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_UsePackage>vclimg;dbrtl;inet;Intraweb_14_DXE25;IWBootstrapXE25;$(DCC_UsePackage)</DCC_UsePackage>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <DCC_UsePackage>vclimg;dbrtl;inet;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
-        <DCC_DebugInformation>0</DCC_DebugInformation>
-        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
-        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
-        <DCC_Optimize>false</DCC_Optimize>
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <DCC_Optimize>false</DCC_Optimize>
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_DebugInformation>2</DCC_DebugInformation>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="rtl.dcp"/>
-        <DCCReference Include="vcl.dcp"/>
+        <DCCReference Include="DesignIDE.dcp"/>
         <DCCReference Include="vclimg.dcp"/>
+        <DCCReference Include="dbrtl.dcp"/>
         <DCCReference Include="inet.dcp"/>
-        <DCCReference Include="Intraweb_14_D10.dcp"/>
-        <DCCReference Include="IWBSUtils.pas"/>
-        <DCCReference Include="IWBSCommon.pas"/>
-        <DCCReference Include="IWBSRegion.pas"/>
-        <DCCReference Include="IWBSInput.pas"/>
-        <DCCReference Include="IWBSLayoutMgr.pas"/>
-        <DCCReference Include="IWBSTabControl.pas"/>
-        <DCCReference Include="IWBSControls.pas"/>
-        <DCCReference Include="IWBSCustomInput.pas"/>
-        <DCCReference Include="IWBSInputCommon.pas"/>
-        <DCCReference Include="IWBSButton.pas"/>
-        <DCCReference Include="IWBSCustomControl.pas"/>
-        <DCCReference Include="IWBSScriptEvents.pas"/>
-        <DCCReference Include="IWBSImage.pas"/>
-        <DCCReference Include="IWBSRestServer.pas"/>
-        <DCCReference Include="IWBSCustomEvents.pas"/>
-        <DCCReference Include="IWBSGlobal.pas"/>
-        <DCCReference Include="IWBSDialogs.pas"/>
-        <DCCReference Include="IWBSDropDown.pas"/>
-        <DCCReference Include="IWBSJsonDataObjects.pas"/>
-        <DCCReference Include="IWBSImageUtils.pas"/>
-        <DCCReference Include="IWBSMemoHtml.pas"/>
-        <DCCReference Include="IWBSModal.pas"/>
-        <DCCReference Include="IWBSList.pas"/>
-        <DCCReference Include="IWBSButtonGroup.pas"/>
-        <DCCReference Include="IWBSInputForm.pas"/>
-        <DCCReference Include="IWBSNavBar.pas"/>
-        <DCCReference Include="IWBSCustomRegion.pas"/>
-        <DCCReference Include="IWBSCommonInterfaces.pas"/>
+        <DCCReference Include="IWBootstrapXE2.dcp"/>
+        <DCCReference Include="Intraweb_14_DXE2.dcp"/>
+        <DCCReference Include="dclIntraweb_14_DXE2.dcp"/>
+        <DCCReference Include="IWBSRegister.pas"/>
+        <DCCReference Include="glyphicons.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -128,7 +113,7 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">IWBootstrapXE5.dpk</Source>
+                    <Source Name="MainSource">dclIWBootstrapXE2.dpk</Source>
                 </Source>
                 <VersionInfo>
                     <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
@@ -181,6 +166,10 @@
                     <VersionInfoKeys Name="theme"/>
                 </VersionInfoKeys>
                 <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\12.0\Bpl\dclIWCGJQCore_140_190.bpl">CgDevTools Intraweb Components Core DesignTime</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\12.0\Bpl\CGDevToolsCustomXE5.bpl">CGDevTool Custom</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\12.0\Bpl\dclIWCGJQComps_140_190.bpl">CgDevTools Intraweb jQuery Components DesignTime</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\RAD Studio\12.0\Bpl\dclIWCGJQBootsTrapXE5.bpl">IntraWeb Bootstrap Framework CGDevTools support</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k190.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp190.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>

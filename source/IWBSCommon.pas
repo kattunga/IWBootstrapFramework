@@ -2,9 +2,12 @@ unit IWBSCommon;
 
 interface
 
+{$Include IWBootstrap.inc}
+
 uses Classes, SysUtils, StrUtils, Forms,
      IWApplication, IWRenderContext, IWControl, IWHTML40Interfaces, IWBaseHTMLInterfaces, IWTypes,
      IWBaseInterfaces, IWHTMLTag, IWBaseRenderContext,
+     {$IFDEF IW_14_1_0_UP} IW.Common.StrLists, {$ENDIF}
      IWBSJsonDataObjects, IWBSCommonInterfaces;
 
 const
@@ -91,7 +94,7 @@ type
     class function RenderHTMLTag(AControl: IIWBSComponent; AContext: TIWCompContext): string;
     class function RenderStyle(AComponent: IIWBSComponent): string;
     class function ReplaceParams(AComponent: IIWBSComponent; const AScript: string; AFrom: integer = 1): string;
-    class procedure SetNotVisible(AParams: TStrings);
+    class procedure SetNotVisible(AParams: {$IFDEF IW_14_1_0_UP} TIWNameValueList {$ELSE} TStrings {$ENDIF});
     class procedure ValidateParamName(const AName: string);
     class procedure ValidateTagName(const AName: string);
 
@@ -560,7 +563,7 @@ begin
       raise Exception.Create('Invalid character in tag name '+AName);
 end;
 
-class procedure TIWBSCommon.SetNotVisible(AParams: TStrings);
+class procedure TIWBSCommon.SetNotVisible(AParams: {$IFDEF IW_14_1_0_UP} TIWNameValueList {$ELSE} TStrings {$ENDIF});
 var
   LStyle: string;
 begin

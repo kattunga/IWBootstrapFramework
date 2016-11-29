@@ -81,7 +81,7 @@
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="vclimg.dcp"/>
         <DCCReference Include="inet.dcp"/>
-        <DCCReference Include="Intraweb_14_D10_1.dcp"/>
+        <DCCReference Include="Intraweb_14_D10.dcp"/>
         <DCCReference Include="IWBSUtils.pas"/>
         <DCCReference Include="IWBSCommon.pas"/>
         <DCCReference Include="IWBSRegion.pas"/>
@@ -103,13 +103,12 @@
         <DCCReference Include="IWBSJsonDataObjects.pas"/>
         <DCCReference Include="IWBSImageUtils.pas"/>
         <DCCReference Include="IWBSMemoHtml.pas"/>
-        <DCCReference Include="IWBSNavBar.pas"/>
-        <DCCReference Include="IWBSCustomRegion.pas"/>
-        <DCCReference Include="IWBSInputForm.pas"/>
         <DCCReference Include="IWBSModal.pas"/>
         <DCCReference Include="IWBSList.pas"/>
-        <DCCReference Include="IWBSDeprecated.pas"/>
         <DCCReference Include="IWBSButtonGroup.pas"/>
+        <DCCReference Include="IWBSInputForm.pas"/>
+        <DCCReference Include="IWBSNavBar.pas"/>
+        <DCCReference Include="IWBSCustomRegion.pas"/>
         <DCCReference Include="IWBSCommonInterfaces.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>

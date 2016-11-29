@@ -28,6 +28,8 @@ package IWBootstrapD10;
 {$DESCRIPTION 'IntraWeb Bootstrap Framework'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}
+{$WARN UNIT_DEPRECATED OFF}
+{$WARN SYMBOL_DEPRECATED OFF}
 
 requires
   rtl,
@@ -43,7 +45,6 @@ contains
   IWBSInput in 'IWBSInput.pas',
   IWBSLayoutMgr in 'IWBSLayoutMgr.pas',
   IWBSTabControl in 'IWBSTabControl.pas',
-  IWBSRegionCommon in 'IWBSRegionCommon.pas',
   IWBSControls in 'IWBSControls.pas',
   IWBSCustomInput in 'IWBSCustomInput.pas',
   IWBSInputCommon in 'IWBSInputCommon.pas',
@@ -58,8 +59,14 @@ contains
   IWBSDropDown in 'IWBSDropDown.pas',
   IWBSJsonDataObjects in 'IWBSJsonDataObjects.pas',
   IWBSImageUtils in 'IWBSImageUtils.pas',
-  IWBSMemoHtml in 'IWBSMemoHtml.pas';
-
+  IWBSMemoHtml in 'IWBSMemoHtml.pas',
+  IWBSModal in 'IWBSModal.pas',
+  IWBSList in 'IWBSList.pas',
+  IWBSButtonGroup in 'IWBSButtonGroup.pas',
+  IWBSInputForm in 'IWBSInputForm.pas',
+  IWBSNavBar in 'IWBSNavBar.pas',
+  IWBSCustomRegion in 'IWBSCustomRegion.pas',
+  IWBSCommonInterfaces in 'IWBSCommonInterfaces.pas';
 end.
 
 

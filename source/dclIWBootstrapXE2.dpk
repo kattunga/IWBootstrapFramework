@@ -1,11 +1,11 @@
-package dclIWBootstrapD10;
+package dclIWBootstrapXE2;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
-{$DEBUGINFO OFF}
+{$DEBUGINFO ON}
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
@@ -34,13 +34,12 @@ requires
   vclimg,
   dbrtl,
   inet,
-  IWBootstrapD10,
-  Intraweb_14_D10,
-  dclIntraweb_14_D10;
+  IWBootstrapXE2,
+  Intraweb_14_DXE2,
+  dclIntraweb_14_DXE2;
 
 contains
   IWBSRegister in 'IWBSRegister.pas',
   glyphicons in 'glyphicons.pas';
 
 end.
-
