@@ -99,19 +99,21 @@
 					var $verticalContainer = $horizontalContainer.siblings(".tabs-dropdown").find(".dropdown-menu");
 
 					$verticalContainer.html("");
+					$verticalContainer.css("z-index", 1050);
 					
 					$horizontalContainer.children('li').each( function (index, element) {
-						var htab = document.createElement("li");
+						if ($(element).children('a').css("display") !== 'none') {
+							var htab = document.createElement("li");
 
-						$(htab).append('<a href="#">'+$(element).children('a').html()+'</a>');
-					//	$(htab).children('a').children('*').remove();
-						$(htab).toggleClass('active',$(element).hasClass('active'));
-						$(htab).attr("tab-id", index);
-						$(htab).on("click", function (e) {
-							$horizontalContainer.find("[tab-id=" + $(this).attr("tab-id") + "] a").tab("show");
-					    	updateTabs();
-					    });
-						$verticalContainer.append(htab);
+							$(htab).append('<a href="#">'+$(element).children('a').html()+'</a>');
+							$(htab).toggleClass('active',$(element).hasClass('active'));
+							$(htab).attr("tab-id", index);
+							$(htab).on("click", function (e) {
+								$horizontalContainer.find("[tab-id=" + $(this).attr("tab-id") + "] a").tab("show");
+								updateTabs();
+							});
+							$verticalContainer.append(htab);
+						}
 					});
 				};
 				$horizontalContainer.siblings(".tabs-dropdown").off('show.bs.dropdown').on('show.bs.dropdown', onDropDow);

@@ -573,460 +573,6 @@ object IWForm2: TIWForm2
                 end
               end
             end
-            object IWTabControl21Page1: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1392
-              Height = 1454
-              RenderInvisibleControls = True
-              TabOrder = 1
-              Title = 'Input Group'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSRegion15: TIWBSRegion
-                Left = 24
-                Top = 13
-                Width = 849
-                Height = 640
-                BSGridOptions.GridMdSpan = 6
-                Css = ''
-                Text = ''
-                object IWBSInputGroup1: TIWBSInputGroup
-                  Left = 33
-                  Top = 119
-                  Width = 784
-                  Height = 43
-                  Css = ''
-                  Text = ''
-                  Caption = 'Button Left (large)'
-                  BSRelativeSize = bsrzLg
-                  object IWBSButton22: TIWBSButton
-                    Left = 7
-                    Top = 8
-                    Width = 87
-                    Height = 25
-                    Hint = 'Press this button'
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSButton22'
-                    OnAsyncClick = IWBSButton22AsyncClick
-                    Caption = 'IWBSButton22'
-                  end
-                  object IWBSInput8: TIWBSInput
-                    Left = 101
-                    Top = 12
-                    Width = 121
-                    Height = 21
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSInput8'
-                    ScriptInsideTag = True
-                    Caption = ''
-                    Text = ''
-                  end
-                end
-                object IWBSInputGroup2: TIWBSInputGroup
-                  Left = 33
-                  Top = 177
-                  Width = 784
-                  Height = 43
-                  Css = ''
-                  Text = ''
-                  Caption = 'Button Right'
-                  object IWBSButton23: TIWBSButton
-                    Left = 231
-                    Top = 8
-                    Width = 98
-                    Height = 25
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSButton22'
-                    Caption = 'IWBSButton22'
-                  end
-                  object IWBSInput9: TIWBSInput
-                    Left = 99
-                    Top = 8
-                    Width = 121
-                    Height = 21
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSInput8'
-                    ScriptInsideTag = True
-                    Caption = ''
-                    Text = ''
-                  end
-                end
-                object IWBSInputGroup3: TIWBSInputGroup
-                  Left = 33
-                  Top = 234
-                  Width = 784
-                  Height = 51
-                  Css = ''
-                  Text = ''
-                  Caption = 'Two Buttons (small)'
-                  BSRelativeSize = bsrzSm
-                  object IWBSButton24: TIWBSButton
-                    Left = 242
-                    Top = 13
-                    Width = 91
-                    Height = 25
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSButton22'
-                    BSGlyphicon = 'arrow-down'
-                    Caption = 'IWBSButton22'
-                  end
-                  object IWBSInput10: TIWBSInput
-                    Left = 101
-                    Top = 13
-                    Width = 121
-                    Height = 24
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSInput8'
-                    ScriptInsideTag = True
-                    Caption = ''
-                    Text = ''
-                  end
-                  object IWBSButton25: TIWBSButton
-                    Left = 12
-                    Top = 13
-                    Width = 75
-                    Height = 25
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSButton22'
-                    BSGlyphicon = 'align-center'
-                    Caption = 'IWBSButton22'
-                  end
-                end
-                object IWBSRegion16: TIWBSRegion
-                  Left = 32
-                  Top = 38
-                  Width = 785
-                  Height = 44
-                  Css = ''
-                  Text = 'Iinput groups'
-                  BSRegionType = bsrtPageHeader
-                  TagType = bsttH2
-                end
-                object IWBSInputGroup4: TIWBSInputGroup
-                  Left = 33
-                  Top = 306
-                  Width = 784
-                  Height = 58
-                  Css = ''
-                  Text = ''
-                  Caption = 'CheckBox AddOn'
-                  object IWBSInput11: TIWBSInput
-                    Left = 169
-                    Top = 17
-                    Width = 121
-                    Height = 21
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSInput8'
-                    ScriptInsideTag = True
-                    Caption = ''
-                    Text = ''
-                  end
-                  object IWBSCheckBox3: TIWBSCheckBox
-                    Left = 21
-                    Top = 16
-                    Width = 121
-                    Height = 21
-                    FriendlyName = 'IWBSCheckBox3'
-                    ScriptInsideTag = True
-                    AutoEditable = False
-                    Caption = 'IWBSCheckBox3'
-                    Text = 'false'
-                    ValueChecked = 'true'
-                    ValueUnchecked = 'false'
-                  end
-                end
-                object IWBSInputGroup5: TIWBSInputGroup
-                  Left = 33
-                  Top = 379
-                  Width = 784
-                  Height = 58
-                  Css = ''
-                  Text = ''
-                  Caption = 'Radio AddOn'
-                  object IWBSInput12: TIWBSInput
-                    Left = 169
-                    Top = 17
-                    Width = 121
-                    Height = 21
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSInput8'
-                    ScriptInsideTag = True
-                    Caption = ''
-                    Text = ''
-                  end
-                  object IWBSRadioButton5: TIWBSRadioButton
-                    Left = 21
-                    Top = 16
-                    Width = 121
-                    Height = 21
-                    FriendlyName = 'IWBSRadioButton5'
-                    ScriptInsideTag = True
-                    Caption = 'IWBSRadioButton5'
-                    Text = 'false'
-                    Group = 'no group'
-                    ValueChecked = 'true'
-                    ValueUnchecked = 'false'
-                  end
-                end
-                object IWBSInputGroup6: TIWBSInputGroup
-                  Left = 33
-                  Top = 514
-                  Width = 784
-                  Height = 43
-                  Css = ''
-                  Text = ''
-                  Caption = 'Glyphicons'
-                  object IWBSInput4: TIWBSInput
-                    Left = 101
-                    Top = 12
-                    Width = 121
-                    Height = 21
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSInput8'
-                    ScriptInsideTag = True
-                    Caption = ''
-                    Text = ''
-                  end
-                  object IWBSGlyphicon1: TIWBSGlyphicon
-                    Left = 12
-                    Top = 12
-                    Width = 29
-                    Height = 21
-                    FriendlyName = 'IWBSGlyphicon1'
-                    BSGlyphicon = 'align-center'
-                  end
-                  object IWBSGlyphicon2: TIWBSGlyphicon
-                    Left = 292
-                    Top = 12
-                    Width = 21
-                    Height = 21
-                    FriendlyName = 'IWBSGlyphicon2'
-                  end
-                end
-                object IWBSInputGroup7: TIWBSInputGroup
-                  Left = 34
-                  Top = 563
-                  Width = 783
-                  Height = 43
-                  Css = ''
-                  Text = ''
-                  Caption = 'Labels'
-                  object IWBSInput5: TIWBSInput
-                    Left = 101
-                    Top = 12
-                    Width = 121
-                    Height = 21
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSInput8'
-                    ScriptInsideTag = True
-                    Caption = ''
-                    Text = ''
-                  end
-                  object IWBSLabel1: TIWBSLabel
-                    Left = 11
-                    Top = 12
-                    Width = 40
-                    Height = 16
-                    FriendlyName = 'IWBSLabel1'
-                    Caption = 'Before'
-                  end
-                  object IWBSLabel2: TIWBSLabel
-                    Left = 248
-                    Top = 12
-                    Width = 30
-                    Height = 16
-                    FriendlyName = 'IWBSLabel2'
-                    Caption = 'After'
-                  end
-                end
-                object IWBSInputGroup8: TIWBSInputGroup
-                  Left = 33
-                  Top = 449
-                  Width = 784
-                  Height = 58
-                  Css = ''
-                  Text = ''
-                  Caption = 'Radio AddOn'
-                  object IWBSInput27: TIWBSInput
-                    Left = 21
-                    Top = 21
-                    Width = 121
-                    Height = 26
-                    RenderSize = False
-                    StyleRenderOptions.RenderSize = False
-                    FriendlyName = 'IWBSInput8'
-                    ScriptInsideTag = True
-                    Caption = ''
-                    Text = ''
-                  end
-                  object IWBSDropDown1: TIWBSDropDown
-                    Left = 148
-                    Top = 22
-                    Width = 114
-                    Height = 25
-                    FriendlyName = 'IWBSDropDown1'
-                    Caption = 'DropDown'
-                    DropDownItems = <
-                      item
-                        Caption = 'Item 1'
-                      end
-                      item
-                        Caption = 'Item 2'
-                      end
-                      item
-                        Caption = 'SubMenu'
-                        DropDownItems = <
-                          item
-                            Caption = 'SubItem 1'
-                          end
-                          item
-                            Caption = 'SubItem 2'
-                          end
-                          item
-                            Caption = 'SubItem 2'
-                          end>
-                      end>
-                    DropUp = True
-                    DropDownRight = True
-                  end
-                end
-              end
-            end
-            object IWTabControl21Page2: TIWTabPage
-              Left = 0
-              Top = 20
-              Width = 1392
-              Height = 1454
-              RenderInvisibleControls = True
-              TabOrder = 12
-              Title = 'TabControl Options'
-              BorderOptions.NumericWidth = 0
-              BorderOptions.BorderWidth = cbwNumeric
-              BorderOptions.Style = cbsNone
-              BorderOptions.Color = clNone
-              Color = clWebWHITE
-              object IWBSRegion37: TIWBSRegion
-                Left = 29
-                Top = 5
-                Width = 561
-                Height = 637
-                BSGridOptions.GridSmSpan = 6
-                Css = ''
-                Style.Strings = (
-                  'margin: 1em')
-                Text = ''
-                object IWBSRegion7: TIWBSRegion
-                  Left = 15
-                  Top = 6
-                  Width = 433
-                  Height = 303
-                  Css = ''
-                  Text = ''
-                  BSRegionType = bsrtWell
-                  object IWBSInputForm1: TIWBSInputForm
-                    Left = 16
-                    Top = 13
-                    Width = 293
-                    Height = 206
-                    Css = ''
-                    Text = ''
-                    object IWBSButton30: TIWBSButton
-                      Left = 26
-                      Top = 148
-                      Width = 184
-                      Height = 25
-                      RenderSize = False
-                      StyleRenderOptions.RenderSize = False
-                      FriendlyName = 'IWBSButton20aaaaaa'
-                      OnAsyncClick = IWBSButton30AsyncClick
-                      Caption = 'Apply settings'
-                    end
-                    object chkTabsJust: TIWBSCheckBox
-                      Left = 25
-                      Top = 30
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'chkTabsJust'
-                      ScriptInsideTag = True
-                      Caption = 'Tabs Justified'
-                      Text = 'false'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object chkTabsStacked: TIWBSCheckBox
-                      Left = 25
-                      Top = 57
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'chkTabsStacked'
-                      ScriptInsideTag = True
-                      Caption = 'Tabs Stacked'
-                      Text = 'false'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object chkTabsPills: TIWBSCheckBox
-                      Left = 25
-                      Top = 88
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'chkTabsPills'
-                      ScriptInsideTag = True
-                      Caption = 'Tabs Pills'
-                      Text = 'true'
-                      Checked = True
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                    object chkTabsFade: TIWBSCheckBox
-                      Left = 26
-                      Top = 115
-                      Width = 121
-                      Height = 21
-                      FriendlyName = 'chkTabsFade'
-                      ScriptInsideTag = True
-                      Caption = 'Tabs Fade'
-                      Text = 'false'
-                      ValueChecked = 'true'
-                      ValueUnchecked = 'false'
-                    end
-                  end
-                end
-                object IWBSRegion36: TIWBSRegion
-                  Left = 12
-                  Top = 326
-                  Width = 438
-                  Height = 60
-                  Css = ''
-                  Text = ''
-                  BSRegionType = bsrtWell
-                  object IWBSButton42: TIWBSButton
-                    Left = 26
-                    Top = 18
-                    Width = 329
-                    Height = 25
-                    FriendlyName = 'IWBSButton42'
-                    OnAsyncClick = IWBSButton42AsyncClick
-                    Caption = 'Toggle TabPage visibility'
-                  end
-                end
-              end
-            end
             object IWTabControl21Page5: TIWTabPage
               Left = 0
               Top = 20
@@ -2795,6 +2341,460 @@ object IWForm2: TIWForm2
                 end
               end
             end
+            object IWTabControl21Page2: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1392
+              Height = 1454
+              RenderInvisibleControls = True
+              TabOrder = 12
+              Title = 'TabControl Options'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSRegion37: TIWBSRegion
+                Left = 29
+                Top = 5
+                Width = 561
+                Height = 637
+                BSGridOptions.GridSmSpan = 6
+                Css = ''
+                Style.Strings = (
+                  'margin: 1em')
+                Text = ''
+                object IWBSRegion7: TIWBSRegion
+                  Left = 15
+                  Top = 6
+                  Width = 433
+                  Height = 303
+                  Css = ''
+                  Text = ''
+                  BSRegionType = bsrtWell
+                  object IWBSInputForm1: TIWBSInputForm
+                    Left = 16
+                    Top = 13
+                    Width = 293
+                    Height = 206
+                    Css = ''
+                    Text = ''
+                    object IWBSButton30: TIWBSButton
+                      Left = 26
+                      Top = 148
+                      Width = 184
+                      Height = 25
+                      RenderSize = False
+                      StyleRenderOptions.RenderSize = False
+                      FriendlyName = 'IWBSButton20aaaaaa'
+                      OnAsyncClick = IWBSButton30AsyncClick
+                      Caption = 'Apply settings'
+                    end
+                    object chkTabsJust: TIWBSCheckBox
+                      Left = 25
+                      Top = 30
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'chkTabsJust'
+                      ScriptInsideTag = True
+                      Caption = 'Tabs Justified'
+                      Text = 'false'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object chkTabsStacked: TIWBSCheckBox
+                      Left = 25
+                      Top = 57
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'chkTabsStacked'
+                      ScriptInsideTag = True
+                      Caption = 'Tabs Stacked'
+                      Text = 'false'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object chkTabsPills: TIWBSCheckBox
+                      Left = 25
+                      Top = 88
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'chkTabsPills'
+                      ScriptInsideTag = True
+                      Caption = 'Tabs Pills'
+                      Text = 'true'
+                      Checked = True
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                    object chkTabsFade: TIWBSCheckBox
+                      Left = 26
+                      Top = 115
+                      Width = 121
+                      Height = 21
+                      FriendlyName = 'chkTabsFade'
+                      ScriptInsideTag = True
+                      Caption = 'Tabs Fade'
+                      Text = 'false'
+                      ValueChecked = 'true'
+                      ValueUnchecked = 'false'
+                    end
+                  end
+                end
+                object IWBSRegion36: TIWBSRegion
+                  Left = 12
+                  Top = 326
+                  Width = 438
+                  Height = 60
+                  Css = ''
+                  Text = ''
+                  BSRegionType = bsrtWell
+                  object IWBSButton42: TIWBSButton
+                    Left = 26
+                    Top = 18
+                    Width = 329
+                    Height = 25
+                    FriendlyName = 'IWBSButton42'
+                    OnAsyncClick = IWBSButton42AsyncClick
+                    Caption = 'Toggle TabPage visibility'
+                  end
+                end
+              end
+            end
+            object IWTabControl21Page1: TIWTabPage
+              Left = 0
+              Top = 20
+              Width = 1392
+              Height = 1454
+              RenderInvisibleControls = True
+              TabOrder = 1
+              Title = 'Input Group'
+              BorderOptions.NumericWidth = 0
+              BorderOptions.BorderWidth = cbwNumeric
+              BorderOptions.Style = cbsNone
+              BorderOptions.Color = clNone
+              Color = clWebWHITE
+              object IWBSRegion15: TIWBSRegion
+                Left = 24
+                Top = 13
+                Width = 849
+                Height = 640
+                BSGridOptions.GridMdSpan = 6
+                Css = ''
+                Text = ''
+                object IWBSInputGroup1: TIWBSInputGroup
+                  Left = 33
+                  Top = 119
+                  Width = 784
+                  Height = 43
+                  Css = ''
+                  Text = ''
+                  Caption = 'Button Left (large)'
+                  BSRelativeSize = bsrzLg
+                  object IWBSButton22: TIWBSButton
+                    Left = 7
+                    Top = 8
+                    Width = 87
+                    Height = 25
+                    Hint = 'Press this button'
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSButton22'
+                    OnAsyncClick = IWBSButton22AsyncClick
+                    Caption = 'IWBSButton22'
+                  end
+                  object IWBSInput8: TIWBSInput
+                    Left = 101
+                    Top = 12
+                    Width = 121
+                    Height = 21
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSInput8'
+                    ScriptInsideTag = True
+                    Caption = ''
+                    Text = ''
+                  end
+                end
+                object IWBSInputGroup2: TIWBSInputGroup
+                  Left = 33
+                  Top = 177
+                  Width = 784
+                  Height = 43
+                  Css = ''
+                  Text = ''
+                  Caption = 'Button Right'
+                  object IWBSButton23: TIWBSButton
+                    Left = 231
+                    Top = 8
+                    Width = 98
+                    Height = 25
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSButton22'
+                    Caption = 'IWBSButton22'
+                  end
+                  object IWBSInput9: TIWBSInput
+                    Left = 99
+                    Top = 8
+                    Width = 121
+                    Height = 21
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSInput8'
+                    ScriptInsideTag = True
+                    Caption = ''
+                    Text = ''
+                  end
+                end
+                object IWBSInputGroup3: TIWBSInputGroup
+                  Left = 33
+                  Top = 234
+                  Width = 784
+                  Height = 51
+                  Css = ''
+                  Text = ''
+                  Caption = 'Two Buttons (small)'
+                  BSRelativeSize = bsrzSm
+                  object IWBSButton24: TIWBSButton
+                    Left = 242
+                    Top = 13
+                    Width = 91
+                    Height = 25
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSButton22'
+                    BSGlyphicon = 'arrow-down'
+                    Caption = 'IWBSButton22'
+                  end
+                  object IWBSInput10: TIWBSInput
+                    Left = 101
+                    Top = 13
+                    Width = 121
+                    Height = 24
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSInput8'
+                    ScriptInsideTag = True
+                    Caption = ''
+                    Text = ''
+                  end
+                  object IWBSButton25: TIWBSButton
+                    Left = 12
+                    Top = 13
+                    Width = 75
+                    Height = 25
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSButton22'
+                    BSGlyphicon = 'align-center'
+                    Caption = 'IWBSButton22'
+                  end
+                end
+                object IWBSRegion16: TIWBSRegion
+                  Left = 32
+                  Top = 38
+                  Width = 785
+                  Height = 44
+                  Css = ''
+                  Text = 'Iinput groups'
+                  BSRegionType = bsrtPageHeader
+                  TagType = bsttH2
+                end
+                object IWBSInputGroup4: TIWBSInputGroup
+                  Left = 33
+                  Top = 306
+                  Width = 784
+                  Height = 58
+                  Css = ''
+                  Text = ''
+                  Caption = 'CheckBox AddOn'
+                  object IWBSInput11: TIWBSInput
+                    Left = 169
+                    Top = 17
+                    Width = 121
+                    Height = 21
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSInput8'
+                    ScriptInsideTag = True
+                    Caption = ''
+                    Text = ''
+                  end
+                  object IWBSCheckBox3: TIWBSCheckBox
+                    Left = 21
+                    Top = 16
+                    Width = 121
+                    Height = 21
+                    FriendlyName = 'IWBSCheckBox3'
+                    ScriptInsideTag = True
+                    AutoEditable = False
+                    Caption = 'IWBSCheckBox3'
+                    Text = 'false'
+                    ValueChecked = 'true'
+                    ValueUnchecked = 'false'
+                  end
+                end
+                object IWBSInputGroup5: TIWBSInputGroup
+                  Left = 33
+                  Top = 379
+                  Width = 784
+                  Height = 58
+                  Css = ''
+                  Text = ''
+                  Caption = 'Radio AddOn'
+                  object IWBSInput12: TIWBSInput
+                    Left = 169
+                    Top = 17
+                    Width = 121
+                    Height = 21
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSInput8'
+                    ScriptInsideTag = True
+                    Caption = ''
+                    Text = ''
+                  end
+                  object IWBSRadioButton5: TIWBSRadioButton
+                    Left = 21
+                    Top = 16
+                    Width = 121
+                    Height = 21
+                    FriendlyName = 'IWBSRadioButton5'
+                    ScriptInsideTag = True
+                    Caption = 'IWBSRadioButton5'
+                    Text = 'false'
+                    Group = 'no group'
+                    ValueChecked = 'true'
+                    ValueUnchecked = 'false'
+                  end
+                end
+                object IWBSInputGroup6: TIWBSInputGroup
+                  Left = 33
+                  Top = 514
+                  Width = 784
+                  Height = 43
+                  Css = ''
+                  Text = ''
+                  Caption = 'Glyphicons'
+                  object IWBSInput4: TIWBSInput
+                    Left = 101
+                    Top = 12
+                    Width = 121
+                    Height = 21
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSInput8'
+                    ScriptInsideTag = True
+                    Caption = ''
+                    Text = ''
+                  end
+                  object IWBSGlyphicon1: TIWBSGlyphicon
+                    Left = 12
+                    Top = 12
+                    Width = 29
+                    Height = 21
+                    FriendlyName = 'IWBSGlyphicon1'
+                    BSGlyphicon = 'align-center'
+                  end
+                  object IWBSGlyphicon2: TIWBSGlyphicon
+                    Left = 292
+                    Top = 12
+                    Width = 21
+                    Height = 21
+                    FriendlyName = 'IWBSGlyphicon2'
+                  end
+                end
+                object IWBSInputGroup7: TIWBSInputGroup
+                  Left = 34
+                  Top = 563
+                  Width = 783
+                  Height = 43
+                  Css = ''
+                  Text = ''
+                  Caption = 'Labels'
+                  object IWBSInput5: TIWBSInput
+                    Left = 101
+                    Top = 12
+                    Width = 121
+                    Height = 21
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSInput8'
+                    ScriptInsideTag = True
+                    Caption = ''
+                    Text = ''
+                  end
+                  object IWBSLabel1: TIWBSLabel
+                    Left = 11
+                    Top = 12
+                    Width = 40
+                    Height = 16
+                    FriendlyName = 'IWBSLabel1'
+                    Caption = 'Before'
+                  end
+                  object IWBSLabel2: TIWBSLabel
+                    Left = 248
+                    Top = 12
+                    Width = 30
+                    Height = 16
+                    FriendlyName = 'IWBSLabel2'
+                    Caption = 'After'
+                  end
+                end
+                object IWBSInputGroup8: TIWBSInputGroup
+                  Left = 33
+                  Top = 449
+                  Width = 784
+                  Height = 58
+                  Css = ''
+                  Text = ''
+                  Caption = 'Radio AddOn'
+                  object IWBSInput27: TIWBSInput
+                    Left = 21
+                    Top = 21
+                    Width = 121
+                    Height = 26
+                    RenderSize = False
+                    StyleRenderOptions.RenderSize = False
+                    FriendlyName = 'IWBSInput8'
+                    ScriptInsideTag = True
+                    Caption = ''
+                    Text = ''
+                  end
+                  object IWBSDropDown1: TIWBSDropDown
+                    Left = 148
+                    Top = 22
+                    Width = 114
+                    Height = 25
+                    FriendlyName = 'IWBSDropDown1'
+                    Caption = 'DropDown'
+                    DropDownItems = <
+                      item
+                        Caption = 'Item 1'
+                      end
+                      item
+                        Caption = 'Item 2'
+                      end
+                      item
+                        Caption = 'SubMenu'
+                        DropDownItems = <
+                          item
+                            Caption = 'SubItem 1'
+                          end
+                          item
+                            Caption = 'SubItem 2'
+                          end
+                          item
+                            Caption = 'SubItem 2'
+                          end>
+                      end>
+                    DropUp = True
+                    DropDownRight = True
+                  end
+                end
+              end
+            end
             object IWTabControl21Page0: TIWTabPage
               Left = 0
               Top = 20
@@ -3242,7 +3242,7 @@ object IWForm2: TIWForm2
     end
   end
   object IWBSLayoutMgr1: TIWBSLayoutMgr
-    Left = 852
-    Top = 235
+    Left = 696
+    Top = 223
   end
 end
