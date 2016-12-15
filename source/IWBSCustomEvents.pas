@@ -8,6 +8,8 @@ uses Classes, SysUtils, StrUtils,
 type
   TIWBSCustomAsyncEvent = class (TCollectionItem)
   private
+    FApplication: TIWApplication;
+    FCallbackName: string;
     FEventName: string;
     FAsyncEvent: TIWAsyncEvent;
     FCallBackParams: TStringList;
@@ -108,6 +110,8 @@ end;
 
 destructor TIWBSCustomAsyncEvent.Destroy;
 begin
+  if FApplication <> nil then
+    FApplication.UnregisterCallBack(FCallbackName);
   FCallBackParams.Free;
   inherited;
 end;
@@ -171,13 +175,15 @@ end;
 
 procedure TIWBSCustomAsyncEvent.ExecuteCallBack(aParams: TStringList);
 begin
-  if Assigned(FAsyncEvent) then
+  if Assigned(FAsyncEvent) and Assigned(Collection) then
     FAsyncEvent(Collection.Owner, aParams);
 end;
 
 procedure TIWBSCustomAsyncEvent.RegisterEvent(AApplication: TIWApplication; const AComponentName: string);
 begin
-  AApplication.RegisterCallBack(AComponentName+'.'+FEventName, ExecuteCallBack);
+  FApplication := AApplication;
+  FCallbackName := AComponentName+'.'+FEventName;
+  AApplication.RegisterCallBack(FCallbackName, ExecuteCallBack);
 end;
 
 procedure TIWBSCustomAsyncEvent.ParseParam(const AHTMLName: string; AScript: TStringList);
