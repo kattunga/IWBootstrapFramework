@@ -31,9 +31,11 @@ https://groups.google.com/forum/?place=forum/intraweb-bootstrap-framework
 ## Requirements:
 
 IW 14.0.x series:
+
 Intraweb version 14.0.38 or above, but 14.0.56 or above is recomended.
 
 IW 14.1.x series:
+
 Intraweb version 14.1.0 is not compatible, use 14.1.1 or newer.
 
 http://www.atozed.com/intraweb/index.en.aspx
