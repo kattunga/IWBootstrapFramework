@@ -65,6 +65,8 @@ type
     procedure Assign(Source: TPersistent); override;
   published
     constructor Create(Collection: TCollection); override;
+    destructor Destroy; override;
+
     property Caption: string read FCaption write FCaption;
     property BSGlyphicon: string read FGlyphicon write FGlyphicon;
     property DataParent: IIWBSContainer read FDataParent write SetDataParent;
@@ -87,6 +89,12 @@ begin
   inherited;
   FHref := '#';
   FTarget := '_self';
+end;
+
+destructor TIWBSDropDownItem.Destroy;
+begin
+  FreeAndNil(FDropDownItems);
+  inherited;
 end;
 
 procedure TIWBSDropDownItem.Assign(Source: TPersistent);
