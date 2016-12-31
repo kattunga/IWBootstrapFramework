@@ -447,7 +447,7 @@ end;
 procedure TIWForm2.IWBSButton32AsyncClick(Sender: TObject;
   EventParams: TStringList);
 begin
-  TIWBSAlert.Create('This is simple Alert');
+  TIWBSAlert.Create('This is simple Alert', bsasWarning);
 end;
 
 procedure TIWForm2.IWBSButton33AsyncClick(Sender: TObject;

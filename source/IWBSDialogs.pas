@@ -258,7 +258,7 @@ begin
   Parent := AForm;
   FAlertVisible := False;
   FAlertPosition := bsapRightTop;
-  FAlertStyle := bsasSuccess;
+  FAlertStyle := AAlertStyle;
   FAlertText := AAlertText;
   FFade := True;
 
