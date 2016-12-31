@@ -95,7 +95,7 @@ type
 
 implementation
 
-uses IWBSCommon, IWBSCustomControl;
+uses IWBSCommon;
 
 {$region 'TIWBSCustomAsyncEvent'}
 constructor TIWBSCustomAsyncEvent.Create(Collection: TCollection);

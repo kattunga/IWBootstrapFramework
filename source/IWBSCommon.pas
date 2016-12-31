@@ -120,7 +120,7 @@ type
 implementation
 
 uses IW.Common.System, IW.Common.RenderStream, IWBaseHTMLControl, IWForm, IWRegion, IWMarkupLanguageTag, IWHTML40Container,
-     IWBSUtils, IWBSGlobal, IWBSNavBar, IWBSCustomRegion,
+     IWBSUtils, IWBSGlobal, IWBSCustomRegion,
      IWBSLayoutMgr;
 
 {$region 'TIWBSGridOptions'}
