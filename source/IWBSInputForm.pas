@@ -239,6 +239,7 @@ function TIWBSInputGroup.RenderHTML(AContext: TIWCompContext): TIWHTMLTag;
 begin
   Result := inherited;
   Result := IWBSCreateInputFormGroup(Self, Parent, Result, FCaption, HTMLName);
+  FMainID := Result.Params.Values['id'];
 end;
 procedure TIWBSInputGroup.SetCaption(const Value: string);
 begin
