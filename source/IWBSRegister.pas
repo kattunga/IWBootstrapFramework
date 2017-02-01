@@ -733,6 +733,7 @@ begin
   RegisterComponents('IW BootsTrap', [TIWBSMemo]);
   RegisterComponents('IW BootsTrap', [TIWBSMemoHtml]);
   RegisterComponents('IW BootsTrap', [TIWBSSelect]);
+  RegisterComponents('IW BootsTrap', [TIWBSSelectLookup]);
 
   RegisterComponents('IW BootsTrap', [TIWBSCheckBox]);
   RegisterComponents('IW BootsTrap', [TIWBSRadioButton]);
@@ -794,6 +795,7 @@ initialization
   IWRegisterPaintHandler('TIWBSMemo',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSMemoHtml',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSSelect',TIWBSPaintHandlerCustomInput);
+  IWRegisterPaintHandler('TIWBSSelectLookup',TIWBSPaintHandlerCustomInput);
   IWRegisterPaintHandler('TIWBSCheckBox',TIWBSPaintHandlerCustomCheck);
   IWRegisterPaintHandler('TIWBSRadioButton',TIWBSPaintHandlerCustomCheck);
   IWRegisterPaintHandler('TIWBSRadioGroup',TIWBSPaintHandlerRadioGroup);
@@ -836,6 +838,7 @@ finalization
   IWUnRegisterPaintHandler('TIWBSMemo');
   IWUnRegisterPaintHandler('TIWBSMemoHtml');
   IWUnRegisterPaintHandler('TIWBSSelect');
+  IWUnRegisterPaintHandler('TIWBSSelectLookup');
   IWUnRegisterPaintHandler('TIWBSCheckBox');
   IWUnRegisterPaintHandler('TIWBSRadioButton');
   IWUnRegisterPaintHandler('TIWBSRadioGroup');
