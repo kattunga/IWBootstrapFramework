@@ -15,7 +15,7 @@ uses
   IWBSCustomInput, IWBSButton, IWCompText, IWCompLabel, IWVCLComponent,
   IWBSCustomControl, IW.HTTP.Request, IW.HTTP.Reply,
   IWBSDropDown, IWBSNavBar, IWBSModal, IWBSInputForm, IWBSCustomRegion, IWBSList,
-  IWBSButtonGroup;
+  IWBSButtonGroup, IWBSRestServer;
 
 type
   TIWForm2 = class(TIWAppForm)
@@ -321,6 +321,9 @@ type
     IWBSRegion92: TIWBSRegion;
     IWBSRegion93: TIWBSRegion;
     IWBSRegion94: TIWBSRegion;
+    IWBSRegion95: TIWBSRegion;
+    IWBSRegion96: TIWBSRegion;
+    IWBSButton99: TIWBSButton;
     procedure IWBSButton20AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton22AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSButton26AsyncClick(Sender: TObject; EventParams: TStringList);
@@ -349,6 +352,10 @@ type
     procedure IWBSButton46AsyncClick(Sender: TObject; EventParams: TStringList);
     procedure IWBSText6CustomAsyncEvents0AsyncEvent(Sender: TObject;
       EventParams: TStringList);
+    procedure IWBSButton99CustomRestEvents0RestEvent(
+      aApplication: TIWApplication; aRequest: THttpRequest; aReply: THttpReply;
+      aParams: TStrings);
+    procedure IWBSButton99AsyncClick(Sender: TObject; EventParams: TStringList);
   public
   end;
 
@@ -357,7 +364,7 @@ implementation
 {$R *.dfm}
 
 uses IWBSUtils, IWBSDialogs, unit1, unit3, FishFact, FishFactBootstrapTable, FishFactJQGrid, BootstrapFileInput,
-  ServerController, IW.HTTP.FileItem, IWURL;
+  ServerController, IW.HTTP.FileItem, IWURL, IWUtils;
 
 procedure TIWForm2.IWBSButton20AsyncClick(Sender: TObject;
   EventParams: TStringList);
@@ -514,6 +521,23 @@ begin
   else
     IWBSRegion3.BSRegionType := TIWBSRegionType.bsrtContainer;
   IWBSRegion3.AsyncRefreshControl;
+end;
+
+procedure TIWForm2.IWBSButton99AsyncClick(Sender: TObject;
+  EventParams: TStringList);
+var
+  href: string;
+begin
+  href := IWBSButton99.CustomRestEvents[0].RestEventPath;
+  IWBSExecuteAsyncJScript(JsRedirect(href),True);
+end;
+
+procedure TIWForm2.IWBSButton99CustomRestEvents0RestEvent(
+  aApplication: TIWApplication; aRequest: THttpRequest; aReply: THttpReply;
+  aParams: TStrings);
+begin
+  aReply.Headers.Values['Content-Disposition'] := Format('attachment; filename="%s";', ['ThisIsYourFile.exe']);
+  aReply.SendFile(ParamStr(0), True, False);
 end;
 
 procedure TIWForm2.IWBSDropDown2DropDownItems0AsyncClick(Sender: TObject;
