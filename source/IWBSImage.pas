@@ -262,6 +262,7 @@ begin
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('id', AHTMLName);
   AHTMLTag.AddStringParam('style', ActiveStyle);
+  AHTMLTag.AddParmsList(ExtraTagParams);
   AHTMLTag.AddStringParam('src', FActiveSrc);
   if AltText <> '' then
     AHTMLTag.AddStringParam('alt', AltText, True)

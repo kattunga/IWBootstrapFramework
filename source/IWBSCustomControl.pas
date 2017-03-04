@@ -16,6 +16,7 @@ type
     FRendered: boolean;
     FCustomAsyncEvents: TIWBSCustomAsyncEvents;
     FCustomRestEvents: TIWBSCustomRestEvents;
+    FExtraTagParams: TStringList;
     FTabIndex: Integer;
     FScript: TStringList;
     FScriptInsideTag: boolean;
@@ -27,9 +28,9 @@ type
 
     procedure SetScript(const AValue: TStringList);
     procedure SetScriptParams(const AValue: TIWBSScriptParams);
+    procedure OnScriptChange(ASender : TObject);
     function GetStyle: TStringList;
     procedure SetStyle(const AValue: TStringList);
-    procedure OnScriptChange(ASender : TObject);
     procedure OnStyleChange(ASender : TObject);
     function GetCustomAsyncEvents: TIWBSCustomAsyncEvents;
     procedure SetCustomAsyncEvents(const Value: TIWBSCustomAsyncEvents);
@@ -41,6 +42,9 @@ type
     procedure SetScriptInsideTag(const Value: boolean);
     function GetAfterRender: TNotifyEvent;
     procedure SetAfterRender(const Value: TNotifyEvent);
+    function GetExtraTagParams: TStringList;
+    procedure SetExtraTagParams(const Value: TStringList);
+    procedure OnExtraTagParamsChange(ASender : TObject);
   protected
     FOldCss: string;
     FOldDisabled: boolean;
@@ -110,7 +114,7 @@ type
     // Specifies whether the control responds to mouse, keyboard, and timer events.
     property Enabled;
 
-    property ExtraTagParams;
+    property ExtraTagParams: TStringList read GetExtraTagParams write SetExtraTagParams;
 
     property FriendlyName;
     // Specifies user javascript code that will be rendered and executed with this object. @br
@@ -196,6 +200,8 @@ begin
   FRendered := False;
   FCustomAsyncEvents := nil;
   FCustomRestEvents := nil;
+  FExtraTagParams := TStringList.Create;
+  FExtraTagParams.OnChange := OnExtraTagParamsChange;
   FMainID := '';
   FTabIndex := 0;
   FScript := TStringList.Create;
@@ -212,6 +218,7 @@ destructor TIWBSCustomControl.Destroy;
 begin
   FreeAndNil(FCustomAsyncEvents);
   FreeAndNil(FCustomRestEvents);
+  FreeAndNil(FExtraTagParams);
   FreeAndNil(FScript);
   FreeAndNil(FScriptParams);
   FreeAndNil(FStyle);
@@ -279,6 +286,11 @@ begin
   Result := FCustomRestEvents;
 end;
 
+function TIWBSCustomControl.GetExtraTagParams: TStringList;
+begin
+  Result := FExtraTagParams;
+end;
+
 procedure TIWBSCustomControl.SetAfterRender(const Value: TNotifyEvent);
 begin
   FOnAfterRender := Value;
@@ -294,6 +306,11 @@ begin
   FCustomRestEvents.Assign(Value);
 end;
 
+procedure TIWBSCustomControl.SetExtraTagParams(const Value: TStringList);
+begin
+  FExtraTagParams.Assign(Value);
+end;
+
 function TIWBSCustomControl.IsStoredCustomAsyncEvents: boolean;
 begin
   Result := (FCustomAsyncEvents <> nil) and (FCustomAsyncEvents.Count > 0);
@@ -302,6 +319,11 @@ end;
 function TIWBSCustomControl.IsStoredCustomRestEvents: boolean;
 begin
   Result := (FCustomRestEvents <> nil) and (FCustomRestEvents.Count > 0);
+end;
+
+procedure TIWBSCustomControl.OnExtraTagParamsChange(ASender: TObject);
+begin
+  AsyncRefreshControl;
 end;
 
 procedure TIWBSCustomControl.OnScriptChange( ASender : TObject );

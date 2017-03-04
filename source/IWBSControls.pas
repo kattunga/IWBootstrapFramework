@@ -205,6 +205,7 @@ begin
   AHTMLTag.AddStringParam('id', AHTMLName);
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('style',ActiveStyle);
+  AHTMLTag.AddParmsList(ExtraTagParams);
   AHTMLTag.Contents.AddText(FOldText);
 
   if Parent is TIWBSInputGroup then
@@ -325,6 +326,7 @@ begin
   AHTMLTag.AddStringParam('id', AHTMLName);
   AHTMLTag.AddClassParam(ActiveCss);
   AHTMLTag.AddStringParam('style',ActiveStyle);
+  AHTMLTag.AddParmsList(ExtraTagParams);
   AHTMLTag.Contents.AddText(FOldText);
 
   if FAutoFormGroup and not (Parent is TIWBSInputGroup) then
@@ -372,6 +374,7 @@ begin
       AHTMLTag.AddBoolParam('aria-hidden',true)
     else
       AHTMLTag.Contents.AddText('&times;');
+    AHTMLTag.AddParmsList(ExtraTagParams);
   except
     FreeAndNil(AHTMLTag);
     raise;
@@ -418,6 +421,7 @@ begin
 //    if PlaceHolder <> '' then
 //      AHTMLTag.AddStringParam('placeholder', TextToHTML(PlaceHolder));
     AHTMLTag.AddStringParam('style', ActiveStyle);
+    AHTMLTag.AddParmsList(ExtraTagParams);
   except
     FreeAndNil(AHTMLTag);
     raise;

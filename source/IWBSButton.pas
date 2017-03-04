@@ -250,6 +250,7 @@ begin
       AHTMLTag.Add('disabled');
 
     AHTMLTag.AddStringParam('style', ActiveStyle);
+    AHTMLTag.AddParmsList(ExtraTagParams);
 
     if TabIndex <> 0 then
       AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));

@@ -288,6 +288,8 @@ begin
         Add('disabled');
       AddStringParam('style', AStyle);
 
+      AddParmsList(ExtraTagParams);
+
       if ADropDownItems <> nil then
         begin
           AddClassParam('dropdown-toggle');

@@ -131,6 +131,7 @@ begin
         lHTMLTag.AddClassParam(ActiveCss);
         lHTMLTag.AddStringParam('id', AHTMLName);
         lHTMLTag.AddStringParam('style', ActiveStyle);
+        lHTMLTag.AddParmsList(ExtraTagParams);
         lHTMLTag.Contents.AddText(TextToHTML(FText));
       except
         FreeAndNil(lHTMLTag);
@@ -163,6 +164,7 @@ begin
         if TabIndex <> 0 then
           lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
         lHTMLTag.AddStringParam('style', ActiveStyle);
+        lHTMLTag.AddParmsList(ExtraTagParams);
       except
         FreeAndNil(lHTMLTag);
         raise;
@@ -252,6 +254,7 @@ begin
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     lHTMLTag.AddStringParam('style', ActiveStyle);
+    lHTMLTag.AddParmsList(ExtraTagParams);
     lHTMLTag.Contents.AddText(TextToHTML(FText,false,false));
   except
     FreeAndNil(lHTMLTag);
@@ -346,6 +349,7 @@ begin
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     lHTMLTag.AddStringParam('style', ActiveStyle);
+    lHTMLTag.AddParmsList(ExtraTagParams);
   except
     FreeAndNil(lHTMLTag);
     raise;
@@ -441,6 +445,7 @@ begin
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     lHTMLTag.AddStringParam('style', ActiveStyle);
+    lHTMLTag.AddParmsList(ExtraTagParams);
   except
     FreeAndNil(lHTMLTag);
     raise;
@@ -613,6 +618,8 @@ begin
       lHTMLTag.Add('autofocus');
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
+    lHTMLTag.AddStringParam('style', ActiveStyle);
+    lHTMLTag.AddParmsList(ExtraTagParams);
     for i := 0 to Items.Count - 1 do begin
       with lHTMLTag.Contents.AddTag('option') do begin
         AddStringParam('value', IntToStr(i));
@@ -672,6 +679,7 @@ begin
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     lHTMLTag.AddStringParam('style', ActiveStyle);
+    lHTMLTag.AddParmsList(ExtraTagParams);
     for i := 0 to Items.Count - 1 do begin
       with lHTMLTag.Contents.AddTag('label') do begin
         with Contents.AddTag('input') do begin
