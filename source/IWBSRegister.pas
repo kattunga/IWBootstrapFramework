@@ -12,6 +12,10 @@ type
     procedure SetValue(const Value: string); override;
   end;
 
+  TIWBSStringListProperty = class(TStringListProperty)
+    function GetIsDefault: Boolean; override;
+  end;
+
   TIWBSStringProperty = class(TStringListProperty)
   private
     FStrings: TStrings;
@@ -710,6 +714,19 @@ begin
   SetStrValue(Value);
 end;
 
+{ TIWBSStringListProperty }
+
+function TIWBSStringListProperty.GetIsDefault: Boolean;
+var
+  l: TStrings;
+begin
+  l := GetStrings;
+  if l <> nil then
+    Result := l.Count = 0
+  else
+    Result := True;
+end;
+
 procedure Register;
 begin
   RegisterComponents('IW BootsTrap', [TIWBSLayoutMgr]);
@@ -754,6 +771,9 @@ begin
 
   RegisterComponents('IW BootsTrap', [TIWBSTabControl]);
 
+  RegisterPropertyEditor(TypeInfo(TStrings), TIWBSCustomControl, '', TIWBSStringListProperty);
+
+  RegisterPropertyEditor(TypeInfo(TStrings), TIWBSCustomRegion, '', TIWBSStringListProperty);
   RegisterPropertyEditor(TypeInfo(string), TIWBSCustomRegion, 'Text', TIWBSStringProperty);
   RegisterPropertyEditor(TypeInfo(string), TIWBSCustomButton, 'BSGlyphicon', TGlyphiconEditor);
   RegisterPropertyEditor(TypeInfo(string), TIWBSCustomButton, 'Caption', TIWBSStringProperty);
