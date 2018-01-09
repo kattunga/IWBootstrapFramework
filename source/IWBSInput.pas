@@ -23,7 +23,7 @@ type
     FResizeDirection: TIWBSResizeDirection;
     FRows: integer;
     FVertScrollBar: boolean;
-    procedure OnLinesChange(ASender: TObject);
+    procedure OnLinesChange(ASender : TObject);
     procedure SetLines(const AValue: TStringList);
   protected
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
@@ -96,7 +96,7 @@ type
     procedure InternalSetValue(const ASubmitValue: string; var ATextValue: string; var ASetFieldValue: boolean); override;
     procedure InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
-    procedure OnItemsChange(ASender: TObject); override;
+    procedure OnItemsChange(ASender : TObject); override;
     procedure SetItemIndex(AValue: integer); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -104,31 +104,6 @@ type
   published
     property MultiSelect: boolean read FMultiSelect write FMultiSelect default False;
     property Size: integer read FSize write SetSize default 1;
-  end;
-
-  TIWBSSelectLookup = class(TIWBSSelect)
-  private
-    FDisplayFields: TStringList;
-    FLookupSource: TDataSource;
-    FDefaultItems: TStringList;
-    FIndexField: string;
-    procedure SetDefaultItems(const Value: TStringList);
-    procedure SetDisplayFields(const Value: string);
-    procedure SetIndexField(const Value: string);
-    procedure SetLookupSource(const Value: TDataSource);
-    procedure UpdateItems;
-    function GetDisplayFields: string;
-  protected
-   procedure CheckData(AContext: TIWCompContext); override;
-  public
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
-  published
-    property LookupSource: TDataSource read FLookupSource write SetLookupSource;
-    property LookupIndexField: string read FIndexField write SetIndexField;
-    property LookupDisplayFields: string read GetDisplayFields write SetDisplayFields;
-    property LookupDefaultItems: TStringList read FDefaultItems write SetDefaultItems;
-
   end;
 
   TIWBSRadioGroup = class(TIWBSCustomSelectInput)
@@ -143,59 +118,60 @@ implementation
 
 uses IW.Common.System, IWBSInputCommon, IWBSInputForm, IWBSUtils;
 
-{$REGION 'TIWBSInput'}
-
+{$region 'TIWBSInput'}
 procedure TIWBSInput.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 var
   lHTMLTag: TIWHTMLTag;
 begin
   inherited;
   if FIsStatic then
-  begin
-    lHTMLTag := TIWHTMLTag.CreateTag('p');
-    try
-      lHTMLTag.AddClassParam(ActiveCss);
-      lHTMLTag.AddStringParam('id', AHTMLName);
-      lHTMLTag.AddStringParam('style', ActiveStyle);
-      lHTMLTag.Contents.AddText(TextToHTML(FText));
-    except
-      FreeAndNil(lHTMLTag);
-      raise;
-    end;
-  end
+    begin
+      lHTMLTag := TIWHTMLTag.CreateTag('p');
+      try
+        lHTMLTag.AddClassParam(ActiveCss);
+        lHTMLTag.AddStringParam('id', AHTMLName);
+        lHTMLTag.AddStringParam('style', ActiveStyle);
+        lHTMLTag.AddParmsList(ExtraTagParams);
+        lHTMLTag.Contents.AddText(TextToHTML(FText));
+      except
+        FreeAndNil(lHTMLTag);
+        raise;
+      end;
+    end
   else
-  begin
-    lHTMLTag := TIWHTMLTag.CreateTag('input');
-    try
-      lHTMLTag.AddClassParam(ActiveCss);
-      lHTMLTag.AddStringParam('id', AHTMLName);
-      lHTMLTag.AddStringParam('name', AHTMLName);
-      lHTMLTag.AddStringParam('type', aIWBSInputType[InputType]);
-      if ShowHint and (Hint <> '') then
-        lHTMLTag.AddStringParam('title', Hint);
-      if AutoFocus then
-        lHTMLTag.Add('autofocus');
-      if IsReadOnly then
-        lHTMLTag.Add('readonly');
-      if IsDisabled then
-        lHTMLTag.Add('disabled');
-      if MaxLength > 0 then
-        lHTMLTag.AddIntegerParam('maxlength', MaxLength);
-      lHTMLTag.AddStringParam('value', TextToHTML(FText));
-      if Required then
-        lHTMLTag.Add('required');
-      if PlaceHolder <> '' then
-        lHTMLTag.AddStringParam('placeholder', TextToHTML(PlaceHolder));
-      if TabIndex <> 0 then
-        lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
-      lHTMLTag.AddStringParam('style', ActiveStyle);
-    except
-      FreeAndNil(lHTMLTag);
-      raise;
+    begin
+      lHTMLTag := TIWHTMLTag.CreateTag('input');
+      try
+        lHTMLTag.AddClassParam(ActiveCss);
+        lHTMLTag.AddStringParam('id', AHTMLName);
+        lHTMLTag.AddStringParam('name', AHTMLName);
+        lHTMLTag.AddStringParam('type', aIWBSInputType[InputType]);
+        if ShowHint and (Hint <> '') then
+          lHTMLTag.AddStringParam('title', Hint);
+        if AutoFocus then
+          lHTMLTag.Add('autofocus');
+        if IsReadOnly then
+          lHTMLTag.Add('readonly');
+        if IsDisabled then
+          lHTMLTag.Add('disabled');
+        if MaxLength > 0 then
+          lHTMLTag.AddIntegerParam('maxlength', MaxLength);
+        lHTMLTag.AddStringParam('value', TextToHTML(FText));
+        if Required then
+          lHTMLTag.Add('required');
+        if PlaceHolder <> '' then
+          lHTMLTag.AddStringParam('placeholder', TextToHTML(PlaceHolder));
+        if TabIndex <> 0 then
+          lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
+        lHTMLTag.AddStringParam('style', ActiveStyle);
+        lHTMLTag.AddParmsList(ExtraTagParams);
+      except
+        FreeAndNil(lHTMLTag);
+        raise;
+      end;
     end;
-  end;
 
-  if not(Parent is TIWBSInputGroup) and (InputType <> bsitHidden) then
+  if not (Parent is TIWBSInputGroup) and (InputType <> bsitHidden) then
     AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, lHTMLTag, Caption, AHTMLName)
   else
     AHTMLTag := lHTMLTag;
@@ -203,9 +179,9 @@ begin
   if AHTMLTag = lHTMLTag then
     ScriptInsideTag := False;
 end;
-{$ENDREGION}
-{$REGION 'TIWBSMemo'}
+{$endregion}
 
+{$region 'TIWBSMemo'}
 constructor TIWBSMemo.Create(AOwner: TComponent);
 begin
   inherited;
@@ -224,7 +200,7 @@ begin
   inherited;
 end;
 
-procedure TIWBSMemo.OnLinesChange(ASender: TObject);
+procedure TIWBSMemo.OnLinesChange(ASender : TObject);
 begin
   FText := FLines.Text;
   Invalidate;
@@ -278,13 +254,14 @@ begin
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     lHTMLTag.AddStringParam('style', ActiveStyle);
-    lHTMLTag.Contents.AddText(TextToHTML(FText, False, False));
+    lHTMLTag.AddParmsList(ExtraTagParams);
+    lHTMLTag.Contents.AddText(TextToHTML(FText,false,false));
   except
     FreeAndNil(lHTMLTag);
     raise;
   end;
 
-  if not(Parent is TIWBSInputGroup) then
+  if not (Parent is TIWBSInputGroup) then
     AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, lHTMLTag, Caption, HTMLName)
   else
     AHTMLTag := lHTMLTag;
@@ -300,9 +277,9 @@ begin
   if FResizeDirection <> bsrdDefault then
     AStyle.Values['resize'] := aIWBSResizeDirection[FResizeDirection];
 end;
-{$ENDREGION}
-{$REGION 'TIWBSCheckBox'}
+{$endregion}
 
+{$region 'TIWBSCheckBox'}
 constructor TIWBSCheckBox.Create(AOwner: TComponent);
 begin
   inherited;
@@ -347,9 +324,8 @@ end;
 procedure TIWBSCheckBox.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
-  if FText <> FOldText then
-  begin
-    IWBSExecuteAsyncJScript(AApplication, '$("#' + AHTMLName + '").prop("checked", ' + iif(Checked, 'true', 'false') + ');', False, True);
+  if FText <> FOldText then begin
+    IWBSExecuteAsyncJScript(AApplication, '$("#'+AHTMLName+'").prop("checked", '+iif(Checked,'true','false')+');', False, True);
     FOldText := FText;
   end;
 end;
@@ -373,6 +349,7 @@ begin
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     lHTMLTag.AddStringParam('style', ActiveStyle);
+    lHTMLTag.AddParmsList(ExtraTagParams);
   except
     FreeAndNil(lHTMLTag);
     raise;
@@ -386,9 +363,9 @@ begin
   if AHTMLTag = lHTMLTag then
     ScriptInsideTag := False;
 end;
-{$ENDREGION}
-{$REGION 'TIWBSRadioButton'}
+{$endregion}
 
+{$region 'TIWBSRadioButton'}
 constructor TIWBSRadioButton.Create(AOwner: TComponent);
 begin
   inherited;
@@ -433,19 +410,17 @@ begin
   if ASubmitValue = 'on' then
     ATextValue := FValueChecked
   else
-  begin
-    ATextValue := FValueUnchecked;
-    ASetFieldValue := FSaveUnchecked;
-  end;
+    begin
+      ATextValue := FValueUnchecked;
+      ASetFieldValue := FSaveUnchecked;
+    end;
 end;
 
 procedure TIWBSRadioButton.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
-  if FText <> FOldText then
-  begin
-    IWBSExecuteAsyncJScript(AApplication, '$("#' + AHTMLName + InputSuffix + '").prop("checked", ' + iif(Checked, 'true', 'false') + ');',
-        False, True);
+  if FText <> FOldText then begin
+    IWBSExecuteAsyncJScript(AApplication, '$("#'+AHTMLName+InputSuffix+'").prop("checked", '+iif(Checked,'true','false')+');', False, True);
     FOldText := FText;
   end;
 end;
@@ -457,7 +432,7 @@ begin
   inherited;
   lHTMLTag := TIWHTMLTag.CreateTag('input');
   try
-    lHTMLTag.AddStringParam('id', AHTMLName + InputSuffix);
+    lHTMLTag.AddStringParam('id', AHTMLName+InputSuffix);
     lHTMLTag.AddStringParam('name', FGroup);
     lHTMLTag.AddClassParam(ActiveCss);
     lHTMLTag.AddStringParam('type', 'radio');
@@ -465,11 +440,12 @@ begin
       lHTMLTag.Add('disabled');
     if FChecked then
       lHTMLTag.Add('checked');
-    lHTMLTag.AddStringParam('onclick', 'radioButtonClick(event, ''' + FGroup + ''',''' + AHTMLName + InputSuffix + ''');');
+    lHTMLTag.AddStringParam('onclick', 'radioButtonClick(event, '''+FGroup+''','''+AHTMLName+InputSuffix+''');');
     lHTMLTag.AddStringParam('value', 'on');
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     lHTMLTag.AddStringParam('style', ActiveStyle);
+    lHTMLTag.AddParmsList(ExtraTagParams);
   except
     FreeAndNil(lHTMLTag);
     raise;
@@ -483,9 +459,9 @@ begin
   if AHTMLTag = lHTMLTag then
     ScriptInsideTag := False;
 end;
-{$ENDREGION}
-{$REGION 'TIWBSSelect'}
+{$endregion}
 
+{$region 'TIWBSSelect'}
 constructor TIWBSSelect.Create(AOwner: TComponent);
 begin
   inherited;
@@ -493,7 +469,7 @@ begin
   FSize := 1;
 end;
 
-procedure TIWBSSelect.OnItemsChange(ASender: TObject);
+procedure TIWBSSelect.OnItemsChange(ASender : TObject);
 begin
   inherited;
   SetLength(FItemsSelected, Items.Count);
@@ -513,8 +489,8 @@ procedure TIWBSSelect.ResetItemsSelected;
 var
   i: integer;
 begin
-  for i := 0 to Length(FItemsSelected) - 1 do
-    FItemsSelected[i] := False;
+  for i := 0 to Length(FItemsSelected)-1 do
+    FItemsSelected[i] := false;
   if (FItemIndex >= 0) and (FItemIndex < Length(FItemsSelected)) then
     FItemsSelected[FItemIndex] := True;
 end;
@@ -531,31 +507,30 @@ var
   i, j: integer;
 begin
   FText := AValue;
-  if FMultiSelect and AnsiContainsStr(FText, ',') then
-  begin
-    ResetItemsSelected;
-    LSelectedVal := TStringList.Create;
-    try
-      LSelectedVal.StrictDelimiter := True;
-      LSelectedVal.CommaText := FText;
-      for i := 0 to LSelectedVal.Count - 1 do
-        for j := 0 to Items.Count - 1 do
-          if AnsiSameStr(IfThen(ItemsHaveValues, Items.ValueFromIndex[j], Items[j]), LSelectedVal[i]) then
-            FItemsSelected[j] := True;
-    finally
-      LSelectedVal.Free;
-    end;
-  end
-  else
-  begin
-    FItemIndex := FindValue(FText);
-    if not FMultiSelect and (FItemIndex < 0) and (Items.Count > 0) then
+  if FMultiSelect and AnsiContainsStr(FText,',') then
     begin
-      FItemIndex := 0;
-      FText := IfThen(ItemsHaveValues, Items.ValueFromIndex[FItemIndex], Items[FItemIndex]);
+      ResetItemsSelected;
+      LSelectedVal := TStringList.Create;
+      try
+        LSelectedVal.StrictDelimiter := True;
+        LSelectedVal.CommaText := FText;
+        for i := 0 to LSelectedVal.Count-1 do
+          for j := 0 to Items.Count-1 do
+            if AnsiSameStr(IfThen(ItemsHaveValues, Items.ValueFromIndex[j], Items[j]), LSelectedVal[i]) then
+              FItemsSelected[j] := True;
+      finally
+        LSelectedVal.Free;
+      end;
+    end
+  else
+    begin
+      FItemIndex := FindValue(FText);
+      if not FMultiSelect and (FItemIndex < 0) and (Items.Count > 0) then begin
+        FItemIndex := 0;
+        FText := IfThen(ItemsHaveValues, Items.ValueFromIndex[FItemIndex], Items[FItemIndex]);
+      end;
+      ResetItemsSelected;
     end;
-    ResetItemsSelected;
-  end;
   Invalidate;
 end;
 
@@ -564,37 +539,36 @@ var
   LSelectedIdx, LSelectedVal: TStringList;
   i, v: integer;
 begin
-  if FMultiSelect and AnsiContainsStr(ASubmitValue, ',') then
-  begin
-    FItemIndex := -1;
-    ResetItemsSelected;
-    LSelectedIdx := TStringList.Create;
-    LSelectedVal := TStringList.Create;
-    try
-      LSelectedIdx.CommaText := ASubmitValue;
-      for i := 0 to LSelectedIdx.Count - 1 do
-        if TryStrToInt(LSelectedIdx[i], v) and (v >= 0) and (v < Items.Count) then
-        begin
-          if i = 0 then
-            FItemIndex := v
-          else if ItemsHaveValues then
-            LSelectedVal.Add(Items.ValueFromIndex[v])
-          else
-            LSelectedVal.Add(Items[v]);
-          FItemsSelected[v] := True;
-        end;
-      LSelectedVal.StrictDelimiter := True;
-      ATextValue := LSelectedVal.CommaText;
-    finally
-      LSelectedIdx.Free;
-      LSelectedVal.Free;
-    end;
-  end
+  if FMultiSelect and AnsiContainsStr(ASubmitValue,',') then
+    begin
+      FItemIndex := -1;
+      ResetItemsSelected;
+      LSelectedIdx := TStringList.Create;
+      LSelectedVal := TStringList.Create;
+      try
+        LSelectedIdx.CommaText := ASubmitValue;
+        for i := 0 to LSelectedIdx.Count-1 do
+          if TryStrToInt(LSelectedIdx[i], v) and (v >= 0) and (v < Items.Count) then begin
+            if i = 0 then
+              FItemIndex := v
+            else if ItemsHaveValues then
+              LSelectedVal.Add(Items.ValueFromIndex[v])
+            else
+              LSelectedVal.Add(Items[v]);
+            FItemsSelected[v] := True;
+          end;
+        LSelectedVal.StrictDelimiter := True;
+        ATextValue := LSelectedVal.CommaText;
+      finally
+        LSelectedIdx.Free;
+        LSelectedVal.Free;
+      end;
+    end
   else
-  begin
-    inherited InternalSetValue(ASubmitValue, ATextValue, ASetFieldValue);
-    ResetItemsSelected;
-  end;
+    begin
+      inherited InternalSetValue(ASubmitValue, ATextValue, ASetFieldValue);
+      ResetItemsSelected;
+    end;
 end;
 
 procedure TIWBSSelect.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
@@ -603,29 +577,27 @@ var
   i: integer;
 begin
   inherited;
-  if (FText <> FOldText) then
-  begin
+  if (FText <> FOldText) then begin
     LSelectedIdx := '';
     if FMultiSelect then
-    begin
-      for i := 0 to Length(FItemsSelected) - 1 do
-        if FItemsSelected[i] then
-        begin
-          if LSelectedIdx <> '' then
-            LSelectedIdx := LSelectedIdx + ',';
-          LSelectedIdx := LSelectedIdx + IntToStr(i);
-        end;
-    end
+      begin
+        for i := 0 to Length(FItemsSelected)-1 do
+          if FItemsSelected[i] then begin
+            if LSelectedIdx <> '' then
+              LSelectedIdx := LSelectedIdx + ',';
+            LSelectedIdx := LSelectedIdx + IntToStr(i);
+          end;
+      end
     else if FItemIndex >= 0 then
       LSelectedIdx := IntToStr(FItemIndex);
-    IWBSExecuteAsyncJScript(AApplication, '$("#' + AHTMLName + '").val([' + LSelectedIdx + ']);', False, True);
+    IWBSExecuteAsyncJScript(AApplication, '$("#'+AHTMLName+'").val(['+LSelectedIdx+']);', False, True);
     FOldText := FText;
   end;
 end;
 
 procedure TIWBSSelect.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 var
-  i: integer;
+  i: Integer;
   lHTMLTag: TIWHTMLTag;
 begin
   inherited;
@@ -646,10 +618,10 @@ begin
       lHTMLTag.Add('autofocus');
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
-    for i := 0 to Items.Count - 1 do
-    begin
-      with lHTMLTag.Contents.AddTag('option') do
-      begin
+    lHTMLTag.AddStringParam('style', ActiveStyle);
+    lHTMLTag.AddParmsList(ExtraTagParams);
+    for i := 0 to Items.Count - 1 do begin
+      with lHTMLTag.Contents.AddTag('option') do begin
         AddStringParam('value', IntToStr(i));
         if FItemsSelected[i] then
           Add('selected');
@@ -661,7 +633,7 @@ begin
     raise;
   end;
 
-  if not(Parent is TIWBSInputGroup) then
+  if not (Parent is TIWBSInputGroup) then
     AHTMLTag := IWBSCreateInputFormGroup(Self, Parent, lHTMLTag, Caption, AHTMLName)
   else
     AHTMLTag := lHTMLTag;
@@ -669,9 +641,9 @@ begin
   if AHTMLTag = lHTMLTag then
     ScriptInsideTag := False;
 end;
-{$ENDREGION}
-{$REGION 'TIWBSRadioGroup'}
+{$endregion}
 
+{$region 'TIWBSRadioGroup'}
 function TIWBSRadioGroup.InputSelector: string;
 begin
   Result := ' input';
@@ -685,19 +657,18 @@ end;
 procedure TIWBSRadioGroup.InternalRenderAsync(const AHTMLName: string; AApplication: TIWApplication);
 begin
   inherited;
-  if (FText <> FOldText) then
-  begin
+  if (FText <> FOldText) then begin
     if FItemIndex >= 0 then
-      IWBSExecuteAsyncJScript(AApplication, '$("#' + AHTMLName + '_INPUT_' + IntToStr(FItemIndex) + '").prop("checked", true);', False, True)
+      IWBSExecuteAsyncJScript(AApplication, '$("#'+AHTMLName+'_INPUT_'+IntToStr(FItemIndex)+'").prop("checked", true);', False, True)
     else
-      IWBSExecuteAsyncJScript(AApplication, '$("#' + AHTMLName + ' input").prop("checked", false);', False, True);
+      IWBSExecuteAsyncJScript(AApplication, '$("#'+AHTMLName+' input").prop("checked", false);', False, True);
     FOldText := FText;
   end;
 end;
 
 procedure TIWBSRadioGroup.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 var
-  i: integer;
+  i: Integer;
   lHTMLTag: TIWHTMLTag;
 begin
   inherited;
@@ -708,16 +679,14 @@ begin
     if TabIndex <> 0 then
       lHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
     lHTMLTag.AddStringParam('style', ActiveStyle);
-    for i := 0 to Items.Count - 1 do
-    begin
-      with lHTMLTag.Contents.AddTag('label') do
-      begin
-        with Contents.AddTag('input') do
-        begin
+    lHTMLTag.AddParmsList(ExtraTagParams);
+    for i := 0 to Items.Count - 1 do begin
+      with lHTMLTag.Contents.AddTag('label') do begin
+        with Contents.AddTag('input') do begin
           AddStringParam('type', 'radio');
           Add(iif(FItemIndex = i, 'checked'));
           AddStringParam('name', AHTMLName + InputSuffix);
-          AddStringParam('id', AHTMLName + InputSuffix + '_' + IntToStr(i));
+          AddStringParam('id', AHTMLName + InputSuffix+'_'+IntToStr(i));
           AddStringParam('value', IntToStr(i));
           if IsDisabled then
             Add('disabled');
@@ -739,129 +708,6 @@ begin
   if AHTMLTag = lHTMLTag then
     ScriptInsideTag := False;
 end;
-{$ENDREGION}
-{$REGION 'TIWBSSelectLookup'}
-
-procedure TIWBSSelectLookup.CheckData(AContext: TIWCompContext);
-begin
-  if Items.Count = 0 then
-    UpdateItems;
-  inherited CheckData(AContext);
-end;
-
-constructor TIWBSSelectLookup.Create(AOwner: TComponent);
-begin
-  inherited;
-  FDisplayFields := TStringList.Create;
-  FDefaultItems := TStringList.Create;
-  FDefaultItems.Add('No selection=-1');
-  ItemsHaveValues := True;
-end;
-
-destructor TIWBSSelectLookup.Destroy;
-begin
-  try
-    FreeAndNil(FDisplayFields);
-    FreeAndNil(FDefaultItems);
-  finally
-    inherited;
-  end;
-end;
-
-function TIWBSSelectLookup.GetDisplayFields: string;
-begin
-  Result := StringReplace(FDisplayFields.Text, #13#10, ';', [rfReplaceAll]);
-end;
-
-procedure TIWBSSelectLookup.UpdateItems;
-var
-  BM: TBookmark;
-  FieldIdx: integer;
-  ItemValue, ItemIndexValue: string;
-begin
-  Items.BeginUpdate;
-  try
-    Items.Clear;
-    Items.Assign(FDefaultItems);
-    if Assigned(FLookupSource) and (FDisplayFields.Count > 0) and (Trim(FIndexField) <> '') then
-    begin
-      if Assigned(FLookupSource.DataSet) then
-      begin
-        if FLookupSource.DataSet.State in [dsBrowse] then
-        begin
-          with FLookupSource.DataSet do
-          begin
-            BM := GetBookmark;
-            First;
-            while not EOF do
-            begin
-              ItemValue := '';
-              ItemIndexValue := '';
-              for FieldIdx := 0 to Pred(FDisplayFields.Count) do
-              begin
-                if FindField(FDisplayFields[FieldIdx]) <> nil then
-                begin
-                  if FieldIdx = 0 then
-                  begin
-                    ItemValue := '';
-                  end
-                  else
-                  begin
-                    ItemValue := ItemValue + ', ';
-                  end;
-                  ItemValue := ItemValue + FieldByName(FDisplayFields[FieldIdx]).DisplayText;
-                end;
-              end;
-              if FindField(FIndexField) <> nil then
-              begin
-                ItemIndexValue := FieldByName(FIndexField).DisplayText;
-              end;
-              if ItemsHaveValues then
-              begin
-              if (Trim(ItemIndexValue) <> '') and (Trim(ItemValue) <> '') then
-              begin
-                Items.Add(ItemValue + '=' + ItemIndexValue);
-              end;
-              end else
-              begin
-                Items.Add(ItemIndexValue);
-              end;
-              Next;
-            end;
-            if BookmarkValid(BM) then
-              GotoBookmark(BM);
-            FreeBookmark(BM);
-          end;
-        end;
-      end;
-    end;
-  finally
-    Items.EndUpdate;
-  end;
-  if Items.Count > 0 then
-    ItemIndex := 0;
-end;
-
-
-procedure TIWBSSelectLookup.SetDefaultItems(const Value: TStringList);
-begin
-  FDefaultItems := Value;
-end;
-
-procedure TIWBSSelectLookup.SetDisplayFields(const Value: string);
-begin
-  FDisplayFields.Text := StringReplace(Value, ';', #13#10, [rfReplaceAll]);
-end;
-
-procedure TIWBSSelectLookup.SetIndexField(const Value: string);
-begin
-  FIndexField := Value;
-end;
-
-procedure TIWBSSelectLookup.SetLookupSource(const Value: TDataSource);
-begin
-  FLookupSource := Value;
-end;
-{$ENDREGION}
+{$endregion}
 
 end.

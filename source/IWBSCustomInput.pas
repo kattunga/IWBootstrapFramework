@@ -73,10 +73,7 @@ type
     property Caption: string read FCaption write SetCaption;
     property Editable default True;
     property Enabled default True;
-    property ExtraTagParams;
-    property FriendlyName;
     property NonEditableAsLabel default False;
-    property ScriptEvents;
     property ScriptInsideTag default False;
     property SubmitOnAsyncEvent default True;
     property Text: TCaption read GetText write SetText;
@@ -334,8 +331,6 @@ procedure TIWBSCustomInput.InternalRenderHTML(const AHTMLName: string; AContext:
 begin
   inherited;
   FOldText := FText;
-
-
 end;
 
 procedure TIWBSCustomInput.SetCaption(const AValue: string);

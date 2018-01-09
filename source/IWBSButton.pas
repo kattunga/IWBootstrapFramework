@@ -76,9 +76,9 @@ type
 
     procedure DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
     procedure SetAsyncClickProc(Value: TIWBSAsyncEventProc);
-    function IsHrefStored: boolean;
-    function IsTargetStored: boolean;
-    function IsAnchor: boolean;
+    function IsHrefStored: Boolean;
+    function IsTargetStored: Boolean;
+    function IsAnchor: Boolean;
     procedure SetDataTarget(const Value: IIWBSContainer);
     procedure SetDataParent(const Value: IIWBSContainer);
     procedure SetHref(const Value: string);
@@ -86,13 +86,11 @@ type
     procedure SetDataDismiss(const Value: TIWBSButtonDataDismiss);
     function GetDataToggle: string;
     procedure SetElementType(const Value: TIWBSButtonElementType);
-    function GetDataTarget: IIWBSContainer;
   protected
     procedure InternalRenderCss(var ACss: string); override;
     procedure InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag); override;
   public
     constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
     // Anonymous procedure that let you execute code when button is pressed without the need of declare an event. @br
     // Usefull when you create buttons at runtime
     property AsyncClickProc: TIWBSAsyncEventProc read FAsyncClickProc write SetAsyncClickProc;
@@ -109,12 +107,12 @@ type
     // Specifies the target region for for toggle visiblity of TIWBSModal or TIWBSRegion.Collapse @br
     // http://www.w3schools.com/bootstrap/bootstrap_modal.asp @br
     // http://www.w3schools.com/bootstrap/bootstrap_collapse.asp
-    property DataTarget: IIWBSContainer read GetDataTarget write SetDataTarget;
+    property DataTarget: IIWBSContainer read FDataTarget write SetDataTarget;
     // Toogle operation
     property DataToggle: string read GetDataToggle;
     // acceskey tag atribute @br
     // http://www.w3schools.com/tags/att_global_accesskey.asp
-    property HotKey: string read FHotKey write FHotKey;
+    property HotKey: string read FHotkey write FHotKey;
     // this property determines if the element will be type anchor or button, default is Auto
     property ElementType: TIWBSButtonElementType read FElementType write SetElementType default bsetAuto;
     // Destination address to jump when button is pressed. @br
@@ -128,8 +126,7 @@ type
 
 const
   // @exclude
-  aIWBSButtonStyle: array [bsbsDefault .. bsbsClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning',
-      'btn-danger', 'btn-link', 'close');
+  aIWBSButtonStyle: array[bsbsDefault..bsbsClose] of string = ('btn-default', 'btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-link', 'close');
 
 implementation
 
@@ -137,8 +134,7 @@ uses
   IW.Common.System,
   IWBSInputCommon, IWBSInputForm, IWBSModal, IWBSCustomRegion, IWBSNavbar, IWBSList, IWBSRegion, IWBSButtonGroup;
 
-{$REGION 'TIWBSCustomButton'}
-
+{$region 'TIWBSCustomButton'}
 constructor TIWBSCustomButton.Create(AOwner: TComponent);
 begin
   inherited;
@@ -174,15 +170,14 @@ begin
   FGlyphicon := Value;
   Invalidate;
 end;
-
 procedure TIWBSCustomButton.SetRawText(const Value: boolean);
 begin
   FRawText := Value;
   AsyncRefreshControl;
 end;
-{$ENDREGION}
-{$REGION 'TIWBSButton'}
+{$endregion}
 
+{$region 'TIWBSButton'}
 constructor TIWBSButton.Create(AOwner: TComponent);
 begin
   inherited;
@@ -199,32 +194,32 @@ begin
   inherited;
 
   if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtListGroup) then
-  begin
-    TIWBSCommon.AddCssClass(ACss, 'list-group-item');
-  end
-  else if (DataTarget <> nil) and (DataTarget.InterfaceInstance is TIWBSNavBarCollapse) then
-  begin
-    TIWBSCommon.AddCssClass(ACss, 'navbar-toggle');
-  end
+    begin
+      TIWBSCommon.AddCssClass(ACss, 'list-group-item');
+    end
+  else if (FDataTarget <> nil) and (FDataTarget.InterfaceInstance is TIWBSNavBarCollapse) then
+    begin
+      TIWBSCommon.AddCssClass(ACss, 'navbar-toggle');
+    end
   else if (Parent is TIWBSButtonGroup) or not IsAnchor then
-  begin
-    TIWBSCommon.AddCssClass(ACss, 'btn');
-    if FButtonSize <> bsszDefault then
-      TIWBSCommon.AddCssClass(ACss, 'btn-' + aIWBSSize[FButtonSize]);
-    TIWBSCommon.AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
-    if FBlockLevel then
-      TIWBSCommon.AddCssClass(ACss, 'btn-block');
+    begin
+      TIWBSCommon.AddCssClass(ACss, 'btn');
+      if FButtonSize <> bsszDefault then
+        TIWBSCommon.AddCssClass(ACss, 'btn-'+aIWBSSize[FButtonSize]);
+      TIWBSCommon.AddCssClass(ACss, aIWBSButtonStyle[FButtonStyle]);
+      if FBlockLevel then
+        TIWBSCommon.AddCssClass(ACss, 'btn-block');
 
-    if (Parent is TIWBSNavBarBase) then
-      TIWBSCommon.AddCssClass(ACss, 'navbar-btn')
-    else if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtDropDown) then
-      TIWBSCommon.AddCssClass(ACss, 'dropdown-toggle');
-  end;
+      if (Parent is TIWBSNavBarBase) then
+        TIWBSCommon.AddCssClass(ACss, 'navbar-btn')
+      else if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtDropDown) then
+        TIWBSCommon.AddCssClass(ACss, 'dropdown-toggle');
+    end;
 end;
 
 procedure TIWBSButton.InternalRenderHTML(const AHTMLName: string; AContext: TIWCompContext; var AHTMLTag: TIWHTMLTag);
 const
-  aIWBSButtonDataDismiss: array [bsbdNone .. bsbdAlert] of string = ('', 'modal', 'alert');
+  aIWBSButtonDataDismiss: array[bsbdNone..bsbdAlert] of string = ('', 'modal', 'alert');
 var
   s: string;
   lAnchor: boolean;
@@ -234,7 +229,7 @@ begin
 
   lAnchor := IsAnchor;
 
-  AHTMLTag := TIWHTMLTag.CreateTag(iif(lAnchor, 'a', 'button'));
+  AHTMLTag := TIWHTMLTag.CreateTag(iif(lAnchor,'a','button'));
   try
     AHTMLTag.AddStringParam('id', AHTMLName);
     AHTMLTag.AddClassParam(ActiveCss);
@@ -255,6 +250,7 @@ begin
       AHTMLTag.Add('disabled');
 
     AHTMLTag.AddStringParam('style', ActiveStyle);
+    AHTMLTag.AddParmsList(ExtraTagParams);
 
     if TabIndex <> 0 then
       AHTMLTag.AddStringParam('tabindex', IntToStr(TabIndex));
@@ -266,24 +262,21 @@ begin
       s := TextToHTML(Caption);
 
     // hotkey
-    if FHotKey <> '' then
-    begin
+    if FHotKey <> '' then begin
       AHTMLTag.AddStringParam('accesskey', FHotKey);
       s := StringReplace(s, FHotKey, '<u>' + FHotKey + '</u>', [rfIgnoreCase]);
     end;
 
     // glyphicon
     if FGlyphicon <> '' then
-      with AHTMLTag.Contents.AddTag('span') do
-      begin
-        AddClassParam('glyphicon glyphicon-' + FGlyphicon);
-        AddBoolParam('aria-hidden', True);
+      with AHTMLTag.Contents.AddTag('span') do begin
+        AddClassParam('glyphicon glyphicon-'+FGlyphicon);
+        AddBoolParam('aria-hidden',true);
         s := ' ' + s;
       end;
 
     // close button
-    if (FButtonStyle = bsbsClose) then
-    begin
+    if (FButtonStyle = bsbsClose) then begin
       AHTMLTag.AddStringParam('aria-label', 'Close');
       if (s = '') and (FGlyphicon = '') then
         s := '&times;';
@@ -294,39 +287,37 @@ begin
       AHTMLTag.AddStringParam('data-dismiss', aIWBSButtonDataDismiss[FDataDismiss]);
 
     // datatarget / href
-    if DataTarget = nil then
-    begin
-      if lAnchor then
+    if FDataTarget = nil then
       begin
-        AHTMLTag.AddStringParam('href', FHref);
-        if FTarget = '' then
-          if AnsiStartsStr('#', FHref) then
-            lTarget := '_self'
+        if lAnchor then begin
+          AHTMLTag.AddStringParam('href', FHref);
+          if FTarget = '' then
+            if AnsiStartsStr('#', FHref) then
+              lTarget := '_self'
+            else
+              lTarget := '_blank'
           else
-            lTarget := '_blank'
-        else
-          lTarget := FTarget;
-        AHTMLTag.AddStringParam('target', lTarget);
-      end;
-    end
+            lTarget := FTarget;
+          AHTMLTag.AddStringParam('target', lTarget);
+        end;
+      end
     else
-    begin
-      if lAnchor then
-        AHTMLTag.AddStringParam('href', '#' + DataTarget.HTMLName)
-      else
-        AHTMLTag.AddStringParam('data-target', '#' + DataTarget.HTMLName);
-
-      if FDataParent <> nil then
-        AHTMLTag.AddStringParam('data-parent', '#' + FDataParent.HTMLName);
-
-      // draw a menu button if no caption and no glyphicon
-      if (s = '') and (FGlyphicon = '') then
       begin
-        AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
-        AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
-        AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
+        if lAnchor then
+          AHTMLTag.AddStringParam('href', '#'+FDataTarget.HTMLName)
+        else
+          AHTMLTag.AddStringParam('data-target', '#'+FDataTarget.HTMLName);
+
+        if FDataParent <> nil then
+          AHTMLTag.AddStringParam('data-parent', '#'+FDataParent.HTMLName);
+
+        // draw a menu button if no caption and no glyphicon
+        if (s = '') and (FGlyphicon = '') then begin
+          AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
+          AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
+          AHTMLTag.Contents.AddTag('span').AddClassParam('icon-bar');
+        end;
       end;
-    end;
 
     // datatoggle
     AHTMLTag.AddStringParam('data-toggle', DataToggle);
@@ -349,58 +340,37 @@ begin
   TIWBSList.WrapItem(Self, AHTMLTag);
 end;
 
-function TIWBSButton.IsAnchor: boolean;
+function TIWBSButton.IsAnchor: Boolean;
 begin
   if FElementType = bsetAuto then
-  begin
-    if DataTarget <> nil then
-      Result := False
-    else if FHref <> '#' then
-      Result := True
-    else if (Parent is TIWBSNavBarBase) then
-      Result := False
-    else if (Parent is TIWBSList) then
-      Result := True
-    else if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtListGroup) then
-      Result := True
-    else if (Parent is TIWBSButtonGroup) and TIWBSButtonGroup(Parent).BSJustified then
-      Result := True
-    else
-      Result := False;
-  end
+    begin
+      if FDataTarget <> nil then
+        Result := False
+      else if FHref <> '#' then
+        Result := True
+      else if (Parent is TIWBSNavBarBase) then
+        Result := False
+      else if (Parent is TIWBSList) then
+        Result := True
+      else if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtListGroup) then
+        Result := True
+      else if (Parent is TIWBSButtonGroup) and TIWBSButtonGroup(Parent).BSJustified then
+        Result := True
+      else
+        Result := False;
+    end
   else
     Result := FElementType = bsetAnchor;
 end;
 
-function TIWBSButton.IsHrefStored: boolean;
+function TIWBSButton.IsHrefStored: Boolean;
 begin
   Result := FHref <> '#';
 end;
 
-function TIWBSButton.IsTargetStored: boolean;
+function TIWBSButton.IsTargetStored: Boolean;
 begin
   Result := FTarget <> '';
-end;
-
-destructor TIWBSButton.Destroy;
-var
-  LDataTarget: Pointer;
-begin
-  try
-    if Assigned(FDataTarget) then
-    begin
-      LDataTarget := @FDataTarget;
-      if LDataTarget <> nil then
-      begin
-        try
-          Pointer(FDataTarget) := nil;
-        except
-        end;
-      end;
-    end;
-  finally
-    inherited;
-  end;
 end;
 
 procedure TIWBSButton.DoAsyncClickProc(Sender: TObject; EventParams: TStringList);
@@ -408,22 +378,17 @@ begin
   FAsyncClickProc(Sender, EventParams);
 end;
 
-function TIWBSButton.GetDataTarget: IIWBSContainer;
-begin
-  Result := FDataTarget;
-end;
-
 function TIWBSButton.GetDataToggle: string;
 begin
   if (Parent is TIWBSRegion) and (TIWBSRegion(Parent).BSRegionType = bsrtDropDown) then
     Result := 'dropdown'
-  else if (DataTarget = nil) then
+  else if (FDataTarget = nil) then
     Result := ''
-  else if (DataTarget.InterfaceInstance is TIWBSModal) then
+  else if (FDataTarget.InterfaceInstance is TIWBSModal) then
     Result := 'modal'
-  else if (DataTarget.InterfaceInstance is TIWBSCustomRegion) and TIWBSCustomRegion(DataTarget.InterfaceInstance).Collapse then
+  else if (FDataTarget.InterfaceInstance is TIWBSCustomRegion) and TIWBSCustomRegion(FDataTarget.InterfaceInstance).Collapse then
     Result := 'collapse'
-  else if (DataTarget.InterfaceInstance is TIWBSNavBarCollapse) then
+  else if (FDataTarget.InterfaceInstance is TIWBSNavBarCollapse) then
     Result := 'collapse';
 end;
 
@@ -432,7 +397,6 @@ begin
   FAsyncClickProc := Value;
   OnAsyncClick := DoAsyncClickProc
 end;
-
 procedure TIWBSButton.SetHref(const Value: string);
 begin
   FHref := Value;
@@ -462,13 +426,12 @@ begin
   FDataTarget := Value;
   AsyncRefreshControl;
 end;
-
 procedure TIWBSButton.SetElementType(const Value: TIWBSButtonElementType);
 begin
   FElementType := Value;
   AsyncRefreshControl;
 end;
 
-{$ENDREGION}
+{$endregion}
 
 end.

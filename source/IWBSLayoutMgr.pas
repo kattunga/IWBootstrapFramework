@@ -14,16 +14,16 @@ type
   TIWBSRenderingSortMethod = (bsrmSortYX, bsrmSortXY);
 
   TIWBSLayoutMgr = class(TIWContainerLayout)
-  private
+  protected
     FLinkFiles: TStringList;
   public
     constructor Create(AOnwer: TComponent); override;
     destructor Destroy; override;
 
     procedure AddLinkFile(const AFile: string);
-    function ParseLinkFile(const AUrlBase, AFile: string; ADisableCache: boolean = True): string;
+    function ParseLinkFile(const AUrlBase, AFile: string; ADisableCache: boolean = True): string; virtual;
     procedure ProcessControl(AContainerContext: TIWContainerContext; APageContext: TIWBaseHTMLPageContext; AControl: IIWBaseHTMLComponent); override;
-    procedure ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext);
+    procedure ProcessForm(ABuffer, ATmpBuf: TIWRenderStream; APage: TIWBasePageContext); virtual;
     procedure Process(ABuffer: TIWRenderStream; AContainerContext: TIWContainerContext; aPage: TIWBasePageContext); override;
   end;
 

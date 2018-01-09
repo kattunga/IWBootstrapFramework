@@ -11,7 +11,7 @@ object IWServerController: TIWServerController
   SSLOptions.Port = 0
   SSLOptions.SSLVersions = []
   URLBase = '/iwbootstrap/'
-  Version = '14.1.1'
+  Version = '14.1.6'
   AllowMultipleSessionsPerUser = False
   JavaScriptOptions.RenderjQuery = False
   RestartExpiredSession = True
