@@ -12,12 +12,6 @@ If you need to develop applications for phones, tablets and any other device thi
 
 http://kattunga.github.io/IWBootstrapFramework
 
-## Online Demo
-
-http://iwbs.sig2k.com/iwbootstrap
-
-Test the demo on desktop and mobile devices to see how it work.
-
 ## Documentation
 
 https://github.com/kattunga/IWBootstrapFramework/wiki
