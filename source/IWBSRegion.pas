@@ -74,12 +74,12 @@ begin
   else if (FRegionType in [bsrtWell, bsrtWellLarge, bsrtWellSmall]) and (FBackground <> bsrbDefault) then
     TIWBSCommon.AddCssClass(ACss, 'well-'+aIWBSRegionBack[FBackground])
   else if (FBackground <> bsrbDefault)  then
-    TIWBSCommon.AddCssClass(ACss, 'bg-'+aIWBSRegionBack[FBackground])
-  else if (Parent is TIWBSNavBar) then
+    TIWBSCommon.AddCssClass(ACss, 'bg-'+aIWBSRegionBack[FBackground]);
+ {else if (Parent is TIWBSNavBar) then
     if TagType = bsttDiv then
       TIWBSCommon.AddCssClass(ACss, 'navbar-btn')
     else
-      TIWBSCommon.AddCssClass(ACss, 'navbar-text');
+      TIWBSCommon.AddCssClass(ACss, 'navbar-text');}
 
   inherited;
 end;
