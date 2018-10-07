@@ -37,10 +37,10 @@ const
                      'panel-group', 'panel', 'panel-body', 'panel-heading', 'panel-footer');
 
 type
-  TIWBSRegionTagType = (bsttDiv, bsttH1, bsttH2, bsttH3, bsttH4, bsttH5, bsttH6, bsttP);
+  TIWBSRegionTagType = (bsttDiv, bsttH1, bsttH2, bsttH3, bsttH4, bsttH5, bsttH6, bsttP, bsttSpan);
 
 const
-  aIWBSRegionTagType: array[bsttDiv..bsttP] of string = ('div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p');
+  aIWBSRegionTagType: array[bsttDiv..bsttSpan] of string = ('div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span');
 
 type
   TIWBSRegion = class(TIWBSCustomRegion)
